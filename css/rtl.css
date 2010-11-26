@@ -1,0 +1,30 @@
+#access li{float:right;direction:rtl;}
+#branding {float:right;text-align:right;direction:rtl;}
+#header {text-align:right;direction:rtl;}
+#content-container {padding:0px;margin:0px;text-align:right;direction:rtl;}
+#load-first {float:right;}
+.left-main-right #content-main {float:left;text-align:right;direction:rtl;}
+.left-main #content-main {float:left;text-align:right;direction:rtl;}
+.main-right #content-main{float:right;text-align:right;direction:rtl;}
+.main-only #content-main {float:right;text-align:right;direction:rtl;}
+#content-left {float:right;}
+#content-right {float:left;}
+.count1 {float:right;direction:rtl;}
+.count2 {float:right;direction:rtl;}
+.count3 {float:right;direction:rtl;}
+.count4 {float:right;direction:rtl;}
+#nav {float:right; direction: rtl;}
+#nav ul {padding:0; margin:0;list-style-type: none; }
+#nav ul li {float:right;direction: rtl;}
+#nav ul li ul {display: none;}
+#nav ul.menu-nav li:hover ul {right:0; direction: rtl;}
+#nav ul.menu-nav li:hover ul li:hover ul {left:-105px;direction: rtl;}
+#content-left ul#mainlevel li, #left ul.menu li {float: right;display: block !important;display: inline;position: relative;direction: rtl;}
+#content-left ul.menu ul,
+#content-left ul.menu ul ul,
+#content-left ul.menu ul ul ul {display: none;position: absolute;top: 10px;right: 75%;z-index:900;}
+#content-right ul#mainlevel li, #content-right ul.menu li {width: 100%;list-style:none;padding:0 0 0 0;margin:0;text-align:left;direction: rtl;}
+#content-right ul#mainlevel li,#content-right ul.menu li {float: right;display: block !important;display: inline;position: relative;direction: rtl;}
+#content-right ul.menu ul,
+#content-right ul.menu ul ul,
+#content-right ul.menu ul ul ul {display: none;position: absolute;top: 10px;right: -75%;z-index:900;}

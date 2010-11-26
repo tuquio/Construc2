@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE install PUBLIC "-//Joomla! 1.6//DTD template 1.0//EN" "http://www.joomla.org/xml/dtd/1.6/template-install.dtd">
+<install version="1.6" type="template" client="site" method="upgrade" >
+	<name>je-construct-community</name>
+	<creationDate>November 9th, 2010</creationDate>
+	<author>Joomla Engineering</author>
+	<authorEmail>support@joomlaengineering.com</authorEmail>
+	<authorUrl>http://joomlaengineering.com</authorUrl>
+	<copyright>Copyright (C) 2010 Matt Thomas | Joomla Engineering. All rights reserved.</copyright>
+	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+	<version>1.6.284</version>
+		<description>TPL_JE_CONSTRUCT_COMMUNITY_DESCRIPTION</description>
+	<files>
+		<filename>css/diagnostic.css</filename>
+		<filename>css/editor.css</filename>	
+		<filename>css/index.html</filename>		
+		<filename>css/modal.css</filename>
+		<filename>css/normal.css</filename>
+		<filename>css/print.css</filename>									
+		<filename>css/rtl.css</filename>		
+		<filename>css/screen.css</filename>
+		<filename>css/wireframe.css</filename>		
+		<filename>elements/index.html</filename>
+		<filename>elements/upgradecheck.php</filename>
+		<filename>fonts/BebasNeue-webfont.eot</filename>
+		<filename>fonts/BebasNeue-webfont.svg</filename>
+		<filename>fonts/BebasNeue-webfont.ttf</filename>
+		<filename>fonts/BebasNeue-webfont.woff</filename>
+		<filename>fonts/index.html</filename>
+		<filename>html/modules.php</filename>
+		<filename>html/pagination.php</filename>
+		<filename>html/index.html</filename>
+		<filename>html/mod_footer/default.php</filename>
+		<filename>html/mod_footer/index.html</filename>
+		<filename>html/mod_login/index.html</filename>
+		<filename>html/mod_login/default.php</filename>		
+		<filename>images/editor-buttons/index.html</filename>
+		<filename>images/editor-buttons/j_button2_blank.png</filename>
+		<filename>images/editor-buttons/j_button2_image.png</filename>
+		<filename>images/editor-buttons/j_button2_left.png</filename>
+		<filename>images/editor-buttons/j_button2_pagebreak.png</filename>
+		<filename>images/editor-buttons/j_button2_readmore.png</filename>
+		<filename>images/editor-buttons/j_button2_right.png</filename>				
+		<filename>images/button-gradient.png</filename>
+		<filename>images/index.html</filename>
+		<filename>images/logo.png</filename>
+		<filename>images/selector-arrow.png</filename>
+		<filename>js/DD_belatedPNG_0.0.8a-min.js</filename>
+		<filename>js/ie_suckerfish.js</filename>
+		<filename>js/index.html</filename>	
+		<filename>js/PIE.htc</filename>
+		<filename>js/styleswitch.js</filename>	
+		<filename>component.php</filename>
+		<filename>favicon.ico</filename>
+		<filename>favicon.png</filename>		
+		<filename>index.html</filename>
+		<filename>index.php</filename>
+		<filename>logic.php</filename>
+		<filename>modal.php</filename>
+		<filename>templateDetails.xml</filename>
+		<filename>template_thumbnail.png</filename>
+	</files>
+	
+	<languages>
+		<language tag="en-GB">language/en-GB/en-GB.tpl_je-construct-community.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.tpl_je-construct-community.sys.ini</language>
+	</languages>	
+	
+	<positions>
+		<position>analytics</position>
+		<position>breadcrumbs</position>
+		<position>debug</position>		
+		<position>footer</position>		
+		<position>header</position>		
+		<position>left</position>		
+		<position>left2</position>
+		<position>nav</position>
+		<position>right</position>
+		<position>right2</position>
+		<position>sub1</position>
+		<position>sub2</position>
+		<position>sub3</position>
+		<position>sub4</position>
+		<position>sub5</position>
+		<position>sub6</position>
+		<position>subhead1</position>
+		<position>subhead2</position>
+		<position>subhead3</position>
+		<position>subhead4</position>
+		<position>subhead5</position>
+		<position>subhead6</position>
+		<position>supra1</position>
+		<position>supra2</position>
+		<position>supra3</position>
+		<position>supra4</position>
+		<position>syndicate</position>
+		<position>top</position>
+		<position>top2</position>
+		<position>top3</position>
+		<position>top4</position>
+		<position>user1</position>
+		<position>user2</position>
+		<position>user3</position>
+		<position>user4</position>
+		<position>user5</position>
+		<position>user6</position>
+		<position>user7</position>
+		<position>user8</position>
+	</positions>
+	<config>
+		<fields name="params">
+			<fieldset name="general">									
+				<field name="showDate" type="radio" default="1" label="TPL_JE_CONSTRUCT_COMMUNITY_SHOW_DATE_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_SHOW_DATE_DESC">
+					<option value="1">Show</option>
+					<option value="0">Hide</option>
+				</field>
+				<field name="showPageLinks" type="radio" default="1" label="TPL_JE_CONSTRUCT_COMMUNITY_SHOW_PAGE_LINKS_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_SHOW_PAGE_LINKS_DESC">
+					<option value="1">Show</option>
+					<option value="0">Hide</option>
+				</field>
+				<field name="enableSwitcher" type="radio" default="1" label="TPL_JE_CONSTRUCT_COMMUNITY_ENABLE_SWITCHER_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_ENABLE_SWITCHER_DESC">
+					<option value="1">Show</option>
+					<option value="0">Hide</option>
+				</field>		
+				<field name="useCustomStyleSheet" type="radio" default="1" label="TPL_JE_CONSTRUCT_COMMUNITY_USE_CUSTOM_STYLE_SHEET_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_USE_CUSTOM_STYLE_SHEET_DESC">
+					<option value="1">Yes</option>
+					<option value="0">No</option>
+				</field>				
+				<field name="customStyleSheet" type="filelist" default="example.css" label="TPL_JE_CONSTRUCT_COMMUNITY_CUSTOM_STYLE_SHEET_LABEL" directory="templates/je-construct-pro/css" filter="\.css" exclude="core-classes-ids\.css|diagnostic\.css|editor\.css|modal\.css|normal\.css|print\.css|rtl\.css|screen\.css|ie6\.css|wireframe\.css" description="TPL_JE_CONSTRUCT_COMMUNITY_CUSTOM_STYLE_SHEET_DESC" />
+				<field name="setGeneratorTag" type="text" default="Joomla Engineering | http://JoomlaEngineering.com" label="Generator Meta Tag" description="Customize the generator meta tag output by your template." size="56" />		
+			</fieldset>
+			<fieldset name="IE">
+				<field name="IECSS3" type="radio" default="1" label="TPL_JE_CONSTRUCT_COMMUNITY_IE_CSS3_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_IE_CSS3_DESC">
+		        	<option value="1">Yes</option>
+		        	<option value="0">No</option>
+		    	</field>			
+				<field name="IECSS3Targets" type="textarea" default=".drop-shadow, .outline, .rounded, ul.menu li" label="TPL_JE_CONSTRUCT_COMMUNITY_IE_CSS3_TARGETS_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_IE_CSS3_TARGETS_DESC" rows="5" cols="50" />
+				<field name="IE6TransFix" type="radio" default="1" label="TPL_JE_CONSTRUCT_COMMUNITY_IE6_TRANS_FIX_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_IE6_TRANS_FIX_DESC">
+		        	<option value="1">Yes</option>
+		        	<option value="0">No</option>
+		    	</field>		
+				<field name="IE6TransFixTargets" type="textarea" default="h1 a" label="TPL_JE_CONSTRUCT_COMMUNITY_IE6_TRANS_FIX_TARGETS_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_IE6_TRANS_FIX_TARGETS_DESC" rows="5" cols="50" />
+			</fieldset>			
+			<fieldset name="javascript">									
+				<field name="loadMoo" type="radio" default="1" label="TPL_JE_CONSTRUCT_COMMUNITY_LOAD_MOO_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_LOAD_MOO_DESC">
+					<option value="1">Yes</option>
+					<option value="0">No</option>
+				</field>
+				<field name="loadModal" type="radio" default="1" label="TPL_JE_CONSTRUCT_COMMUNITY_LOAD_MODAL_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_LOAD_MODAL_DESC">
+					<option value="1">Yes</option>
+					<option value="0">No</option>
+				</field>
+				<field name="loadjQuery" type="radio" default="0" label="TPL_JE_CONSTRUCT_COMMUNITY_LOAD_JQUERY_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_LOAD_JQUERY_DESC">
+					<option value="1">Yes</option>
+					<option value="0">No</option>
+				</field>
+			</fieldset>
+			<fieldset name="Layout">				
+				<field name="siteWidth" type="text" default="80.5" label="TPL_JE_CONSTRUCT_COMMUNITY_SITE_WIDTH_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_SITE_WIDTH_DESC" size="10" />	
+				<field name="siteWidthType" type="radio" default="max-width" label="TPL_JE_CONSTRUCT_COMMUNITY_SITE_WIDTH_TYPE_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_SITE_WIDTH_TYPE_DESC">
+					<option value="max-width">Fluid Max Width</option>
+					<option value="width">Fixed Width</option>
+				</field>
+				<field name="siteWidthUnit" type="radio" default="em" label="TPL_JE_CONSTRUCT_COMMUNITY_SITE_WIDTH_UNIT_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_SITE_WIDTH_UNIT_DESC">
+					<option value="em">Em</option>
+					<option value="px">Pixel</option>
+					<option value="%">Percent</option>
+				</field>
+				<field name="fullWidth" type="radio" default="1" label="TPL_JE_CONSTRUCT_COMMUNITY_FULL_WIDTH_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_FULL_WIDTH_DESC">
+				  <option value="1">Yes</option>
+				  <option value="0">No</option>
+				</field>
+				<field name="useStickyFooter" type="radio" default="1" label="TPL_JE_CONSTRUCT_COMMUNITY_USE_STICKY_FOOTER_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_USE_STICKY_FOOTER_DESC">
+        			<option value="1">On</option>
+        			<option value="0">Off</option>
+		    	</field>
+			</fieldset>					
+			<fieldset name="typography">
+				<field name="fontFamily" type="list" default="lucida-grande" label="TPL_JE_CONSTRUCT_COMMUNITY_FONT_FAMILY_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_FONT_FAMILY_DESC">
+					<option value="arial">Arial</option>
+					<option value="arial-black">Arial Black</option>
+					<option value="courier">Courier New</option>			
+					<option value="georgia">Georgia</option>
+					<option value="impact">Impact</option>			
+					<option value="lucida-console">Lucida Console</option>	
+					<option value="lucida-grande">Lucida Grande</option>								
+					<option value="lucida-sans">Lucida Sans</option>
+					<option value="palatino">Palatino</option>			
+					<option value="tahoma">Tahoma</option>
+					<option value="times">Times New Roman</option>
+					<option value="trebuchet">Trebuchet</option>
+					<option value="verdana">Verdana</option>
+				</field>
+				<field name="googleHeaderFont" type="list" default="" label="TPL_JE_CONSTRUCT_COMMUNITY_GOOGLE_HEADER_FONT_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_GOOGLE_HEADER_FONT_DESC">
+					<option value="">--- none ---</option>
+					<option value="Cantarell">Cantarell</option>
+					<option value="Cardo">Cardo</option>
+					<option value="Crimson+Text">Crimson+Text</option>
+					<option value="Droid+Sans">Droid+Sans</option>			
+					<option value="Droid+Sans+Mono">Droid+Sans+Mono</option>
+					<option value="Droid+Serif">Droid+Serif</option>
+					<option value="IM+Fell+Double+Pica">IM+Fell+Double+Pica</option>
+					<option value="IM+Fell+Great+Primer+SC">IM+Fell+Great+Primer+SC</option>						
+					<option value="Inconsolata">Inconsolata</option>
+					<option value="Josefin+Sans+Std+Light">Josefin+Sans+Std+Light</option>
+					<option value="Lobster">Lobster</option>
+					<option value="Molengo">Molengo</option>
+					<option value="Neuton">Neuton</option>
+					<option value="Nobile">Nobile</option>
+					<option value="OFL+Sorts+Mill+Goudy+TT">OFL+Sorts+Mill+Goudy+TT</option>
+					<option value="Old+Standard+TT">Old+Standard+TT</option>
+					<option value="Reenie+Beanie">Reenie+Beanie</option>
+					<option value="Tangerine">Tangerine</option>			
+					<option value="Vollkorn">Vollkorn</option>
+					<option value="Yanone+Kaffeesatz">Yanone+Kaffeesatz</option>									
+				</field>
+			</fieldset>
+			<fieldset name="version_check">
+				<field label="TPL_JE_CONSTRUCT_COMMUNITY_VERSION_CHECK_LABEL" type="upgradecheck" addfieldpath="/templates/je-construct-community/elements"/>
+			</fieldset>				
+		</fields>
+	</config>	
+</install>
