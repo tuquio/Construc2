@@ -2,13 +2,13 @@
 <!DOCTYPE install PUBLIC "-//Joomla! 1.6//DTD template 1.0//EN" "http://www.joomla.org/xml/dtd/1.6/template-install.dtd">
 <install version="1.6" type="template" client="site" method="upgrade" >
 	<name>je-construct-community</name>
-	<creationDate>November 9th, 2010</creationDate>
+	<creationDate>November 26th, 2010</creationDate>
 	<author>Joomla Engineering</author>
 	<authorEmail>support@joomlaengineering.com</authorEmail>
 	<authorUrl>http://joomlaengineering.com</authorUrl>
 	<copyright>Copyright (C) 2010 Matt Thomas | Joomla Engineering. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
-	<version>1.6.284</version>
+	<version>1.6.338</version>
 		<description>TPL_JE_CONSTRUCT_COMMUNITY_DESCRIPTION</description>
 	<files>
 		<filename>css/diagnostic.css</filename>
@@ -127,7 +127,7 @@
 					<option value="1">Yes</option>
 					<option value="0">No</option>
 				</field>				
-				<field name="customStyleSheet" type="filelist" default="example.css" label="TPL_JE_CONSTRUCT_COMMUNITY_CUSTOM_STYLE_SHEET_LABEL" directory="templates/je-construct-pro/css" filter="\.css" exclude="core-classes-ids\.css|diagnostic\.css|editor\.css|modal\.css|normal\.css|print\.css|rtl\.css|screen\.css|ie6\.css|wireframe\.css" description="TPL_JE_CONSTRUCT_COMMUNITY_CUSTOM_STYLE_SHEET_DESC" />
+				<field name="customStyleSheet" type="filelist" default="example.css" label="TPL_JE_CONSTRUCT_COMMUNITY_CUSTOM_STYLE_SHEET_LABEL" directory="templates/je-construct-community/css" filter="\.css" exclude="core-classes-ids\.css|diagnostic\.css|editor\.css|modal\.css|normal\.css|print\.css|rtl\.css|screen\.css|ie6\.css|wireframe\.css" description="TPL_JE_CONSTRUCT_COMMUNITY_CUSTOM_STYLE_SHEET_DESC" />
 				<field name="setGeneratorTag" type="text" default="Joomla Engineering | http://JoomlaEngineering.com" label="Generator Meta Tag" description="Customize the generator meta tag output by your template." size="56" />		
 			</fieldset>
 			<fieldset name="IE">
