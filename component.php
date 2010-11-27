@@ -8,9 +8,6 @@
 
 // Get the base URL of the website
 $baseUrl 				= JURI::base();
-// Get and define template parameters
-$customStyleSheet 		= $this->params->get('customStyleSheet');
-$useCustomStyleSheet 	= $this->params->get('useCustomStyleSheet');
 ?>
 
 <?php echo '<?'; ?>xml version="1.0" encoding="<?php echo $this->_charset ?>"
@@ -20,8 +17,6 @@ $useCustomStyleSheet 	= $this->params->get('useCustomStyleSheet');
 	<jdoc:include type="head" />
 	<link rel="stylesheet" href="<?php echo $baseUrl.'templates/'.$this->template; ?>/css/print.css" type="text/css" />
 <?php	
-	if (($useCustomStyleSheet) && ($customStyleSheet !='-1'))
-		echo "\n".'  <link rel="stylesheet" href="templates/'.$this->template.'/css/'.$customStyleSheet.'"  type="text/css" media="screen" />';
 	if ($this->direction == 'rtl')
 		echo "\n".'  <link rel="stylesheet" href="templates/'.$this->template.'/css/rtl.css"  type="text/css" media="screen" />';
 ?>

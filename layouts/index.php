@@ -5,16 +5,6 @@
 * @copyright	Copyright (C) 2010 Matt Thomas | Joomla Engineering. All rights reserved.
 * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
 */
-
-// Load template logic
-$logicFile				= JPATH_THEMES.'/'.$this->template.'/logic.php';
-if(file_exists($logicFile)) include $logicFile;
-
-// Check for layout override and load it if it exists
-if (isset($alternateIndexFile)) {
-	include_once($alternateIndexFile);		
-}
-else {
 ?>
 
 <?php echo '<?'; ?>xml version="1.0" encoding="<?php echo $this->_charset ?>"
@@ -363,4 +353,3 @@ else {
 	
 	</body>
 </html>
-<?php } ?>

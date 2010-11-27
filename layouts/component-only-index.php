@@ -6,9 +6,9 @@
 * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
 */
 
-// Get and define template parameters
-$customStyleSheet 		= $this->params->get('customStyleSheet');
-$useCustomStyleSheet 	= $this->params->get('useCustomStyleSheet');
+// Load template logic
+$logicFile 		= JPATH_THEMES.'/'.$this->template.'/logic.php';
+if(file_exists($logicFile)) include $logicFile;
 ?>
 
 <?php echo '<?'; ?>xml version="1.0" encoding="<?php echo $this->_charset ?>"
@@ -16,13 +16,6 @@ $useCustomStyleSheet 	= $this->params->get('useCustomStyleSheet');
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $this->language; ?>" lang="<?php echo $this->language; ?>" dir="<?php echo $this->direction; ?>" >
 <head>
 <jdoc:include type="head" />
-	<link rel="stylesheet" type="text/css" href="<?php echo 'templates/'.$this->template; ?>/css/screen.css" media="screen" />
-<?php	
-	if (($useCustomStyleSheet) && ($customStyleSheet !='-1'))
-		echo "\n".'  <link rel="stylesheet" href="templates/'.$this->template.'/css/'.$customStyleSheet.'"  type="text/css" media="screen" />';
-	if ($this->direction == 'rtl')
-		echo "\n".'  <link rel="stylesheet" href="templates/'.$this->template.'/css/rtl.css"  type="text/css" media="screen" />';
-?>
 </head>
 
 <body>
