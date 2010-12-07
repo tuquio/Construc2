@@ -6,9 +6,6 @@
 * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
 */
 
-// Load template logic
-$logicFile 		= JPATH_THEMES.'/'.$this->template.'/logic.php';
-if(file_exists($logicFile)) include $logicFile;
 ?>
 
 <?php echo '<?'; ?>xml version="1.0" encoding="<?php echo $this->_charset ?>"
@@ -18,7 +15,7 @@ if(file_exists($logicFile)) include $logicFile;
 <jdoc:include type="head" />
 </head>
 
-<body>
+<body class="<?php echo $fontFamily.' '.$columnLayout; if($useStickyFooter) echo ' sticky-footer'; ?>">
 	<jdoc:include type="component" />
 </body>
 </html>
