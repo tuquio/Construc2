@@ -5,7 +5,6 @@
 * @copyright	Copyright (C) 2010 Matt Thomas | Joomla Engineering. All rights reserved.
 * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
 */
-
 ?>
 
 <?php echo '<?'; ?>xml version="1.0" encoding="<?php echo $this->_charset ?>"
