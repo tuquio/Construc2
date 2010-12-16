@@ -71,7 +71,6 @@ else {
 						<li><?php if($articleId!=0) echo 'article-'.$articleId; ?></li>
 						<li><?php if($itemId!=0) echo' item-'.$itemId; ?></li>
 						<li><?php if($catId!=0) echo ' category-'.$catId; ?></li>
-						<li><?php if($sectionId!=0) echo ' section-'.$sectionId; ?></li>
 					</ul>
 				<?php endif; ?>	
 
