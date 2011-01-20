@@ -2,13 +2,13 @@
 <!DOCTYPE install PUBLIC "-//Joomla! 1.6//DTD template 1.0//EN" "http://www.joomla.org/xml/dtd/1.6/template-install.dtd">
 <extension version="1.6" type="template" client="site" method="upgrade" >
 	<name>je-construct-community</name>
-	<creationDate>December 9th, 2010</creationDate>
+	<creationDate>January 19th, 2011</creationDate>
 	<author>Joomla Engineering</author>
 	<authorEmail>support@joomlaengineering.com</authorEmail>
 	<authorUrl>http://joomlaengineering.com</authorUrl>
 	<copyright>Copyright (C) 2010 Matt Thomas | Joomla Engineering. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
-	<version>1.6.395</version>
+	<version>1.6.464</version>
 		<description>TPL_JE_CONSTRUCT_COMMUNITY_DESCRIPTION</description>
 	<files>
 		<filename>css/diagnostic.css</filename>
@@ -118,7 +118,7 @@
 					<option value="1">Show</option>
 					<option value="0">Hide</option>
 				</field>
-				<field name="enableSwitcher" type="radio" default="1" label="TPL_JE_CONSTRUCT_COMMUNITY_ENABLE_SWITCHER_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_ENABLE_SWITCHER_DESC">
+				<field name="enableSwitcher" type="radio" default="0" label="TPL_JE_CONSTRUCT_COMMUNITY_ENABLE_SWITCHER_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_ENABLE_SWITCHER_DESC">
 					<option value="1">Show</option>
 					<option value="0">Hide</option>
 				</field>		
