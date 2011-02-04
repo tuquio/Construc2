@@ -58,11 +58,11 @@ if ($loadMoo) {
 }
 
 // Fix Google Web Font name for CSS
-$googleWebFontFamily = str_replace("+"," ",$googleWebFont);
+$googleWebFontFamily 	= str_replace("+"," ",$googleWebFont);
 
-// Get the name of the extended template override set
+// Get the name of the extended template override group
 if ($useCustomStyleSheet)
-$overrideVariant = str_replace(".css","",$customStyleSheet);
+$overrideGroup			= str_replace(".css","",$customStyleSheet);
 
 #----------------------------- Moldule Counts -----------------------------#
 // from http://groups.google.com/group/joomla-dev-general/browse_thread/thread/b54f3f131dd173d
@@ -168,12 +168,12 @@ endif;
 #--------------------------------------------------------------------------#
 
 $templateIndex			= JPATH_THEMES.'/'.$this->template.'/layouts/index.php';
-$templateVariantIndex	= JPATH_THEMES.'/'.$this->template.'/layouts/'.$overrideVariant.'-index.php';
+$templateGroupIndex		= JPATH_THEMES.'/'.$this->template.'/layouts/'.$overrideGroup.'-index.php';
 
 #--------------------------------------------------------------------------#	
 
-if(file_exists($templateVariantIndex)){
-		$alternateIndexFile = $templateVariantIndex;}
+if(file_exists($templateGroupIndex)){
+		$alternateIndexFile = $templateGroupIndex;}
 elseif(file_exists($templateIndex)){
 		$alternateIndexFile = $templateIndex;}		
 else unset($alternateIndexFile);
