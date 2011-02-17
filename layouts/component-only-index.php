@@ -13,7 +13,7 @@
 <jdoc:include type="head" />
 </head>
 
-<body class="<?php echo $fontFamily.' '.$columnLayout; if($useStickyFooter) echo ' sticky-footer'; ?>">
+<body class="<?php echo $columnLayout; if ($bodyFontFamily) echo ' '.$bodyFontFamily; if($useStickyFooter) echo ' sticky-footer'; ?>">
 	<jdoc:include type="component" />
 </body>
 </html>

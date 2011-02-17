@@ -23,7 +23,7 @@ else {
 <jdoc:include type="head" />
 </head>
 
-<body class="<?php echo $fontFamily.' '.$columnLayout; if($useStickyFooter) echo ' sticky-footer'; ?>">
+<body class="<?php echo $columnLayout; if ($bodyFontFamily) echo ' '.$bodyFontFamily; if($useStickyFooter) echo ' sticky-footer'; ?>">
 
 	<div id="footer-push">
 		<a id="page-top" name="page-top"></a>
