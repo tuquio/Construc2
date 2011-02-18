@@ -270,7 +270,7 @@ ul.menu-horizontal li{float:left} /* Use -horizontal menu class suffix */
 #content-top {padding-bottom:15px}
 #editor-xtd-buttons{background:#efefef;margin-top:1em}
 #diagnostics {float:right;clear:right}
-#footer {text-align:center;position:relative}
+#footer {text-align:center;}
 #footer ul.menu, #footer ul.menu li {display:inline;list-style-image:none;list-style-position:outside;list-style-type:none;margin:0;padding:0;}
 #footer ul.menu li a, #footer ul.menu li a:visited {font-weight:normal;padding:1px 3px;text-decoration:none;}
 #form-login label{cursor:pointer;display:block;margin:0 10px 0 0;width:120px}
