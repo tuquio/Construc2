@@ -445,23 +445,7 @@ ul.menu li.pie_hover ul,
 ul.menu ul li.pie_hover ul,
 ul.menu ul ul li.pie_hover ul,
 ul.menu ul ul ul li.pie_hover ul{left:auto}
-/* menu parent item indicator */
-ul.menu li.parent a:after,
-ul.menu li ul li.parent a:after,
-ul.menu li ul li ul li.parent a:after,
-ul.menu li ul li ul li ul li.parent a:after,
-ul.menu li.parent span.separator:after,
-ul.menu li ul li.parent span.separator:after,
-ul.menu li ul li ul li.parent span.separator:after,
-ul.menu li ul li ul li ul li.parent span.separator:after{content:" +"}
-ul.menu li.parent li a:after,
-ul.menu li ul li.parent li a:after,
-ul.menu li ul li ul li.parent li a:after,
-ul.menu li ul li ul li ul li.parent li a:after,
-ul.menu li.parent li span.separator:after,
-ul.menu li ul li.parent li span.separator:after,
-ul.menu li ul li ul li.parent li span.separator:after,
-ul.menu li ul li ul li ul li.parent li span.separator:after{content:""}
+
 /* -- Dwyer Method for Image Replacement -- */ /* Fully browser compatible, works with screenreaders but doesn't work with images off/css on */
 /*#nav ul.menu li a {display:block;width:100px;height:20px;background:url(../images/logo.png) -50px -50px no-repeat}
 #nav ul.menu li a span{display:block;width:0;height:0;overflow:hidden;}*/
