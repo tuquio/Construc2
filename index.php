@@ -217,9 +217,7 @@ else {
 							<?php endif; ?>
 					  
 							<?php if ($this->getBuffer('message')) : ?>
-								<div class="error">
-									<jdoc:include type="message" />
-								</div>
+								<jdoc:include type="message" />
 							<?php endif; ?>
 
 							<jdoc:include type="component" />
