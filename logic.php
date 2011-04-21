@@ -19,7 +19,7 @@ $url 					= clone(JURI::getInstance());
 // To access the current user object
 $user 					= JFactory::getUser();
 
-// Get and define template parameters
+// Define shortcuts for template parameters
 $bodyFontFamily 		= $this->params->get('bodyFontFamily');
 $customFontFamily		= $this->params->get('customFontFamily');
 $customFontFamilySize	= $this->params->get('customFontFamilySize');
@@ -68,9 +68,9 @@ if ($loadMoo) {
 }
 
 // Fix Google Web Font name for CSS
-$googleWebFontFamily 	= str_replace("+"," ",$googleWebFont);
-$googleWebFontFamily2 	= str_replace("+"," ",$googleWebFont2);
-$googleWebFontFamily3 	= str_replace("+"," ",$googleWebFont3);
+$googleWebFontFamily 	= str_replace(array('+',':bold',':italic')," ",$googleWebFont);
+$googleWebFontFamily2 	= str_replace(array('+',':bold',':italic')," ",$googleWebFont2);
+$googleWebFontFamily3 	= str_replace(array('+',':bold',':italic')," ",$googleWebFont3);
 
 // Get the name of the extended template override group
 if ($useCustomStyleSheet)
