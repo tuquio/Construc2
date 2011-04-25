@@ -45,6 +45,7 @@ $loadMoo 				= $this->params->get('loadMoo');
 $loadModal				= $this->params->get('loadModal');
 $loadjQuery 			= $this->params->get('loadjQuery');
 $setGeneratorTag		= $this->params->get('setGeneratorTag');
+$showBackToTop			= $this->params->get('showBackToTop');
 $showDate 				= $this->params->get('showDate');		
 $showDiagnostics 		= $this->params->get('showDiagnostics');
 $siteWidth				= $this->params->get('siteWidth');
