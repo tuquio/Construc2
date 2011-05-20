@@ -20,10 +20,6 @@ $url 					= clone(JURI::getInstance());
 $user 					= JFactory::getUser();
 
 // Define shortcuts for template parameters
-$bodyFontFamily 		= $this->params->get('bodyFontFamily');
-$customFontFamily		= $this->params->get('customFontFamily');
-$customFontFamilySize	= $this->params->get('customFontFamilySize');
-$customFontFamilyTargets= $this->params->get('customFontFamilyTargets');
 $customStyleSheet 		= $this->params->get('customStyleSheet');
 $enableSwitcher 		= $this->params->get('enableSwitcher');
 $IECSS3					= $this->params->get('IECSS3');
@@ -45,13 +41,10 @@ $loadMoo 				= $this->params->get('loadMoo');
 $loadModal				= $this->params->get('loadModal');
 $loadjQuery 			= $this->params->get('loadjQuery');
 $setGeneratorTag		= $this->params->get('setGeneratorTag');
-$showBackToTop			= $this->params->get('showBackToTop');
-$showDate 				= $this->params->get('showDate');		
 $showDiagnostics 		= $this->params->get('showDiagnostics');
 $siteWidth				= $this->params->get('siteWidth');
 $siteWidthType			= $this->params->get('siteWidthType');
 $siteWidthUnit			= $this->params->get('siteWidthUnit');
-$showPageLinks 			= $this->params->get('showPageLinks');
 $stickyFooterHeight		= $this->params->get('stickyFooterHeight');
 $useCustomStyleSheet 	= $this->params->get('useCustomStyleSheet');
 $useStickyFooter 		= $this->params->get('useStickyFooter');
@@ -69,13 +62,13 @@ if ($loadMoo) {
 }
 
 // Remove MooTools if set to no.
-/*if ( !$loadMoo ) {
+if ( !$loadMoo ) {
 	$head=$this->getHeadData();
 	reset($head['scripts']);
 	unset($head['scripts'][$this->baseurl . '/media/system/js/mootools-core.js']);
 	unset($head['scripts'][$this->baseurl . '/media/system/js/mootools-more.js']);		
 	$this->setHeadData($head);
-}*/
+}
 
 // Fix Google Web Font name for CSS
 $googleWebFontFamily 	= str_replace(array('+',':bold',':italic')," ",$googleWebFont);
@@ -211,7 +204,7 @@ $doc->addFavicon($template.'/favicon.png', 'image/png','icon');
 // Style sheets
 $doc->addStyleSheet($template.'/css/screen.css','text/css','screen');
 $doc->addStyleSheet($template.'/css/print.css','text/css','print');
-if (($useCustomStyleSheet) && ($customStyleSheet !='-1'))
+if ($customStyleSheet !='-1')
 	$doc->addStyleSheet($template.'/css/'.$customStyleSheet,'text/css','screen');
 if ($this->direction == 'rtl')
 	$doc->addStyleSheet($template.'/css/rtl.css','text/css','screen');
@@ -221,11 +214,9 @@ if ($enableSwitcher) {
 	$doc->addCustomTag('<link rel="alternate stylesheet" href="'.$template.'/css/diagnostic.css" type="text/css" media="screen" title="diagnostic" />');
 	$doc->addCustomTag('<link rel="alternate stylesheet" href="'.$template.'/css/wireframe.css" type="text/css" media="screen" title="wireframe" />');
 	$doc->addScript($template.'/js/styleswitch.js');
-}	
+}
 
 // Typography
-if ( $customFontFamily && $customFontFamilyTargets )
-	$doc->addStyleDeclaration('  '.$customFontFamilyTargets.' {font-family:'.$customFontFamily.';font-size:'.$customFontFamilySize.';}');	
 if ($googleWebFont) {
 	$doc->addStyleSheet('http://fonts.googleapis.com/css?family='.$googleWebFont.'');
 	$doc->addStyleDeclaration('  '.$googleWebFontTargets.' {font-family:'.$googleWebFontFamily.', serif;font-size:'.$googleWebFontSize.';}');
@@ -242,7 +233,7 @@ if ($googleWebFont3) {
 // JavaScript
 $doc->addCustomTag("\n".'  <script type="text/javascript">window.addEvent(\'domready\',function(){new SmoothScroll({duration:1200},window);});</script>');
 if ($loadjQuery)
-	$doc->addScript('http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js');
+	$doc->addScript($loadjQuery);
 
 // Layout Declarations
 if ($siteWidth)
