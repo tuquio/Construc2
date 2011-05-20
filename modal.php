@@ -17,7 +17,7 @@ if(file_exists($logicFile)) include $logicFile;
   <link rel="stylesheet" href="<?php echo $baseUrl.'templates/'.$this->template; ?>/css/screen.css" type="text/css" media="screen" />
   <link rel="stylesheet" href="<?php echo $baseUrl.'templates/'.$this->template; ?>/css/modal.css" type="text/css" media="screen" />
 <?php	
-	if (($useCustomStyleSheet) && ($customStyleSheet !='-1'))
+	if ($customStyleSheet !='-1')
 		echo "\n".'  <link rel="stylesheet" href="templates/'.$this->template.'/css/'.$customStyleSheet.'"  type="text/css" media="screen" />';
 	if ($this->direction == 'rtl')
 		echo "\n".'  <link rel="stylesheet" href="templates/'.$this->template.'/css/rtl.css"  type="text/css" media="screen" />';

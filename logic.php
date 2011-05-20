@@ -46,7 +46,6 @@ $siteWidth				= $this->params->get('siteWidth');
 $siteWidthType			= $this->params->get('siteWidthType');
 $siteWidthUnit			= $this->params->get('siteWidthUnit');
 $stickyFooterHeight		= $this->params->get('stickyFooterHeight');
-$useCustomStyleSheet 	= $this->params->get('useCustomStyleSheet');
 $useStickyFooter 		= $this->params->get('useStickyFooter');
 
 // Change generator tag
@@ -76,7 +75,6 @@ $googleWebFontFamily2 	= str_replace(array('+',':bold',':italic')," ",$googleWeb
 $googleWebFontFamily3 	= str_replace(array('+',':bold',':italic')," ",$googleWebFont3);
 
 // Get the name of the extended template override group
-if ($useCustomStyleSheet)
 $overrideGroup			= str_replace(".css","",$customStyleSheet);
 
 #----------------------------- Moldule Counts -----------------------------#
