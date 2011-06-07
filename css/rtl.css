@@ -7,8 +7,8 @@
 .left-main #content-main {float:left;text-align:right;direction:rtl;}
 .main-right #content-main{float:right;text-align:right;direction:rtl;}
 .main-only #content-main {float:right;text-align:right;direction:rtl;}
-#content-left {float:right;}
-#content-right {float:left;}
+#column-group-alpha {float:right;}
+#column-group-beta {float:left;}
 .count1 {float:right;direction:rtl;}
 .count2 {float:right;direction:rtl;}
 .count3 {float:right;direction:rtl;}
@@ -19,12 +19,12 @@
 #nav ul li ul {display: none;}
 #nav ul.menu-nav li:hover ul {right:0; direction: rtl;}
 #nav ul.menu-nav li:hover ul li:hover ul {left:-105px;direction: rtl;}
-#content-left ul#mainlevel li, #left ul.menu li {float: right;display: block !important;display: inline;position: relative;direction: rtl;}
-#content-left ul.menu ul,
-#content-left ul.menu ul ul,
-#content-left ul.menu ul ul ul {display: none;position: absolute;top: 10px;right: 75%;z-index:900;}
-#content-right ul#mainlevel li, #content-right ul.menu li {width: 100%;list-style:none;padding:0 0 0 0;margin:0;text-align:left;direction: rtl;}
-#content-right ul#mainlevel li,#content-right ul.menu li {float: right;display: block !important;display: inline;position: relative;direction: rtl;}
-#content-right ul.menu ul,
-#content-right ul.menu ul ul,
-#content-right ul.menu ul ul ul {display: none;position: absolute;top: 10px;right: -75%;z-index:900;}
+#column-group-alpha ul#mainlevel li, #left ul.menu li {float: right;display: block !important;display: inline;position: relative;direction: rtl;}
+#column-group-alpha ul.menu ul,
+#column-group-alpha ul.menu ul ul,
+#column-group-alpha ul.menu ul ul ul {display: none;position: absolute;top: 10px;right: 75%;z-index:900;}
+#column-group-beta ul#mainlevel li, #column-group-beta ul.menu li {width: 100%;list-style:none;padding:0 0 0 0;margin:0;text-align:left;direction: rtl;}
+#column-group-beta ul#mainlevel li,#column-group-beta ul.menu li {float: right;display: block !important;display: inline;position: relative;direction: rtl;}
+#column-group-beta ul.menu ul,
+#column-group-beta ul.menu ul ul,
+#column-group-beta ul.menu ul ul ul {display: none;position: absolute;top: 10px;right: -75%;z-index:900;}
