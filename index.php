@@ -7,14 +7,18 @@
 */
 
 // Load template logic
-$logicFile				= JPATH_THEMES.'/'.$this->template.'/logic.php';
-if(file_exists($logicFile)) include $logicFile;
-
-// Check for layout override and load it if it exists
-if (isset($alternateIndexFile)) {
-	include_once($alternateIndexFile);		
+$logicFile				= JPATH_THEMES.'/'.$this->template.'/elements/logic.php';
+if(JFile::exists($logicFile)) {
+	include $logicFile;
 }
-else {
+
+// Check for alternate index file and load it if it exists
+$results = $layoutOverride->getIncludeFile ();
+
+if ($results) {
+    $alternateIndexFile = $results;
+	include_once $alternateIndexFile;	
+} else {
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">

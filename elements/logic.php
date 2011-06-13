@@ -6,6 +6,14 @@
 * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
 */
 
+// Load Template Helper
+jimport('joomla.filesystem.file');
+
+// Call the Construct Template Helper Class
+if (JFile::exists(dirname(__FILE__).'/helper.php')) {
+    include dirname(__FILE__).'/helper.php';
+}
+
 // To enable use of site configuration
 $app 					= JFactory::getApplication();
 // Get the base URL of the website
@@ -75,7 +83,7 @@ $googleWebFontFamily2 	= str_replace(array('+',':bold',':italic')," ",$googleWeb
 $googleWebFontFamily3 	= str_replace(array('+',':bold',':italic')," ",$googleWebFont3);
 
 // Get the name of the extended template override group
-$overrideGroup			= str_replace(".css","",$customStyleSheet);
+$overrideTheme			= str_replace(".css","",$customStyleSheet);
 
 #----------------------------- Moldule Counts -----------------------------#
 // from http://groups.google.com/group/joomla-dev-general/browse_thread/thread/b54f3f131dd173d
@@ -184,16 +192,10 @@ endif;
 	
 #--------------------------------------------------------------------------#
 
-$templateIndex			= JPATH_THEMES.'/'.$this->template.'/layouts/index.php';
-$templateGroupIndex		= JPATH_THEMES.'/'.$this->template.'/layouts/'.$overrideGroup.'-index.php';
-
-#--------------------------------------------------------------------------#	
-
-if(file_exists($templateGroupIndex)){
-		$alternateIndexFile = $templateGroupIndex;}
-elseif(file_exists($templateIndex)){
-		$alternateIndexFile = $templateIndex;}		
-else unset($alternateIndexFile);
+$layoutOverride 							= new ConstructTemplateHelper ();
+$layoutOverride->includeFile 				= array ();
+$layoutOverride->includeFile[] 				= $template.'/layouts/'.$overrideTheme.'-index.php';
+$layoutOverride->includeFile[] 				= $template.'/layouts/index.php';
 
 #---------------------------- Head Elements --------------------------------#
 
