@@ -78,10 +78,7 @@ if ($results) {
 			<div class="gutter clearfix">
 
 				<div class="date-container">
-					<span class="date-weekday"><?php	$now = &JFactory::getDate(); echo $now->toFormat('%A').','; ?></span>
-					<span class="date-month"><?php 		$now = &JFactory::getDate(); echo $now->toFormat('%B'); ?></span>
-					<span class="date-day"><?php 		$now = &JFactory::getDate(); echo $now->toFormat('%d').','; ?></span>
-					<span class="date-year"><?php 		$now = &JFactory::getDate(); echo $now->toFormat('%Y'); ?></span>
+				<?php echo jeConstructDateContainer('TPL_JE_CONSTRUCT_COMMUNITY_DATETIME_LC3'); ?>
 				</div>
 	
 				<?php if ($showDiagnostics) : ?>
@@ -100,21 +97,21 @@ if ($results) {
 				<?php endif; ?>		
 				
 				<ul id="access">
-				  <li>Jump to:</li>
-				  <li><a href="<?php $url->setFragment('content'); echo $url->toString();?>" class="to-content">Content</a></li>					
+				  <li><?php echo JText::_('TPL_JE_CONSTRUCT_COMMUNITY_JUMP_LABEL') ?></li>
+				  <li><a href="<?php $url->setFragment('content'); echo $url->toString();?>" class="to-content"><?php echo JText::_('TPL_JE_CONSTRUCT_COMMUNITY_JUMP_CONTENT') ?></a></li>					
 				  <?php if ($this->countModules('nav')) : ?>
-					<li><a href="<?php $url->setFragment('nav'); echo $url->toString();?>" class="to-nav">Navigation</a></li>
+					<li><a href="<?php $url->setFragment('nav'); echo $url->toString();?>" class="to-nav"><?php echo JText::_('TPL_JE_CONSTRUCT_COMMUNITY_JUMP_NAVIGATION') ?></a></li>
 				  <?php endif; ?>					
 				  <?php if ($contentBelowCount) : ?>
-					<li><a href="<?php $url->setFragment('additional'); echo $url->toString();?>" class="to-additional">Additional Information</a></li>
+					<li><a href="<?php $url->setFragment('additional'); echo $url->toString();?>" class="to-additional"><?php echo JText::_('TPL_JE_CONSTRUCT_COMMUNITY_JUMP_ADDITIONAL') ?></a></li>
 				  <?php endif; ?>
 				</ul>	
 				
 				<?php if ($enableSwitcher) : ?>
 					<ul id="style-switch">
-						<li><a href="#" onclick="setActiveStyleSheet('wireframe'); return false;" title="Wireframe">Wireframe</a></li>
-						<li><a href="#" onclick="setActiveStyleSheet('diagnostic'); return false;" title="Diagnostic">Diagnostic Mode</a></li>
-						<li><a href="#" onclick="setActiveStyleSheet('normal'); return false;" title="Normal">Normal Mode</a></li>
+						<li><a href="#" onclick="setActiveStyleSheet('wireframe'); return false;" title="Wireframe"><?php echo JText::_('TPL_JE_CONSTRUCT_COMMUNITY_STYLE_WIREFRAME') ?></a></li>
+						<li><a href="#" onclick="setActiveStyleSheet('diagnostic'); return false;" title="Diagnostic"><?php echo JText::_('TPL_JE_CONSTRUCT_COMMUNITY_STYLE_DIAGNOSTIC_MODE') ?></a></li>
+						<li><a href="#" onclick="setActiveStyleSheet('normal'); return false;" title="Normal"><?php echo JText::_('TPL_JE_CONSTRUCT_COMMUNITY_STYLE_NORMAL_MODE') ?></a></li>
 					</ul>
 				<?php endif; ?>	
 
@@ -393,7 +390,7 @@ if ($results) {
 	<div id="footer" class="clear clearfix">
 		<div class="gutter clearfix">			
 
-			<a id="to-page-top" href="<?php $url->setFragment('page-top'); echo $url->toString();?>" class="to-additional">Back to Top</a>
+			<a id="to-page-top" href="<?php $url->setFragment('page-top'); echo $url->toString();?>" class="to-additional"><?php echo JText::_('TPL_JE_CONSTRUCT_COMMUNITY_JUMP_BACK_TO_TOP') ?></a>
 
 			<?php if ($this->countModules('syndicate')) : ?>			
 			<div id="syndicate">
