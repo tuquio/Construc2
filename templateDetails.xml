@@ -122,18 +122,7 @@
 				<field name="customStyleSheet" type="filelist" default="example.css" label="TPL_JE_CONSTRUCT_COMMUNITY_CUSTOM_STYLE_SHEET_LABEL" directory="templates/construct/css" filter="\.css" exclude="core-classes-ids\.css|diagnostic\.css|editor\.css|modal\.css|normal\.css|print\.css|rtl\.css|screen\.css|ie6\.css|wireframe\.css|mobile\.css|mobile\.css" description="TPL_JE_CONSTRUCT_COMMUNITY_CUSTOM_STYLE_SHEET_DESC" />
 				<field name="setGeneratorTag" type="text" default="Joomla Engineering | http://JoomlaEngineering.com" label="Generator Meta Tag" description="Customize the generator meta tag output by your template." size="56" />
 			</fieldset>
-			<fieldset name="IE">
-				<field name="IECSS3" type="radio" default="1" label="TPL_JE_CONSTRUCT_COMMUNITY_IE_CSS3_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_IE_CSS3_DESC">
-		        	<option value="1">Yes</option>
-		        	<option value="0">No</option>
-		    	</field>
-				<field name="IECSS3Targets" type="textarea" default=".drop-shadow, .outline, .rounded, ul.menu li" label="TPL_JE_CONSTRUCT_COMMUNITY_IE_CSS3_TARGETS_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_IE_CSS3_TARGETS_DESC" rows="5" cols="50" />
-				<field name="IE6TransFix" type="radio" default="1" label="TPL_JE_CONSTRUCT_COMMUNITY_IE6_TRANS_FIX_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_IE6_TRANS_FIX_DESC">
-		        	<option value="1">Yes</option>
-		        	<option value="0">No</option>
-		    	</field>
-				<field name="IE6TransFixTargets" type="textarea" default="h1 a" label="TPL_JE_CONSTRUCT_COMMUNITY_IE6_TRANS_FIX_TARGETS_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_IE6_TRANS_FIX_TARGETS_DESC" rows="5" cols="50" />
-			</fieldset>
+			
 			<fieldset name="javascript">
 				<field name="loadMoo" type="radio" default="1" label="TPL_JE_CONSTRUCT_COMMUNITY_LOAD_MOO_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_LOAD_MOO_DESC">
 					<option value="1">Yes</option>
@@ -183,7 +172,18 @@
 				<field name="googleWebFontTargets3" type="text" default="" label="TPL_JE_CONSTRUCT_COMMUNITY_GOOGLE_WEB_FONT_TARGETS_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_GOOGLE_WEB_FONT_TARGETS_DESC" size="50" />
 				<field name="googleWebFontSize3" type="text" default="20px" label="TPL_JE_CONSTRUCT_COMMUNITY_GOOGLE_WEB_FONT_SIZE_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_GOOGLE_WEB_FONT_SIZE_DESC" size="5" />
 			</fieldset>
-			<fieldset name="version_check">
+			<fieldset name="IE">
+				<field name="IECSS3" type="radio" default="1" label="TPL_JE_CONSTRUCT_COMMUNITY_IE_CSS3_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_IE_CSS3_DESC">
+		        	<option value="1">Yes</option>
+		        	<option value="0">No</option>
+		    	</field>
+				<field name="IECSS3Targets" type="textarea" default=".drop-shadow, .outline, .rounded, ul.menu li" label="TPL_JE_CONSTRUCT_COMMUNITY_IE_CSS3_TARGETS_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_IE_CSS3_TARGETS_DESC" rows="5" cols="50" />
+				<field name="IE6TransFix" type="radio" default="1" label="TPL_JE_CONSTRUCT_COMMUNITY_IE6_TRANS_FIX_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_IE6_TRANS_FIX_DESC">
+		        	<option value="1">Yes</option>
+		        	<option value="0">No</option>
+		    	</field>
+				<field name="IE6TransFixTargets" type="textarea" default="h1 a" label="TPL_JE_CONSTRUCT_COMMUNITY_IE6_TRANS_FIX_TARGETS_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_IE6_TRANS_FIX_TARGETS_DESC" rows="5" cols="50" />
+			</fieldset><fieldset name="version_check">
 				<field label="TPL_JE_CONSTRUCT_COMMUNITY_VERSION_CHECK_LABEL" type="upgradecheck" />
 			</fieldset>
 		</fields>
