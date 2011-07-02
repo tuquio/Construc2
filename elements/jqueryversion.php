@@ -36,25 +36,21 @@ class JFormFieldJqueryversion extends JFormFieldList
      */
     protected function getOptions()
     {
+        static $versions = array(
+        		'1.6.2','1.6.1','1.6.0',
+        		'1.5.2','1.5.1','1.5.0',
+        		'1.4.4','1.4.3','1.4.2','1.4.1','1.4.0',
+        		'1.3.2','1.3.1','1.3.0',
+        		'1.2.6','1.2.0',
+        		);
         $options	= array();
 
 		$options[]	= JHtml::_('select.option', '', '- Not Loaded -');
-		$options[]	= JHtml::_('select.option', 'http://code.jquery.com/jquery-latest.min.js', 'Latest');
-		$options[]	= JHtml::_('select.option', 'https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js', '1.6.1');
-		$options[]	= JHtml::_('select.option', 'https://ajax.googleapis.com/ajax/libs/jquery/1.6.0/jquery.min.js', '1.6.0');
-		$options[]	= JHtml::_('select.option', 'https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js', '1.5.2');
-		$options[]	= JHtml::_('select.option', 'https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js', '1.5.1');
-		$options[]	= JHtml::_('select.option', 'https://ajax.googleapis.com/ajax/libs/jquery/1.5.0/jquery.min.js', '1.5.0');
-		$options[]	= JHtml::_('select.option', 'https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js', '1.4.4');
-		$options[]	= JHtml::_('select.option', 'https://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js', '1.4.3');
-		$options[]	= JHtml::_('select.option', 'https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js', '1.4.2');
-		$options[]	= JHtml::_('select.option', 'https://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.min.js', '1.4.1');
-		$options[]	= JHtml::_('select.option', 'https://ajax.googleapis.com/ajax/libs/jquery/1.4.0/jquery.min.js', '1.4.0');
-		$options[]	= JHtml::_('select.option', 'https://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js', '1.3.2');
-		$options[]	= JHtml::_('select.option', 'https://ajax.googleapis.com/ajax/libs/jquery/1.3.1/jquery.min.js', '1.3.1');
-		$options[]	= JHtml::_('select.option', 'https://ajax.googleapis.com/ajax/libs/jquery/1.3.0/jquery.min.js', '1.3.0');
-		$options[]	= JHtml::_('select.option', 'https://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js', '1.2.6');
-		$options[]	= JHtml::_('select.option', 'https://ajax.googleapis.com/ajax/libs/jquery/1.2.0/jquery.min.js', '1.2.0');
+		/* using protocol relative URLs */
+		$options[]	= JHtml::_('select.option', '//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js', JText::_('TPL_JE_CONSTRUCT_COMMUNITY_JQUERY_LATEST'));
+		foreach ($versions as $v) {
+			$options[]	= JHtml::_('select.option', '//ajax.googleapis.com/ajax/libs/jquery/'. $v .'/jquery.min.js', $v);
+		}
 
 		return $options;
 
