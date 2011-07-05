@@ -42,11 +42,11 @@ $googleWebFontTargets2	= $this->params->get('googleWebFontTargets2');
 $googleWebFont3			= $this->params->get('googleWebFont3');
 $googleWebFontSize3		= $this->params->get('googleWebFontSize3');
 $googleWebFontTargets3	= $this->params->get('googleWebFontTargets3');
-$loadMoo 				= $this->params->get('loadMoo');
-$loadModal				= $this->params->get('loadModal');
+$loadMoo 				= (bool) $this->params->get('loadMoo');
+$loadModal				= (bool) $this->params->get('loadModal');
 $loadjQuery 			= $this->params->get('loadjQuery');
 $setGeneratorTag		= $this->params->get('setGeneratorTag');
-$showDiagnostics 		= $this->params->get('showDiagnostics');
+$showDiagnostics 		= (bool) $this->params->get('showDiagnostics', 0);
 $siteWidth				= $this->params->get('siteWidth');
 $siteWidthType			= $this->params->get('siteWidthType');
 $siteWidthUnit			= $this->params->get('siteWidthUnit');
@@ -57,7 +57,7 @@ $useStickyFooter 		= $this->params->get('useStickyFooter');
 $this->setGenerator($setGeneratorTag);
 
 // Load the MooTools JavaScript Library
-if ($loadMoo) {
+if ($loadMoo == true) {
 	JHTML::_('behavior.framework', true);
 	if ($loadModal) {
 		// Enable modal pop-ups - see html/mod_footer/default.php to customize
@@ -66,11 +66,13 @@ if ($loadMoo) {
 }
 
 // Remove MooTools if set to no.
-if ( !$loadMoo ) {
-	$head=$this->getHeadData();
+if ($loadMoo == false) {
+	$head = $this->getHeadData();
 	reset($head['scripts']);
-	unset($head['scripts'][$this->baseurl . '/media/system/js/mootools-core.js']);
-	unset($head['scripts'][$this->baseurl . '/media/system/js/mootools-more.js']);		
+	$moos = preg_grep("!/media/system/js/(mootools|caption)!", array_keys($head['scripts']));
+	foreach ($moos as $src) {
+		unset($head['scripts'][$src]);
+	}
 	$this->setHeadData($head);
 }
 
@@ -178,7 +180,7 @@ if ($columnGroupBetaCount) : $columnGroupBetaClass = 'count-'.$columnGroupBetaCo
 
 
 $columnLayout= 'main-only';
-	
+
 if (($columnGroupAlphaCount > 0 ) && ($columnGroupBetaCount == 0)) :
 	$columnLayout = 'alpha-'.$columnGroupAlphaCount.'-main';
 elseif (($columnGroupAlphaCount > 0) && ($columnGroupBetaCount > 0)) :
@@ -186,7 +188,7 @@ elseif (($columnGroupAlphaCount > 0) && ($columnGroupBetaCount > 0)) :
 elseif (($columnGroupAlphaCount == 0) && ($columnGroupBetaCount > 0)) :
 	$columnLayout = 'main-beta-'.$columnGroupBetaCount;
 endif;
-	
+
 #--------------------------------------------------------------------------#
 
 $layoutOverride 							= new ConstructTemplateHelper ();
@@ -232,19 +234,22 @@ if ($googleWebFont3) {
 }
 
 // JavaScript
-$doc->addCustomTag("\n".'  <script type="text/javascript">window.addEvent(\'domready\',function(){new SmoothScroll({duration:1200},window);});</script>');
-if ($loadjQuery)
+if ($loadMoo == true) {
+	$doc->addCustomTag("\n".'  <script type="text/javascript">window.addEvent(\'domready\',function(){new SmoothScroll({duration:1200},window);});</script>');
+}
+if ($loadjQuery) {
 	$doc->addScript($loadjQuery);
+}
 
 // Layout Declarations
 if ($siteWidth)
 	$doc->addStyleDeclaration("\n".'  #body-container, #header-above {'.$siteWidthType.':'.$siteWidth.$siteWidthUnit.'}');
 if (($siteWidthType == 'max-width') && $fluidMedia )
-	$doc->addStyleDeclaration("\n".'  img, object {max-width:100%}');		
+	$doc->addStyleDeclaration("\n".'  img, object {max-width:100%}');
 if (!$fullWidth)
 	$doc->addStyleDeclaration("\n".'  #header, #footer {'.$siteWidthType.':'.$siteWidth.$siteWidthUnit.'; margin:0 auto}');
-	
-// Internet Explorer Fixes	
+
+// Internet Explorer Fixes
 if ($IECSS3) {
   $doc->addCustomTag("\n".'  <!--[if !IE 9]>
   <style type="text/css">'.$IECSS3Targets.' {behavior:url("'.$baseUrl.'templates/'.$this->template.'/js/PIE.htc")}</style>
@@ -262,7 +267,7 @@ $doc->addCustomTag('<!--[if lt IE 7]>
   <link rel="stylesheet" href="'.$template.'/css/ie6.css" type="text/css" media="screen" />
   <style type="text/css">
   body {text-align:center}
-  #body-container {text-align:left}');  
+  #body-container {text-align:left}');
   if (!$fullWidth) {
   $doc->addCustomTag('#body-container, #header-above, #header, #footer {width: expression( document.body.clientWidth >'.($siteWidth -1).' ? "'.$siteWidth.$siteWidthUnit.'" : "auto" );margin:0 auto}');
   }
@@ -275,3 +280,4 @@ $doc->addCustomTag('<!--[if lt IE 7]>
   <script>DD_belatedPNG.fix(\''.$IE6TransFixTargets.'\');</script>');
   }
   $doc->addCustomTag('<![endif]-->');
+
