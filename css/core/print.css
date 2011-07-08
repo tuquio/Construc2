@@ -1,4 +1,4 @@
-@charset "utf-8";
+@media print {
 .buttonheading {display:none}
 body.contentpane{font-size:76%;color:#333;font-family:"Lucida Grande", Lucida, Verdana, sans-serif;line-height:1.8em}
 a, 
@@ -39,3 +39,4 @@ strong{font-weight:700}
 
 .actions{float:right}
 .actions li {float:left;list-style:none}
+}

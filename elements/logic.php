@@ -2,14 +2,13 @@
 /**
 * @package		Template Framework for Joomla! 1.6
 * @author		Joomla Engineering http://joomlaengineering.com
+* @author		WebMechanic http://webmechanic.biz
 * @copyright	Copyright (C) 2010, 2011 Matt Thomas | Joomla Engineering. All rights reserved.
 * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
 */
 
-// Call the Construct Template Helper Class
-if (JFile::exists(dirname(__FILE__).'/helper.php')) {
-    include dirname(__FILE__).'/helper.php';
-}
+// Load the ConstructTemplateHelper Class
+require_once dirname(__FILE__).'/helper.php';
 
 // To enable use of site configuration
 $app 					= JFactory::getApplication();
@@ -33,19 +32,10 @@ $IE6TransFix			= $this->params->get('IE6TransFix');
 $IE6TransFixTargets		= $this->params->get('IE6TransFixTargets');
 $fluidMedia				= $this->params->get('fluidMedia');
 $fullWidth				= $this->params->get('fullWidth');
-$googleWebFont 			= $this->params->get('googleWebFont');
-$googleWebFontSize		= $this->params->get('googleWebFontSize');
-$googleWebFontTargets	= $this->params->get('googleWebFontTargets');
-$googleWebFont2			= $this->params->get('googleWebFont2');
-$googleWebFontSize2		= $this->params->get('googleWebFontSize2');
-$googleWebFontTargets2	= $this->params->get('googleWebFontTargets2');
-$googleWebFont3			= $this->params->get('googleWebFont3');
-$googleWebFontSize3		= $this->params->get('googleWebFontSize3');
-$googleWebFontTargets3	= $this->params->get('googleWebFontTargets3');
-$loadMoo 				= (bool) $this->params->get('loadMoo');
 $loadModal				= (bool) $this->params->get('loadModal');
+$loadMoo 				= (bool) $this->params->get('loadMoo', $loadModal);
 $loadjQuery 			= $this->params->get('loadjQuery');
-$setGeneratorTag		= $this->params->get('setGeneratorTag');
+$setGeneratorTag		= trim($this->params->get('setGeneratorTag'));
 $showDiagnostics 		= (bool) $this->params->get('showDiagnostics', 0);
 $siteWidth				= $this->params->get('siteWidth');
 $siteWidthType			= $this->params->get('siteWidthType');
@@ -53,15 +43,27 @@ $siteWidthUnit			= $this->params->get('siteWidthUnit');
 $stickyFooterHeight		= $this->params->get('stickyFooterHeight');
 $useStickyFooter 		= $this->params->get('useStickyFooter');
 
+// Web-Fonts (for BC the 1. param is read using the "old" field name)
+$googleWebFont = $googleWebFontSize = $googleWebFontTargets = array();
+$googleWebFont[1]			= $this->params->def('googleWebFont1', $this->params->def('googleWebFont'));
+$googleWebFontSize[1]		= $this->params->def('googleWebFontSize1', $this->params->def('googleWebFontSize'));
+$googleWebFontTargets[1]	= $this->params->def('googleWebFontTargets1', $this->params->def('googleWebFontTargets'));
+$googleWebFont[2]			= $this->params->get('googleWebFont2');
+$googleWebFontSize[2]		= $this->params->get('googleWebFontSize2');
+$googleWebFontTargets[2]	= $this->params->get('googleWebFontTargets2');
+$googleWebFont[3]			= $this->params->get('googleWebFont3');
+$googleWebFontSize[3]		= $this->params->get('googleWebFontSize3');
+$googleWebFontTargets[3]	= $this->params->get('googleWebFontTargets3');
+
 // Change generator tag
 $this->setGenerator($setGeneratorTag);
 
 // Load the MooTools JavaScript Library
 if ($loadMoo == true) {
-	JHTML::_('behavior.framework', true);
+	JHtmlBehavior::framework(true);
 	if ($loadModal) {
 		// Enable modal pop-ups - see html/mod_footer/default.php to customize
-		JHTML::_('behavior.modal');
+		JHtmlBehavior('modal');
 	}
 }
 
@@ -76,92 +78,85 @@ if ($loadMoo == false) {
 	$this->setHeadData($head);
 }
 
-// Fix Google Web Font name for CSS
-$googleWebFontFamily 	= str_replace(array('+',':bold',':italic')," ",$googleWebFont);
-$googleWebFontFamily2 	= str_replace(array('+',':bold',':italic')," ",$googleWebFont2);
-$googleWebFontFamily3 	= str_replace(array('+',':bold',':italic')," ",$googleWebFont3);
-
 // Get the name of the extended template override group
-$overrideTheme			= str_replace(".css","",$customStyleSheet);
+if ($customStyleSheet == '-1') {
+	$customStyleSheet   = null;
+	$overrideTheme		= null;
+} else {
+	$overrideTheme		= str_replace('.css', '', $customStyleSheet);
+}
 
-#----------------------------- Moldule Counts -----------------------------#
+// will contain custom script code depending on selected params
+$scriptDeclarations 	= array();
+
+#--------------------------------------------------------------------------#
+
+$templateHelper 		= new ConstructTemplateHelper($this);
+if ( $overrideTheme ) {
+	$templateHelper->addLayout($overrideTheme);
+}
+
+#----------------------------- Module Counts -----------------------------#
 // from http://groups.google.com/group/joomla-dev-general/browse_thread/thread/b54f3f131dd173d
 
-$headerAboveCount1 = (int) ($this->countModules('header-above-1') > 0);
-$headerAboveCount2 = (int) ($this->countModules('header-above-2') > 0);
-$headerAboveCount3 = (int) ($this->countModules('header-above-3') > 0);
-$headerAboveCount4 = (int) ($this->countModules('header-above-4') > 0);
-$headerAboveCount5 = (int) ($this->countModules('header-above-5') > 0);
-$headerAboveCount6 = (int) ($this->countModules('header-above-6') > 0);
-
-$headerAboveCount = $headerAboveCount1 + $headerAboveCount2 + $headerAboveCount3 + $headerAboveCount4 + $headerAboveCount5 + $headerAboveCount6;
-
-if ($headerAboveCount) : $headerAboveClass = 'count-'.$headerAboveCount; endif;
+if ($headerAboveCount = $templateHelper->getModulesCount('header-above', 6)) :
+	$headerAboveClass = 'header-above count-'.$headerAboveCount[0];
+endif;
 
 #--------------------------------------------------------------------------#
 
-$headerBelowCount1 = (int) ($this->countModules('header-below-1') > 0);
-$headerBelowCount2 = (int) ($this->countModules('header-below-2') > 0);
-$headerBelowCount3 = (int) ($this->countModules('header-below-3') > 0);
-$headerBelowCount4 = (int) ($this->countModules('header-below-4') > 0);
-$headerBelowCount5 = (int) ($this->countModules('header-below-5') > 0);
-$headerBelowCount6 = (int) ($this->countModules('header-below-6') > 0);
-
-$headerBelowCount = $headerBelowCount1 + $headerBelowCount2 + $headerBelowCount3 + $headerBelowCount4 + $headerBelowCount5 + $headerBelowCount6;
-
-if ($headerBelowCount) : $headerBelowClass = 'count-'.$headerBelowCount; endif;
+$headerBelowCount = array();
+for ($i=1; $i<=6; $i++) :
+	$headerBelowCount[$i] = (int) ($this->countModules('header-below-'.$i) > 0);
+	$headerBelowCount[0]  = $headerBelowCount[$i];
+endfor;
+if ($headerBelowCount[0]) : $headerBelowClass = 'header-below count-'.$headerBelowCount;
+else : $headerBelowCount = null;
+endif;
 
 #--------------------------------------------------------------------------#
 
-$navBelowCount1 = (int) ($this->countModules('nav-below-1') > 0);
-$navBelowCount2 = (int) ($this->countModules('nav-below-2') > 0);
-$navBelowCount3 = (int) ($this->countModules('nav-below-3') > 0);
-$navBelowCount4 = (int) ($this->countModules('nav-below-4') > 0);
-$navBelowCount5 = (int) ($this->countModules('nav-below-5') > 0);
-$navBelowCount6 = (int) ($this->countModules('nav-below-6') > 0);
-
-$navBelowCount = $navBelowCount1 + $navBelowCount2 + $navBelowCount3 + $navBelowCount4 + $navBelowCount5 + $navBelowCount6;
-
-if ($navBelowCount) : $navBelowClass = 'count-'.$navBelowCount; endif;
+$navBelowCount = array();
+for ($i=1; $i<=6; $i++) :
+	$navBelowCount[$i] = (int) ($this->countModules('nav-below-'.$i) > 0);
+	$navBelowCount[0]  = $navBelowCount[$i];
+endfor;
+if ($navBelowCount[0]) : $navBelowClass = 'nav-below count-'.$navBelowCount;
+else : $navBelowCount = null;
+endif;
 
 #--------------------------------------------------------------------------#
 
-$contentAboveCount1 = (int) ($this->countModules('content-above-1') > 0);
-$contentAboveCount2 = (int) ($this->countModules('content-above-2') > 0);
-$contentAboveCount3 = (int) ($this->countModules('content-above-3') > 0);
-$contentAboveCount4 = (int) ($this->countModules('content-above-4') > 0);
-$contentAboveCount5 = (int) ($this->countModules('content-above-5') > 0);
-$contentAboveCount6 = (int) ($this->countModules('content-above-6') > 0);
-
-$contentAboveCount = $contentAboveCount1 + $contentAboveCount2 + $contentAboveCount3 + $contentAboveCount4 + $contentAboveCount5 + $contentAboveCount6;
-
-if ($contentAboveCount) : $contentAboveClass = 'count-'.$contentAboveCount; endif;
+$contentAboveCount = array();
+for ($i=1; $i<=6; $i++) :
+	$contentAboveCount[$i] = (int) ($this->countModules('content-above-'.$i) > 0);
+	$contentAboveCount[0]  = $contentAboveCount[$i];
+endfor;
+if ($contentAboveCount[0]) : $contentAboveClass = 'content-above count-'.$contentAboveCount;
+else : $contentAboveCount = null;
+endif;
 
 #--------------------------------------------------------------------------#
 
-$contentBelowCount1 = (int) ($this->countModules('content-below-1') > 0);
-$contentBelowCount2 = (int) ($this->countModules('content-below-2') > 0);
-$contentBelowCount3 = (int) ($this->countModules('content-below-3') > 0);
-$contentBelowCount4 = (int) ($this->countModules('content-below-4') > 0);
-$contentBelowCount5 = (int) ($this->countModules('content-below-5') > 0);
-$contentBelowCount6 = (int) ($this->countModules('content-below-6') > 0);
-
-$contentBelowCount = $contentBelowCount1 + $contentBelowCount2 + $contentBelowCount3 + $contentBelowCount4 + $contentBelowCount5 + $contentBelowCount6;
-
-if ($contentBelowCount) : $contentBelowClass = 'count-'.$contentBelowCount; endif;
+$contentBelowCount = array();
+for ($i=1; $i<=6; $i++) :
+	$contentBelowCount[$i] = (int) ($this->countModules('content-below-'.$i) > 0);
+	$contentBelowCount[0]  = $contentBelowCount[$i];
+endfor;
+if ($contentBelowCount[0]) : $contentBelowClass = 'content-below count-'.$contentBelowCount;
+else : $contentBelowCount = null;
+endif;
 
 #--------------------------------------------------------------------------#
 
-$footerAboveCount1 = (int) ($this->countModules('footer-above-1') > 0);
-$footerAboveCount2 = (int) ($this->countModules('footer-above-2') > 0);
-$footerAboveCount3 = (int) ($this->countModules('footer-above-3') > 0);
-$footerAboveCount4 = (int) ($this->countModules('footer-above-4') > 0);
-$footerAboveCount5 = (int) ($this->countModules('footer-above-5') > 0);
-$footerAboveCount6 = (int) ($this->countModules('footer-above-6') > 0);
-
-$footerAboveCount = $footerAboveCount1 + $footerAboveCount2 + $footerAboveCount3 + $footerAboveCount4 + $footerAboveCount5 + $footerAboveCount6;
-
-if ($footerAboveCount) : $footerAboveClass = 'count-'.$footerAboveCount; endif;
+$footerAboveCount = array();
+for ($i=1; $i<=6; $i++) :
+	$footerAboveCount[$i] = (int) ($this->countModules('footer-above-'.$i) > 0);
+	$footerAboveCount[0]  = $footerAboveCount[$i];
+endfor;
+if ($footerAboveCount[0]) : $footerAboveClass = 'footer-above count-'.$footerAboveCount;
+else : $footerAboveCount = null;
+endif;
 
 #------------------------------ Column Layout -----------------------------#
 
@@ -170,17 +165,15 @@ $column2Count = (int) ($this->countModules('column-2') > 0);
 
 $columnGroupAlphaCount = $column1Count + $column2Count;
 
-if ($columnGroupAlphaCount) : $columnGroupAlphaClass = 'count-'.$columnGroupAlphaCount; endif;
+if ($columnGroupAlphaCount) : $columnGroupAlphaClass = 'column-alpha count-'.$columnGroupAlphaCount; endif;
 
 $column3Count = (int) ($this->countModules('column-3') > 0);
 $column4Count = (int) ($this->countModules('column-4') > 0);
 
 $columnGroupBetaCount = $column3Count + $column4Count;
-if ($columnGroupBetaCount) : $columnGroupBetaClass = 'count-'.$columnGroupBetaCount; endif;
-
+if ($columnGroupBetaCount) : $columnGroupBetaClass = 'column-beta count-'.$columnGroupBetaCount; endif;
 
 $columnLayout= 'main-only';
-
 if (($columnGroupAlphaCount > 0 ) && ($columnGroupBetaCount == 0)) :
 	$columnLayout = 'alpha-'.$columnGroupAlphaCount.'-main';
 elseif (($columnGroupAlphaCount > 0) && ($columnGroupBetaCount > 0)) :
@@ -189,95 +182,113 @@ elseif (($columnGroupAlphaCount == 0) && ($columnGroupBetaCount > 0)) :
 	$columnLayout = 'main-beta-'.$columnGroupBetaCount;
 endif;
 
-#--------------------------------------------------------------------------#
-
-$layoutOverride 							= new ConstructTemplateHelper ();
-$layoutOverride->includeFile 				= array ();
-$layoutOverride->includeFile[] 				= $template.'/layouts/'.$overrideTheme.'-index.php';
-$layoutOverride->includeFile[] 				= $template.'/layouts/index.php';
-
 #---------------------------- Head Elements --------------------------------#
 
 // Custom tags
 $doc->addCustomTag('<meta name="copyright" content="'.$app->getCfg('sitename').'" />');
 
 // Transparent favicon
-$doc->addFavicon($template.'/favicon.png', 'image/png','icon');
+if (is_file($template.'/favicon.png')) {
+	$doc->addFavicon($template.'/favicon.png', 'image/png', 'icon');
+} else if (is_file($template.'/favicon.ico')) {
+	$doc->addFavicon($template.'/favicon.ico', 'image/x-icon', 'icon');
+}
 
 // Style sheets
-$doc->addStyleSheet($template.'/css/screen.css','text/css','screen');
-$doc->addStyleSheet($template.'/css/print.css','text/css','print');
-if ($customStyleSheet !='-1')
-	$doc->addStyleSheet($template.'/css/'.$customStyleSheet,'text/css','screen');
-if ($this->direction == 'rtl')
-	$doc->addStyleSheet($template.'/css/rtl.css','text/css','screen');
+$doc->addStyleSheet($template.'/css/core/base.css','text/css');
+$doc->addStyleSheet($template.'/css/core/screen.css','text/css','screen');
+$doc->addStyleSheet($template.'/css/core/print.css','text/css','print');
+if ($customStyleSheet) {
+	$doc->addStyleSheet($template.'/css/'.$customStyleSheet,'text/css','screen,projection,print');
+}
+if ($this->direction == 'rtl') {
+	$doc->addStyleSheet($template.'/css/core/rtl.css','text/css','screen');
+}
 
 // Style sheet switcher
 if ($enableSwitcher) {
-	$doc->addCustomTag('<link rel="alternate stylesheet" href="'.$template.'/css/diagnostic.css" type="text/css" media="screen" title="diagnostic" />');
-	$doc->addCustomTag('<link rel="alternate stylesheet" href="'.$template.'/css/wireframe.css" type="text/css" media="screen" title="wireframe" />');
+	$doc->addHeadLink($template.'/css/core/diagnostic.css', 'alternate stylesheet', 'rel', $attribs = array('title'=>'diagnostic'));
+	$doc->addHeadLink($template.'/css/core/wireframe.css', 'alternate stylesheet', 'rel', $attribs = array('title'=>'wireframe'));
 	$doc->addScript($template.'/js/styleswitch.js');
 }
 
-// Typography
-if ($googleWebFont) {
-	$doc->addStyleSheet('http://fonts.googleapis.com/css?family='.$googleWebFont.'');
-	$doc->addStyleDeclaration('  '.$googleWebFontTargets.' {font-family:'.$googleWebFontFamily.', serif;font-size:'.$googleWebFontSize.';}');
-}
-if ($googleWebFont2) {
-	$doc->addStyleSheet('http://fonts.googleapis.com/css?family='.$googleWebFont2.'');
-	$doc->addStyleDeclaration('  '.$googleWebFontTargets2.' {font-family:'.$googleWebFontFamily2.', serif;font-size:'.$googleWebFontSize2.';}');
-}
-if ($googleWebFont3) {
-	$doc->addStyleSheet('http://fonts.googleapis.com/css?family='.$googleWebFont3.'');
-	$doc->addStyleDeclaration('  '.$googleWebFontTargets3.' {font-family:'.$googleWebFontFamily3.', serif;font-size:'.$googleWebFontSize3.';}');
+// Typography (protocol relative URLs)
+for ($i=1; $i<=3; $i++) {
+	if ($googleWebFont[$i]) {
+		// Fix Google Web Font name for CSS
+		$googleWebFontFamily[$i] = str_replace(array('+',':bold',':italic')," ",$googleWebFont[$i]);
+		$doc->addStyleSheet('//fonts.googleapis.com/css?family='.$googleWebFont[$i].'');
+		$doc->addStyleDeclaration(
+			$googleWebFontTargets[$i]
+			.' {font-family:'.$googleWebFontFamily[$i].', serif;'
+			.(($googleWebFontSize[$i]>0) ? 'font-size:'.$googleWebFontSize[$i].';' : '')
+			.'}'
+			);
+	}
 }
 
 // JavaScript
 if ($loadMoo == true) {
-	$doc->addCustomTag("\n".'  <script type="text/javascript">window.addEvent(\'domready\',function(){new SmoothScroll({duration:1200},window);});</script>');
+	$scriptDeclarations[] = "\tif (window.addEvent){window.addEvent('domready',function(){new SmoothScroll({duration:1200},window);});}";
 }
 if ($loadjQuery) {
 	$doc->addScript($loadjQuery);
+	if ($loadMoo == true) {
+		$scriptDeclarations[] = "\tif (window.jQuery){jQuery.noConflict();}";
+	}
 }
 
 // Layout Declarations
-if ($siteWidth)
-	$doc->addStyleDeclaration("\n".'  #body-container, #header-above {'.$siteWidthType.':'.$siteWidth.$siteWidthUnit.'}');
-if (($siteWidthType == 'max-width') && $fluidMedia )
-	$doc->addStyleDeclaration("\n".'  img, object {max-width:100%}');
-if (!$fullWidth)
-	$doc->addStyleDeclaration("\n".'  #header, #footer {'.$siteWidthType.':'.$siteWidth.$siteWidthUnit.'; margin:0 auto}');
+if ($siteWidth) {
+	$doc->addStyleDeclaration('#body-container, #header-above {'.$siteWidthType.':'.$siteWidth.$siteWidthUnit.'}');
+}
+if (($siteWidthType == 'max-width') && $fluidMedia ) {
+	$columnLayout .= ' fluid-media';
+}
+if (!$fullWidth) {
+	$doc->addStyleDeclaration('#header, #footer {'.$siteWidthType.':'.$siteWidth.$siteWidthUnit.'; margin:0 auto}');
+}
 
 // Internet Explorer Fixes
 if ($IECSS3) {
-  $doc->addCustomTag("\n".'  <!--[if !IE 9]>
-  <style type="text/css">'.$IECSS3Targets.' {behavior:url("'.$baseUrl.'templates/'.$this->template.'/js/PIE.htc")}</style>
-  <![endif]-->');
-}
-if ($useStickyFooter) {
-	$doc->addStyleDeclaration("\n".'  .sticky-footer #body-container {padding-bottom:'.$stickyFooterHeight.'px;}
-  .sticky-footer #footer {margin-top:-'.$stickyFooterHeight.'px;height:'.$stickyFooterHeight.'px;}');
-	$doc->addCustomTag("\n".'  <!--[if lt IE 7]>
-  <style type="text/css">body.sticky-footer #footer-push {display:table;height:100%}</style>
-  <![endif]-->');
+	$doc->addCustomTag(
+  		 PHP_EOL . '<!--[if IE lt 9]>'
+  		.PHP_EOL . '<style type="text/css">'.$IECSS3Targets.' {behavior:url("'.$baseUrl.$template.'/js/PIE.htc")}</style>'
+  		.PHP_EOL . '<![endif]-->');
 }
 
-$doc->addCustomTag('<!--[if lt IE 7]>
-  <link rel="stylesheet" href="'.$template.'/css/ie6.css" type="text/css" media="screen" />
-  <style type="text/css">
-  body {text-align:center}
-  #body-container {text-align:left}');
-  if (!$fullWidth) {
-  $doc->addCustomTag('#body-container, #header-above, #header, #footer {width: expression( document.body.clientWidth >'.($siteWidth -1).' ? "'.$siteWidth.$siteWidthUnit.'" : "auto" );margin:0 auto}');
-  }
-  else {
-  $doc->addCustomTag('#body-container, #header-above {width: expression( document.body.clientWidth >'.($siteWidth -1).' ? "'.$siteWidth.$siteWidthUnit.'" : "auto" );margin:0 auto}');
-  }
-  $doc->addCustomTag('</style>');
-  if ($IE6TransFix) {
-  $doc->addCustomTag('  <script type="text/javascript" src="'.$template.'/js/DD_belatedPNG_0.0.8a-min.js"></script>
-  <script>DD_belatedPNG.fix(\''.$IE6TransFixTargets.'\');</script>');
-  }
-  $doc->addCustomTag('<![endif]-->');
+if ($useStickyFooter) {
+	$doc->addStyleDeclaration(
+		 PHP_EOL . '.sticky-footer #body-container {padding-bottom:'.$stickyFooterHeight.'px;}'
+		.PHP_EOL . '.sticky-footer #footer {margin-top:-'.$stickyFooterHeight.'px;height:'.$stickyFooterHeight.'px;}'
+		);
+	$doc->addCustomTag("\n"
+		.'<!--[if lt IE 7]>'
+		.'<style type="text/css">body.sticky-footer #footer-push {display:table;height:100%}</style>'
+		.'<![endif]-->');
+}
+
+$doc->addCustomTag(
+		 PHP_EOL . '<!--[if lt IE 7]>'
+		.PHP_EOL . '<link rel="stylesheet" href="'.$template.'/css/core/ie6.css" type="text/css" media="screen" />'
+		.PHP_EOL . '<style type="text/css">'
+		.PHP_EOL . 'body {text-align:center}'
+		.PHP_EOL . '#body-container {text-align:left}'
+		.PHP_EOL .  ((!$fullWidth)
+			? PHP_EOL . '#body-container, #header-above, #header, #footer {width: expression( document.body.clientWidth >'.($siteWidth -1).' ? "'.$siteWidth.$siteWidthUnit.'" : "auto" );margin:0 auto}'
+			: PHP_EOL . '#body-container, #header-above {width: expression( document.body.clientWidth >'.($siteWidth -1).' ? "'.$siteWidth.$siteWidthUnit.'" : "auto");margin:0 auto;}')
+		.PHP_EOL . '</style>'
+		.PHP_EOL . '<![endif]-->'
+		);
+
+if ($IE6TransFix) {
+	$doc->addScript($template.'/js/DD_belatedPNG_0.0.8a-min.js');
+	$scriptDeclarations[] = "\t/* IE6TransFix */ if (DD_belatedPNG.fix) {DD_belatedPNG.fix('". $IE6TransFixTargets ."')}";
+}
+
+// add collected custom script declarations
+if ( count($scriptDeclarations) ) {
+	$doc->addScriptDeclaration(implode("\n",$scriptDeclarations));
+}
+
 

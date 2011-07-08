@@ -1,5 +1,10 @@
 // http://www.alistapart.com/articles/relafont - http://www.alistapart.com/articles/alternate/
 
+function toggleStylesheet(evt) {
+	evt = evt || window.event;
+	console.log(evt);
+}
+
 function setActiveStyleSheet(title) {
   var i, a, main;
   for(i=0; (a = document.getElementsByTagName("link")[i]); i++) {
