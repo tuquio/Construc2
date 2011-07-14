@@ -11,75 +11,6 @@ html, .sticky-footer{height:100%}
 .sticky-footer #footer{position:relative;clear:both}
 .sticky-footer:before{content:"";height:100%;float:left;width:0;margin-top:-32767px}/*Opera Fix*/
 
-/* -- spacing rules -- */
-.gutter{margin:10px}
-#column-group-alpha .gutter{margin:0 10px 0 0}
-#column-group-beta .gutter{margin:0 0 0 10px}
-#bottom-user-modules .gutter{margin-top:0}
-#top-user-modules .gutter{margin-bottom:0}
-
-/* -- main containers and columns -- */
-.main-only #content-main{float:left;width:100%}
-.main-only #load-first{width:100%}
-
-.alpha-1-main #load-first{width:100%}
-.alpha-1-main #content-main{float:right;width:80% !important;width:78%}
-.alpha-1-main #column-group-alpha{float:left;width:20%}
-
-.alpha-2-main #load-first{width:100%}
-.alpha-2-main #content-main{float:right;width:60% !important;width:58%}
-.alpha-2-main #column-group-alpha{float:left;width:40%}
-
-.main-beta-1 #content-main{float:left;width:100%}
-.main-beta-1 #load-first{width:80% !important;width:78%}
-.main-beta-1 #column-group-beta{float:right;width:20%}
-
-.main-beta-2 #content-main{float:left;width:100%}
-.main-beta-2 #load-first{width:60% !important;width:58%}
-.main-beta-2 #column-group-beta{float:right;width:40%}
-
-.alpha-1-main-beta-1 #load-first{width:80% !important;width:78%} 
-.alpha-1-main-beta-1 #content-main{float:right;width:74.2% !important;width:72.2%}
-.alpha-1-main-beta-1 #column-group-alpha{float:left;width:25.8%}
-.alpha-1-main-beta-1 #column-group-beta{float:right;width:20%}
-
-.alpha-2-main-beta-1 #load-first{width:80% !important;width:78%} 
-.alpha-2-main-beta-1 #content-main{float:right;width:60% !important;width:58%} 
-.alpha-2-main-beta-1 #column-group-alpha{float:left;width:40%}
-.alpha-2-main-beta-1 #column-group-beta{float:right;width:20%}
-
-.alpha-1-main-beta-2 #load-first{width:60% !important;width:58%} 
-.alpha-1-main-beta-2 #content-main{float:right;width:65.5% !important;width:63.5%}
-.alpha-1-main-beta-2 #column-group-alpha{float:left;width:34.5%}
-.alpha-1-main-beta-2 #column-group-beta{float:right;width:40%}
-
-.alpha-2-main-beta-2 #load-first{width:60% !important;width:58%} 
-.alpha-2-main-beta-2 #content-main{float:right;width:33% !important;width:31%} 
-.alpha-2-main-beta-2 #column-group-alpha{float:left;width:66%}
-.alpha-2-main-beta-2 #column-group-beta{float:right;width:40%;}
-
-/* -- dynamic module widths-- */
-.count-1{float:left;width:100%} 
-.count-2{float:left;width:50%}
-.count-3{float:left;width:33.3%}
-.count-4{float:left;width:25%}
-.count-5{float:left;width:20%}
-.count-6{float:left;width:16.6%}
-
-/* -- column widths-- */
-.cols-1{display:block;float:none !important; margin:0 !important;}
-.cols-2 .item {width:47.8%;padding:1%}			
-.cols-3 .item {width:30.9%;padding:1%}			
-.cols-4 .item {width:22.4%;padding:1%}
-.cols-5 .item {width:19.1%;padding:1%}
-.cols-6 .item {width:15.9%;padding:1%}
-
-.cols-2 .item,
-.cols-3 .item,
-.cols-4 .item,
-.cols-5 .item,
-.cols-6 .item {float:left}
-
 .fluid-media img, .fluid-media object {max-width:100%}
 
 /* -- Base Typography -- */
@@ -120,28 +51,6 @@ li{margin-left:1.25em}
 .intro ul,
 .item-page ul,
 .items-leading ul {list-style:disc}
- 
-/* -- Editor Buttons -- */
-.actions {float:right}
-.actions li {float:left;list-style:none !important;margin:0 0 0 5px}
-.article-info {}
-.button2-left,
-.button2-left div {float:left}
-.button2-left a {font-size:.9em;display:block;float:left}
-.button2-left .page a,
-.button2-left .blank a,
-.button2-left .article a {padding:0 6px}
-.button2-left .image a,
-.button2-left .pagebreak a,
-.button2-left .readmore a {padding:0 25px 0 6px}
-.button2-left a:hover{text-decoration:none}
-.button2-left{background:url(../images/editor-buttons/j_button2_left.png) 0 0 no-repeat;float:left;margin-left:5px;padding-bottom:3px}
-.button2-right{background:url(../images/editor-buttons/j_button2_right.png) 100% 0 no-repeat;float:left;margin-left:5px}
-.button2-left .article {background:url(../images/editor-buttons/j_button2_blank.png) 100% 0 no-repeat}
-.button2-left .image{background:url(../images/editor-buttons/j_button2_image.png) 100% 0 no-repeat}
-.button2-left .readmore{background:url(../images/editor-buttons/j_button2_readmore.png) 100% 0 no-repeat}
-.button2-left .pagebreak{background:url(../images/editor-buttons/j_button2_pagebreak.png) 100% 0 no-repeat}
-.button2-left .blank{background:url(../images/editor-buttons/j_button2_blank.png) 100% 0 no-repeat}
 
 table.category {border:1px solid #000}
 .category thead {background:#333}
@@ -197,19 +106,27 @@ label.invalid{color:#ff0000;font-weight:bold}
 .pagenav li {margin:0}
 .pagenav-next {text-align:right}
 
-/* -- generic classes, coloring and effects -- */
+/* -- generic classes and effects -- */
 .left {float:left}
 .right{float:right}
-.red {background-color:#ff0000 !important}
-.green {background-color:#00a33d !important}
-.blue {background-color:#0060b6 !important}
-.orange {background-color:#ff7f00 !important}
-.red, .red a,
-.green, .green a,
-.blue, .blue a,
-.orange, .orange a{color:#FFF !important}
 .rounded {-moz-border-radius:10px;-webkit-border-radius:10px;border-radius:10px;padding:5px;margin:5px}
 .drop-shadow{-webkit-box-shadow:2px 2px 6px rgba(0,0,0,0.6); -moz-box-shadow:2px 2px 6px rgba(0,0,0,0.6); box-shadow:2px 2px 6px rgba(0,0,0,0.6); padding:5px;margin:5px}
+.invisible{position:absolute;display:inline;width:0;height:0;left:-1000px;top:-1000px;overflow:hidden;}
+
+/* Font colors should be as abstract as possible.
+ * This allows us using any skins we like without modifying classes
+ * Use .firm class for unique color of the project (like orange in this example)
+ * Use .positive, .negative to style only relative information (like system messages or feedback, etc)
+ */
+.bare		{color: #bbb;}
+.pale		{color: #999;}
+.neutral	{color: #666;}
+.opaque		{color: #333;}
+.sharp		{color: #000;}
+.contrast	{color: #fff;}
+.firm		{color: #fc6c06;}
+.positive	{color: #73ab00;}
+.negative	{color: #c20000;}
 
 .search {float:left}
 .search .only {border:solid 1px #ccc;margin:10px 0 10px 10px;padding:5px 10px 13px;line-height:1.3em}
@@ -223,16 +140,11 @@ label.invalid{color:#ff0000;font-weight:bold}
 .tip-title {padding:0;margin:0;font-size:1em;font-weight:bold;margin-top:-15px;padding-top:15px;padding-bottom:5px;background:url(../images/selector-arrow.png) no-repeat;}
 .tip-text {font-size:1em;margin:0}
 
+/* #access{float:left;clear:left} */
 #access{float:left;clear:left}
 
-#breadcrumbs{float:left;clear:left;margin:0 0 1em;padding:0}
+#breadcrumbs{margin:0 0 1em;padding:0}
 #breadcrumbs span{font-size:0.9em;padding:7px}
-
-/* -- modules in alpha and beta groups */
-.column-group h3{padding:0}
-.column-group ul{list-style-type:none}
-.column-group li{margin:0;padding:0}
-.column-group p{padding:10px 0 0 0}
 
 #content-top {padding-bottom:15px}
 #editor-xtd-buttons{background:#efefef;margin-top:1em}
@@ -248,7 +160,7 @@ label.invalid{color:#ff0000;font-weight:bold}
 
 #header{margin:0;text-align:left}
 #logo {float:left;margin:0}
-#logo a {background:url(../../images/logo.png) 0 0 no-repeat;display:block;width:300px;height:103px;text-decoration:none;text-indent:-9000em}
+#logo a {display:block;width:300px;height:100px;text-decoration:none;}
 #logo a:focus{outline:none}
 
 #siteinfo-legal{text-align:left;width:500px;margin:0 auto}	
@@ -268,9 +180,10 @@ label.invalid{color:#ff0000;font-weight:bold}
 #system-message dd.error{color:#F00;background:#FBEEF1;border-color:#FEABB9}
 
 /* -- Menu CSS -- */
-.menu a,
-.menu span.separator{background:#fff;display:block;padding:.1em .7em/*use padding to indent text*/}
-.menu ul{position:absolute;left:-999em;width:16em;/*sub-menu widths*/z-index:999}
+.menu ,
+.hmenu {list-style:none}
+.menu li {display:block;padding:.1em .7em/*use padding to indent text*/}
+.menu ul {position:absolute;left:-999em;width:16em;/*sub-menu widths*/z-index:999}
 .menu ul li{width:100%}
 .menu ul ul{margin:0 0 0 100%;top:0}
 .hmenu li,
@@ -288,41 +201,12 @@ label.invalid{color:#ff0000;font-weight:bold}
 #column-group-beta ul.menu ul {right:100%;top:0}
 
 #nav{z-index:999;}
-#nav .menu, #nav li{margin:0;padding:0}
+#nav .menu, 
+#nav li{margin:0;padding:0}
 #nav .menu ul ul{margin:0 0 0 100%;top:0}
 #nav .menu a,
 #nav .menu span.separator{line-height:1.8em;padding:6px 15px 5px}
 #nav .menu ul a {border:none}
-
-/* -- Right-aligned navigation -- */
-/*#nav{float:right;margin:0 auto;position:relative;z-index:999}
-#nav ul.menu li{float:right}
-
-/* -- Left/Right Aligned Dropline Second Level-- */
-/*#nav ul.menu ul {width:1024px;border:none}
-#nav ul.menu ul li {width:13em}
-#nav ul.menu ul li a{font-size:.8em;}
-#nav ul.menu ul ul{margin:0 0 0 0;top:100%}
-
-/* -- Left/Right Aligned Dropbox Second Level-- */
-/*#nav ul.menu ul {width:400px;}
-#nav ul.menu ul li {width:200px}
-#nav ul.menu ul li a{font-size:.8em;}
-#nav ul.menu ul ul{margin:0 0 0 100%;top:0}
-
-/* -- Absolutely Positioned Centered Menu -- */
-/*#nav{width:100%}
-#nav ul{position:relative;float:right;right:50%}
-#nav ul li{position:relative;float:left;left:50%;margin:0}
-/* -- Second Level Centered Suckerfish-- */
-/*#nav ul li ul{display:none;position:absolute;top:100%;left:0;right:auto}
-#nav ul li ul li{left:auto;margin:0;clear:left;width:100%}
-#nav ul li:hover ul{display:block}
-#nav ul li.last ul{left:auto;right:0}/*Flip last item to keep witin area*/
-/* -- Third Level Centered Suckerfish-- */
-/*#nav ul li:hover ul li ul{display:none}
-#nav ul li:hover ul li a,
-#nav ul li:hover ul li:hover ul{display:block}
 
 /* suckerfish functionality */
 .menu li:hover ul ul,
@@ -330,17 +214,16 @@ label.invalid{color:#ff0000;font-weight:bold}
 .menu li:hover ul,
 .menu li.pie_hover ul {left:auto}
 
-/* -- Docman Style Overrides -- */
-#dm_docs .dm_title {float:left}
-#dm_docs .dm_row .dm_description, 
-#dm_docs .dm_row .dm_homepage {clear:left;float:left;}
-#dm_docs .dm_row .dm_description p {margin-bottom:0}
-
 /* -- Preview Module Styles for use with index.php?tp=1 -- */
 .mod-preview{position:relative}
 .mod-preview-wrapper{border:1px solid #ccc;-moz-border-radius:10px;-webkit-border-radius:10px;border-radius:10px;-webkit-box-shadow:2px 2px 6px rgba(0,0,0,0.6); -moz-box-shadow:2px 2px 6px rgba(0,0,0,0.6); box-shadow:2px 2px 6px rgba(0,0,0,0.6); padding:5px 10px;margin:5px 0;opacity:0.9;background:#666;z-index:999;min-height:50px}
 .mod-preview-wrapper div.moduletable, .mod-preview-wrapper div.moduletable_menu, .mod-preview-wrapper div.moduletable_text, .mod-preview-wrapper ul.menu, .mod-preview-wrapper #breadcrumbs{opacity:0}
 .mod-preview-info{color:#fff;background:none;border:none;z-index:999;position:absolute;left:5px;top:5px;font-family:BebasNeueRegular;font-size:2em}
 #left .mod-preview-wrapper,#left2 .mod-preview-wrapper,#right .mod-preview-wrapper,#right2 .mod-preview-wrapper{height:940px}
+
+/* -- farbschema "kuler2354" -- */
+html,body {background-color:rgb(252,250,228);}
+#header {background:#5C0E0C; color:white;}
+
 
 /* .eof */

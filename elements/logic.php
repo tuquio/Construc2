@@ -70,8 +70,8 @@ if ($loadMoo == true) {
 // Remove MooTools if set to no.
 if ($loadMoo == false) {
 	$head = $this->getHeadData();
-	reset($head['scripts']);
-	$moos = preg_grep("!/media/system/js/(mootools|caption)!", array_keys($head['scripts']));
+	// without MooTools we must drop all but core.js
+	$moos	= preg_grep('#/media/system/js(\/(?!core))#', array_keys($head['scripts']));
 	foreach ($moos as $src) {
 		unset($head['scripts'][$src]);
 	}
@@ -105,19 +105,14 @@ endif;
 
 #--------------------------------------------------------------------------#
 
-$headerBelowCount = array();
-for ($i=1; $i<=6; $i++) :
-	$headerBelowCount[$i] = (int) ($this->countModules('header-below-'.$i) > 0);
-	$headerBelowCount[0]  = $headerBelowCount[$i];
-endfor;
-if ($headerBelowCount[0]) : $headerBelowClass = 'header-below count-'.$headerBelowCount;
-else : $headerBelowCount = null;
+if ($headerBelowCount = $templateHelper->getModulesCount('header-below', 6)) :
+	$headerBelowClass = 'header-below count-'.$headerBelowCount[0];
 endif;
 
 #--------------------------------------------------------------------------#
 
 $navBelowCount = array();
-for ($i=1; $i<=6; $i++) :
+for ($i=1; $i<=ConstructTemplateHelper::MAX_MODULES; $i++) :
 	$navBelowCount[$i] = (int) ($this->countModules('nav-below-'.$i) > 0);
 	$navBelowCount[0]  = $navBelowCount[$i];
 endfor;
@@ -128,7 +123,7 @@ endif;
 #--------------------------------------------------------------------------#
 
 $contentAboveCount = array();
-for ($i=1; $i<=6; $i++) :
+for ($i=1; $i<=ConstructTemplateHelper::MAX_MODULES; $i++) :
 	$contentAboveCount[$i] = (int) ($this->countModules('content-above-'.$i) > 0);
 	$contentAboveCount[0]  = $contentAboveCount[$i];
 endfor;
@@ -139,7 +134,7 @@ endif;
 #--------------------------------------------------------------------------#
 
 $contentBelowCount = array();
-for ($i=1; $i<=6; $i++) :
+for ($i=1; $i<=ConstructTemplateHelper::MAX_MODULES; $i++) :
 	$contentBelowCount[$i] = (int) ($this->countModules('content-below-'.$i) > 0);
 	$contentBelowCount[0]  = $contentBelowCount[$i];
 endfor;
@@ -150,7 +145,7 @@ endif;
 #--------------------------------------------------------------------------#
 
 $footerAboveCount = array();
-for ($i=1; $i<=6; $i++) :
+for ($i=1; $i<=ConstructTemplateHelper::MAX_MODULES; $i++) :
 	$footerAboveCount[$i] = (int) ($this->countModules('footer-above-'.$i) > 0);
 	$footerAboveCount[0]  = $footerAboveCount[$i];
 endfor;
@@ -165,13 +160,13 @@ $column2Count = (int) ($this->countModules('column-2') > 0);
 
 $columnGroupAlphaCount = $column1Count + $column2Count;
 
-if ($columnGroupAlphaCount) : $columnGroupAlphaClass = 'column-alpha count-'.$columnGroupAlphaCount; endif;
+if ($columnGroupAlphaCount) : $columnGroupAlphaClass = 'column-alpha colcount-'.$columnGroupAlphaCount; endif;
 
 $column3Count = (int) ($this->countModules('column-3') > 0);
 $column4Count = (int) ($this->countModules('column-4') > 0);
 
 $columnGroupBetaCount = $column3Count + $column4Count;
-if ($columnGroupBetaCount) : $columnGroupBetaClass = 'column-beta count-'.$columnGroupBetaCount; endif;
+if ($columnGroupBetaCount) : $columnGroupBetaClass = 'column-beta colcount-'.$columnGroupBetaCount; endif;
 
 $columnLayout= 'main-only';
 if (($columnGroupAlphaCount > 0 ) && ($columnGroupBetaCount == 0)) :
@@ -196,6 +191,7 @@ if (is_file($template.'/favicon.png')) {
 
 // Style sheets
 $doc->addStyleSheet($template.'/css/core/base.css','text/css');
+$doc->addStyleSheet($template.'/css/core/oocss.css','text/css');
 $doc->addStyleSheet($template.'/css/core/screen.css','text/css','screen');
 $doc->addStyleSheet($template.'/css/core/print.css','text/css','print');
 if ($customStyleSheet) {
@@ -203,6 +199,9 @@ if ($customStyleSheet) {
 }
 if ($this->direction == 'rtl') {
 	$doc->addStyleSheet($template.'/css/core/rtl.css','text/css','screen');
+}
+if ( JRequest::get('form','cmd') == 'edit') {
+	$doc->addStyleSheet($template.'/css/core/edit-form','text/css','screen');
 }
 
 // Style sheet switcher

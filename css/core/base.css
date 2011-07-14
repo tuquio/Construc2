@@ -28,9 +28,9 @@ img{vertical-align:middle}
 
 /* =sorta typography */
 html{font-size:16px}
-body{font:100.1%/2.46ex "Trebuchet MS",Arial,Helvetica,sans-serif;word-wrap:break-word}
+body{font:100.1%/1.6 "Trebuchet MS",Arial,Helvetica,sans-serif;word-wrap:break-word}
 table,dl,ol,ul{font-size:100%;font-weight:normal}
-p,address,blockquote,li,dt,dd{line-height: 1.4;}
+p,address,blockquote,li,dt,dd{line-height: 1.6;}
 caption,th{text-align:center;font-weight:bold}
 tbody th{text-align:left;vertical-align:top}
 address,caption,cite,dfn,ins,del,figcaption,details{font:inherit}
@@ -46,7 +46,7 @@ form,fieldset,output{font-size:100%}
 select,input,button,textarea{font-size:99%}
 b,strong,dt{font-weight:bold}
 i,em{font-style:italic}
-mark{line-height:1}
+form,fieldset,legend,th,td,pre,xmp,listing,mark{line-height:1}
 
 /* =once for all and anything */
 /* for those who can handle it = !MSIE6,7 !WebKit */

@@ -8,6 +8,8 @@
  */
 defined('_JEXEC') or die;
 
+jimport('joomla.filesystem.file');
+
 /**
  * ConstructTemplateHelper
  *
@@ -19,11 +21,21 @@ defined('_JEXEC') or die;
  */
 class ConstructTemplateHelper
 {
+	const MAX_MODULES = 6;
+
 	/** @var array List of template layout files */
 	protected $layouts = array();
 
 	/** @var string Template foldername */
 	protected $tmpl;
+
+	/**
+	 * @staticvar array chunks from the static html file(s) *
+	 * @see getStaticHtml(), loadStaticHtml()
+	 */
+	static $html;
+
+	static $chunks = array('header','footer','aside','nav','section','article');
 
 	/**
 	 * Template Helper constructor expects the template object as its argument.
@@ -83,11 +95,11 @@ class ConstructTemplateHelper
 				break;
 		}
 
-	  	$layout     = trim($scope .'/'. basename($basename, $ext) . $ext, ' /_-');
-		$layoutpath = JPATH_THEMES.'/'.$this->tmpl->template .'/layouts/' . $layout;
+	  	$layout     = ltrim($scope .'/'. JFile::stripExt(basename($basename)) . $ext, ' /_-');
+		$layoutpath = JPATH_THEMES .'/'. $this->tmpl->template .'/layouts/' . $layout;
 
 		if (JFile::exists($layoutpath)) {
-			$this->layouts[md5($layout)] = $layoutpath;
+			$this->layouts[md5($layout)] = array('scope'=>$scope, 'path'=>$layoutpath, 'buffer'=>null);
 		}
 
 		return $this;
@@ -131,26 +143,57 @@ class ConstructTemplateHelper
 	public function getLayout()
 	{
 	    if (count($this->layouts) == 0) {
-	        return false;
+	        return;
 	    }
 
         $jmenu = JFactory::getApplication()->getMenu()->getActive();
 
-		foreach ($this->layouts as $path) {
+		foreach ($this->layouts as $layout) {
 			// return first file that exists
-			if (JFile::exists(JPATH_THEMES.'/'.$this->tmpl->template .'/layouts/' . $path)) {
-				break;
+			if (JFile::exists($layout['path'])) {
+				return $layout;
 			}
-			$path = null;
 		}
-		// not found
-		return $path;
 	}
 
-	public function getModulesCount($group, $max = 6)
+	public function loadStaticHtml(array &$layout)
+	{
+		self::$html = &$layout;
+		if (self::$html['main'] = JFile::exists($layout['path'])) {
+			self::$html['main_path'] = $layout['path'];
+		}
+
+		$info = pathinfo($layout['path'], PATHINFO_DIRNAME | PATHINFO_FILENAME);
+		foreach (self::$chunks as $chunk) {
+			$path = $info['dirname'] .'/'. $info['filename'] .'-'. $chunk . '.html';
+			if ( $layout[$chunk] = JFile::exists($path) ) {
+				$layout[$chunk .'_path'] = $path;
+			}
+		}
+		return array_keys(self::$html);
+	}
+
+	public function getStaticHtml($chunk='main')
+	{
+		if (isset(self::$html[$chunk]) && self::$html[$chunk] == true) {
+			return JFile::read(self::$html[$chunk .'_path']);
+		}
+		return '<!-- chunk: "'. $chunk .'" not found -->';
+	}
+
+	/**
+	 * Counts and returns the amount of active Modules in the given position group.
+	 *
+	 * @param string  $group
+	 * @param integer $max default=5
+	 * @return array|null
+	 */
+	public function getModulesCount($group, $max = ConstructTemplateHelper::MAX_MODULES)
 	{
 		$modules = array();
-		for ($i=1; $i<=6; $i++) :
+		settype($max, 'int');
+		if ($max < 1) $max = 1;
+		for ($i=1; $i<=$max; $i++) :
 			$modules[$i] = (int) ($this->tmpl->countModules($group .'-'. $i) > 0);
 			$modules[0]  = $modules[$i];
 		endfor;

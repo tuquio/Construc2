@@ -11,28 +11,20 @@
 require JPATH_THEMES.'/'.$this->template.'/elements/logic.php';
 
 // Add custom layout overrides for components or section here
-// eg: $helper->addLayout($option, 'component')
-
-$templateHelper->addLayout('index');
-$templateHelper->addLayout('content');
-$templateHelper->addLayout('section');
-
-$templateHelper->addLayout('content', 'index');
-$templateHelper->addLayout('content', 'component');
-$templateHelper->addLayout('content', 'section');
-
-$templateHelper->addLayout("10");
-$templateHelper->addLayout("20", 'index');
-$templateHelper->addLayout("30", 'component');
-$templateHelper->addLayout("40", 'section');
-
-FB::log($templateHelper);
-FB::log($templateHelper->getLayout());
+/* eg:
+ * $templateHelper->addLayout('index');
+ * $templateHelper->addLayout(42, 'section');
+ */
 
 // Check for alternate index file, load it if it exists, and leave
 if ($alternateIndexFile = $templateHelper->getLayout()) {
-	include_once $alternateIndexFile;
+	if ($alternateIndexFile['scope'] == 'html') {
+		include_once JPATH_THEMES.'/'.$this->template.'/layouts/static_html.php';
+	} else {
+		include_once $alternateIndexFile['path'];
+	}
 	return;
 }
 
+// load standard index.php
 include JPATH_THEMES.'/'.$this->template.'/layouts/index.php';

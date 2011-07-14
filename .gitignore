@@ -32,6 +32,8 @@ ehthumbs.db
 Icon?
 Thumbs.db
 .project
+*.bak
+*.tmp
 
 # File List #
 #############
