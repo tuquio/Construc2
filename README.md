@@ -27,7 +27,7 @@ Added several l10n keys to replace the many hardcoded english strings in
 `index.php`, `elements/*` and `templateDetails.xml` -- still WIP.
 
 == Refactored jqueryversion.php
-Updated to include 1.6.2.
+Updated to include jQuery 1.6.2.
 
 The list of jQuery version is now maintaind in an array, and looped over
 to add them in bulk to the select list, rather than adding each single
@@ -120,8 +120,6 @@ All three font settings are now evaluated in a simple loop.
 > 	`$googleWebFont` to `$googleWebFont1` etc. thus: if the template
 >	params are revisited in the backend, the first font will be "empty"
 >	and deselected and needs to be reapplied.
-Care was taken however to use `$googleWebFont` for `$googleWebFont1` at runtime
-if the template params were **not** edited.
 
 === Module Positions
 Like the first `$googleWebFont` parameter, loads of module positions helper

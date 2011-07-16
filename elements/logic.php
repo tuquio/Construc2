@@ -6,6 +6,7 @@
 * @copyright	Copyright (C) 2010, 2011 Matt Thomas | Joomla Engineering. All rights reserved.
 * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
 */
+FB::log( __FILE__ );
 
 // Load the ConstructTemplateHelper Class
 require_once dirname(__FILE__).'/helper.php';
@@ -45,15 +46,11 @@ $useStickyFooter 		= $this->params->get('useStickyFooter');
 
 // Web-Fonts (for BC the 1. param is read using the "old" field name)
 $googleWebFont = $googleWebFontSize = $googleWebFontTargets = array();
-$googleWebFont[1]			= $this->params->def('googleWebFont1', $this->params->def('googleWebFont'));
-$googleWebFontSize[1]		= $this->params->def('googleWebFontSize1', $this->params->def('googleWebFontSize'));
-$googleWebFontTargets[1]	= $this->params->def('googleWebFontTargets1', $this->params->def('googleWebFontTargets'));
-$googleWebFont[2]			= $this->params->get('googleWebFont2');
-$googleWebFontSize[2]		= $this->params->get('googleWebFontSize2');
-$googleWebFontTargets[2]	= $this->params->get('googleWebFontTargets2');
-$googleWebFont[3]			= $this->params->get('googleWebFont3');
-$googleWebFontSize[3]		= $this->params->get('googleWebFontSize3');
-$googleWebFontTargets[3]	= $this->params->get('googleWebFontTargets3');
+for ($i=1; $i <= ConstructTemplateHelper::MAX_WEBFONTS; $i++) {
+	$googleWebFont[$i]			= $this->params->def('googleWebFont'.$i);
+	$googleWebFontSize[$i]		= $this->params->def('googleWebFontSize'.$i);
+	$googleWebFontTargets[$i]	= $this->params->def('googleWebFontTargets'.$i);
+}
 
 // Change generator tag
 $this->setGenerator($setGeneratorTag);
@@ -78,104 +75,69 @@ if ($loadMoo == false) {
 	$this->setHeadData($head);
 }
 
-// Get the name of the extended template override group
-if ($customStyleSheet == '-1') {
-	$customStyleSheet   = null;
-	$overrideTheme		= null;
-} else {
-	$overrideTheme		= str_replace('.css', '', $customStyleSheet);
-}
-
-// will contain custom script code depending on selected params
-$scriptDeclarations 	= array();
-
 #--------------------------------------------------------------------------#
 
-$templateHelper 		= new ConstructTemplateHelper($this);
-if ( $overrideTheme ) {
-	$templateHelper->addLayout($overrideTheme);
-}
+$templateHelper = new ConstructTemplateHelper($this);
+
+// will contain custom script code depending on selected params
+$scriptDeclarations	= array();
 
 #----------------------------- Module Counts -----------------------------#
 // from http://groups.google.com/group/joomla-dev-general/browse_thread/thread/b54f3f131dd173d
 
-if ($headerAboveCount = $templateHelper->getModulesCount('header-above', 6)) :
+if ($headerAboveCount = $templateHelper->getModulesCount('header-above', ConstructTemplateHelper::MAX_MODULES)) :
 	$headerAboveClass = 'header-above count-'.$headerAboveCount[0];
 endif;
 
 #--------------------------------------------------------------------------#
 
-if ($headerBelowCount = $templateHelper->getModulesCount('header-below', 6)) :
+if ($headerBelowCount = $templateHelper->getModulesCount('header-below', ConstructTemplateHelper::MAX_MODULES)) :
 	$headerBelowClass = 'header-below count-'.$headerBelowCount[0];
 endif;
 
 #--------------------------------------------------------------------------#
 
-$navBelowCount = array();
-for ($i=1; $i<=ConstructTemplateHelper::MAX_MODULES; $i++) :
-	$navBelowCount[$i] = (int) ($this->countModules('nav-below-'.$i) > 0);
-	$navBelowCount[0]  = $navBelowCount[$i];
-endfor;
-if ($navBelowCount[0]) : $navBelowClass = 'nav-below count-'.$navBelowCount;
-else : $navBelowCount = null;
+if ($navBelowCount = $templateHelper->getModulesCount('nav-below', ConstructTemplateHelper::MAX_MODULES)) :
+	$navBelowClass = 'nav-below count-'.$navBelowCount[0];
 endif;
 
 #--------------------------------------------------------------------------#
 
-$contentAboveCount = array();
-for ($i=1; $i<=ConstructTemplateHelper::MAX_MODULES; $i++) :
-	$contentAboveCount[$i] = (int) ($this->countModules('content-above-'.$i) > 0);
-	$contentAboveCount[0]  = $contentAboveCount[$i];
-endfor;
-if ($contentAboveCount[0]) : $contentAboveClass = 'content-above count-'.$contentAboveCount;
-else : $contentAboveCount = null;
+if ($contentAboveCount = $templateHelper->getModulesCount('nav-below', ConstructTemplateHelper::MAX_MODULES)) :
+	$contentAboveClass = 'content-above count-'.$contentAboveCount[0];
 endif;
 
 #--------------------------------------------------------------------------#
 
-$contentBelowCount = array();
-for ($i=1; $i<=ConstructTemplateHelper::MAX_MODULES; $i++) :
-	$contentBelowCount[$i] = (int) ($this->countModules('content-below-'.$i) > 0);
-	$contentBelowCount[0]  = $contentBelowCount[$i];
-endfor;
-if ($contentBelowCount[0]) : $contentBelowClass = 'content-below count-'.$contentBelowCount;
-else : $contentBelowCount = null;
+if ($contentBelowCount = $templateHelper->getModulesCount('content-below', ConstructTemplateHelper::MAX_MODULES)) :
+	$contentBelowClass = 'content-below count-'.$contentBelowCount[0];
 endif;
 
 #--------------------------------------------------------------------------#
 
-$footerAboveCount = array();
-for ($i=1; $i<=ConstructTemplateHelper::MAX_MODULES; $i++) :
-	$footerAboveCount[$i] = (int) ($this->countModules('footer-above-'.$i) > 0);
-	$footerAboveCount[0]  = $footerAboveCount[$i];
-endfor;
-if ($footerAboveCount[0]) : $footerAboveClass = 'footer-above count-'.$footerAboveCount;
-else : $footerAboveCount = null;
+if ($footerAboveCount = $templateHelper->getModulesCount('footer-above', ConstructTemplateHelper::MAX_MODULES)) :
+	$footerAboveClass = 'footer-above count-'.$footerAboveCount[0];
 endif;
 
 #------------------------------ Column Layout -----------------------------#
 
-$column1Count = (int) ($this->countModules('column-1') > 0);
-$column2Count = (int) ($this->countModules('column-2') > 0);
+$columnGroupCount = $templateHelper->getModulesCount('column', ConstructTemplateHelper::MAX_COLUMNS);
 
-$columnGroupAlphaCount = $column1Count + $column2Count;
-
+$columnGroupAlphaCount = $columnGroupCount[1] + $columnGroupCount[2];
 if ($columnGroupAlphaCount) : $columnGroupAlphaClass = 'column-alpha colcount-'.$columnGroupAlphaCount; endif;
 
-$column3Count = (int) ($this->countModules('column-3') > 0);
-$column4Count = (int) ($this->countModules('column-4') > 0);
-
-$columnGroupBetaCount = $column3Count + $column4Count;
+$columnGroupBetaCount = $columnGroupCount[3] + $columnGroupCount[4];
 if ($columnGroupBetaCount) : $columnGroupBetaClass = 'column-beta colcount-'.$columnGroupBetaCount; endif;
 
 $columnLayout= 'main-only';
-if (($columnGroupAlphaCount > 0 ) && ($columnGroupBetaCount == 0)) :
+if ($columnGroupAlphaCount > 0) {
 	$columnLayout = 'alpha-'.$columnGroupAlphaCount.'-main';
-elseif (($columnGroupAlphaCount > 0) && ($columnGroupBetaCount > 0)) :
-	$columnLayout = 'alpha-'.$columnGroupAlphaCount.'-main-beta-'.$columnGroupBetaCount;
-elseif (($columnGroupAlphaCount == 0) && ($columnGroupBetaCount > 0)) :
+	if ($columnGroupBetaCount > 0) {
+		$columnLayout .= '-beta-'.$columnGroupBetaCount;
+	}
+} elseif ($columnGroupBetaCount > 0) {
 	$columnLayout = 'main-beta-'.$columnGroupBetaCount;
-endif;
+}
 
 #---------------------------- Head Elements --------------------------------#
 
@@ -200,7 +162,8 @@ if ($customStyleSheet) {
 if ($this->direction == 'rtl') {
 	$doc->addStyleSheet($template.'/css/core/rtl.css','text/css','screen');
 }
-if ( JRequest::get('form','cmd') == 'edit') {
+// cheap and all but smart
+if ( in_array(JRequest::get('layout','cmd'), array('edit','form')) ) {
 	$doc->addStyleSheet($template.'/css/core/edit-form','text/css','screen');
 }
 
@@ -212,7 +175,7 @@ if ($enableSwitcher) {
 }
 
 // Typography (protocol relative URLs)
-for ($i=1; $i<=3; $i++) {
+for ($i=1; $i<=ConstructTemplateHelper::MAX_WEBFONTS; $i++) {
 	if ($googleWebFont[$i]) {
 		// Fix Google Web Font name for CSS
 		$googleWebFontFamily[$i] = str_replace(array('+',':bold',':italic')," ",$googleWebFont[$i]);
@@ -231,7 +194,7 @@ if ($loadMoo == true) {
 	$scriptDeclarations[] = "\tif (window.addEvent){window.addEvent('domready',function(){new SmoothScroll({duration:1200},window);});}";
 }
 if ($loadjQuery) {
-	$doc->addScript($loadjQuery);
+	$doc->addScript('//ajax.googleapis.com/ajax/libs/jquery/'. $loadjQuery .'/jquery.min.js');
 	if ($loadMoo == true) {
 		$scriptDeclarations[] = "\tif (window.jQuery){jQuery.noConflict();}";
 	}

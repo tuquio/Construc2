@@ -7,6 +7,7 @@
  * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
 defined('_JEXEC') or die;
+FB::log( __FILE__ );
 
 jimport('joomla.filesystem.file');
 
@@ -21,7 +22,9 @@ jimport('joomla.filesystem.file');
  */
 class ConstructTemplateHelper
 {
-	const MAX_MODULES = 6;
+	const MAX_MODULES  = 6;
+	const MAX_COLUMNS  = 4;
+	const MAX_WEBFONTS = 3;
 
 	/** @var array List of template layout files */
 	protected $layouts = array();
@@ -35,6 +38,10 @@ class ConstructTemplateHelper
 	 */
 	static $html;
 
+	/**
+	 * @staticvar array with optional html chunks to be used in "static_html.php"
+	 * @see setChunks()
+	 */
 	static $chunks = array('header','footer','aside','nav','section','article');
 
 	/**
@@ -45,15 +52,26 @@ class ConstructTemplateHelper
 	public function __construct(JDocument $template)
 	{
 		$this->tmpl = $template;
+
+		// Get the name of the extended template override group
+		$override = $template->params->get('customStyleSheet');
+		if ($override != '-1') {
+			$override = str_replace('.css', '', $override);
+			$this->addLayout($override);
+		}
+
+		$this->addLayout('index');
 	}
 
 	/**
-	 * Registers a layout file for use with a specific component or section-id.
+	 * Registers a layout file for use with a specific component name,
+	 * section id or article id.
 	 *
-	 * Use the second parameter $area for fine grained overrides
-	 *    - 'index'     in  /layouts/            using  {$themename}-index.php
-	 *    - 'component' in  /layouts/component/  using  {$currentComponent}.php
-	 *    - 'section'   in  /layouts/sections/   using  section-{$sectionId}.php
+	 * Use the second parameter $scope for fine grained overrides
+	 * - 'index'     in  /layouts/            using  {$customStyle}-index.php
+	 * - 'component' in  /layouts/component/  using  {$currentComponent}.php
+	 * - 'section'   in  /layouts/section/    using  section-{$sectionId}.php
+	 * - 'article'   in  /layouts/article/    using  article-{$articleId}.php
 	 *
 	 * @param string $basename required basename of the layout file (no suffix)
 	 * @param string $scope    optional scope, 'component' oder 'section'
@@ -66,10 +84,15 @@ class ConstructTemplateHelper
 			$scope = strtolower($scope);
 		}
 
+		// could be either a section or article id
 		if (is_numeric($basename)) {
-			$scope = 'section';
-		} else {
-			// catch 'html-foobar.css' for foobar.html
+			// default to section
+			if (empty($scope)) {
+				$scope = 'section';
+			}
+		}
+		else {
+			// catch 'html-foobar.css' for /layouts/html/foobar.html
 			list($_base, $_name) = preg_split('/[^\w]+/', $basename . ' ');
 			if ('html' == $_base) {
 				$scope    = $_base;
@@ -89,17 +112,20 @@ class ConstructTemplateHelper
 			case 'section':
 				$basename = 'section-' . $basename;
 				break;
+			case 'article':
+				$basename = 'article-' . $basename;
+				break;
 			case 'html':
 				// static file for css tests
 				$ext = '.html';
 				break;
 		}
 
-	  	$layout     = ltrim($scope .'/'. JFile::stripExt(basename($basename)) . $ext, ' /_-');
+	  	$layout     = ltrim($scope .'/'. basename($basename, $ext) . $ext, ' /_-');
 		$layoutpath = JPATH_THEMES .'/'. $this->tmpl->template .'/layouts/' . $layout;
 
 		if (JFile::exists($layoutpath)) {
-			$this->layouts[md5($layout)] = array('scope'=>$scope, 'path'=>$layoutpath, 'buffer'=>null);
+			$this->layouts[$layout] = array('path'=>$layoutpath, 'scope'=>$scope);
 		}
 
 		return $this;
@@ -142,11 +168,11 @@ class ConstructTemplateHelper
 	 */
 	public function getLayout()
 	{
-	    if (count($this->layouts) == 0) {
-	        return;
-	    }
+		if (count($this->layouts) == 0) {
+			return;
+		}
 
-        $jmenu = JFactory::getApplication()->getMenu()->getActive();
+		$jmenu = JFactory::getApplication()->getMenu()->getActive();
 
 		foreach ($this->layouts as $layout) {
 			// return first file that exists
@@ -156,7 +182,18 @@ class ConstructTemplateHelper
 		}
 	}
 
-	public function loadStaticHtml(array &$layout)
+	public function getLayouts()
+	{
+		return $this->layouts;
+	}
+
+	/**
+	 * Will load the static html file names and prepare its depended "chunks"
+	 * for later inclusion in "static_html.php".
+	 * @param array $layout
+	 * @see loadStaticHtml(), setChunks()
+	 */
+	public function getStaticHtml(array &$layout)
 	{
 		self::$html = &$layout;
 		if (self::$html['main'] = JFile::exists($layout['path'])) {
@@ -173,12 +210,36 @@ class ConstructTemplateHelper
 		return array_keys(self::$html);
 	}
 
-	public function getStaticHtml($chunk='main')
+	/**
+	 * Loads an addition static html file given by its $chunk name, e.g. active
+	 * html layout "ipsum.html", $chunk="header" yields to "ipsum-header.html" to
+	 * be available in "static_html.php" for testing purposes.
+	 *
+	 * @param string $chunk "main" synonym for the main static html file
+	 * @see self::$chunks, setChunks()
+	 */
+	public function loadStaticHtml($chunk='main')
 	{
-		if (isset(self::$html[$chunk]) && self::$html[$chunk] == true) {
+		settype(self::$html[$chunk], 'boolean');
+		if (self::$html[$chunk] == true) {
 			return JFile::read(self::$html[$chunk .'_path']);
 		}
 		return '<!-- chunk: "'. $chunk .'" not found -->';
+	}
+
+	/**
+	 * Accepts an array with basename prefixes for the static html feature provided
+	 * with "static_html.php". For a list of default chunk names see {@link self::$chunks}.
+	 * If your current html testfile is "ipsum.html" additional files will be loaded named
+	 * "ipsum-header.html", "ipsum-footer.html" etc.
+	 * @param array $chunks
+	 */
+	static public function &setChunks(array $chunks)
+	{
+		if (count($chunks)) {
+			self::$chunks = $chunks;
+		}
+		return $this;
 	}
 
 	/**
@@ -190,13 +251,18 @@ class ConstructTemplateHelper
 	 */
 	public function getModulesCount($group, $max = ConstructTemplateHelper::MAX_MODULES)
 	{
-		$modules = array();
 		settype($max, 'int');
 		if ($max < 1) $max = 1;
+
+		$modules = array_fill(0, $max, 0);
+
 		for ($i=1; $i<=$max; $i++) :
-			$modules[$i] = (int) ($this->tmpl->countModules($group .'-'. $i) > 0);
-			$modules[0]  = $modules[$i];
+			$modules[$i] = $this->tmpl->countModules($group .'-'. $i);
 		endfor;
+
+		$i = array_sum($modules);
+		$modules[0] = $i;
+
 		return $modules;
 	}
 

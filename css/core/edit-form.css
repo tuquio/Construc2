@@ -1,0 +1,28 @@
+/* äöü - just checking */
+/*! edit-form.css
+ * loaded only in edit state
+ * @version 13.07.2011
+ * @license DWTF
+ */
+/* -- Editor Buttons -- */
+.actions {float:right}
+.actions li {float:left;list-style:none !important;margin:0 0 0 5px}
+.article-info {}
+.button2-left,
+.button2-left div {float:left}
+.button2-left a {font-size:.9em;display:block;float:left}
+.button2-left .page a,
+.button2-left .blank a,
+.button2-left .article a {padding:0 6px}
+.button2-left .image a,
+.button2-left .pagebreak a,
+.button2-left .readmore a {padding:0 25px 0 6px}
+.button2-left a:hover{text-decoration:none}
+.button2-left{background:url(../images/editor-buttons/j_button2_left.png) 0 0 no-repeat;float:left;margin-left:5px;padding-bottom:3px}
+.button2-right{background:url(../images/editor-buttons/j_button2_right.png) 100% 0 no-repeat;float:left;margin-left:5px}
+.button2-left .article {background:url(../images/editor-buttons/j_button2_blank.png) 100% 0 no-repeat}
+.button2-left .image{background:url(../images/editor-buttons/j_button2_image.png) 100% 0 no-repeat}
+.button2-left .readmore{background:url(../images/editor-buttons/j_button2_readmore.png) 100% 0 no-repeat}
+.button2-left .pagebreak{background:url(../images/editor-buttons/j_button2_pagebreak.png) 100% 0 no-repeat}
+.button2-left .blank{background:url(../images/editor-buttons/j_button2_blank.png) 100% 0 no-repeat}
+ 

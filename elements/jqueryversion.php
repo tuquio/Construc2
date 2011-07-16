@@ -48,9 +48,9 @@ class JFormFieldJqueryversion extends JFormFieldList
 
 		$options[]	= JHtml::_('select.option', '', '- Not Loaded -');
 		/* using protocol relative URLs */
-		$options[]	= JHtml::_('select.option', '//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js', JText::_('TPL_JE_CONSTRUCT_COMMUNITY_JQUERY_LATEST'));
+		$options[]	= JHtml::_('select.option', '1', JText::_('TPL_JE_CONSTRUCT_COMMUNITY_JQUERY_LATEST'));
 		foreach (self::$versions as $v) {
-			$options[]	= JHtml::_('select.option', '//ajax.googleapis.com/ajax/libs/jquery/'. $v .'/jquery.min.js', $v);
+			$options[]	= JHtml::_('select.option', $v, $v);
 		}
 
 		return $options;
