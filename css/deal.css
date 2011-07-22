@@ -1,0 +1,27 @@
+/*!
+ * deals.css (Frontend Template)
+ */
+
+/* =deal otd */
+div.deals {position:relative}
+
+.deals header {text-align:center;font-size:100%}
+
+header .dotd {font-size:2em}
+
+.merchant {}
+.merchant header {border:1px solid gray}
+
+.the-deal	{border:1px solid gray;text-align:center;font-size:200%}
+.discount	,
+.savings	{width:100%;font-weight:bold;}
+
+.discount b	{padding:1ex}
+.discount .deal 	{font-size:2em}
+.discount .price 	{font-size:1.4em;text-decoration:line-through;}
+
+.savings span	{outline:1px solid red}
+.savings .perc	{}
+.savings .abs	{}
+
+/* .eof */

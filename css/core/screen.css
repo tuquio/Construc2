@@ -40,17 +40,6 @@ h1,h2,h3,h4,h5,h6{margin:.3em 0}
 h3+ul, h3+ol {margin-top:-.3em}
 
 input.button{padding:0 10px}
-li > p{margin:0.2em 0 0 1em}
-ol,ul,li{font-size:1em;margin:0.2em 0;}
-li{margin-left:1.25em}
-.item ol,
-.intro ol,
-.item-page ol,
-.items-leading ol {list-style:decimal}
-.item ul,
-.intro ul,
-.item-page ul,
-.items-leading ul {list-style:disc}
 
 table.category {border:1px solid #000}
 .category thead {background:#333}
@@ -180,33 +169,7 @@ label.invalid{color:#ff0000;font-weight:bold}
 #system-message dd.error{color:#F00;background:#FBEEF1;border-color:#FEABB9}
 
 /* -- Menu CSS -- */
-.menu ,
-.hmenu {list-style:none}
-.menu li {display:block;padding:.1em .7em/*use padding to indent text*/}
-.menu ul {position:absolute;left:-999em;width:16em;/*sub-menu widths*/z-index:999}
-.menu ul li{width:100%}
-.menu ul ul{margin:0 0 0 100%;top:0}
-.hmenu li,
-.menu-horizontal li {float:left} /* Use -horizontal menu class suffix */
-
-#nav:after,
-#column-group-alpha ul.menu:after,
-#column-group-beta ul.menu:after{clear:both;content:".";font:1px/0;display:block;height:0;visibility:hidden}
-#column-group-alpha ul.menu,
-#column-group-beta ul.menu {padding:0}/*adjust to resize menus*/
-#column-group-alpha ul.menu li,
-
-#column-group-beta ul.menu li {width:100%;margin:0}
-#column-group-alpha ul.menu ul {margin:0 0 0 100%;top:0}
-#column-group-beta ul.menu ul {right:100%;top:0}
-
-#nav{z-index:999;}
-#nav .menu, 
-#nav li{margin:0;padding:0}
-#nav .menu ul ul{margin:0 0 0 100%;top:0}
-#nav .menu a,
-#nav .menu span.separator{line-height:1.8em;padding:6px 15px 5px}
-#nav .menu ul a {border:none}
+#nav {z-index:277;}
 
 /* suckerfish functionality */
 .menu li:hover ul ul,
@@ -214,12 +177,20 @@ label.invalid{color:#ff0000;font-weight:bold}
 .menu li:hover ul,
 .menu li.pie_hover ul {left:auto}
 
+.column-group .menu    ,
+.column-group .menu ul ,
+.column-group .menu ol {display:block;width:100%;margin:0}
+.column-group .menu li {width:100%;margin:0}
+
 /* -- Preview Module Styles for use with index.php?tp=1 -- */
 .mod-preview{position:relative}
 .mod-preview-wrapper{border:1px solid #ccc;-moz-border-radius:10px;-webkit-border-radius:10px;border-radius:10px;-webkit-box-shadow:2px 2px 6px rgba(0,0,0,0.6); -moz-box-shadow:2px 2px 6px rgba(0,0,0,0.6); box-shadow:2px 2px 6px rgba(0,0,0,0.6); padding:5px 10px;margin:5px 0;opacity:0.9;background:#666;z-index:999;min-height:50px}
 .mod-preview-wrapper div.moduletable, .mod-preview-wrapper div.moduletable_menu, .mod-preview-wrapper div.moduletable_text, .mod-preview-wrapper ul.menu, .mod-preview-wrapper #breadcrumbs{opacity:0}
 .mod-preview-info{color:#fff;background:none;border:none;z-index:999;position:absolute;left:5px;top:5px;font-family:BebasNeueRegular;font-size:2em}
-#left .mod-preview-wrapper,#left2 .mod-preview-wrapper,#right .mod-preview-wrapper,#right2 .mod-preview-wrapper{height:940px}
+#left .mod-preview-wrapper,
+#left2 .mod-preview-wrapper,
+#right .mod-preview-wrapper,
+#right2 .mod-preview-wrapper{height:940px}
 
 /* -- farbschema "kuler2354" -- */
 html,body {background-color:rgb(252,250,228);}

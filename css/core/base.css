@@ -55,11 +55,11 @@ q { quotes: '„' '“' '‚' '‘' }
 [lang|=de] q,q[lang|=de] { quotes: '„' '“' '‚' '‘'; }
 [lang|=en] q,q[lang|=en] { quotes: '“' '”' '‘' '’'; }
 [lang|=fr] q,q[lang|=fr] { quotes: '«' '»' '<' '>'; }
-.clearfix:after{clear:both;display:block;content:"\00A0";visibility:hidden;overflow:hidden;height:0 !important;line-height:0}
-.invisible{position:absolute;display:inline;width:0;height:0;left:-1000px;top:-1000px;overflow:hidden}
 
 /* =lists */
 ul,ol,dl{margin:1ex auto 1ex 1ex;padding-left:1ex}
+ol {list-style:decimal}
+ul {list-style:disc}
 li{display:list-item;list-style-position:outside;text-indent:0;margin-left:1.2ex}
 dd{margin-left:1.2ex;-moz-margin-start:0;-webkit-margin-start:0;-ms-margin-start:0}
 ol li{margin-left:1.7ex}
@@ -75,10 +75,10 @@ mark{background:yellow}
 ::selection{background:#333;color:#eee;text-shadow:none}
 
 /* =wgac, bitv, off-screen contents */
-.wgac{position:absolute;left:-27766px;z-index:-1;overflow:hidden;width:1px;height:1px;border:none;background:none}
+.wgac, .invisible{position:absolute;display:inline;left:-27766px;z-index:-1;overflow:hidden;width:1px;height:1px;border:none;background:none}
 /* =Clears A0~nbsp */
-.clr{float:none}
-.clr:after{content:"\A0\A0\A0";visibility:hidden;clear:both;height:0 !important;display:block;line-height:0;font-size:xx-small;overflow:hidden}
+.clr,.clear{float:none}
+.clearfix:after,.clear:after{content:"\A0\A0\A0";visibility:hidden;clear:both;height:0 !important;display:block;line-height:0;font-size:xx-small;overflow:hidden}
 br.clear, hr.clear {float:none;clear:both;display:block;border:none;height:0;margin:0;padding:0;z-index:-1}
 
 /* Gecko Hacks */

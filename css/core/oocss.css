@@ -60,3 +60,18 @@ b.top, b.top b, b.bottom, b.bottom b{display:block;background-repeat:no-repeat;f
 .pop .tl, .pop .br{display:none;}
 .pop .bl{bottom:-10px;}
 .pop .tr{right:-10px;}
+
+/* menu */
+.menu    {list-style:none;margin:0;padding:0}
+.menu li {display:block;padding:.25ex .6em;margin:auto 0;}
+.menu ul {position:absolute;left:-999em;width:16em;/*sub-menu widths*/z-index:377}
+.menu ul li {width:100%}
+/* nested */
+.menu li ul{position:absolute;margin:0 0 0 100%;top:0}
+/* horizontal (.menu .hmenu) */
+.hmenu			{display:table;*display:block;}
+.hmenu li		{display:inline-block;position:relative}
+.hmenu ul		{margin-left:0}
+.hmenu li li	{min-width:10em}
+.hmenu li ul		{display:none;position:absolute}
+.hmenu li:hover ul	{display:block}
