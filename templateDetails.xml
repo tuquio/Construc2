@@ -9,58 +9,7 @@
 	<copyright>Copyright (C) 2010, 2011 Matt Thomas | Joomla Engineering. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
 	<version>1.6.664</version>
-		<description>TPL_JE_CONSTRUCT_COMMUNITY_DESCRIPTION</description>
-	<files>
-		<filename>css/diagnostic.css</filename>
-		<filename>css/editor.css</filename>
-		<filename>css/index.html</filename>
-		<filename>css/modal.css</filename>
-		<filename>css/print.css</filename>
-		<filename>css/rtl.css</filename>
-		<filename>css/screen.css</filename>
-		<filename>css/wireframe.css</filename>
-		<filename>elements/googlewebfont.php</filename>
-		<filename>elements/index.html</filename>
-		<filename>elements/helper.php</filename>
-		<filename>elements/jqueryversion.php</filename>
-		<filename>elements/logic.php</filename>
-		<filename>elements/upgradecheck.php</filename>
-		<filename>html/modules.php</filename>
-		<filename>html/pagination.php</filename>
-		<filename>html/index.html</filename>
-		<filename>html/mod_footer/default.php</filename>
-		<filename>html/mod_footer/index.html</filename>
-		<filename>html/mod_login/index.html</filename>
-		<filename>html/mod_login/default.php</filename>
-		<filename>images/editor-buttons/index.html</filename>
-		<filename>images/editor-buttons/j_button2_blank.png</filename>
-		<filename>images/editor-buttons/j_button2_image.png</filename>
-		<filename>images/editor-buttons/j_button2_left.png</filename>
-		<filename>images/editor-buttons/j_button2_pagebreak.png</filename>
-		<filename>images/editor-buttons/j_button2_readmore.png</filename>
-		<filename>images/editor-buttons/j_button2_right.png</filename>
-		<filename>images/index.html</filename>
-		<filename>images/selector-arrow.png</filename>
-		<filename>js/DD_belatedPNG_0.0.8a-min.js</filename>
-		<filename>js/ie_suckerfish.js</filename>
-		<filename>js/index.html</filename>
-		<filename>js/PIE.htc</filename>
-		<filename>js/styleswitch.js</filename>
-		<filename>layouts/index.html</filename>
-		<filename>component.php</filename>
-		<filename>favicon.ico</filename>
-		<filename>favicon.png</filename>
-		<filename>index.html</filename>
-		<filename>index.php</filename>
-		<filename>modal.php</filename>
-		<filename>templateDetails.xml</filename>
-		<filename>template_thumbnail.png</filename>
-	</files>
-
-	<languages>
-		<language tag="en-GB">language/en-GB/en-GB.tpl_construct.ini</language>
-		<language tag="en-GB">language/en-GB/en-GB.tpl_construct.sys.ini</language>
-	</languages>
+	<description>TPL_JE_CONSTRUCT_COMMUNITY_DESCRIPTION</description>
 
 	<positions>
 		<position>analytics</position>
@@ -112,7 +61,8 @@
 		<position>offline</position>
 		<position>print-popup</position>
 		<position>syndicate</position>
-</positions>
+	</positions>
+
 	<config>
 		<fields name="params">
 			<fieldset name="general" addfieldpath="/templates/construct/elements" >
@@ -124,7 +74,7 @@
 					label="TPL_JE_CONSTRUCT_COMMUNITY_CUSTOM_STYLE_SHEET_LABEL"
 					description="TPL_JE_CONSTRUCT_COMMUNITY_CUSTOM_STYLE_SHEET_DESC"  
 					directory="templates/construct/css" filter="\.css" 
-					exclude="(editor|ie\d+|template)\.css" 
+					exclude="(template|editor|ie\d+|test.+|x~.+)\.css" 
 					/>
 				<field name="setGeneratorTag" type="text" default="Joomla Engineering | http://JoomlaEngineering.com" label="TPL_JE_CONSTRUCT_COMMUNITY_CUSTOM_GENERATOR_TAG" description="TPL_JE_CONSTRUCT_COMMUNITY_CUSTOM_GENERATOR_TAG_DESC" size="56" />
 			</fieldset>
@@ -211,8 +161,61 @@
 				<field name="IE6TransFixTargets" type="textarea" default="h1 a" label="TPL_JE_CONSTRUCT_COMMUNITY_IE6_TRANS_FIX_TARGETS_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_IE6_TRANS_FIX_TARGETS_DESC" rows="5" cols="50" />
 			</fieldset>
 			<fieldset name="version_check">
-				<field label="TPL_JE_CONSTRUCT_COMMUNITY_VERSION_CHECK_LABEL" type="upgradecheck" />
+				<field label="TPL_JE_CONSTRUCT_COMMUNITY_VERSION_CHECK_LABEL" type="constructupdate" />
 			</fieldset>
 		</fields>
 	</config>
+
+	<files>
+		<filename>css/diagnostic.css</filename>
+		<filename>css/editor.css</filename>
+		<filename>css/index.html</filename>
+		<filename>css/modal.css</filename>
+		<filename>css/print.css</filename>
+		<filename>css/rtl.css</filename>
+		<filename>css/screen.css</filename>
+		<filename>css/wireframe.css</filename>
+		<filename>elements/googlewebfont.php</filename>
+		<filename>elements/index.html</filename>
+		<filename>elements/helper.php</filename>
+		<filename>elements/jqueryversion.php</filename>
+		<filename>elements/logic.php</filename>
+		<filename>elements/upgradecheck.php</filename>
+		<filename>html/modules.php</filename>
+		<filename>html/pagination.php</filename>
+		<filename>html/index.html</filename>
+		<filename>html/mod_footer/default.php</filename>
+		<filename>html/mod_footer/index.html</filename>
+		<filename>html/mod_login/index.html</filename>
+		<filename>html/mod_login/default.php</filename>
+		<filename>images/editor-buttons/index.html</filename>
+		<filename>images/editor-buttons/j_button2_blank.png</filename>
+		<filename>images/editor-buttons/j_button2_image.png</filename>
+		<filename>images/editor-buttons/j_button2_left.png</filename>
+		<filename>images/editor-buttons/j_button2_pagebreak.png</filename>
+		<filename>images/editor-buttons/j_button2_readmore.png</filename>
+		<filename>images/editor-buttons/j_button2_right.png</filename>
+		<filename>images/index.html</filename>
+		<filename>images/selector-arrow.png</filename>
+		<filename>js/DD_belatedPNG_0.0.8a-min.js</filename>
+		<filename>js/ie_suckerfish.js</filename>
+		<filename>js/index.html</filename>
+		<filename>js/PIE.htc</filename>
+		<filename>js/styleswitch.js</filename>
+		<filename>layouts/index.html</filename>
+		<filename>component.php</filename>
+		<filename>favicon.ico</filename>
+		<filename>favicon.png</filename>
+		<filename>index.html</filename>
+		<filename>index.php</filename>
+		<filename>modal.php</filename>
+		<filename>templateDetails.xml</filename>
+		<filename>template_thumbnail.png</filename>
+	</files>
+
+	<languages>
+		<language tag="en-GB">language/en-GB/en-GB.tpl_construct.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.tpl_construct.sys.ini</language>
+	</languages>
+
 </extension>

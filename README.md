@@ -15,12 +15,12 @@ to learn more about "Joomla Engineering Construct Template Framework for Joomla!
 Removed all `index.html`; have .htaccess for that.
 
 Removed identical code from main `index.php` leaving `/layouts/index.php`
-the default layout if none is provided or found to match the custom CSS in the
-template params.
+the default layout if none is provided or found to match the custom CSS 
+from template paramaters.
 
 Both `logic.php` and `helper.php` are now loaded unconditionally.
 There appears to be no reason to validate their filenames or check if they
-exist, since none of the stuff this template advertizes would work anyway
+exist, since none of the flexibility this template offers would work anyway
 should these files be missing.
 
 Added several l10n keys to replace the many hardcoded english strings in
@@ -37,6 +37,10 @@ Google CDN URLs now use a relative protocol URL to work with both http
 and https.
 
 == Cleanup modChrome / modules.php
+Removed styles marked as deprecated, 'cos they're deprecated.
+
+Added "OOCSS compliant" styles: mod, complex, pop, bubble.
+
 Changed test for module content to the top using
 ``` php
 	if (empty($module->content)) return;
@@ -69,6 +73,9 @@ Put some of its "logic" on a diet and killed redundancy = ~30% less code.
 
 Fixed some calls for adding extra (MSIE) styles and links happened unconditionally
 causing issues on the client side.
+
+Replaced all `$doc` with `$this` which in the given context is exactly the
+same as `JFactory::getDocument()`. 
 
 == Refactored helper.php
 Implemented some logic into ConstructTemplateHelper which (as a helper) ought
@@ -145,34 +152,51 @@ and so forth.
 
 WIP: The "column groups" ("alpha" and "beta") are not yet dealt with.
 
+== Core Styles
+Moved "core" stylesheets to ./css/core reducing name conflicts and more
+flexibility in using `customStyleSheet`. Reserved names remaining: 
+template, editor, ie* commonly used in plugins. Files starting with 
+`test`or `x~` are ignored. See also: "Template Params".
+
+Removed all `@charset "utf-8"` as they cause serious trouble if files are 
+concatenated and minified. Encoding ought to be handled by the text editor
+and via .htaccess anyway (not included): 
+> ## force utf-8
+> AddDefaultCharset utf-8
+> AddCharset utf-8 .html .xml .rss
+> AddCharset utf-8 .css .js .json
+
+== Template Params
+Moving the "core" styles to a subfolder simplified the exclusion filter of
+`customStyleSheet` to use a "black-list" regular expression to hide both
+unwanted  or system stylesheets
+```exclude="(template|editor|ie\d+|test.+|x~.+)\.css" ```
+
 == Stylesheets + logic.php
+Refactored repetitive module class code into semi-configurable loops.
+
 Many selectors are utterly over-specified and there are way too many id-selectors
-in charge **for styling only**, leading into insane "specificity wars"(tm).
+in charge **for styling only**, leading into dangerous "specificity wars"(tm).
 To calm that down for areas like columns, wrapper, modules, and gutters, more
-friendly and semantic CSS classes were introduced (also) via logic.php to pull 
-back many style rules to a sane applicable level.
+friendly and semantic CSS classes were and will be introduced (also) via logic.php 
+to pull back many style rules to a sane applicable specificity level.
 
 Rathern than having ONLY a gazillion 'count-x' that ALL require a brute-force
 ID selector to format module columns, more subtle "one-for-all" classse were
 added to those module containers, e.g. 'header-above', 'header-below' etc.
 
 This allows to tackle all those elements at once were appropriate with a
-simple single rule, rather than being required to write 6 or more.
+simpler and single rule, rather than being required to write 6 or more.
 
 Renamed the `count-x` classes for the alpha and beta colums to `colcount-x`.
 Very unlikely those colums are meant to "flow" and squeezing the main-content.
 
+== Index Default Layout
+Switching to OOCSS for a lightweight "CSS Framework" saves lots of layout
+conditions and simplifies columns and modules to a handvoll **cascading**
+clases.
 
-== Core Styles
-Removed all `@charset "utf-8"` as they can cause serious trouble if files are 
-concatenated and minified. 
-Encoding ought to be handled in the editor and via .htaccess anyway: 
-> ## force utf-8
-> AddDefaultCharset utf-8
-> AddCharset utf-8 .html .xml .rss
-> AddCharset utf-8 .css .js .json
+* replaced various Module styles using "jexhtml" with "mod".
+* replaced loads of .clear and .clearfix with .line
 
-== Module Chrome
-Removed deprecated styles.
-Added "OOCSS compliant" styles: mod, complex, pop, bubble.
 

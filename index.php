@@ -1,16 +1,14 @@
 <?php defined('_JEXEC') or die;
 /**
- * @package		Template Framework for Joomla! 1.6
+ * @package		Templates
  * @author		Joomla Engineering http://joomlaengineering.com
  * @author		WebMechanic http://webmechanic.biz
  * @copyright	Copyright (C) 2010, 2011 Matt Thomas | Joomla Engineering. All rights reserved.
  * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
 
-FB::log( __FILE__ );
-
 // Load template logic
-require_once JPATH_THEMES.'/'.$this->template.'/elements/logic.php';
+require JPATH_THEMES.'/'.$this->template.'/elements/logic.php';
 
 // Add custom layout overrides for components or section here
 /* eg:

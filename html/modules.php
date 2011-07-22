@@ -1,8 +1,8 @@
 <?php defined('_JEXEC') or die;
 /**
- * @package		Template Framework for Joomla! 1.6
+ * @package		Templates
+ * @subpackage	HTML
  * @author		Joomla Engineering http://joomlaengineering.com
- * @author		WebMechanic http://webmechanic.biz
  * @copyright	Copyright (C) 2010, 2011 Matt Thomas. All rights reserved.
  * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -13,10 +13,9 @@
  * Accepted attributes:
  * - level: default 3, the heading level to apply. 3 = <h3>
  * - header-class: default 'je-header', CSS class for the Hx element
+ * In addition to moduleclass and moduleclass_sfx
  * - module-class: optional CSS class for the DIV container
- * 					(besides moduleclass and moduleclass_sfx)
  * - outline-style: optional CSS class for the DIV container
- * 					(besides moduleclass and moduleclass_sfx)
  * @param object     $module
  * @param JRegistry  $params
  * @param array      $attribs
@@ -31,7 +30,7 @@ function modChrome_jexhtml( $module, &$params, &$attribs ) {
 	$moduleClass  = isset($attribs['module-class'])  ? ' '.$attribs['module-class'] : '';
 	$outlineStyle = isset($attribs['outline-style']) ? ' outline-'.$attribs['outline-style'] : '';
 
-	echo '<div class="moduletable', $params->get('moduleclass_sfx'), ' ', $module->module, $moduleClass, $outlineStyle, ' clearfix">';
+	echo '<div class="moduletable ', $module->module, ' ', $params->get('moduleclass_sfx'), $moduleClass, $outlineStyle, ' clearfix">';
 		if ($module->showtitle) {
 			echo '<h', $headerLevel, ' class="', $headerClass, '">', $module->title, '</h', $headerLevel, '>';
 		}
@@ -55,6 +54,7 @@ function modChrome_jexhtml( $module, &$params, &$attribs ) {
  * @param array      $attribs
  * @link https://github.com/stubbornella/oocss/wiki/standard-module-format
  * @link http://oocss.org
+ * @author WebMechanic http://webmechanic.biz
  */
 function modChrome_mod( $module, &$params, &$attribs ) {
 
@@ -92,8 +92,10 @@ function modChrome_mod( $module, &$params, &$attribs ) {
  * @param array      $attribs
  * @uses modChrome_mod()
  * @link https://github.com/stubbornella/oocss/wiki/Module
+ * @author WebMechanic http://webmechanic.biz
  */
-function modChrome_complex( $module, &$params, &$attribs ) {
+function modChrome_complex( $module, &$params, &$attribs )
+{
 	$attribs['__oocss__'] = 'complex';
 	modChrome_mod( $module, $params, $attribs );
 }
@@ -107,8 +109,10 @@ function modChrome_complex( $module, &$params, &$attribs ) {
  * @param array      $attribs
  * @uses modChrome_mod()
  * @link https://github.com/stubbornella/oocss/wiki/Module
+ * @author WebMechanic http://webmechanic.biz
  */
-function modChrome_pop( $module, &$params, &$attribs ) {
+function modChrome_pop( $module, &$params, &$attribs )
+{
 	$attribs['__oocss__'] = 'pop';
 	modChrome_mod( $module, $params, $attribs );
 }
@@ -119,18 +123,45 @@ function modChrome_pop( $module, &$params, &$attribs ) {
  * Talk bubbles are used to give context specific help, however they may be
  * used for other purposes like blog comments, cartoon-style talk bubbles, etc
  *
+ * Using talk.css pointer images appear on the left (bubble=top|bottom)
+ * or upper (bubble=left|right) section of the given side.
+ * Setting 'edge' to 'other' toggles that behavior.
+ *
  * Configurable attributes:
- * - bubble: top|bottom|left|right location side of the pointer
- * - edge: left|right for
+ * - bubble: top|bottom|left|right, location side of the pointer
+ * - edge: other, push pointer to opposit side, also useful for .rtl
  *
  * @param object     $module
  * @param JRegistry  $params
  * @param array      $attribs
  * @uses modChrome_mod()
  * @link https://github.com/stubbornella/oocss/wiki/Talk-Bubbles
+ * @author WebMechanic http://webmechanic.biz
  */
-function modChrome_bubble( $module, &$params, &$attribs ) {
+function modChrome_bubble( $module, &$params, &$attribs )
+{
 	$attribs['__oocss__'] = 'bubble';
 	modChrome_mod( $module, $params, $attribs );
+}
+
+/**
+ * Enter description here ...
+ * @param string $content
+ * @param JParameter $params
+ */
+function modChrome_withevent(&$content, $params)
+{
+	static $item;
+	if (null == $item) {
+		// Create temporary article-stub to have all req. attriutes
+		$item = JTable::getInstance('content');
+		$item->parameters = new JParameter('');
+	}
+	$item->text = $content;
+
+	// Apply content plugins to custom module content
+	# JFactory::getApplication()->triggerEvent('onPrepareContent', array (&$item, &$params, 1));
+	JDispatcher::getInstance()->trigger('onPrepareContent', array (&$item, &$params, 1));
+	$content = $item->text;
 }
 

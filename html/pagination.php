@@ -1,10 +1,10 @@
 <?php defined('_JEXEC') or die;
 /**
-* @package		Template Framework for Joomla! 1.6
-* @author		Joomla Engineering http://joomlaengineering.com
-* @copyright	Copyright (C) 2010, 2011 Matt Thomas | Joomla Engineering. All rights reserved.
-* @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
-*/
+ * @package		Templates
+ * @subpackage	HTML
+ * @copyright	Copyright (C) 2010, 2011 Matt Thomas | Joomla Engineering. All rights reserved.
+ * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
+ */
 
 /**
  * This is a file to add template specific chrome to pagination rendering.
@@ -59,38 +59,38 @@
 function pagination_list_render($list)
 {
 	// Initialize variables
-	$lang =& JFactory::getLanguage();
-	$html = "<ol class=\"pagination\">";
+	$html = '<ul class="menu pagination">';
 
-	$html .= $list['start']['data'];
-	$html .= $list['previous']['data'];
+	$html .= '<li class="first">'. $list['start']['data'] .'</li>';
+	$html .= '<li class="prev">'. $list['previous']['data'] .'</li>';
 
 	foreach( $list['pages'] as $page )
 	{
-		if($page['data']['active']) {
-			// $html .= '<strong>';
+		if ($page['data']['active']) {
+			$html .= '<li class="active">';
+		} else {
+			$html .= '<li>';
 		}
 
 		$html .= $page['data'];
 
-		if($page['data']['active']) {
-			//  $html .= '</strong>';
-		}
+#		if($page['data']['active']) {
+#		}
+
+		$html .= '</li>';
 	}
 
-	$html .= $list['next']['data'];
-	$html .= $list['end']['data'];
-	// $html .= '&#171;';
+	$html .= '<li class="next">'. $list['next']['data'] .'</li>';
+	$html .= '<li class="last">'. $list['end']['data'] .'</li>';
 
-	$html .= "</ol>";
+	$html .= '</ul>';
 	return $html;
 }
 
 function pagination_item_active(&$item) {
-	return "<li><a href=\"".$item->link."\" title=\"".$item->text."\">".$item->text."</a></li>";
+	return '<a href="'. $item->link .'" title="'. $item->text .'">'. $item->text .'</a>';
 }
 
 function pagination_item_inactive(&$item) {
-	return "<li>".$item->text."</li>";
+	return '<span>'. $item->text .'</span>';
 }
-?>
