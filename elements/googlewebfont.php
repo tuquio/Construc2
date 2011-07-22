@@ -1,38 +1,29 @@
 <?php defined('_JEXEC') or die;
 /**
-* @package		Template Framework for Joomla! 1.6
-* @author		Joomla Engineering http://joomlaengineering.com
-* @copyright	Copyright (C) 2010 Matt Thomas | Joomla Engineering. All rights reserved.
-* @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
-*/
+ * @package		Templates
+ * @author		Joomla Engineering http://joomlaengineering.com
+ * @copyright	Copyright (C) 2010 Matt Thomas | Joomla Engineering. All rights reserved.
+ * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
+ */
 
 /**
- * JFormFieldGooglewebfont
+ * Provides a list of Google Web Fonts.
  *
- * Provides list of Google Web Fonts
- *
- * @static
- * @package		Molajo
- * @subpackage  HTML
- * @since		1.6
+ * @package    Templates
+ * @subpackage Elements
+ * @since 1.0
  */
 class JFormFieldGooglewebfont extends JFormFieldList
 {
     /**
-     * Field Type
-     *
-     * @var		string
-     * @since	1.6
+     * @var string Field Type
      */
     public $type = 'Googlewebfont';
 
     /**
-     * getOptions
-     *
      * Generates list options
      *
-     * @return	array	The field option objects.
-     * @since	1.6
+     * @return array  The field option objects.
      */
     protected function getOptions()
     {

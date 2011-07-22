@@ -1,50 +1,49 @@
 <?php defined('_JEXEC') or die;
 /**
-* @package		Template Framework for Joomla! 1.6
-* @author		Joomla Engineering http://joomlaengineering.com
-* @author		WebMechanic http://webmechanic.biz
-* @copyright	Copyright (C) 2010, 2011 Matt Thomas | Joomla Engineering. All rights reserved.
-* @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
-*/
-FB::log( __FILE__ );
+ * @package		Templates
+ * @subpackage  Helper
+ * @author		Joomla Engineering http://joomlaengineering.com
+ * @author		WebMechanic http://webmechanic.biz
+ * @copyright	Copyright (C) 2010, 2011 Matt Thomas | Joomla Engineering. All rights reserved.
+ * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
+ *
+ * @return JDocumentHtml
+ * @uses JSite
+ * @uses JFactory
+ */
 
-// Load the ConstructTemplateHelper Class
+/** Load the ConstructTemplateHelper Class */
 require_once dirname(__FILE__).'/helper.php';
 
-// To enable use of site configuration
+/** @var $app JSite To enable use of site configuration */
 $app 					= JFactory::getApplication();
-// Get the base URL of the website
+/** @var $baseUrl string Get the base URL of the website */
 $baseUrl 				= JURI::base();
-// Returns a reference to the global document object
-$doc 					= JFactory::getDocument();
-// Define relative shortcut for current template directory
+/** @var $template string Define relative shortcut for current template directory */
 $template 				= 'templates/'.$this->template;
-// Get the current URL
+/** @var $url JURI Get the current URL */
 $url 					= clone(JURI::getInstance());
-// To access the current user object
-$user 					= JFactory::getUser();
 
-// Define shortcuts for template parameters
-$customStyleSheet 		= $this->params->get('customStyleSheet');
-$enableSwitcher 		= $this->params->get('enableSwitcher');
-$IECSS3					= $this->params->get('IECSS3');
-$IECSS3Targets			= $this->params->get('IECSS3Targets');
-$IE6TransFix			= $this->params->get('IE6TransFix');
-$IE6TransFixTargets		= $this->params->get('IE6TransFixTargets');
-$fluidMedia				= $this->params->get('fluidMedia');
-$fullWidth				= $this->params->get('fullWidth');
+/* Define shortcuts for often used template parameters */
+$customStyleSheet 		= 		 $this->params->get('customStyleSheet');
+$enableSwitcher 		= (bool) $this->params->get('enableSwitcher');
+$useStickyFooter 		= (bool) $this->params->get('useStickyFooter');
+$stickyFooterHeight		= (bool) $this->params->get('stickyFooterHeight');
+$IECSS3					= (bool) $this->params->get('IECSS3');
+$IECSS3Targets			= 		 $this->params->get('IECSS3Targets');
+$IE6TransFix			= (bool) $this->params->get('IE6TransFix');
+$IE6TransFixTargets		= 		 $this->params->get('IE6TransFixTargets');
+$fluidMedia				= (bool) $this->params->get('fluidMedia');
+$fullWidth				= 		 $this->params->get('fullWidth');
+$siteWidth				= 		 $this->params->get('siteWidth');
+$siteWidthType			= 		 $this->params->get('siteWidthType');
+$siteWidthUnit			= 		 $this->params->get('siteWidthUnit');
+$showDiagnostics 		= (bool) $this->params->get('showDiagnostics');
 $loadModal				= (bool) $this->params->get('loadModal');
 $loadMoo 				= (bool) $this->params->get('loadMoo', $loadModal);
-$loadjQuery 			= $this->params->get('loadjQuery');
-$setGeneratorTag		= trim($this->params->get('setGeneratorTag'));
-$showDiagnostics 		= (bool) $this->params->get('showDiagnostics', 0);
-$siteWidth				= $this->params->get('siteWidth');
-$siteWidthType			= $this->params->get('siteWidthType');
-$siteWidthUnit			= $this->params->get('siteWidthUnit');
-$stickyFooterHeight		= $this->params->get('stickyFooterHeight');
-$useStickyFooter 		= $this->params->get('useStickyFooter');
+$loadjQuery 			= 		 $this->params->get('loadjQuery');
 
-// Web-Fonts (for BC the 1. param is read using the "old" field name)
+/** @var $googleWebFont array Web-Fonts (for BC the 1. param is read using the "old" field name) */
 $googleWebFont = $googleWebFontSize = $googleWebFontTargets = array();
 for ($i=1; $i <= ConstructTemplateHelper::MAX_WEBFONTS; $i++) {
 	$googleWebFont[$i]			= $this->params->def('googleWebFont'.$i);
@@ -53,7 +52,7 @@ for ($i=1; $i <= ConstructTemplateHelper::MAX_WEBFONTS; $i++) {
 }
 
 // Change generator tag
-$this->setGenerator($setGeneratorTag);
+$this->setGenerator( trim($this->params->get('setGeneratorTag')) );
 
 // Load the MooTools JavaScript Library
 if ($loadMoo == true) {
@@ -129,7 +128,7 @@ if ($columnGroupAlphaCount) : $columnGroupAlphaClass = 'column-alpha colcount-'.
 $columnGroupBetaCount = $columnGroupCount[3] + $columnGroupCount[4];
 if ($columnGroupBetaCount) : $columnGroupBetaClass = 'column-beta colcount-'.$columnGroupBetaCount; endif;
 
-$columnLayout= 'main-only';
+$columnLayout = 'main-only';
 if ($columnGroupAlphaCount > 0) {
 	$columnLayout = 'alpha-'.$columnGroupAlphaCount.'-main';
 	if ($columnGroupBetaCount > 0) {
@@ -139,39 +138,41 @@ if ($columnGroupAlphaCount > 0) {
 	$columnLayout = 'main-beta-'.$columnGroupBetaCount;
 }
 
+// FB::info($columnGroupCount, 'columns: '.$columnLayout); #HACK FB log filename
+
 #---------------------------- Head Elements --------------------------------#
 
 // Custom tags
-$doc->addCustomTag('<meta name="copyright" content="'.$app->getCfg('sitename').'" />');
+$this->addCustomTag('<meta name="copyright" content="'.$app->getCfg('sitename').'" />');
 
 // Transparent favicon
 if (is_file($template.'/favicon.png')) {
-	$doc->addFavicon($template.'/favicon.png', 'image/png', 'icon');
+	$this->addFavicon($template.'/favicon.png', 'image/png', 'icon');
 } else if (is_file($template.'/favicon.ico')) {
-	$doc->addFavicon($template.'/favicon.ico', 'image/x-icon', 'icon');
+	$this->addFavicon($template.'/favicon.ico', 'image/x-icon', 'icon');
 }
 
 // Style sheets
-$doc->addStyleSheet($template.'/css/core/base.css','text/css');
-$doc->addStyleSheet($template.'/css/core/oocss.css','text/css');
-$doc->addStyleSheet($template.'/css/core/screen.css','text/css','screen');
-$doc->addStyleSheet($template.'/css/core/print.css','text/css','print');
+$this->addStyleSheet($template.'/css/core/base.css','text/css');
+$this->addStyleSheet($template.'/css/core/oocss.css','text/css');
+$this->addStyleSheet($template.'/css/core/screen.css','text/css','screen');
+$this->addStyleSheet($template.'/css/core/print.css','text/css','print');
 if ($customStyleSheet) {
-	$doc->addStyleSheet($template.'/css/'.$customStyleSheet,'text/css','screen,projection,print');
+	$this->addStyleSheet($template.'/css/'.$customStyleSheet,'text/css','screen,projection,print');
 }
 if ($this->direction == 'rtl') {
-	$doc->addStyleSheet($template.'/css/core/rtl.css','text/css','screen');
+	$this->addStyleSheet($template.'/css/core/rtl.css','text/css','screen');
 }
 // cheap and all but smart
 if ( in_array(JRequest::get('layout','cmd'), array('edit','form')) ) {
-	$doc->addStyleSheet($template.'/css/core/edit-form','text/css','screen');
+	$this->addStyleSheet($template.'/css/core/edit-form','text/css','screen');
 }
 
 // Style sheet switcher
 if ($enableSwitcher) {
-	$doc->addHeadLink($template.'/css/core/diagnostic.css', 'alternate stylesheet', 'rel', $attribs = array('title'=>'diagnostic'));
-	$doc->addHeadLink($template.'/css/core/wireframe.css', 'alternate stylesheet', 'rel', $attribs = array('title'=>'wireframe'));
-	$doc->addScript($template.'/js/styleswitch.js');
+	$this->addHeadLink($template.'/css/core/diagnostic.css', 'alternate stylesheet', 'rel', $attribs = array('title'=>'diagnostic'));
+	$this->addHeadLink($template.'/css/core/wireframe.css', 'alternate stylesheet', 'rel', $attribs = array('title'=>'wireframe'));
+	$this->addScript($template.'/js/styleswitch.js');
 }
 
 // Typography (protocol relative URLs)
@@ -179,8 +180,8 @@ for ($i=1; $i<=ConstructTemplateHelper::MAX_WEBFONTS; $i++) {
 	if ($googleWebFont[$i]) {
 		// Fix Google Web Font name for CSS
 		$googleWebFontFamily[$i] = str_replace(array('+',':bold',':italic')," ",$googleWebFont[$i]);
-		$doc->addStyleSheet('//fonts.googleapis.com/css?family='.$googleWebFont[$i].'');
-		$doc->addStyleDeclaration(
+		$this->addStyleSheet('//fonts.googleapis.com/css?family='.$googleWebFont[$i].'');
+		$this->addStyleDeclaration(
 			$googleWebFontTargets[$i]
 			.' {font-family:'.$googleWebFontFamily[$i].', serif;'
 			.(($googleWebFontSize[$i]>0) ? 'font-size:'.$googleWebFontSize[$i].';' : '')
@@ -194,7 +195,7 @@ if ($loadMoo == true) {
 	$scriptDeclarations[] = "\tif (window.addEvent){window.addEvent('domready',function(){new SmoothScroll({duration:1200},window);});}";
 }
 if ($loadjQuery) {
-	$doc->addScript('//ajax.googleapis.com/ajax/libs/jquery/'. $loadjQuery .'/jquery.min.js');
+	$this->addScript('//ajax.googleapis.com/ajax/libs/jquery/'. $loadjQuery .'/jquery.min.js');
 	if ($loadMoo == true) {
 		$scriptDeclarations[] = "\tif (window.jQuery){jQuery.noConflict();}";
 	}
@@ -202,35 +203,35 @@ if ($loadjQuery) {
 
 // Layout Declarations
 if ($siteWidth) {
-	$doc->addStyleDeclaration('#body-container, #header-above {'.$siteWidthType.':'.$siteWidth.$siteWidthUnit.'}');
+	$this->addStyleDeclaration('#body-container, #header-above {'.$siteWidthType.':'.$siteWidth.$siteWidthUnit.'}');
 }
 if (($siteWidthType == 'max-width') && $fluidMedia ) {
 	$columnLayout .= ' fluid-media';
 }
 if (!$fullWidth) {
-	$doc->addStyleDeclaration('#header, #footer {'.$siteWidthType.':'.$siteWidth.$siteWidthUnit.'; margin:0 auto}');
+	$this->addStyleDeclaration('#header, #footer {'.$siteWidthType.':'.$siteWidth.$siteWidthUnit.'; margin:0 auto}');
 }
 
 // Internet Explorer Fixes
 if ($IECSS3) {
-	$doc->addCustomTag(
+	$this->addCustomTag(
   		 PHP_EOL . '<!--[if IE lt 9]>'
   		.PHP_EOL . '<style type="text/css">'.$IECSS3Targets.' {behavior:url("'.$baseUrl.$template.'/js/PIE.htc")}</style>'
   		.PHP_EOL . '<![endif]-->');
 }
 
 if ($useStickyFooter) {
-	$doc->addStyleDeclaration(
+	$this->addStyleDeclaration(
 		 PHP_EOL . '.sticky-footer #body-container {padding-bottom:'.$stickyFooterHeight.'px;}'
 		.PHP_EOL . '.sticky-footer #footer {margin-top:-'.$stickyFooterHeight.'px;height:'.$stickyFooterHeight.'px;}'
 		);
-	$doc->addCustomTag("\n"
+	$this->addCustomTag("\n"
 		.'<!--[if lt IE 7]>'
 		.'<style type="text/css">body.sticky-footer #footer-push {display:table;height:100%}</style>'
 		.'<![endif]-->');
 }
 
-$doc->addCustomTag(
+$this->addCustomTag(
 		 PHP_EOL . '<!--[if lt IE 7]>'
 		.PHP_EOL . '<link rel="stylesheet" href="'.$template.'/css/core/ie6.css" type="text/css" media="screen" />'
 		.PHP_EOL . '<style type="text/css">'
@@ -244,13 +245,13 @@ $doc->addCustomTag(
 		);
 
 if ($IE6TransFix) {
-	$doc->addScript($template.'/js/DD_belatedPNG_0.0.8a-min.js');
+	$this->addScript($template.'/js/DD_belatedPNG_0.0.8a-min.js');
 	$scriptDeclarations[] = "\t/* IE6TransFix */ if (DD_belatedPNG.fix) {DD_belatedPNG.fix('". $IE6TransFixTargets ."')}";
 }
 
 // add collected custom script declarations
 if ( count($scriptDeclarations) ) {
-	$doc->addScriptDeclaration(implode("\n",$scriptDeclarations));
+	$this->addScriptDeclaration(implode("\n",$scriptDeclarations));
 }
 
 

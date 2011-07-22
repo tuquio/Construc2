@@ -1,13 +1,12 @@
 <?php
 /**
- * @package     Template Framework for Joomla! 1.6
+ * @package     Templates
  * @author      Joomla Engineering http://joomlaengineering.com
  * @author		WebMechanic http://webmechanic.biz
  * @copyright   Copyright (C) 2010, 2011 Matt Thomas | Joomla Engineering. All rights reserved.
  * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
 defined('_JEXEC') or die;
-FB::log( __FILE__ );
 
 jimport('joomla.filesystem.file');
 
@@ -16,9 +15,9 @@ jimport('joomla.filesystem.file');
  *
  * Helper functions for the Construct Template Framework
  *
- * @package	Molajo
- * @subpackage	Helper
- * @since	1.0
+ * @package	   Templates
+ * @subpackage Helper
+ * @since 1.0
  */
 class ConstructTemplateHelper
 {

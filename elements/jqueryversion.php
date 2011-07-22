@@ -1,28 +1,21 @@
 <?php defined('_JEXEC') or die;
 /**
- * @package		Template Framework for Joomla! 1.6
+ * @package		Templates
  * @author		Joomla Engineering http://joomlaengineering.com
  * @copyright	Copyright (C) 2010 Matt Thomas | Joomla Engineering. All rights reserved.
  * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
 
 /**
- * JFormFieldGooglewebfont
+ * Provides a list of jQuery versions
  *
- * Provides list of Google Web Fonts
- *
- * @static
- * @package		Molajo
- * @subpackage  HTML
- * @since		1.6
+ * @package    Templates
+ * @subpackage Elements
  */
 class JFormFieldJqueryversion extends JFormFieldList
 {
 	/**
-	 * Field Type
-	 *
-	 * @var		string
-	 * @since	1.6
+	 * @var string Field type
 	 */
 	public $type = 'Jqueryversion';
 
@@ -35,12 +28,9 @@ class JFormFieldJqueryversion extends JFormFieldList
 	);
 
 	/**
-	 * getOptions
-	 *
 	 * Generates list options
 	 *
 	 * @return	array	The field option objects.
-	 * @since	1.6
 	 */
 	protected function getOptions()
 	{
@@ -54,6 +44,5 @@ class JFormFieldJqueryversion extends JFormFieldList
 		}
 
 		return $options;
-
 	}
 }
