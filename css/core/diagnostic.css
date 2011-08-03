@@ -1,9 +1,11 @@
 body {background:#999}
 #body-container {background:#CCC}
 #load-first{background:#09F} 
-#content-main {background:#990}
-#column-group-alpha,#column-group-beta {background:#9F0}
-#column-group-alpha .moduletable,#column-group-beta .moduletable,#bottom-user-modules .moduletable,#footer .moduletable{background:#9C3}
+.content-main {background:#990}
+.group-alpha, .group-beta {background:#9F0}
+.group-alpha .moduletable, 
+.group-beta .moduletable,
+#footer .moduletable{background:#9C3}
 #content-above-1 {background:#C00}
 #content-above-2 {background:#C60}
 #content-above-3 {background:#C90}
@@ -11,7 +13,7 @@ body {background:#999}
 .gutter {background:#FF0}
 #access,#diagnostics,#style-switch {background:#69F}
 #breadcrumbs {background:#963}
-#content-container {background:#060}
+.content-container {background:#060}
 #bottom-user-modules {background:#090}
 #top-user-modules {background:#0C0}
 #branding {background:#066}

@@ -27,7 +27,11 @@ fieldset{border:1px solid}
 img{vertical-align:middle}
 
 /* =sorta typography */
-html{font-size:16px}
+html{font-size:13px}
+/* iPhone 3=163 ppi (std. 112 x 1.455) */
+@media screen and (min-resolution: 160dpi){html{font-size:21px}}
+/* iPhone 4=326 ppi (std. 112 x 2,911) */
+@media screen and (min-resolution: 320dpi){html{font-size:38px}}
 body{font:100.1%/1.6 "Trebuchet MS",Arial,Helvetica,sans-serif;word-wrap:break-word}
 table,dl,ol,ul{font-size:100%;font-weight:normal}
 p,address,blockquote,li,dt,dd{line-height: 1.6;}
@@ -47,7 +51,6 @@ select,input,button,textarea{font-size:99%}
 b,strong,dt{font-weight:bold}
 i,em{font-style:italic}
 form,fieldset,legend,th,td,pre,xmp,listing,mark{line-height:1}
-
 /* =once for all and anything */
 /* for those who can handle it = !MSIE6,7 !WebKit */
 q:before,q:after{font-family:"Adobe Caslon Pro",Georgia,"Times New Roman",Times,serif;font-size:1.1em}

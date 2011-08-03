@@ -1,9 +1,6 @@
 
 /* -- Layout -- */
-body{font-size:76%/* 12px in most modern browsers - used as basis of layout and typography. Calculate em based dims as "target dim(px) / container dim(px) = result in em" */}
-#body-container,
-#header-above{margin:0 auto;padding:0}
-#load-first{float:left}
+.load-first {position:relative}
 
 /* -- Sticky Footer -- *//*http://www.cssstickyfooter.com/*/
 html, .sticky-footer{height:100%}
@@ -156,7 +153,7 @@ label.invalid{color:#ff0000;font-weight:bold}
 
 #style-switch{list-style-type:none;float:right;clear:right}
 
-#syndicate {position:absolute;left:20px}
+.syndicate {position:absolute;left:20px}
 
 #system-message dt{display:none}
 #system-message dd{clear:both;padding:5px 0;text-align:left;border-top:2px solid;}
@@ -191,10 +188,5 @@ label.invalid{color:#ff0000;font-weight:bold}
 #left2 .mod-preview-wrapper,
 #right .mod-preview-wrapper,
 #right2 .mod-preview-wrapper{height:940px}
-
-/* -- farbschema "kuler2354" -- */
-html,body {background-color:rgb(252,250,228);}
-#header {background:#5C0E0C; color:white;}
-
 
 /* .eof */
