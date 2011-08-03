@@ -12,9 +12,13 @@
 // No direct access.
 defined('_JEXEC') or die;
 
-/* search helper knows about the (enhanced) stop words list
- * and is misused to clean the alias for use as a class name */
+/* SearchHelper knows about the (enhanced) stop words list in xx_XXLocalise
+ * and is misused to clean the alias for use as a class name of list items
+ */
 JLoader::register('SearchHelper', JPATH_ADMINISTRATOR .'/components/com_search/helpers/search.php');
+
+// need this to find the default language
+$locale = JFactory::getLanguage()->get('tag');
 
 // Note. It is important to remove spaces between elements.
 ?>
@@ -28,11 +32,26 @@ JLoader::register('SearchHelper', JPATH_ADMINISTRATOR .'/components/com_search/h
 ?>>
 <?php
 foreach ($list as $i => &$item) :
-	// $class = 'li-'.strtolower(metaphone($item->alias)).' '; // ;-)
 
 	$alias = str_replace('-', ' ', $item->alias);
 	SearchHelper::santiseSearchWord($alias, $item->alias);
 	$alias = str_replace(' ', '-', $alias);
+
+	// even if it proxies, singularization is fine for this
+	if ($item->language == 'de-DE' || $locale == 'de-DE') {
+		$alias = de_DELocalise::singularize($alias);
+	}
+	// fall back for english
+	elseif ($item->language == 'en-GB' || $locale == 'en-GB') {
+		// @todo test if JLanguage was patched to contain getSingular()
+		// @todo test if Localise::INFLECTION is true
+		$alias = en_GBLocalise::singularize($alias);
+	}
+	// fall do some smart check for other xx-XXLocalise class
+	else {
+		// call static clas via variable. 5.3+
+	}
+
 	$class = array($alias);
 
 	if ($item->id == $active_id) {

@@ -8,7 +8,6 @@
  * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
 defined('_JEXEC') or die;
-FB::log( __FILE__ ); #HACK FB log filename
 
 ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $this->language; ?>" lang="<?php echo $this->language; ?>" dir="<?php echo $this->direction; ?>" >
@@ -24,43 +23,43 @@ FB::log( __FILE__ ); #HACK FB log filename
 	<div id="footer-push"><a id="page-top" name="page-top"></a>
 
 	<?php if ($headerAboveCount) : ?>
-		<div id="header-above" class="line">
-			<?php if ($headerAboveCount[1]) : ?>
-				<div id="header-above-1" class="<?php echo $headerAboveClass ?>">
-				<jdoc:include type="modules" name="header-above-1" style="mod" />
-				</div><!-- end header-above-1 -->
-			<?php endif; ?>
+		<header class="line above">
+		<?php if ($headerAboveCount[1]) : ?>
+			<div id="header-above-1" class="<?php echo $headerAboveClass ?>">
+			<jdoc:include type="modules" name="header-above-1" style="mod" />
+			</div><!-- end header-above-1 -->
+		<?php endif; ?>
 
-			<?php if ($headerAboveCount[2]) : ?>
-				<div id="header-above-2" class="<?php echo $headerAboveClass ?>">
-				<jdoc:include type="modules" name="header-above-2" style="mod" />
-				</div><!-- end header-above-2 -->
-			<?php endif; ?>
+		<?php if ($headerAboveCount[2]) : ?>
+			<div id="header-above-2" class="<?php echo $headerAboveClass ?>">
+			<jdoc:include type="modules" name="header-above-2" style="mod" />
+			</div><!-- end header-above-2 -->
+		<?php endif; ?>
 
-			<?php if ($headerAboveCount[3]) : ?>
-				<div id="header-above-3" class="<?php echo $headerAboveClass ?>">
-				<jdoc:include type="modules" name="header-above-3" style="mod" />
-				</div><!-- end header-above-3 -->
-			<?php endif; ?>
+		<?php if ($headerAboveCount[3]) : ?>
+			<div id="header-above-3" class="<?php echo $headerAboveClass ?>">
+			<jdoc:include type="modules" name="header-above-3" style="mod" />
+			</div><!-- end header-above-3 -->
+		<?php endif; ?>
 
-			<?php if ($headerAboveCount[4]) : ?>
-				<div id="header-above-4" class="<?php echo $headerAboveClass ?>">
-				<jdoc:include type="modules" name="header-above-4" style="mod" />
-				</div><!-- end header-above-4 -->
-			<?php endif; ?>
+		<?php if ($headerAboveCount[4]) : ?>
+			<div id="header-above-4" class="<?php echo $headerAboveClass ?>">
+			<jdoc:include type="modules" name="header-above-4" style="mod" />
+			</div><!-- end header-above-4 -->
+		<?php endif; ?>
 
-			<?php if ($headerAboveCount[5]) : ?>
-				<div id="header-above-5" class="<?php echo $headerAboveClass ?>">
-				<jdoc:include type="modules" name="header-above-5" style="mod" />
-				</div><!-- end header-above-5 -->
-			<?php endif; ?>
+		<?php if ($headerAboveCount[5]) : ?>
+			<div id="header-above-5" class="<?php echo $headerAboveClass ?>">
+			<jdoc:include type="modules" name="header-above-5" style="mod" />
+			</div><!-- end header-above-5 -->
+		<?php endif; ?>
 
-			<?php if ($headerAboveCount[6]) : ?>
-				<div id="header-above-6" class="<?php echo $headerAboveClass ?>">
-				<jdoc:include type="modules" name="header-above-6" style="mod" />
-				</div><!-- end header-above-6 -->
-			<?php endif; ?>
-		</div><!-- end header-above -->
+		<?php if ($headerAboveCount[6]) : ?>
+			<div id="header-above-6" class="<?php echo $headerAboveClass ?>">
+			<jdoc:include type="modules" name="header-above-6" style="mod" />
+			</div><!-- end header-above-6 -->
+		<?php endif; ?>
+		</header><!-- end header-above -->
 	<?php endif; ?>
 
 		<div id="header" class="line">
@@ -91,7 +90,7 @@ FB::log( __FILE__ ); #HACK FB log filename
 		<div id="body-container">
 
 		<?php if ($headerBelowCount) : ?>
-			<div id="header-below" class="line">
+			<header class="line below">
 			<?php if ($headerBelowCount[1]) : ?>
 				<div id="header-below-1" class="<?php echo $headerBelowClass ?>">
 				<jdoc:include type="modules" name="header-below-1" style="mod"/>
@@ -127,7 +126,7 @@ FB::log( __FILE__ ); #HACK FB log filename
 				<jdoc:include type="modules" name="header-below-6" style="mod"/>
 				</div><!-- end header-below-6 -->
 			<?php endif; ?>
-			</div><!-- end header-below -->
+			</header><!-- end header-below -->
 		<?php endif; ?>
 
 		<?php if ($this->countModules('breadcrumbs')) : ?>
@@ -137,12 +136,12 @@ FB::log( __FILE__ ); #HACK FB log filename
 		<?php endif; ?>
 
 		<?php if ($this->countModules('nav')) : ?>
-			<div id="nav" class="line">
+			<nav id="nav" class="line">
 				<jdoc:include type="modules" name="nav" style="jexhtml" />
-			</div><!-- end nav-->
+			</nav><!-- end nav-->
 		<?php endif; ?>
 
-			<div id="content-container" class="line">
+			<div class="line content-container">
 			<?php if ($navBelowCount) : ?>
 				<div id="nav-below">
 				<?php if ($navBelowCount[1]) : ?>
@@ -183,43 +182,43 @@ FB::log( __FILE__ ); #HACK FB log filename
 				</div><!-- end nav-below -->
 			<?php endif; ?>
 
-				<div id="load-first"><a id="content" name="content"></a>
-					<div id="content-main">
+				<div id="content" class="load-first">
+					<div class="content-main">
 					<?php if ($contentAboveCount) : ?>
-						<div id="content-above" class="line">
+						<div class="line content-above">
 						<?php if ($contentAboveCount[1]) : ?>
 							<div id="content-above-1" class="<?php echo $contentAboveClass ?>">
-							<jdoc:include type="modules" name="content-above-1" style="jexhtml" module-class="mod" />
+							<jdoc:include type="modules" name="content-above-1" style="jexhtml" oocss="mod" />
 							</div><!-- end content-above-1 -->
 						<?php endif; ?>
 
 						<?php if ($contentAboveCount[2]) : ?>
 							<div id="content-above-2" class="<?php echo $contentAboveClass ?>">
-							<jdoc:include type="modules" name="content-above-2" style="jexhtml" module-class="mod" />
+							<jdoc:include type="modules" name="content-above-2" style="jexhtml" oocss="mod" />
 							</div><!-- end content-above-2 -->
 						<?php endif; ?>
 
 						<?php if ($contentAboveCount[3]) : ?>
 							<div id="content-above-3" class="<?php echo $contentAboveClass ?>">
-							<jdoc:include type="modules" name="content-above-3" style="jexhtml" module-class="mod" />
+							<jdoc:include type="modules" name="content-above-3" style="jexhtml" oocss="mod" />
 							</div><!-- end content-above-3 -->
 						<?php endif; ?>
 
 						<?php if ($contentAboveCount[4]) : ?>
 							<div id="content-above-4" class="<?php echo $contentAboveClass ?>">
-							<jdoc:include type="modules" name="content-above-4" style="jexhtml" module-class="mod" />
+							<jdoc:include type="modules" name="content-above-4" style="jexhtml" oocss="mod" />
 							</div><!-- end content-above-4 -->
 						<?php endif; ?>
 
 						<?php if ($contentAboveCount[5]) : ?>
 							<div id="content-above-5" class="<?php echo $contentAboveClass ?>">
-							<jdoc:include type="modules" name="content-above-5" style="jexhtml" module-class="mod" />
+							<jdoc:include type="modules" name="content-above-5" style="jexhtml" oocss="mod" />
 							</div><!-- end content-above-5 -->
 						<?php endif; ?>
 
 						<?php if ($contentAboveCount[6]) : ?>
 							<div id="content-above-6" class="<?php echo $contentAboveClass ?>">
-							<jdoc:include type="modules" name="content-above-6" style="jexhtml" module-class="mod" />
+							<jdoc:include type="modules" name="content-above-6" style="jexhtml" oocss="mod" />
 							</div><!-- end content-above-6 -->
 						<?php endif; ?>
 						</div><!-- end content-above -->
@@ -229,44 +228,44 @@ FB::log( __FILE__ ); #HACK FB log filename
 					<?php endif; ?>
 
 <div class="line">
-<jdoc:include type="component" />
+	<jdoc:include type="component" />
 </div>
 
 					<?php if ($contentBelowCount) : ?>
-						<div id="content-below" class="line">
+						<div class="line content-below">
 						<?php if ($contentBelowCount[1]) : ?>
 							<div id="content-below-1" class="<?php echo $contentBelowClass ?>">
-							<jdoc:include type="modules" name="content-below-1" style="jexhtml" module-class="mod" />
+							<jdoc:include type="modules" name="content-below-1" style="jexhtml" oocss="mod" />
 							</div><!-- end content-below-1 -->
 						<?php endif; ?>
 
 						<?php if ($contentBelowCount[2]) : ?>
 							<div id="content-below-2" class="<?php echo $contentBelowClass ?>">
-							<jdoc:include type="modules" name="content-below-2" style="jexhtml" module-class="mod" />
+							<jdoc:include type="modules" name="content-below-2" style="jexhtml" oocss="mod" />
 							</div><!-- end content-below-2 -->
 						<?php endif; ?>
 
 						<?php if ($contentBelowCount[3]) : ?>
 							<div id="content-below-3" class="<?php echo $contentBelowClass ?>">
-							<jdoc:include type="modules" name="content-below-3" style="jexhtml" module-class="mod" />
+							<jdoc:include type="modules" name="content-below-3" style="jexhtml" oocss="mod" />
 							</div><!-- end content-below-3 -->
 						<?php endif; ?>
 
 						<?php if ($contentBelowCount[4]) : ?>
 							<div id="content-below-4" class="<?php echo $contentBelowClass ?>">
-							<jdoc:include type="modules" name="content-below-4" style="jexhtml" module-class="mod" />
+							<jdoc:include type="modules" name="content-below-4" style="jexhtml" oocss="mod" />
 							</div><!-- end content-below-4 -->
 						<?php endif; ?>
 
 						<?php if ($contentBelowCount[5]) : ?>
 							<div id="content-below-5" class="<?php echo $contentAboveClass ?>">
-							<jdoc:include type="modules" name="content-below-5" style="jexhtml" module-class="mod" />
+							<jdoc:include type="modules" name="content-below-5" style="jexhtml" oocss="mod" />
 							</div><!-- end content-below-5 -->
 						<?php endif; ?>
 
 						<?php if ($contentBelowCount[6]) : ?>
 							<div id="content-below-6" class="<?php echo $contentAboveClass ?>">
-							<jdoc:include type="modules" name="content-below-6" style="jexhtml" module-class="mod" />
+							<jdoc:include type="modules" name="content-below-6" style="jexhtml" oocss="mod" />
 							</div><!-- end content-below-6 -->
 						<?php endif; ?>
 						</div><!-- end content-below -->
@@ -274,15 +273,15 @@ FB::log( __FILE__ ); #HACK FB log filename
 					</div><!-- end content-main -->
 
 				<?php if ($columnGroupAlphaCount) : ?>
-					<div id="column-group-alpha" class="column-group group-alpha">
+					<div class="column-group group-alpha">
 					<?php if ($columnGroupCount[1]) : ?>
 						<div id="column-1" class="<?php echo $columnGroupAlphaClass ?>">
-						<jdoc:include type="modules" name="column-1" style="mod" />
+						<jdoc:include type="modules" name="column-1" style="jexhtml" oocss="mod" />
 						</div><!-- end column-1 -->
 					<?php endif; ?>
 					<?php if ($columnGroupCount[2]) : ?>
 						<div id="column-2" class="<?php echo $columnGroupAlphaClass ?>">
-						<jdoc:include type="modules" name="column-2" style="mod" />
+						<jdoc:include type="modules" name="column-2" style="jexhtml" oocss="mod" />
 						</div><!-- end column-2 -->
 					<?php endif; ?>
 					</div><!-- end column-group-alpha -->
@@ -291,22 +290,22 @@ FB::log( __FILE__ ); #HACK FB log filename
 				</div><!-- end load-first -->
 
 				<?php if ($columnGroupBetaCount) : ?>
-				<div id="column-group-beta" class="column-group group-beta">
+				<div class="column-group group-beta">
 				<?php if ($columnGroupCount[3]) : ?>
 					<div id="column-3" class="<?php echo $columnGroupBetaClass ?>">
-					<jdoc:include type="modules" name="column-3" style="mod" />
+					<jdoc:include type="modules" name="column-3" style="jexhtml" oocss="mod" />
 					</div><!-- end column-2 -->
 				<?php endif; ?>
 				<?php if ($columnGroupCount[4]) : ?>
 					<div id="column-4" class="<?php echo $columnGroupBetaClass ?>">
-					<jdoc:include type="modules" name="column-4" style="mod" />
+					<jdoc:include type="modules" name="column-4" style="jexhtml" oocss="mod" />
 					</div><!-- end column-4 -->
 				<?php endif; ?>
 				</div><!-- end column-group-beta -->
 				<?php endif; ?>
 
 			<?php if ($footerAboveCount) : ?>
-				<div id="footer-above" class="line">
+				<div class="line footer-above">
 				<?php if ($footerAboveCount[1]) : ?>
 					<div id="footer-above-1" class="<?php echo $footerAboveClass ?>">
 					<jdoc:include type="modules" name="footer-above-1" style="mod" />
@@ -344,18 +343,15 @@ FB::log( __FILE__ ); #HACK FB log filename
 		</div><!-- end body-container -->
 	</div><!-- end footer-push -->
 
-	<div id="footer" class="line">
-		<div class="mod">
-			<a id="to-page-top" href="<?php $url->setFragment('page-top'); echo $url->toString();?>" class="to-additional"><?php echo JText::_('TPL_JE_CONSTRUCT_COMMUNITY_JUMP_BACK_TO_TOP') ?></a>
-
-			<?php if ($this->countModules('syndicate')) : ?>
-			<div id="syndicate">
-				<jdoc:include type="modules" name="syndicate" />
-			</div>
-			<?php endif; ?>
-			<jdoc:include type="modules" name="footer" style="jexhtml" />
-		</div><!--end mod -->
-	</div><!-- end footer -->
+	<footer id="footer" class="line">
+		<a id="to-page-top" href="<?php $url->setFragment('page-top'); echo $url->toString();?>" class="to-additional"><?php echo JText::_('TPL_JE_CONSTRUCT_COMMUNITY_JUMP_BACK_TO_TOP') ?></a>
+	<?php if ($this->countModules('syndicate')) : ?>
+		<div class="mod syndicate">
+		<jdoc:include type="modules" name="syndicate" />
+		</div>
+	<?php endif; ?>
+		<jdoc:include type="modules" name="footer" style="jexhtml" />
+	</footer><!-- end footer -->
 
 <?php if ($this->countModules('debug')) : ?>
 	<jdoc:include type="modules" name="debug" style="raw" />

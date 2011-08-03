@@ -28,8 +28,14 @@ class ConstructTemplateHelper
 	/** @var array List of template layout files */
 	protected $layouts = array();
 
+	protected $layoutpath;
+
 	/** @var string Template foldername */
 	protected $tmpl;
+
+	/** @var ConstructTemplateHelper instance of self
+	 * @see getInstance() */
+	protected static $helper;
 
 	/**
 	 * @staticvar array chunks from the static html file(s) *
@@ -51,6 +57,7 @@ class ConstructTemplateHelper
 	public function __construct(JDocument $template)
 	{
 		$this->tmpl = $template;
+		$this->layoutpath = JPATH_THEMES .'/'. $this->tmpl->template .'/layouts';
 
 		// Get the name of the extended template override group
 		$override = $template->params->get('customStyleSheet');
@@ -60,6 +67,14 @@ class ConstructTemplateHelper
 		}
 
 		$this->addLayout('index');
+	}
+
+	public static function getInstance(JDocument $template)
+	{
+		if (!self::$helper) {
+			self::$helper = new ConstructTemplateHelper($template);
+		}
+		return self::$helper;
 	}
 
 	/**
@@ -121,7 +136,7 @@ class ConstructTemplateHelper
 		}
 
 	  	$layout     = ltrim($scope .'/'. basename($basename, $ext) . $ext, ' /_-');
-		$layoutpath = JPATH_THEMES .'/'. $this->tmpl->template .'/layouts/' . $layout;
+		$layoutpath = $this->layoutpath .'/' . $layout;
 
 		if (JFile::exists($layoutpath)) {
 			$this->layouts[$layout] = array('path'=>$layoutpath, 'scope'=>$scope);
@@ -260,6 +275,10 @@ class ConstructTemplateHelper
 		endfor;
 
 		$i = array_sum($modules);
+		if ($i == 0) {
+			return null;
+		}
+
 		$modules[0] = $i;
 
 		return $modules;
@@ -296,3 +315,5 @@ class ConstructTemplateHelper
 	}
 
 }
+// JLoader would look for this; not workin' tho
+// class ElementsHelper extends ConstructTemplateHelper {}

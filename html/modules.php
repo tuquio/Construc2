@@ -25,35 +25,43 @@ function modChrome_jexhtml( $module, &$params, &$attribs ) {
 	$module->content = trim($module->content);
 	if (empty($module->content)) return;
 
-	$headerLevel  = isset($attribs['level'])         ? (int) $attribs['level'] : 3;
-	$headerClass  = isset($attribs['header-class'])  ? $attribs['header-class'] : 'je-header';
-	$moduleClass  = isset($attribs['module-class'])  ? ' '.$attribs['module-class'] : '';
-	$outlineStyle = isset($attribs['outline-style']) ? ' outline-'.$attribs['outline-style'] : '';
+	$css	= array();
+	$css[] 	= isset($attribs['oocss'])  ? $attribs['oocss'] : '';
+	$css[]	= str_replace('_', '-', $module->module);
+	$css[] 	= $params->get('moduleclass_sfx');
 
-	echo '<div class="moduletable ', $module->module, ' ', $params->get('moduleclass_sfx'), $moduleClass, $outlineStyle, ' clearfix">';
-		if ($module->showtitle) {
-			echo '<h', $headerLevel, ' class="', $headerClass, '">', $module->title, '</h', $headerLevel, '>';
-		}
-		echo $module->content ,'
-	</div>';
+	$css[] 	= isset($attribs['module-class'])  ? $attribs['module-class'] : 'moduletable';
+	$css[] 	= isset($attribs['outline-style']) ? 'outline-'.$attribs['outline-style'] : '';
+
+	echo '<div class="', implode(' ', $css), '">';
+	if (isset($attribs['oocss'])) echo '<b class="top"><b class="tl"></b><b class="tr"></b></b>', PHP_EOL;
+
+	echo ' <div class="inner">', PHP_EOL;
+	if ($module->showtitle) {
+		$headerLevel  = isset($attribs['level'])         ? (int) $attribs['level'] : 3;
+		$headerClass  = isset($attribs['header-class'])  ? $attribs['header-class'] : 'je-header';
+		if (isset($attribs['oocss'])) echo '<div class="hd">';
+		echo ' <h', $headerLevel, ' class="', $headerClass, '">', $module->title, '</h', $headerLevel, '>';
+		if (isset($attribs['oocss'])) echo '</div>';
+	}
+	if (isset($attribs['oocss'])) echo '<div class="bd">', PHP_EOL;
+	echo $module->content
+		, PHP_EOL, ' </div><!-- .inner -->', PHP_EOL;
+	if (isset($attribs['oocss'])) echo '</div>';
+
+	if (isset($attribs['oocss'])) echo '<b class="bottom"><b class="bl"></b><b class="br"></b></b>', PHP_EOL;
+	echo '</div>', PHP_EOL;
 }
 
 /**
  * A module style to render modules according to Stubbornella's OOCSS framework, http://oocss.org
  * <b>Joomla's default 'moduletable' class is ignored!</b>
  *
- * Accepted attributes:
- * - level: default 3, the heading level to apply. 3 = <h3>
- * - module-class: optional CSS class for the DIV container
- * The module name (mod_foobar) is split to become "mod foobar" to apply
- * the basic styles of ".mod" and potentionally specialized via ".foobar".
- *
- *
  * @param object     $module
  * @param JRegistry  $params
  * @param array      $attribs
- * @link https://github.com/stubbornella/oocss/wiki/standard-module-format
- * @link http://oocss.org
+ * @link  https://github.com/stubbornella/oocss/wiki/standard-module-format
+ * @link  http://oocss.org
  * @author WebMechanic http://webmechanic.biz
  */
 function modChrome_mod( $module, &$params, &$attribs ) {
@@ -61,26 +69,13 @@ function modChrome_mod( $module, &$params, &$attribs ) {
 	$module->content = trim($module->content);
 	if (empty($module->content)) return;
 
-	$headerLevel = isset($attribs['level'])         ? (int) $attribs['level'] : 3;
-	$moduleClass = isset($attribs['module-class'])  ? ' '.$attribs['module-class'] : '';
-	$moduleName  = str_replace('_', '-', substr($module->module, 4));
-	if ($sfx = $params->get('moduleclass_sfx')) {
-		$moduleName  .= ' ' . $sfx;
+	if (array_key_exists('oocss', $attribs)) {
+		$attribs['oocss'] = 'mod '. $attribs['oocss'];
+	} else {
+		$attribs['oocss'] = 'mod';
 	}
 
-	$oocssClass = isset($attribs['__oocss__'])  ? ' '.$attribs['__oocss__'] : '';
-
-	echo '<div class="mod ', $oocssClass, $moduleName, $moduleClass, '">', PHP_EOL
-		, '	<b class="top"><b class="tl"></b><b class="tr"></b></b>', PHP_EOL
-		, '	<div class="inner">', PHP_EOL;
-		if ($module->showtitle) {
-			echo '<div class="hd">';
-			echo '<h', $headerLevel, '>', $module->title, '</h', $headerLevel, '>';
-		}
-		echo '<div class="bd">', $module->content , '</div>', PHP_EOL
-		, '	</div>', PHP_EOL
-		, '	<b class="bottom"><b class="bl"></b><b class="br"></b></b>', PHP_EOL
-		, '</div>';
+	modChrome_mod( $module, $params, $attribs );
 }
 
 /**
@@ -90,13 +85,13 @@ function modChrome_mod( $module, &$params, &$attribs ) {
  * @param object     $module
  * @param JRegistry  $params
  * @param array      $attribs
- * @uses modChrome_mod()
- * @link https://github.com/stubbornella/oocss/wiki/Module
+ * @uses  modChrome_mod()
+ * @link  https://github.com/stubbornella/oocss/wiki/Module
  * @author WebMechanic http://webmechanic.biz
  */
 function modChrome_complex( $module, &$params, &$attribs )
 {
-	$attribs['__oocss__'] = 'complex';
+	$attribs['oocss'] = 'complex';
 	modChrome_mod( $module, $params, $attribs );
 }
 
@@ -113,7 +108,7 @@ function modChrome_complex( $module, &$params, &$attribs )
  */
 function modChrome_pop( $module, &$params, &$attribs )
 {
-	$attribs['__oocss__'] = 'pop';
+	$attribs['oocss'] = 'pop';
 	modChrome_mod( $module, $params, $attribs );
 }
 
@@ -140,7 +135,10 @@ function modChrome_pop( $module, &$params, &$attribs )
  */
 function modChrome_bubble( $module, &$params, &$attribs )
 {
-	$attribs['__oocss__'] = 'bubble';
+	$attribs['oocss'] = 'bubble';
+	$attribs['oocss'] = isset($attribs['bubble']) ? $attribs['bubble'] : '';
+	$attribs['oocss'] = isset($attribs['edge'])   ? $attribs['edge'] : '';
+
 	modChrome_mod( $module, $params, $attribs );
 }
 
@@ -155,7 +153,7 @@ function modChrome_withevent(&$content, $params)
 	if (null == $item) {
 		// Create temporary article-stub to have all req. attriutes
 		$item = JTable::getInstance('content');
-		$item->parameters = new JParameter('');
+		$item->parameters = new JRegistry('');
 	}
 	$item->text = $content;
 

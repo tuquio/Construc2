@@ -13,14 +13,15 @@
  */
 
 /** Load the ConstructTemplateHelper Class */
-require_once dirname(__FILE__).'/helper.php';
+# JLoader::import($this->template.'.elements.helper', 'templates', 'templates.');
+require_once dirname(__FILE__) . '/helper.php';
 
 /** @var $app JSite To enable use of site configuration */
 $app 					= JFactory::getApplication();
-/** @var $baseUrl string Get the base URL of the website */
-$baseUrl 				= JURI::base();
-/** @var $template string Define relative shortcut for current template directory */
-$template 				= 'templates/'.$this->template;
+/** @var $base_url string Get the base URL of the website */
+$base_url 				= JURI::base();
+/** @var $tmpl_url string Define relative shortcut for current template directory */
+$tmpl_url 				= $base_url. 'templates/'. $this->template;
 /** @var $url JURI Get the current URL */
 $url 					= clone(JURI::getInstance());
 
@@ -76,7 +77,7 @@ if ($loadMoo == false) {
 
 #--------------------------------------------------------------------------#
 
-$templateHelper = new ConstructTemplateHelper($this);
+$templateHelper = &ConstructTemplateHelper::getInstance($this);
 
 // will contain custom script code depending on selected params
 $scriptDeclarations	= array();
@@ -85,37 +86,37 @@ $scriptDeclarations	= array();
 // from http://groups.google.com/group/joomla-dev-general/browse_thread/thread/b54f3f131dd173d
 
 if ($headerAboveCount = $templateHelper->getModulesCount('header-above', ConstructTemplateHelper::MAX_MODULES)) :
-	$headerAboveClass = 'header-above count-'.$headerAboveCount[0];
+	$headerAboveClass = 'above count-'.$headerAboveCount[0];
 endif;
 
 #--------------------------------------------------------------------------#
 
 if ($headerBelowCount = $templateHelper->getModulesCount('header-below', ConstructTemplateHelper::MAX_MODULES)) :
-	$headerBelowClass = 'header-below count-'.$headerBelowCount[0];
+	$headerBelowClass = 'below count-'.$headerBelowCount[0];
 endif;
 
 #--------------------------------------------------------------------------#
 
 if ($navBelowCount = $templateHelper->getModulesCount('nav-below', ConstructTemplateHelper::MAX_MODULES)) :
-	$navBelowClass = 'nav-below count-'.$navBelowCount[0];
+	$navBelowClass = 'below count-'.$navBelowCount[0];
 endif;
 
 #--------------------------------------------------------------------------#
 
 if ($contentAboveCount = $templateHelper->getModulesCount('nav-below', ConstructTemplateHelper::MAX_MODULES)) :
-	$contentAboveClass = 'content-above count-'.$contentAboveCount[0];
+	$contentAboveClass = 'above count-'.$contentAboveCount[0];
 endif;
 
 #--------------------------------------------------------------------------#
 
 if ($contentBelowCount = $templateHelper->getModulesCount('content-below', ConstructTemplateHelper::MAX_MODULES)) :
-	$contentBelowClass = 'content-below count-'.$contentBelowCount[0];
+	$contentBelowClass = 'below count-'.$contentBelowCount[0];
 endif;
 
 #--------------------------------------------------------------------------#
 
 if ($footerAboveCount = $templateHelper->getModulesCount('footer-above', ConstructTemplateHelper::MAX_MODULES)) :
-	$footerAboveClass = 'footer-above count-'.$footerAboveCount[0];
+	$footerAboveClass = 'above count-'.$footerAboveCount[0];
 endif;
 
 #------------------------------ Column Layout -----------------------------#
@@ -128,14 +129,15 @@ if ($columnGroupAlphaCount) : $columnGroupAlphaClass = 'column-alpha colcount-'.
 $columnGroupBetaCount = $columnGroupCount[3] + $columnGroupCount[4];
 if ($columnGroupBetaCount) : $columnGroupBetaClass = 'column-beta colcount-'.$columnGroupBetaCount; endif;
 
+# alpha-X-main-beta-Y
 $columnLayout = 'main-only';
 if ($columnGroupAlphaCount > 0) {
-	$columnLayout = 'alpha-'.$columnGroupAlphaCount.'-main';
+	$columnLayout = 'alpha-main';
 	if ($columnGroupBetaCount > 0) {
-		$columnLayout .= '-beta-'.$columnGroupBetaCount;
+		$columnLayout .= '-beta';
 	}
 } elseif ($columnGroupBetaCount > 0) {
-	$columnLayout = 'main-beta-'.$columnGroupBetaCount;
+	$columnLayout = 'main-beta';
 }
 
 // FB::info($columnGroupCount, 'columns: '.$columnLayout); #HACK FB log filename
@@ -146,33 +148,33 @@ if ($columnGroupAlphaCount > 0) {
 $this->addCustomTag('<meta name="copyright" content="'.$app->getCfg('sitename').'" />');
 
 // Transparent favicon
-if (is_file($template.'/favicon.png')) {
-	$this->addFavicon($template.'/favicon.png', 'image/png', 'icon');
-} else if (is_file($template.'/favicon.ico')) {
-	$this->addFavicon($template.'/favicon.ico', 'image/x-icon', 'icon');
+if (is_file(JPATH_THEMES .'/'. $this->template .'/favicon.png')) {
+	$this->addFavicon($tmpl_url.'/favicon.png', 'image/png', 'icon');
+} else if (is_file(JPATH_THEMES .'/'. $this->template .'/favicon.ico')) {
+	$this->addFavicon($tmpl_url.'/favicon.ico', 'image/x-icon', 'icon');
 }
 
 // Style sheets
-$this->addStyleSheet($template.'/css/core/base.css','text/css');
-$this->addStyleSheet($template.'/css/core/oocss.css','text/css');
-$this->addStyleSheet($template.'/css/core/screen.css','text/css','screen');
-$this->addStyleSheet($template.'/css/core/print.css','text/css','print');
+$this->addStyleSheet($tmpl_url.'/css/core/base.css','text/css');
+$this->addStyleSheet($tmpl_url.'/css/core/oocss.css','text/css');
+$this->addStyleSheet($tmpl_url.'/css/core/screen.css','text/css','screen');
+$this->addStyleSheet($tmpl_url.'/css/core/print.css','text/css','print');
 if ($customStyleSheet) {
-	$this->addStyleSheet($template.'/css/'.$customStyleSheet,'text/css','screen,projection,print');
+	$this->addStyleSheet($tmpl_url.'/css/'.$customStyleSheet,'text/css','screen,projection,print');
 }
 if ($this->direction == 'rtl') {
-	$this->addStyleSheet($template.'/css/core/rtl.css','text/css','screen');
+	$this->addStyleSheet($tmpl_url.'/css/core/rtl.css','text/css','screen');
 }
 // cheap and all but smart
 if ( in_array(JRequest::get('layout','cmd'), array('edit','form')) ) {
-	$this->addStyleSheet($template.'/css/core/edit-form','text/css','screen');
+	$this->addStyleSheet($tmpl_url.'/css/core/edit-form','text/css','screen');
 }
 
 // Style sheet switcher
 if ($enableSwitcher) {
-	$this->addHeadLink($template.'/css/core/diagnostic.css', 'alternate stylesheet', 'rel', $attribs = array('title'=>'diagnostic'));
-	$this->addHeadLink($template.'/css/core/wireframe.css', 'alternate stylesheet', 'rel', $attribs = array('title'=>'wireframe'));
-	$this->addScript($template.'/js/styleswitch.js');
+	$this->addHeadLink($tmpl_url.'/css/core/diagnostic.css', 'alternate stylesheet', 'rel', $attribs = array('title'=>'diagnostic'));
+	$this->addHeadLink($tmpl_url.'/css/core/wireframe.css', 'alternate stylesheet', 'rel', $attribs = array('title'=>'wireframe'));
+	$this->addScript($tmpl_url.'/js/styleswitch.js');
 }
 
 // Typography (protocol relative URLs)
@@ -196,6 +198,25 @@ if ($loadMoo == true) {
 }
 if ($loadjQuery) {
 	$this->addScript('//ajax.googleapis.com/ajax/libs/jquery/'. $loadjQuery .'/jquery.min.js');
+
+	$head = $this->getHeadData();
+	$jqjs = preg_grep('#(jquery\.)#', array_keys($head['scripts']));
+/*
+ * #FIXME view layouts können jQuery-Plugins dazuladen, die dann
+ * jedoch zu früh ausgeführt werden. jQuery selbst wird zu spät geladen...
+	// jQuery Google CDN takes precendence
+	foreach ((array) $jqjs as $i => $url) {
+		if ( false !== strpos($url, 'googleapis.com') ) {
+			$jquery = array($url => $head['scripts'][$url]);
+			// nuke old entry
+			unset($head['scripts'][$url]);
+			// recombine
+			$head['scripts'] = $jquery + $head['scripts'];
+		}
+	}
+	$this->setHeadData($head);
+*/
+	// without MooTools we must drop all but core.js
 	if ($loadMoo == true) {
 		$scriptDeclarations[] = "\tif (window.jQuery){jQuery.noConflict();}";
 	}
@@ -213,10 +234,13 @@ if (!$fullWidth) {
 }
 
 // Internet Explorer Fixes
+# html5 shim
+$this->addCustomTag('<!--[if lt IE 9]><script src="'.$base_url.'media/system/js/html5.js" type="text/javascript"></script><![endif]-->');
+
 if ($IECSS3) {
 	$this->addCustomTag(
-  		 PHP_EOL . '<!--[if IE lt 9]>'
-  		.PHP_EOL . '<style type="text/css">'.$IECSS3Targets.' {behavior:url("'.$baseUrl.$template.'/js/PIE.htc")}</style>'
+  		 PHP_EOL . '<!--[if lt IE 9]>'
+  		.PHP_EOL . '<style type="text/css">'.$IECSS3Targets.' {behavior:url("'.$tmpl_url.'/js/PIE.htc")}</style>'
   		.PHP_EOL . '<![endif]-->');
 }
 
@@ -233,7 +257,7 @@ if ($useStickyFooter) {
 
 $this->addCustomTag(
 		 PHP_EOL . '<!--[if lt IE 7]>'
-		.PHP_EOL . '<link rel="stylesheet" href="'.$template.'/css/core/ie6.css" type="text/css" media="screen" />'
+		.PHP_EOL . '<link rel="stylesheet" href="'.$tmpl_url.'/css/core/ie6.css" type="text/css" media="screen" />'
 		.PHP_EOL . '<style type="text/css">'
 		.PHP_EOL . 'body {text-align:center}'
 		.PHP_EOL . '#body-container {text-align:left}'
@@ -245,7 +269,7 @@ $this->addCustomTag(
 		);
 
 if ($IE6TransFix) {
-	$this->addScript($template.'/js/DD_belatedPNG_0.0.8a-min.js');
+	$this->addScript($tmpl_url.'/js/DD_belatedPNG_0.0.8a-min.js');
 	$scriptDeclarations[] = "\t/* IE6TransFix */ if (DD_belatedPNG.fix) {DD_belatedPNG.fix('". $IE6TransFixTargets ."')}";
 }
 

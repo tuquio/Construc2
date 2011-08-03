@@ -6,7 +6,8 @@
 * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
 */
 
-JHtml::_('behavior.keepalive');
+// JHtml::_('behavior.keepalive');
+
 ?>
 <?php if ($type == 'logout') : ?>
 <form action="index.php" method="post" name="form-login" id="form-login">
@@ -25,6 +26,7 @@ JHtml::_('behavior.keepalive');
 	<input type="hidden" name="option" value="com_users" />
 	<input type="hidden" name="task" value="user.logout" />
 	<input type="hidden" name="return" value="<?php echo $return; ?>" />
+	<?php echo JHtml::_('form.token'); ?>
 </form>
 <?php else : ?>
 <form action="<?php echo JRoute::_('index.php', true, $params->get('usesecure')); ?>" method="post" name="form-login" id="form-login" >
