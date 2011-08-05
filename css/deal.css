@@ -48,7 +48,7 @@ ol:first-child,
 ul:first-child {margin-top:0}
 
 /* =column layout */
-#body-container	, 
+#body-container	,
 #header-above	{margin:0 auto;}
 
 .content-main {
@@ -68,7 +68,7 @@ ul:first-child {margin-top:0}
 .alpha-main-beta .group-alpha	{width:20%; float:right; }
 .alpha-main-beta .group-beta	{width:20%; }
 
-/* 
+/*
  * =columns context
  */
 .column-group fieldset	{padding:5px;}
@@ -88,7 +88,7 @@ div.deal {position:relative;margin:10px;}
 .merchant-info b	{}
  .merchant-name		{}
  .merchant-logo		{}
- 
+
 .coupon 			{}
 .coupon header		{}
 .coupon header h2	{font-size:2.4em;line-height:normal;}
@@ -97,15 +97,15 @@ div.deal {position:relative;margin:10px;}
 .coupon article		{}
 
 /* price + payment */
-.the-deal 	{font-size: 200%; text-align: center;}
- .discount	{width:100%; font-weight:bold;}
- .savings	{width:100%; font-weight:bold;}
+.the-deal 	{text-align: center;}
+ .discount	{width:100%; font-weight:bold; font-size:2em; }
+ .savings	{width:100%; font-weight:bold; font-size:2em; }
 
 .the-deal		{margin-top: 10px;}
 .deal-details 	{margin-top: 10px;}
 
 .discount span		{}
- .discount .deal 	{font-size:2em}
+ .discount .deal 	{font-size:2em; padding-right:1ex;}
  .discount .price 	{font-size:1.4em; text-decoration:line-through;}
 
 .savings span	{}
@@ -119,9 +119,10 @@ div.deal {position:relative;margin:10px;}
 .payments img	{}
 
 /* countdown timer */
+div.countdown 		{font-weight:normal;}
 #tmr {width:240px; height:auto; position:relative; margin:5px auto 10px;}
-.countdown_row		{font-size:60%; font-weight:normal;}
-.countdown_amount	{font-size:140%; font-weight:bold; }
+.countdown_row		{}
+.countdown_amount	{font-weight:bold; font-size:1.6em; line-height:normal;}
 
 /* content */
 .deal-details	{}
@@ -141,7 +142,7 @@ div.deal {position:relative;margin:10px;}
 .cond	ol	,
 .cond ul	{margin-top:0; padding-left:.5ex;}
 
-/* 
+/*
  * =modules
  */
 .mod-login ul	{margin-left:10px;padding-left:.7em}
@@ -188,7 +189,7 @@ h1,h2,h3,h4,h5,h6 {color: rgb(90,15,15)}
 -webkit-transform: translate(0px, -10px);
    -moz-transform: translate(0px, -10px);
     -ms-transform: translate(0px, -10px);
-     -o-transform: translate(0px, -10px); 
+     -o-transform: translate(0px, -10px);
 		transform: translate(0px, -10px);
 }
 
@@ -196,14 +197,14 @@ h1,h2,h3,h4,h5,h6 {color: rgb(90,15,15)}
 -webkit-transform: rotate(-1.25deg);
    -moz-transform: rotate(-1.25deg);
     -ms-transform: rotate(-1.25deg);
-     -o-transform: rotate(-1.25deg); 
+     -o-transform: rotate(-1.25deg);
 		transform: rotate(-1.25deg);
 }
 .skew.sk-up2 {
 -webkit-transform: rotate(-2.5deg);
    -moz-transform: rotate(-2.5deg);
     -ms-transform: rotate(-2.5deg);
-     -o-transform: rotate(-2.5deg); 
+     -o-transform: rotate(-2.5deg);
 		transform: rotate(-2.5deg);
 }
 
@@ -211,14 +212,14 @@ h1,h2,h3,h4,h5,h6 {color: rgb(90,15,15)}
 -webkit-transform: rotate(1.25deg);
    -moz-transform: rotate(1.25deg);
     -ms-transform: rotate(1.25deg);
-     -o-transform: rotate(1.25deg); 
+     -o-transform: rotate(1.25deg);
 		transform: rotate(1.25deg);
 }
 .skew.sk-dn2 {
 -webkit-transform: rotate(2.5deg);
    -moz-transform: rotate(2.5deg);
     -ms-transform: rotate(2.5deg);
-     -o-transform: rotate(2.5deg); 
+     -o-transform: rotate(2.5deg);
 		transform: rotate(2.5deg);
 }
 
