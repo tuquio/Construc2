@@ -1,6 +1,10 @@
 <?php
 /**
- * mod_menu override
+ * A better mod_menu override
+ *
+ * Magic class_sfx '_ordered' or '_ol' uses an ordered list instead
+ * of the standard unordered list for rendering. Other params apply.
+ *
  * @package		Template
  * @subpackage	HTML
  * @author		WebMechanic http://webmechanic.biz
@@ -16,14 +20,19 @@ defined('_JEXEC') or die;
  * and is misused to clean the alias for use as a class name of list items
  */
 JLoader::register('SearchHelper', JPATH_ADMINISTRATOR .'/components/com_search/helpers/search.php');
-
 // need this to find the default language
 $locale = JFactory::getLanguage()->get('tag');
 
+$tag = 'ul';
+
+if ( preg_match('#(?:[_|-](ordered|ol))#iu', $class_sfx, $m) ) {
+	$class_sfx = str_replace($m[0], '', $class_sfx);
+	$tag = 'ol';
+}
+
 // Note. It is important to remove spaces between elements.
 ?>
-
-<ul class="menu <?php echo $class_sfx;?>"<?php
+<<?php echo $tag;?> class="menu <?php echo $class_sfx;?>"<?php
 	$tag = '';
 	if ($params->get('tag_id')!=NULL) {
 		$tag = $params->get('tag_id').'';
@@ -39,20 +48,24 @@ foreach ($list as $i => &$item) :
 
 	// even if it proxies, singularization is fine for this
 	if ($item->language == 'de-DE' || $locale == 'de-DE') {
-		$alias = de_DELocalise::singularize($alias);
+		if ( method_exists('de_DELocalise', 'singularize') ) {
+			$alias = de_DELocalise::singularize($alias);
+		}
 	}
 	// fall back for english
 	elseif ($item->language == 'en-GB' || $locale == 'en-GB') {
 		// @todo test if JLanguage was patched to contain getSingular()
 		// @todo test if Localise::INFLECTION is true
-		$alias = en_GBLocalise::singularize($alias);
+		if ( method_exists('en_GBLocalise', 'singularize') ) {
+			$alias = en_GBLocalise::singularize($alias);
+		}
 	}
-	// fall do some smart check for other xx-XXLocalise class
 	else {
-		// call static clas via variable. 5.3+
+		// do some smart check for other xx-XXLocalise class
+		// call static class via variable. 5.3+
 	}
 
-	$class = array($alias);
+	$class = array('mi', $alias);
 
 	if ($item->id == $active_id) {
 		$class[] = 'current ';
@@ -104,4 +117,4 @@ foreach ($list as $i => &$item) :
 		echo '</li>';
 	}
 endforeach;
-?></ul>
+?></<?php echo $tag;?>>

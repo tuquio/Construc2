@@ -15,7 +15,7 @@ to learn more about "Joomla Engineering Construct Template Framework for Joomla!
 Removed all `index.html`; have .htaccess for that.
 
 Removed identical code from main `index.php` leaving `/layouts/index.php`
-the default layout if none is provided or found to match the custom CSS 
+the default layout if none is provided or found to match the custom CSS
 from template paramaters.
 
 Both `logic.php` and `helper.php` are now loaded unconditionally.
@@ -67,15 +67,13 @@ execpt core.js are removed, because the all depend on Mootools.
 Added condition for the call of SmoothScroller() that woudn't work if
 Mootools were disabled.
 
-Added support to use favicon.ico in case favicon.png does not exist.
-
 Put some of its "logic" on a diet and killed redundancy = ~30% less code.
 
 Fixed some calls for adding extra (MSIE) styles and links happened unconditionally
 causing issues on the client side.
 
 Replaced all `$doc` with `$this` which in the given context is exactly the
-same as `JFactory::getDocument()`. 
+same as `JFactory::getDocument()`.
 
 == Refactored helper.php
 Implemented some logic into ConstructTemplateHelper which (as a helper) ought
@@ -133,11 +131,11 @@ Like the first `$googleWebFont` parameter, loads of module positions helper
 variables also used an un-numbered first `$fooBar` and continue counting from
 `$fooBar2` to `$fooBar6`.
 
-This inefficiency has been fixed using arrays to quickly loop through all 
+This inefficiency has been fixed using arrays to quickly loop through all
 variables and results in much less repetitive code.
 
 For example `$headerAboveCount[0]` holds to total amount of a modules found
-in "header-above-1" to "header-above-6", wheras `$headerAboveCount[1]` to 
+in "header-above-1" to "header-above-6", wheras `$headerAboveCount[1]` to
 `$headerAboveCount[6]` contain the inividual amounts.
 If no modules are found `$headerAboveCount` becomes `NULL`. This only affects
 how individualpositions need to be tested in the template code:
@@ -150,17 +148,21 @@ now use:
   `if ($headerAboveCount[ 2 ]) :`
 and so forth.
 
-WIP: The "column groups" ("alpha" and "beta") are not yet dealt with.
+Replaced the oh so many `<jdoc:include type="modules"..>` with a native
+`ConstructTemplateHelper::renderModules()` as a proxies to
+`JModuleHelper::renderModule()`. This not only saves parsing time and memory,
+but the HTML and PHP validation in the IDE will no complain any longer about
+40-some invalid tags.
 
 == Core Styles
 Moved "core" stylesheets to ./css/core reducing name conflicts and more
-flexibility in using `customStyleSheet`. Reserved names remaining: 
-template, editor, ie* commonly used in plugins. Files starting with 
+flexibility in using `customStyleSheet`. Reserved names remaining:
+template, editor, ie* commonly used in plugins. Files starting with
 `test`or `x~` are ignored. See also: "Template Params".
 
-Removed all `@charset "utf-8"` as they cause serious trouble if files are 
+Removed all `@charset "utf-8"` as they cause serious trouble if files are
 concatenated and minified. Encoding ought to be handled by the text editor
-and via .htaccess anyway (not included): 
+and via .htaccess anyway (not included):
 > ## force utf-8
 > AddDefaultCharset utf-8
 > AddCharset utf-8 .html .xml .rss
@@ -178,7 +180,7 @@ Refactored repetitive module class code into semi-configurable loops.
 Many selectors are utterly over-specified and there are way too many id-selectors
 in charge **for styling only**, leading into dangerous "specificity wars"(tm).
 To calm that down for areas like columns, wrapper, modules, and gutters, more
-friendly and semantic CSS classes were and will be introduced (also) via logic.php 
+friendly and semantic CSS classes were and will be introduced (also) via logic.php
 to pull back many style rules to a sane applicable specificity level.
 
 Rathern than having ONLY a gazillion 'count-x' that ALL require a brute-force
@@ -194,7 +196,7 @@ Very unlikely those colums are meant to "flow" and squeezing the main-content.
 == Index Default Layout
 Switching to OOCSS for a lightweight "CSS Framework" saves lots of layout
 conditions and simplifies columns and modules to a handvoll **cascading**
-clases.
+classes. http://oocss.org/
 
 * replaced various Module styles using "jexhtml" with "mod".
 * replaced loads of .clear and .clearfix with .line

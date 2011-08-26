@@ -8,7 +8,7 @@ html, .sticky-footer{height:100%}
 .sticky-footer #footer{position:relative;clear:both}
 .sticky-footer:before{content:"";height:100%;float:left;width:0;margin-top:-32767px}/*Opera Fix*/
 
-.fluid-media img, .fluid-media object {max-width:100%}
+.fluid-media img, .fluid-media object {max-width:100%;-ms-interpolation-mode: bicubic;}
 
 /* -- Base Typography -- */
 body{color:#333;line-height:1.6em;}
@@ -27,13 +27,13 @@ body.times{font-family:"Times New Roman", Times, serif}
 body.trebuchet{font-family:"Trebuchet MS", Helvetica, sans-serif}
 body.verdana{font-family:Verdana, Geneva, sans-serif}
 
-h1{font-size:2em;font-weight:normal}
-h2{font-size:1.7em;font-weight:normal}
-h3{font-size:1.4em;font-weight:normal}
-h4{font-size:1.2em;font-weight:bold}
-h5{font-size:1.0em;font-weight:bold}
-h6{font-size:0.8em;font-weight:bold}
-h1,h2,h3,h4,h5,h6{margin:.3em 0}
+h1,.H1{font-size:2em;font-weight:normal}
+h2,.H2{font-size:1.7em;font-weight:normal}
+h3,.H3{font-size:1.4em;font-weight:normal}
+h4,.H4{font-size:1.2em;font-weight:bold}
+h5,.H5{font-size:1.0em;font-weight:bold}
+h6,.H6{font-size:0.8em;font-weight:bold}
+h1,.H1,h2,.H2,h3,.H3,h4,.H4,h5,.H5,h6,.H6{margin:.3em 0}
 h3+ul, h3+ol {margin-top:-.3em}
 
 input.button{padding:0 10px}
@@ -53,7 +53,7 @@ table.category {border:1px solid #000}
 .contact #contact-email-copy {position:relative;top:4px;}
 .content_vote{margin:0 0 10px;display:block}
 .content_vote input{margin:0 5px}
-.content_vote .button{border:0;font-weight:bold;margin:20px 10px 0 0;padding:0 0 0 30px;cursor:pointer} 
+.content_vote .button{border:0;font-weight:bold;margin:20px 10px 0 0;padding:0 0 0 30px;cursor:pointer}
 
 .date-container {float:right}
 .date-weekday, .date-month, .date-day, .date-year {/* intentionally left blank */}
@@ -69,7 +69,7 @@ table.category {border:1px solid #000}
 ol.form{float:left; list-style:none; width:100%}
 ol.form li{clear:both;float:left;margin:0 0 10px;width:100%;position:relative}
 ol.form label{cursor:pointer;display:block;font-weight:bold;margin:0 10px 0 0}
-ol.form input, 
+ol.form input,
 ol.form textarea{font:inherit;padding:2px}
 ol.form textarea{height:250px}
 ol.form li.group label{margin:0; width:auto}
@@ -82,7 +82,7 @@ ol.form li.checkbox {float:left;width:10px}
 ol.form span.error{position:absolute;top:0;right:0}
 input.invalid,
 textarea.invalid{border:solid 2px #ff0000}
-label.invalid{color:#ff0000;font-weight:bold}
+label.invalid{color:#ff0000;font-weight:bold;text-decoration:underline}
 .login-fields {padding:0 0 5px 0}
 .login-fields label{cursor:pointer;display:block;float:left;margin:0 10px 0 0;min-width:90px}
 .outline{border:1px solid #ccc;-moz-border-radius:10px;-webkit-border-radius:10px;border-radius:10px;padding:5px;margin:5px}
@@ -120,7 +120,7 @@ label.invalid{color:#ff0000;font-weight:bold}
 .search .phrases option{border-bottom:solid 1px #333;padding:2px}
 .search .phrases a:hover{background:#C00;border-color:#CFD0D6;color:#fff}
 .search input{padding:3px 5px}
-.search .word {padding:10px 10px 10px 0;border:solid 0 !important}		
+.search .word {padding:10px 10px 10px 0;border:solid 0 !important}
 .search .word input {border:1px solid #ccc;margin:0 0 0 10px;padding:2px}
 .tip {float:left;background:#ffc;border:1px solid #D4D5AA;padding:5px;max-width:400px;z-index:50;-webkit-box-shadow:5px 5px 10px rgba(0,0,0,0.6);-moz-box-shadow:5px 5px 10px rgba(0,0,0,0.6);box-shadow:5px 5px 10px rgba(0,0,0,0.6)}
 .tip-title {padding:0;margin:0;font-size:1em;font-weight:bold;margin-top:-15px;padding-top:15px;padding-bottom:5px;background:url(../images/selector-arrow.png) no-repeat;}
@@ -137,8 +137,8 @@ label.invalid{color:#ff0000;font-weight:bold}
 #diagnostics {float:right;clear:right}
 
 #footer {text-align:center;}
-#footer .menu, #footer .menu li {display:inline;list-style:none;margin:0;padding:0;}
-#footer .menu li a, #footer .menu a:visited {font-weight:normal;padding:1px 3px;text-decoration:none;}
+.footer .menu, .footer .menu li {display:inline;list-style:none;margin:0;padding:0;}
+.footer .menu li a, .footer .menu a:visited {font-weight:normal;padding:1px 3px;text-decoration:none;}
 
 #form-login label{cursor:pointer;display:block;margin:0 10px 0 0;width:120px}
 #form-login-remember label {float:left}
@@ -149,7 +149,7 @@ label.invalid{color:#ff0000;font-weight:bold}
 #logo a {display:block;width:300px;height:100px;text-decoration:none;}
 #logo a:focus{outline:none}
 
-#siteinfo-legal{text-align:left;width:500px;margin:0 auto}	
+#siteinfo-legal{text-align:left;width:500px;margin:0 auto}
 
 #style-switch{list-style-type:none;float:right;clear:right}
 

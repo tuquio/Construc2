@@ -10,15 +10,6 @@
 // no direct access
 defined('_JEXEC') or die;
 
-$app = JFactory::getApplication();
-$templateparams =$app->getTemplate(true)->params;
-
-if ($templateparams->get('html5') != 1) :
-	require(JPATH_BASE.'/components/com_content/views/category/tmpl/default_articles.php');
-	//evtl. ersetzen durch JPATH_COMPONENT.'/views/...'
-	return;
-endif;
-
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 JHtml::_('behavior.tooltip');
 JHtml::core();
@@ -172,4 +163,3 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 		<input type="hidden" name="limitstart" value="" />
 	</div>
 </form>
-<?php endif; ?>

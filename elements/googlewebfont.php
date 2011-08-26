@@ -176,6 +176,7 @@ class JFormFieldGooglewebfont extends JFormFieldList
 		$options[]	= JHtml::_('select.option', 'UnifrakturCook', 'UnifrakturCook');
 		$options[]	= JHtml::_('select.option', 'UnifrakturMaguntia', 'UnifrakturMaguntia');
 		$options[]	= JHtml::_('select.option', 'Unkempt', 'Unkempt');
+		$options[]	= JHtml::_('select.option', 'Unna', 'Unna');
 		$options[]	= JHtml::_('select.option', 'VT323', 'VT323');
 		$options[]	= JHtml::_('select.option', 'Vibur', 'Vibur');
 		$options[]	= JHtml::_('select.option', 'Vollkorn', 'Vollkorn');

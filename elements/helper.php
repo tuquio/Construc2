@@ -11,6 +11,16 @@ defined('_JEXEC') or die;
 jimport('joomla.filesystem.file');
 
 /**
+ * Proxy for the onBeforeCompileHead event because the Dispatcher only
+ * allows function or class-based observers and insists on instatiating
+ * the given 'class' for unknown reasons.
+ */
+function ConstructTemplateHelperCompileHead()
+{
+	ConstructTemplateHelper::$helper->beforeCompileHead();
+}
+
+/**
  * ConstructTemplateHelper
  *
  * Helper functions for the Construct Template Framework
@@ -30,12 +40,12 @@ class ConstructTemplateHelper
 
 	protected $layoutpath;
 
-	/** @var string Template foldername */
+	/** @var JDocumentHTML $tmpl template instance */
 	protected $tmpl;
 
 	/** @var ConstructTemplateHelper instance of self
 	 * @see getInstance() */
-	protected static $helper;
+	public static $helper;
 
 	/**
 	 * @staticvar array chunks from the static html file(s) *
@@ -49,6 +59,13 @@ class ConstructTemplateHelper
 	 */
 	static $chunks = array('header','footer','aside','nav','section','article');
 
+	/**@#+
+	 * Protected head and meta elemente for custom browser ressources
+	 * @var array
+	 */
+	static protected $head = array();
+	/**@#- */
+
 	/**
 	 * Template Helper constructor expects the template object as its argument.
 	 *
@@ -56,7 +73,7 @@ class ConstructTemplateHelper
 	 */
 	public function __construct(JDocument $template)
 	{
-		$this->tmpl = $template;
+		$this->tmpl =& $template;
 		$this->layoutpath = JPATH_THEMES .'/'. $this->tmpl->template .'/layouts';
 
 		// Get the name of the extended template override group
@@ -67,6 +84,9 @@ class ConstructTemplateHelper
 		}
 
 		$this->addLayout('index');
+
+		// register event handler
+		JDispatcher::getInstance()->register('onBeforeCompileHead', 'ConstructTemplateHelperCompileHead');
 	}
 
 	public static function getInstance(JDocument $template)
@@ -75,6 +95,11 @@ class ConstructTemplateHelper
 			self::$helper = new ConstructTemplateHelper($template);
 		}
 		return self::$helper;
+	}
+
+	public function getTemplate()
+	{
+		return $this->tmpl;
 	}
 
 	/**
@@ -91,7 +116,7 @@ class ConstructTemplateHelper
 	 * @param string $scope    optional scope, 'component' oder 'section'
 	 * @return ConstructTemplateHelper for fluid interface
 	 */
-	public function &addLayout($basename, $scope=null)
+	public function addLayout($basename, $scope=null)
 	{
 		if ($scope) {
 			$scope = trim($scope);
@@ -178,7 +203,9 @@ class ConstructTemplateHelper
 	 *      return;
 	 * 	}
 	 *
-	 * @return string
+	 * @return string  filepath of layout or void if not found
+	 *
+	 * @todo do some additional magic based on the active menu item
 	 */
 	public function getLayout()
 	{
@@ -196,6 +223,11 @@ class ConstructTemplateHelper
 		}
 	}
 
+	/**
+	 * Returns the list of registered (and found) layout files.
+	 *
+	 * @return array
+	 */
 	public function getLayouts()
 	{
 		return $this->layouts;
@@ -204,7 +236,9 @@ class ConstructTemplateHelper
 	/**
 	 * Will load the static html file names and prepare its depended "chunks"
 	 * for later inclusion in "static_html.php".
-	 * @param array $layout
+	 *
+	 * @param  array  $layout
+	 * @return array
 	 * @see loadStaticHtml(), setChunks()
 	 */
 	public function getStaticHtml(array &$layout)
@@ -221,6 +255,7 @@ class ConstructTemplateHelper
 				$layout[$chunk .'_path'] = $path;
 			}
 		}
+
 		return array_keys(self::$html);
 	}
 
@@ -231,6 +266,8 @@ class ConstructTemplateHelper
 	 *
 	 * @param string $chunk "main" synonym for the main static html file
 	 * @see self::$chunks, setChunks()
+	 *
+	 * @return string  COntent of the static HTML file (or a HTML comment if the file was not found)
 	 */
 	public function loadStaticHtml($chunk='main')
 	{
@@ -246,9 +283,12 @@ class ConstructTemplateHelper
 	 * with "static_html.php". For a list of default chunk names see {@link self::$chunks}.
 	 * If your current html testfile is "ipsum.html" additional files will be loaded named
 	 * "ipsum-header.html", "ipsum-footer.html" etc.
+	 *
 	 * @param array $chunks
+	 *
+	 * @return ConstructTemplateHelper for fluid interface
 	 */
-	static public function &setChunks(array $chunks)
+	static public function setChunks(array $chunks)
 	{
 		if (count($chunks)) {
 			self::$chunks = $chunks;
@@ -261,6 +301,7 @@ class ConstructTemplateHelper
 	 *
 	 * @param string  $group
 	 * @param integer $max default=5
+	 *
 	 * @return array|null
 	 */
 	public function getModulesCount($group, $max = ConstructTemplateHelper::MAX_MODULES)
@@ -285,20 +326,280 @@ class ConstructTemplateHelper
 	}
 
 	/**
-	 * Allows for individual formatting of each date fragent, day, month, year, via CSS.
+	 * @param string $position
+	 * @param string $style
+	 * @param array  $params
 	 *
-	 * - $dateformat: upported date formater characters: l, d, F, Y or a DATE_FORMAT_XXX string
+	 * @return ConstructTemplateHelper for fluid interface
+	 */
+	public function renderModules($position, $style=null, $params=null)
+	{
+		if ( !$params ) {
+			$params = array();
+		}
+		$params['name'] = $position;
+		($style) ? $params['style'] = $style : true;
+
+		foreach (JModuleHelper::getModules($position) as $_module)
+		{
+			echo JModuleHelper::renderModule($_module, $params);
+		}
+		return $this;
+	}
+
+	/**@#+
+	 * Add browser specific ressources, typically for MSIE in which case a
+	 * conditional comment (CC) based on $uagent is added to group output.
+	 *
+	 * The interface is modeled after JDocument[Html] but not API compliant.
+	 * Most optional arguments related to mime types in the JDOcument interface
+	 * have been removed because this affects HTML documents only.
+	 *
+	 * $uagent
+	 *  - IE 		= any MSIE with support for CC
+	 *  - IE 6		= MSIE 6 only
+	 *  - !IE 6		= all but MSIE 6
+	 *  - lt IE 9	= MSIE 5 - MSIE 8
+	 *  - lte IE 9	= MSIE 5 - MSIE 9
+	 *  - gt IE 6	= MSIE 7 - MSIE 9
+	 *  - gte IE 9	= MSIE 9
+	 *	- IEMobile	= MSIE 7 - MSIE 9 on smart phones
+	 *
+	 * @see renderHeadElements()
+	 */
+
+	/**
+	 * @param string $href      the links href URL
+	 * @param string $relation  link relation, e.g. "stylesheet"
+	 * @param mixed  $uagent
+	 * @param array  $attribs   optional attributes as associative array
+	 *
+	 * @return ConstructTemplateHelper for fluid interface
+	 * @see renderHeadElements(), $links
+	 */
+	public function addHeadLink($href, $uagent=null, $attribs=array(), $rel='stylesheet')
+	{
+		$rel = strtolower($rel);
+		if ( strpos($rel, 'stylesheet') !== false ) {
+			$attribs['rel'] = $rel;
+		}
+		// make room
+		if (!isset(self::$head["{$uagent}"])) self::$head["{$uagent}"] = array();
+		settype(self::$head["{$uagent}"]['links'], 'array');
+
+		// store
+		self::$head["{$uagent}"]['links'][$href] = $attribs;
+
+		return $this;
+	}
+
+	/**
+	 * @param string $html   valid html element to be placed inside <head>
+	 * @param mixed  $uagent
+	 *
+	 * @return ConstructTemplateHelper for fluid interface
+	 * @see renderHeadElements(), $custom
+	 */
+	public function addCustomTag($html, $uagent=null)
+	{
+		// make room
+		if (!isset(self::$head["{$uagent}"])) self::$head["{$uagent}"] = array();
+		settype(self::$head["{$uagent}"]['custom'], 'array');
+
+		// store
+		self::$head["{$uagent}"]['custom'][] = $html;
+
+		return $this;
+	}
+
+	/**
+	 * @param string $name     name attribute of the meta element
+	 * @param string $content  content attribute
+	 * @param mixed  $uagent
+	 * @param bool   $http_equiv
+	 *
+	 * @return ConstructTemplateHelper for fluid interface
+	 * @see renderHeadElements(), $metaTags
+	 */
+	public function addMetaData($name, $content, $uagent=null, $http_equiv=false)
+	{
+		// make room
+		if (!isset(self::$head["{$uagent}"])) self::$head["{$uagent}"] = array();
+		settype(self::$head["{$uagent}"]['meta'], 'array');
+
+		// store
+		self::$head["{$uagent}"]['meta'][$name] = array('content'=>$content, 'http_equiv'=>$http_equiv);
+
+		return $this;
+	}
+
+	/**
+	 * @param string $url      a script URL
+	 * @param mixed  $uagent
+	 * @param bool   $defer    if true,adds the defer attribute
+	 * @param array  $attribs  optional attributes as associative array
+	 *
+	 * @return ConstructTemplateHelper for fluid interface
+	 * @see renderHeadElements(), $script
+	 */
+	public function addScript($url, $uagent=null, $attribs=array())
+	{
+		// make room
+		if (!isset(self::$head["{$uagent}"])) self::$head["{$uagent}"] = array();
+		settype(self::$head["{$uagent}"]['scripts'], 'array');
+
+		// store
+		self::$head["{$uagent}"]['scripts'][$url] = $attribs;
+
+		return $this;
+	}
+
+	/**
+	 * @param string $content the script content
+	 * @param mixed  $uagent
+	 *
+	 * @return ConstructTemplateHelper for fluid interface
+	 * @see renderHeadElements(), $scripts
+	 */
+	public function addScriptDeclaration($content, $uagent=null)
+	{
+		// make room
+		if (!isset(self::$head["{$uagent}"])) self::$head["{$uagent}"] = array();
+		settype(self::$head["{$uagent}"]['script'], 'array');
+
+		// store
+		self::$head["{$uagent}"]['script'][] = is_array($content) ? implode(PHP_EOL,$content) : $content;
+
+		return $this;
+	}
+
+	/**
+	 * @param string $content
+	 * @param mixed  $uagent
+	 *
+	 * @return ConstructTemplateHelper for fluid interface
+	 * @see renderHeadElements(), $style
+	 */
+	public function addStyleDeclaration($content, $uagent=null)
+	{
+		// make room
+		if (!isset(self::$head["{$uagent}"])) self::$head["{$uagent}"] = array();
+		settype(self::$head["{$uagent}"]['style'], 'array');
+
+		// store
+		self::$head["{$uagent}"]['style'][] = is_array($content) ? implode(PHP_EOL,$content) : $content;
+
+		return $this;
+	}
+	/**@#- */
+
+	/**
+	 * Applies all supplemental, browser-specific head elements to the document.
+	 *
+	 * @return ConstructTemplateHelper for fluid interface
+	 * @see renderHeadElements(), sortScripts()
+	 */
+	public function buildHeadElements()
+	{
+		$groups = array('meta'=>'', 'links'=>'', 'style'=>'', 'scripts'=>'', 'script'=>'', 'custom'=>'');
+
+FB::group(__FUNCTION__, array('Collapsed'=>true, 'Color'=>'teal'));
+
+		ksort(self::$head);
+		foreach (self::$head as $ua => $stuff)
+		{
+FB::log($stuff, $ua);
+		}
+
+		return $this;
+	}
+
+	/**
+	 * @see buildHeadElements(), sortScripts()
+	 */
+	public function renderHeadElements()
+	{
+		$head   = $this->tmpl->getHeadData();
+
+FB::log($head, __FUNCTION__);
+FB::groupEnd();
+	}
+
+	/**
+	 * Attempts to order the script elements by pushing MooTools and jQuery
+	 * up the stack to avoid conflicts among those libraries.
+	 *
+	 * Component views, plugins and modules might use optional jQuery plugins,
+	 * but "our" jQuery loaded during the templare rendering phase will come
+	 * too late for plugins to bind to jQuery.fn.
+	 *
+	 * @return ConstructTemplateHelper for fluid interface
+	 * @see buildHeadElements(), renderHeadElements()
+	 *
+	 * @todo handle jQuery version conflicts loaded elsewhere
+	 */
+	public function sortScripts()
+	{
+
+		$head = $this->tmpl->getHeadData();
+		$jq    = preg_grep('#(jquery\.)#', array_keys($head['scripts']));
+FB::log($jq, __FUNCTION__);
+
+		// jQuery CDNs take precendence http://docs.jquery.com/Downloading_jQuery#CDN_Hosted_jQuery
+		$CDN = array(
+			'hosts'  =>array('ajax.googleapis.com'   , 'ajax.aspnetcdn.com'   , 'code.jquery.com'),
+			'pattern'=>array('jquery/(\d\.\d\.\d\.)/','/jquery-(\d\.\d\.\d\.)','/jquery-(\d\.\d\.\d\.)')
+			);
+
+		foreach ((array) $jq as $i => $src)
+		{
+			$host = parse_url($src, PHP_URL_HOST);
+			if ( in_array($host, $CDN['hosts']) )
+			{
+				$this->addScript($head['scripts'][$src]);
+				// nuke old entry
+				unset($head['scripts'][$src]);
+			}
+		}
+
+		// put everything back
+		$this->tmpl->setHeadData($head);
+
+		if (count($jq) > 0) {
+			$this->addScriptDeclaration('if (window.jQuery){jQuery.noConflict();}');
+		}
+
+		return $this;
+	}
+
+	/**
+	 * Event handler "onBeforeCompileHead" to fix-up crappy head elements.
+	 */
+	public static function beforeCompileHead()
+	{
+		self::$helper
+				->buildHeadElements()
+				->sortScripts()
+				->renderHeadElements()
+				;
+	}
+
+	/**
+	 * Returns the given date (or today) wrapped in HTML elements for individual formatting of
+	 * each date fragent, day, month, year, via CSS.
+	 *
+	 * - $dateformat: supported date formater characters: l, d, F, Y or a DATE_FORMAT_XXX string
 	 * - $date: a value JDate() considers a valid date value, 'now'|null|false result in current date
 	 * - $elt: HTML element to wrap around the date parts
 	 * To set the $elt only, but preseve (todays) defaults use
 	 * <samp>$layoutOverride->dateContainer(null,null,'kbd')</samp>
 	 *
-	 * @param string $dateformat a Joomla date language string, default: DATE_FORMAT_LC3
-	 * @param number $date defaults to 'now' (also if null or false are provided)
-	 * @param string $elt defaults to 'span' as the date fragment wrapper element
-	 * @return mixed
+	 * @param  number  $date 		defaults to 'now' (also if null or false are provided)
+	 * @param  string  $dateformat	a Joomla date language string, default: DATE_FORMAT_LC3
+	 * @param  string  $elt			defaults to 'span' as the date fragment wrapper element
+	 * @return string
 	 */
-	public function dateContainer($dateformat='DATE_FORMAT_LC3', $date='now', $elt='span')
+	public function dateContainer($date='now', $dateformat='DATE_FORMAT_LC3', $elt='span')
 	{
 		if (!$dateformat) $dateformat = 'DATE_FORMAT_LC3';
 		if (!$date) $date = 'now';

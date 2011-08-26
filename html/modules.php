@@ -25,37 +25,44 @@ function modChrome_jexhtml( $module, &$params, &$attribs ) {
 	$module->content = trim($module->content);
 	if (empty($module->content)) return;
 
+	$oocss	= isset($attribs['oocss']);
+
 	$css	= array();
-	$css[] 	= isset($attribs['oocss'])  ? $attribs['oocss'] : '';
+	$css[] 	= $oocss ? $attribs['oocss'] : '';
 	$css[]	= str_replace('_', '-', $module->module);
 	$css[] 	= $params->get('moduleclass_sfx');
 
 	$css[] 	= isset($attribs['module-class'])  ? $attribs['module-class'] : 'moduletable';
 	$css[] 	= isset($attribs['outline-style']) ? 'outline-'.$attribs['outline-style'] : '';
 
-	echo '<div class="', implode(' ', $css), '">';
-	if (isset($attribs['oocss'])) echo '<b class="top"><b class="tl"></b><b class="tr"></b></b>', PHP_EOL;
+	echo '<div class="', trim(implode(' ', $css)), '">';
+	if ($oocss) echo '<b class="top"><b class="tl"></b><b class="tr"></b></b>', PHP_EOL;
 
-	echo ' <div class="inner">', PHP_EOL;
+	echo '<div class="inner">', PHP_EOL;
+
 	if ($module->showtitle) {
-		$headerLevel  = isset($attribs['level'])         ? (int) $attribs['level'] : 3;
-		$headerClass  = isset($attribs['header-class'])  ? $attribs['header-class'] : 'je-header';
-		if (isset($attribs['oocss'])) echo '<div class="hd">';
-		echo ' <h', $headerLevel, ' class="', $headerClass, '">', $module->title, '</h', $headerLevel, '>';
-		if (isset($attribs['oocss'])) echo '</div>';
+		$level = isset($attribs['level'])         ? (int) $attribs['level'] : 3;
+		$css   = array();
+		$css[] = str_replace('_', '-', $module->module);
+		$css[] = isset($attribs['header-class'])  ? $attribs['header-class'] : 'je-header';
+		if ($oocss) echo '<div class="hd">';
+		echo ' <h', $level, ' class="', trim(implode(' ', $css)), '">', $module->title, '</h', $level, '>';
+		if ($oocss) echo '</div>', PHP_EOL;
 	}
-	if (isset($attribs['oocss'])) echo '<div class="bd">', PHP_EOL;
-	echo $module->content
-		, PHP_EOL, ' </div><!-- .inner -->', PHP_EOL;
-	if (isset($attribs['oocss'])) echo '</div>';
 
-	if (isset($attribs['oocss'])) echo '<b class="bottom"><b class="bl"></b><b class="br"></b></b>', PHP_EOL;
+	if ($oocss) echo '<div class="bd">', PHP_EOL;
+	echo $module->content;
+	if ($oocss) echo ' </div>', PHP_EOL;
+
+	echo '</div><!-- .inner -->';
+
+	if ($oocss) echo '<b class="bottom"><b class="bl"></b><b class="br"></b></b>', PHP_EOL;
 	echo '</div>', PHP_EOL;
 }
 
 /**
  * A module style to render modules according to Stubbornella's OOCSS framework, http://oocss.org
- * <b>Joomla's default 'moduletable' class is ignored!</b>
+ * If this style is explicitly used <b>Joomla's default 'moduletable' class is ignored!</b>
  *
  * @param object     $module
  * @param JRegistry  $params
