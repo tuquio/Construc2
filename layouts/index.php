@@ -15,12 +15,12 @@ defined('_JEXEC') or die;
 <jdoc:include type="head" />
 </head>
 
-<body class="<?php echo $columnLayout; if($useStickyFooter) echo ' sticky-footer'; ?>">
+<body class="<?php echo $columnLayout ?>">
 <!--[if IE 6]><div class="ie6 ltie7 ltie8 ltie9 ltie10"><![endif]-->
 <!--[if IE 7]><div class="ie7 ltie8 ltie9 ltie10"><![endif]-->
 <!--[if IE 8]><div class="ie8 ltie9 ltie10"><![endif]-->
 <!--[if IE 9]><div class="ie9 ltie10"><![endif]-->
-	<div id="footer-push"><a id="page-top" name="page-top"></a>
+	<div id="page-top">
 
 	<?php if ($headerAboveCount) : ?>
 		<header class="line above">
@@ -126,7 +126,7 @@ defined('_JEXEC') or die;
 		</div><!-- end body-container -->
 	</div><!-- end footer-push -->
 
-	<footer id="footer" class="line">
+	<footer id="footer" class="line page-foot">
 	<?php /* echo JText::_('TPL_JE_CONSTRUCT_COMMUNITY_JUMP_BACK_TO_TOP') */ ?>
 	<?php if ($this->countModules('syndicate')) : ?>
 		<div class="mod syndicate">

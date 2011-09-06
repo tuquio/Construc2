@@ -5,7 +5,7 @@ body {background:#999}
 .group-alpha, .group-beta {background:#9F0}
 .group-alpha .moduletable, 
 .group-beta .moduletable,
-#footer .moduletable{background:#9C3}
+.page-foot .moduletable{background:#9C3}
 #content-above-1 {background:#C00}
 #content-above-2 {background:#C60}
 #content-above-3 {background:#C90}
@@ -18,7 +18,7 @@ body {background:#999}
 #top-user-modules {background:#0C0}
 #branding {background:#066}
 #header h1 a:link, #header h1 a:visited, #header h1 a:hover{background:#063}
-#footer {background:#096}
-#header {background:#F90}
+.page-foot {background:#096}
+.page-head {background:#F90}
 #nav {background:#690}
 #top-module {background:#63C}

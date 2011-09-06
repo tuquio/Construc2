@@ -506,9 +506,17 @@ class ConstructTemplateHelper
 FB::group(__FUNCTION__, array('Collapsed'=>true, 'Color'=>'teal'));
 
 		ksort(self::$head);
+		$uastack = '';
+
+FB::log(self::$head, __FUNCTION__);
+
 		foreach (self::$head as $ua => $stuff)
 		{
-FB::log($stuff, $ua);
+			$ua = trim($ua);
+			foreach (array_keys($groups) as $group)
+			{
+
+			}
 		}
 
 		return $this;
@@ -520,6 +528,19 @@ FB::log($stuff, $ua);
 	public function renderHeadElements()
 	{
 		$head   = $this->tmpl->getHeadData();
+
+		// cleanup non-standard stuff
+		if (!empty($head['metaTags']['standard']['rights']))
+		{
+			$head['metaTags']['standard']['copyright'] = $head['metaTags']['standard']['rights'];
+		}
+
+		unset($head['metaTags']['standard']['rights']);
+		unset($head['metaTags']['standard']['language']);
+		unset($head['metaTags']['standard']['title']);
+
+		// put everything back
+		$this->tmpl->setHeadData($head);
 
 FB::log($head, __FUNCTION__);
 FB::groupEnd();
@@ -536,38 +557,56 @@ FB::groupEnd();
 	 * @return ConstructTemplateHelper for fluid interface
 	 * @see buildHeadElements(), renderHeadElements()
 	 *
-	 * @todo handle jQuery version conflicts loaded elsewhere
+	 * @todo make this mess a decorator for other libs
+	 * @todo handle scripts version conflicts loaded elsewhere
 	 */
 	public function sortScripts()
 	{
+		// matter of concerns
+		static $libs = array(
+					'jquery'	=> '#/(jquery\.)#',
+					'mootools'	=> '#/(mootools\.)#',
+				);
 
-		$head = $this->tmpl->getHeadData();
-		$jq    = preg_grep('#(jquery\.)#', array_keys($head['scripts']));
-FB::log($jq, __FUNCTION__);
+		// jQuery CDNs: http://docs.jquery.com/Downloading_jQuery#CDN_Hosted_jQuery
+		static $CDN = array(
+				'ajax.googleapis.com'	=> array('jquery'=>'/jquery/(\d\.\d\.\d)/', 'mootools'=>'/mootools/(\d\.\d\.\d)/'),
+				'ajax.aspnetcdn.com'	=> array('jquery'=>'/jquery-(\d\.\d\.\d)' , ),
+				'code.jquery.com' 		=> array('jquery'=>'/jquery-(\d\.\d\.\d)' , ),
+				'cdnjs.cloudflare.com'	=> array('jquery'=>'/jquery/(\d\.\d\.\d)/', 'mootools'=>'/mootools/(\d\.\d\.\d)/'),
+				);
 
-		// jQuery CDNs take precendence http://docs.jquery.com/Downloading_jQuery#CDN_Hosted_jQuery
-		$CDN = array(
-			'hosts'  =>array('ajax.googleapis.com'   , 'ajax.aspnetcdn.com'   , 'code.jquery.com'),
-			'pattern'=>array('jquery/(\d\.\d\.\d\.)/','/jquery-(\d\.\d\.\d\.)','/jquery-(\d\.\d\.\d\.)')
-			);
+		$head    = $this->tmpl->getHeadData();
 
-		foreach ((array) $jq as $i => $src)
+		// CDNs take precendence
+		$scripts = array('cdn'=>array(), 'system'=>array(), 'media'=>array(), 'template'=>array());
+
+		// @todo bother with others than jquery as well, like... mootools
+		$loaded  = preg_grep($libs['jquery'], array_keys($head['scripts']));
+		foreach ((array) $loaded as $src)
 		{
-			$host = parse_url($src, PHP_URL_HOST);
-			if ( in_array($host, $CDN['hosts']) )
+			foreach ($CDN as $host => $lib)
 			{
-				$this->addScript($head['scripts'][$src]);
-				// nuke old entry
-				unset($head['scripts'][$src]);
+				if (strpos($src, $host)) {
+					$scripts['cdn'][$src] = $head['scripts'][$src];
+					// nuke old entry
+					unset($head['scripts'][$src]);
+				}
 			}
 		}
 
-		// put everything back
-		$this->tmpl->setHeadData($head);
-
-		if (count($jq) > 0) {
+		if (count($loaded) > 0) {
 			$this->addScriptDeclaration('if (window.jQuery){jQuery.noConflict();}');
 		}
+
+		$head['scripts'] = $scripts['cdn']
+						+ $scripts['system']
+						+ $scripts['media']
+						+ $scripts['template']
+						+ $head['scripts'];
+
+		// put everything back
+		$this->tmpl->setHeadData($head);
 
 		return $this;
 	}

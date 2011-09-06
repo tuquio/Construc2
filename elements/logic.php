@@ -40,7 +40,7 @@ $IE6TransFix			= (bool) $this->params->get('IE6TransFix');
 $IE6TransFixTargets		=		 $this->params->get('IE6TransFixTargets');
 $fluidMedia				= (bool) $this->params->get('fluidMedia');
 $fullWidth				=		 $this->params->get('fullWidth');
-$siteWidth				=		 $this->params->get('siteWidth');
+$siteWidth				= (int)	 $this->params->get('siteWidth');
 $siteWidthType			=		 $this->params->get('siteWidthType');
 $siteWidthUnit			=		 $this->params->get('siteWidthUnit');
 $loadModal				= (bool) $this->params->get('loadModal');
@@ -78,28 +78,7 @@ if ($showDiagnostics) {
 	}
 }
 
-// Load the MooTools JavaScript Library
-if ($loadMoo == true) {
-	JHtmlBehavior::framework(true);
-	if ($loadModal) {
-		// Enable modal pop-ups - see html/mod_footer/default.php to customize
-		JHtmlBehavior('modal');
-	}
-}
-
-// Remove MooTools if set to no.
-if ($loadMoo == false) {
-	$head = $this->getHeadData();
-	// without MooTools we must drop all but core.js
-	$moos	= preg_grep('#/media/system/js(\/(?!core))#', array_keys($head['scripts']));
-	foreach ($moos as $src) {
-		unset($head['scripts'][$src]);
-	}
-	$this->setHeadData($head);
-	unset($head, $src, $moos);
-}
-
-
+// Load the jQuery JavaScript Library
 if ($loadJQuery) {
 	// <script onload="if (jQuery) {jQuery.noConflict();}" type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
 	$this->addScript('//ajax.googleapis.com/ajax/libs/jquery/'. $loadJQuery .'/jquery.min.js');
@@ -108,6 +87,26 @@ if ($loadJQuery) {
 	if ($loadMoo == true) {
 		$scriptDeclarations[] = 'if (window.jQuery){jQuery.noConflict();}';
 	}
+}
+
+// Load the MooTools JavaScript Library
+if ($loadMoo) {
+	JHtml::_('behavior.framework', $loadModal);
+	if ($loadModal) {
+		// Enable modal pop-ups
+		JHtml::_('behavior.modal');
+	}
+}
+else {
+// Remove MooTools if set to no.
+	$head = $this->getHeadData();
+	// without MooTools we must drop all but core.js
+	$moos	= preg_grep('#/media/system/js(\/(?!core))#', array_keys($head['scripts']));
+	foreach ($moos as $src) {
+		unset($head['scripts'][$src]);
+	}
+	$this->setHeadData($head);
+	unset($head, $src, $moos);
 }
 
 #----------------------------- Module Counts -----------------------------#
@@ -182,14 +181,15 @@ if ($app->getCfg('debug') && JRequest::getInt('tpos'))
 {
 FB::info($app->getCfg('debug') .':'. JRequest::getInt('tpos'),__FILE__); #HACK FB debug positions
 	$headerAboveCount  = $headerBelowCount      = $navBelowCount        =
-	$contentAboveCount = $contentBelowCount     = $footerAboveCount     =
-	$columnGroupCount  = $columnGroupAlphaCount = $columnGroupBetaCount = range(0, 6, 1);
+	$contentAboveCount = $contentBelowCount     = $footerAboveCount     = range(0, ConstructTemplateHelper::MAX_MODULES, 1);
+
+	$columnGroupCount  = range(0, ConstructTemplateHelper::MAX_COLUMNS, 1);
+	$columnGroupAlphaCount = $columnGroupBetaCount = ($columnGroupCount > 1) ? floor($columnGroupCount / 2) : $columnGroupCount;
 }
 
 #---------------------------- Head Elements --------------------------------#
 
 // Custom tags
-$this->setMetaData('rights', '(C)'.date('Y') .' '. $app->getCfg('sitename'));
 // tell mobile devices to treat the viewport as being the same width as the
 // physical width of the device to make width work in media-queries as expected
 $this->setMetaData('viewport', 'width=device-width, initial-scale=1');
@@ -200,7 +200,7 @@ if (is_file(JPATH_THEMES .'/'. $this->template .'/favicon.png')) {
 }
 
 // Typography (protocol relative URLs)
-for ($i=1; $i<=ConstructTemplateHelper::MAX_WEBFONTS; $i++) {
+for ($i=1; $i <= ConstructTemplateHelper::MAX_WEBFONTS; $i++) {
 	if ($googleWebFont[$i]) {
 		// Fix Google Web Font name for CSS
 		$googleWebFontFamily[$i] = str_replace(array('+',':bold',':italic'), ' ', $googleWebFont[$i]);
@@ -217,9 +217,9 @@ for ($i=1; $i<=ConstructTemplateHelper::MAX_WEBFONTS; $i++) {
 // Style sheets
 if ($ssiIncludes) {
 	if ($this->direction == 'rtl') {
-		$this->addStyleSheet($tmpl_url.'/construct.styles','text/css');
-	} else {
 		$this->addStyleSheet($tmpl_url.'/construct_rtl.styles','text/css');
+	} else {
+		$this->addStyleSheet($tmpl_url.'/construct.styles','text/css');
 	}
 } else {
 	$this->addStyleSheet($tmpl_url.'/css/core/base.css','text/css');
@@ -249,13 +249,13 @@ if ($enableSwitcher) {
 
 // Layout Declarations
 if ($siteWidth) {
-	$styleDeclarations[] = '#body-container, #header-above {'.$siteWidthType.':'.$siteWidth.$siteWidthUnit.'}';
+	$styleDeclarations[] = '#body-container, header.above {'.$siteWidthType.':'.$siteWidth.$siteWidthUnit.'}';
 }
 if (($siteWidthType == 'max-width') && $fluidMedia ) {
 	$columnLayout .= ' fluid-media';
 }
 if (!$fullWidth) {
-	$styleDeclarations[] = '#header, #footer {'.$siteWidthType.':'.$siteWidth.$siteWidthUnit.'; margin:0 auto}';
+	$styleDeclarations[] = '.page-head, .page-foot {'.$siteWidthType.':'.$siteWidth.$siteWidthUnit.'; margin:0 auto}';
 }
 
 // JavaScript
@@ -274,34 +274,34 @@ if ($loadChromeFrame) {
 	$templateHelper->addScript('//ajax.googleapis.com/ajax/libs/chrome-frame/1.0.2/CFInstall.min.js', 'lt IE 9', array('defer'=>true));
 }
 
-if ($IECSS3) {
-	$this->addCustomTag(
-  		 PHP_EOL . '<!--[if lt IE 9]>'
-  		.PHP_EOL . '<style type="text/css">'.$IECSS3Targets.' {behavior:url("'.$tmpl_url.'/js/PIE.htc")}</style>'
-  		.PHP_EOL . '<![endif]-->');
-  	$templateHelper->addStyleDeclaration($IECSS3Targets.' {behavior:url("'.$tmpl_url.'/js/PIE.htc")}', 'lt IE 9');
+if ($IECSS3 && !empty($IECSS3Targets)) {
+	$IECSS3Targets .= ' {behavior:url("'.$tmpl_url.'/js/PIE.htc")}';
+	$this->addCustomTag(PHP_EOL.'<!--[if lt IE 9]><style type="text/css">'.$IECSS3Targets.'</style><![endif]-->');
+  	$templateHelper->addStyleDeclaration($IECSS3Targets, 'lt IE 9');
 }
 
 if ($useStickyFooter && $stickyFooterHeight > 1) {
+	$columnLayout .= ' sticky-footer';
+
 	$styleDeclarations[] = '.sticky-footer #body-container {padding-bottom:'.$stickyFooterHeight.'px;}';
-	$styleDeclarations[] = '.sticky-footer #footer {margin-top:-'.$stickyFooterHeight.'px;height:'.$stickyFooterHeight.'px;}';
-	$this->addCustomTag("\n"
-		.'<!--[if lt IE 7]>'
-		.'<style type="text/css">body.sticky-footer #footer-push {display:table;height:100%}</style>'
-		.'<![endif]-->');
-  	$templateHelper->addStyleDeclaration('body.sticky-footer #footer-push {display:table;height:100%}', 'lt IE 7');
+	$styleDeclarations[] = '.sticky-footer .page-foot {margin-top:-'.$stickyFooterHeight.'px;height:'.$stickyFooterHeight.'px;}';
+	$this->addCustomTag(PHP_EOL.'<!--[if lt IE 7]><style type="text/css">.sticky-footer #page-top {display:table;height:100%}</style><![endif]-->');
+  	$templateHelper->addStyleDeclaration('.sticky-footer #page-top {display:table;height:100%}', 'lt IE 7');
 }
 
-	$css = 'body {text-align:center}'
-	.PHP_EOL . '#body-container {text-align:left}'
-	.PHP_EOL .  ((!$fullWidth)
-		? '#body-container, #header-above, #header, #footer {width: expression( document.body.clientWidth >'.($siteWidth -1).' ? "'.$siteWidth.$siteWidthUnit.'" : "auto" );margin:0 auto}'
-		: '#body-container, #header-above {width: expression( document.body.clientWidth >'.($siteWidth -1).' ? "'.$siteWidth.$siteWidthUnit.'" : "auto");margin:0 auto;}')
-		;
+$css   = array();
+$css[] = 'body {text-align:center}';
+$css[] = '#body-container {text-align:left}';
+if ($fullWidth) {
+	$css[] = '#body-container, header.above {width: expression( document.body.clientWidth >'.($siteWidth -1).' ? "'.$siteWidth.$siteWidthUnit.'" : "auto");margin:0 auto;}';
+} else {
+	$css[] = '#body-container, header.above, .page-head, .page-foot {width: expression( document.body.clientWidth >'.($siteWidth -1).' ? "'.$siteWidth.$siteWidthUnit.'" : "auto" );margin:0 auto}';
+}
+
 $this->addCustomTag(
 		 PHP_EOL . '<!--[if lt IE 7]>'
 		.PHP_EOL . '<link rel="stylesheet" href="'.$tmpl_url.'/css/core/ie6.css" type="text/css" media="screen" />'
-		.PHP_EOL . '<style type="text/css">'.$css.'</style>'
+		.PHP_EOL . '<style type="text/css">'.implode(PHP_EOL,$css).'</style>'
 		.PHP_EOL . '<![endif]-->'
 		);
 $templateHelper->addHeadLink($tmpl_url.'/css/core/ie6.css', 'lt IE 7', array('media'=>'screen'));
@@ -317,13 +317,13 @@ if ($IE6TransFix) {
 
 // add collected custom style declarations
 if ( count($styleDeclarations) ) {
-	$this->addStyleDeclaration(implode("\n",$styleDeclarations));
+	$this->addStyleDeclaration(implode(PHP_EOL,$styleDeclarations));
 	$templateHelper->addStyleDeclaration($styleDeclarations);
 }
 
 // add collected custom script declarations
 if ( count($scriptDeclarations) ) {
-	$this->addScriptDeclaration(implode("\n",$scriptDeclarations));
+	$this->addScriptDeclaration(implode(PHP_EOL,$scriptDeclarations));
 	$templateHelper->addScriptDeclaration($scriptDeclarations);
 }
 

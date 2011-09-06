@@ -4,8 +4,8 @@
 
 /* -- Sticky Footer -- *//*http://www.cssstickyfooter.com/*/
 html, .sticky-footer{height:100%}
-.sticky-footer #footer-push{min-height:100%}
-.sticky-footer #footer{position:relative;clear:both}
+.sticky-footer #page-top {min-height:100%}
+.sticky-footer .page-foot {position:relative;clear:both}
 .sticky-footer:before{content:"";height:100%;float:left;width:0;margin-top:-32767px}/*Opera Fix*/
 
 .fluid-media img, .fluid-media object {max-width:100%;-ms-interpolation-mode: bicubic;}
@@ -136,7 +136,7 @@ label.invalid{color:#ff0000;font-weight:bold;text-decoration:underline}
 #editor-xtd-buttons{background:#efefef;margin-top:1em}
 #diagnostics {float:right;clear:right}
 
-#footer {text-align:center;}
+.page-foot {text-align:center;}
 .footer .menu, .footer .menu li {display:inline;list-style:none;margin:0;padding:0;}
 .footer .menu li a, .footer .menu a:visited {font-weight:normal;padding:1px 3px;text-decoration:none;}
 
@@ -144,7 +144,7 @@ label.invalid{color:#ff0000;font-weight:bold;text-decoration:underline}
 #form-login-remember label {float:left}
 #form-login ul li {margin-left:0}
 
-#header{margin:0;text-align:left}
+.page-head {margin:0;text-align:left}
 #logo {float:left;margin:0}
 #logo a {display:block;width:300px;height:100px;text-decoration:none;}
 #logo a:focus{outline:none}
