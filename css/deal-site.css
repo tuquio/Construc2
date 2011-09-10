@@ -103,13 +103,12 @@ div.deal {position:relative;margin:10px;}
 
 .coupon article		{}
 
-/* price + payment */
+/* price */
 .the-deal 	{text-align: center;}
 .the-deal p	{width:100%; font-weight:bold; font-size:2em; }
  .discount	{}
  .savings	{}
  .buy-now	{}
- .payments	{}
 
 .the-deal		{margin-top: 10px;}
 .deal-summary 	{margin-top: 10px;}
@@ -153,6 +152,13 @@ div.countdown 		{font-weight:normal;}
 .cond ol	,
 .cond ul	{margin-top:0; padding-left:.5ex;}
 
+/* payment options */
+.payment_options	{}
+.payment 			{height:150px;min-height:150px;outline:1px solid #888;}
+.payment .inner		{padding:10px;text-align:center;}
+
+.payments1 			{width:250px;margin:0 auto}
+
 /*
  * =contents
  */
@@ -160,8 +166,8 @@ div.countdown 		{font-weight:normal;}
 
 .item-page h1, .item-page .H1 {}
 .item-page h2, .item-page .H2 {}
-.item-page h3, .item-page .H3 {margin-top:1.5em; color:rgb(0,119,119)}
-.item-page h4, .item-page .H4 {margin-top:1.2em; color:rgb(0,119,119)}
+.item-page h3, .item-page .H3 {margin-top:1.5em; color:rgb(0,119,119);}
+.item-page h4, .item-page .H4 {margin-top:1.2em; color:rgb(0,119,119);}
 
 .page-toc	{float:right; width:40%;}
 #aii		{margin-top:0}

@@ -74,7 +74,7 @@
 					<option value="1">Show</option>
 					<option value="0">Hide</option>
 				</field>
-				<field name="customStyleSheet" type="filelist" default="example.css" 
+				<field name="customStyleSheet" type="filelist" default="" 
 					label="TPL_JE_CONSTRUCT_COMMUNITY_CUSTOM_STYLE_SHEET_LABEL"
 					description="TPL_JE_CONSTRUCT_COMMUNITY_CUSTOM_STYLE_SHEET_DESC"  
 					directory="templates/construct/css" filter="\.css" 
