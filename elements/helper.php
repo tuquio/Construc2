@@ -61,8 +61,8 @@ class ConstructTemplateHelper
 
 	/**@#+
 	 * Protected head and meta elemente for custom browser ressources
-	 * @var array
-	 */
+	* @var array
+	*/
 	static protected $head = array();
 	/**@#- */
 
@@ -160,7 +160,7 @@ class ConstructTemplateHelper
 				break;
 		}
 
-	  	$layout     = ltrim($scope .'/'. basename($basename, $ext) . $ext, ' /_-');
+		$layout     = ltrim($scope .'/'. basename($basename, $ext) . $ext, ' /_-');
 		$layoutpath = $this->layoutpath .'/' . $layout;
 
 		if (JFile::exists($layoutpath)) {
@@ -312,7 +312,7 @@ class ConstructTemplateHelper
 		$modules = array_fill(0, $max, 0);
 
 		for ($i=1; $i<=$max; $i++) :
-			$modules[$i] = $this->tmpl->countModules($group .'-'. $i);
+		$modules[$i] = $this->tmpl->countModules($group .'-'. $i);
 		endfor;
 
 		$i = array_sum($modules);
@@ -349,24 +349,24 @@ class ConstructTemplateHelper
 
 	/**@#+
 	 * Add browser specific ressources, typically for MSIE in which case a
-	 * conditional comment (CC) based on $uagent is added to group output.
-	 *
-	 * The interface is modeled after JDocument[Html] but not API compliant.
-	 * Most optional arguments related to mime types in the JDOcument interface
-	 * have been removed because this affects HTML documents only.
-	 *
-	 * $uagent
-	 *  - IE 		= any MSIE with support for CC
-	 *  - IE 6		= MSIE 6 only
-	 *  - !IE 6		= all but MSIE 6
-	 *  - lt IE 9	= MSIE 5 - MSIE 8
-	 *  - lte IE 9	= MSIE 5 - MSIE 9
-	 *  - gt IE 6	= MSIE 7 - MSIE 9
-	 *  - gte IE 9	= MSIE 9
-	 *	- IEMobile	= MSIE 7 - MSIE 9 on smart phones
-	 *
-	 * @see renderHeadElements()
-	 */
+	* conditional comment (CC) based on $uagent is added to group output.
+	*
+	* The interface is modeled after JDocument[Html] but not API compliant.
+	* Most optional arguments related to mime types in the JDOcument interface
+	* have been removed because this affects HTML documents only.
+	*
+	* $uagent
+	*  - IE 		= any MSIE with support for CC
+	*  - IE 6		= MSIE 6 only
+	*  - !IE 6		= all but MSIE 6
+	*  - lt IE 9	= MSIE 5 - MSIE 8
+	*  - lte IE 9	= MSIE 5 - MSIE 9
+	*  - gt IE 6	= MSIE 7 - MSIE 9
+	*  - gte IE 9	= MSIE 9
+	*	- IEMobile	= MSIE 7 - MSIE 9 on smart phones
+	*
+	* @see renderHeadElements()
+	*/
 
 	/**
 	 * @param string $href      the links href URL
@@ -388,7 +388,7 @@ class ConstructTemplateHelper
 		settype(self::$head["{$uagent}"]['links'], 'array');
 
 		// store
-		self::$head["{$uagent}"]['links'][$href] = $attribs;
+		self::$head["{$uagent}"]['links'][$href] = JArrayHelper::toString($attribs);
 
 		return $this;
 	}
@@ -428,7 +428,8 @@ class ConstructTemplateHelper
 		settype(self::$head["{$uagent}"]['meta'], 'array');
 
 		// store
-		self::$head["{$uagent}"]['meta'][$name] = array('content'=>$content, 'http_equiv'=>$http_equiv);
+		$type = $http_equiv ? 'http_equiv' : 'name';
+		self::$head["{$uagent}"]['meta'][$name] = JArrayHelper::toString(array($type=>$name, 'content'=>$content));
 
 		return $this;
 	}
@@ -449,7 +450,7 @@ class ConstructTemplateHelper
 		settype(self::$head["{$uagent}"]['scripts'], 'array');
 
 		// store
-		self::$head["{$uagent}"]['scripts'][$url] = $attribs;
+		self::$head["{$uagent}"]['scripts'][$url] = JArrayHelper::toString($attribs);
 
 		return $this;
 	}
@@ -487,7 +488,7 @@ class ConstructTemplateHelper
 		settype(self::$head["{$uagent}"]['style'], 'array');
 
 		// store
-		self::$head["{$uagent}"]['style'][] = is_array($content) ? implode(PHP_EOL,$content) : $content;
+		self::$head["{$uagent}"]['style'][] = str_replace(PHP_EOL, ' ', (is_array($content) ? implode(PHP_EOL,$content) : $content) );
 
 		return $this;
 	}
@@ -503,12 +504,12 @@ class ConstructTemplateHelper
 	{
 		$groups = array('meta'=>'', 'links'=>'', 'style'=>'', 'scripts'=>'', 'script'=>'', 'custom'=>'');
 
-FB::group(__FUNCTION__, array('Collapsed'=>true, 'Color'=>'teal'));
+		FB::group(__FUNCTION__, array('Collapsed'=>true, 'Color'=>'teal'));
 
 		ksort(self::$head);
 		$uastack = '';
 
-FB::log(self::$head, __FUNCTION__);
+		FB::log(self::$head, __FUNCTION__);
 
 		foreach (self::$head as $ua => $stuff)
 		{
@@ -542,8 +543,8 @@ FB::log(self::$head, __FUNCTION__);
 		// put everything back
 		$this->tmpl->setHeadData($head);
 
-FB::log($head, __FUNCTION__);
-FB::groupEnd();
+		FB::log($head, __FUNCTION__);
+		FB::groupEnd();
 	}
 
 	/**
@@ -566,7 +567,7 @@ FB::groupEnd();
 		static $libs = array(
 					'jquery'	=> '#/(jquery\.)#',
 					'mootools'	=> '#/(mootools\.)#',
-				);
+		);
 
 		// jQuery CDNs: http://docs.jquery.com/Downloading_jQuery#CDN_Hosted_jQuery
 		static $CDN = array(
@@ -574,7 +575,7 @@ FB::groupEnd();
 				'ajax.aspnetcdn.com'	=> array('jquery'=>'/jquery-(\d\.\d\.\d)' , ),
 				'code.jquery.com' 		=> array('jquery'=>'/jquery-(\d\.\d\.\d)' , ),
 				'cdnjs.cloudflare.com'	=> array('jquery'=>'/jquery/(\d\.\d\.\d)/', 'mootools'=>'/mootools/(\d\.\d\.\d)/'),
-				);
+		);
 
 		$head    = $this->tmpl->getHeadData();
 
@@ -600,10 +601,10 @@ FB::groupEnd();
 		}
 
 		$head['scripts'] = $scripts['cdn']
-						+ $scripts['system']
-						+ $scripts['media']
-						+ $scripts['template']
-						+ $head['scripts'];
+		+ $scripts['system']
+		+ $scripts['media']
+		+ $scripts['template']
+		+ $head['scripts'];
 
 		// put everything back
 		$this->tmpl->setHeadData($head);
@@ -617,10 +618,10 @@ FB::groupEnd();
 	public static function beforeCompileHead()
 	{
 		self::$helper
-				->buildHeadElements()
-				->sortScripts()
-				->renderHeadElements()
-				;
+		->buildHeadElements()
+		->sortScripts()
+		->renderHeadElements()
+		;
 	}
 
 	/**
@@ -648,7 +649,7 @@ FB::groupEnd();
 					'/d([\.,\-])?/'=>'<@X@ class="date-month">'. $now->format('d') .'$1</@X@>',
 					'/F([\.,\-])?/'=>'<@X@ class="date-day">'. $now->format('F') .'$1</@X@>',
 					'/Y([\.,\-])?/'=>'<@X@ class="date-year">'. $now->format('Y') .'$1</@X@>',
-				);
+		);
 
 		$html = preg_replace(array_keys($placeholder), array_values($placeholder), JText::_($dateformat));
 		return str_replace('@X@', $elt, $html);

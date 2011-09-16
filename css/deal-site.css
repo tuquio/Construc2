@@ -154,10 +154,27 @@ div.countdown 		{font-weight:normal;}
 
 /* payment options */
 .payment_options	{}
-.payment 			{height:150px;min-height:150px;outline:1px solid #888;}
+.payment 			{/* height:150px;*/ min-height:150px;outline:1px solid #888;}
 .payment .inner		{padding:10px;text-align:center;}
 
 .payments1 			{width:250px;margin:0 auto}
+
+/* coupon previz (post deal) */
+.coupon-code			{border:1px solid #888; width:720px;}
+.coupon-code h2,
+.coupon-code h3,
+.coupon-code h4			{margin-top:0; max-width:74%; }
+.coupon-code .inner		{margin: 5px 10px}
+.coupon-code .hd		{border-bottom:1px solid #888}
+.coupon-code .bd		{width:74%; float:left; }
+.coupon-code .ft		{width:24%; float:left; font-size:90%;}
+.coupon-code img.qrcode {}
+.coupon-code .bd p		{padding-right:1em}
+.coupon-code .ft p		{padding-left:1em}
+.coupon-code .price			{font-size:1.6em; font-weight:bold}
+.coupon-code .description	{}
+.coupon-code .codes	{}
+.coupon-code code 	{font-weight:bold}
 
 /*
  * =contents

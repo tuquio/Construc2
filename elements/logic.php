@@ -98,7 +98,7 @@ if ($loadMoo) {
 	}
 }
 else {
-// Remove MooTools if set to no.
+	// Remove MooTools if set to no.
 	$head = $this->getHeadData();
 	// without MooTools we must drop all but core.js
 	$moos	= preg_grep('#/media/system/js(\/(?!core))#', array_keys($head['scripts']));
@@ -113,37 +113,37 @@ else {
 // from http://groups.google.com/group/joomla-dev-general/browse_thread/thread/b54f3f131dd173d
 
 if ($headerAboveCount = $templateHelper->getModulesCount('header-above', ConstructTemplateHelper::MAX_MODULES)) :
-	$headerAboveClass = 'above count-'.$headerAboveCount[0];
+$headerAboveClass = 'above count-'.$headerAboveCount[0];
 endif;
 
 #--------------------------------------------------------------------------#
 
 if ($headerBelowCount = $templateHelper->getModulesCount('header-below', ConstructTemplateHelper::MAX_MODULES)) :
-	$headerBelowClass = 'below count-'.$headerBelowCount[0];
+$headerBelowClass = 'below count-'.$headerBelowCount[0];
 endif;
 
 #--------------------------------------------------------------------------#
 
 if ($navBelowCount = $templateHelper->getModulesCount('nav-below', ConstructTemplateHelper::MAX_MODULES)) :
-	$navBelowClass = 'below count-'.$navBelowCount[0];
+$navBelowClass = 'below count-'.$navBelowCount[0];
 endif;
 
 #--------------------------------------------------------------------------#
 
 if ($contentAboveCount = $templateHelper->getModulesCount('content-above', ConstructTemplateHelper::MAX_MODULES)) :
-	$contentAboveClass = 'above count-'.$contentAboveCount[0];
+$contentAboveClass = 'above count-'.$contentAboveCount[0];
 endif;
 
 #--------------------------------------------------------------------------#
 
 if ($contentBelowCount = $templateHelper->getModulesCount('content-below', ConstructTemplateHelper::MAX_MODULES)) :
-	$contentBelowClass = 'below count-'.$contentBelowCount[0];
+$contentBelowClass = 'below count-'.$contentBelowCount[0];
 endif;
 
 #--------------------------------------------------------------------------#
 
 if ($footerAboveCount = $templateHelper->getModulesCount('footer-above', ConstructTemplateHelper::MAX_MODULES)) :
-	$footerAboveClass = 'above count-'.$footerAboveCount[0];
+$footerAboveClass = 'above count-'.$footerAboveCount[0];
 endif;
 
 #------------------------------ Column Layout -----------------------------#
@@ -179,7 +179,7 @@ if ($jmenu->getActive() == $jmenu->getDefault() ) {
 #TODO get positions from xml and transform names into variable counterparts
 if ($app->getCfg('debug') && JRequest::getInt('tpos'))
 {
-FB::info($app->getCfg('debug') .':'. JRequest::getInt('tpos'),__FILE__); #HACK FB debug positions
+	FB::info($app->getCfg('debug') .':'. JRequest::getInt('tpos'),__FILE__); #HACK FB debug positions
 	$headerAboveCount  = $headerBelowCount      = $navBelowCount        =
 	$contentAboveCount = $contentBelowCount     = $footerAboveCount     = range(0, ConstructTemplateHelper::MAX_MODULES, 1);
 
@@ -206,11 +206,11 @@ for ($i=1; $i <= ConstructTemplateHelper::MAX_WEBFONTS; $i++) {
 		$googleWebFontFamily[$i] = str_replace(array('+',':bold',':italic'), ' ', $googleWebFont[$i]);
 		$this->addStyleSheet('//fonts.googleapis.com/css?family='.$googleWebFont[$i].'');
 		$this->addStyleDeclaration(
-			$googleWebFontTargets[$i]
-			.' {font-family:'.$googleWebFontFamily[$i].', serif;'
-			.(($googleWebFontSize[$i]>0) ? 'font-size:'.$googleWebFontSize[$i].';' : '')
-			.'}'
-			);
+		$googleWebFontTargets[$i]
+		.' {font-family:'.$googleWebFontFamily[$i].', serif;'
+		.(($googleWebFontSize[$i]>0) ? 'font-size:'.$googleWebFontSize[$i].';' : '')
+		.'}'
+		);
 	}
 }
 
@@ -260,7 +260,7 @@ if (!$fullWidth) {
 
 // JavaScript
 if ($loadMoo == true) {
-	$scriptDeclarations[] = 'if (window.addEvent && SmoothScroll){window.addEvent(\'domready\',function(){new SmoothScroll({duration:1200},window);});}';
+	$scriptDeclarations[] = 'if (window.addEvent && SmoothScroll){window.addEvent("domready",function(){new SmoothScroll({duration:1200},window);});}';
 }
 
 #----------------------- Internet Explorer Fixes ---------------------------#
@@ -271,13 +271,21 @@ $templateHelper->addScript($tmpl_url.'/js/html5.js', 'lt IE 9');
 // offer Chrome Frame for IE lt 9
 $templateHelper->addMetaData('X-UA-Compatible', 'IE=Edge,chrome=1', 'lt IE 9', true);
 if ($loadChromeFrame) {
-	$templateHelper->addScript('//ajax.googleapis.com/ajax/libs/chrome-frame/1.0.2/CFInstall.min.js', 'lt IE 9', array('defer'=>true));
+	$templateHelper->addScript('//ajax.googleapis.com/ajax/libs/chrome-frame/1.0.2/CFInstall.min.js',
+		'lt IE 9',
+	array('defer'=>true, 'onload'=>
+		'var e=document.createElement("DIV");'.
+		'if (e && CFInstall) {'.
+			'e.id="gcf_placeholder";'.
+			'e.style.zIndex="9999";'.
+			'CFInstall.check({ node: "gcf_placeholder" });'.
+		'}' ));
 }
 
 if ($IECSS3 && !empty($IECSS3Targets)) {
 	$IECSS3Targets .= ' {behavior:url("'.$tmpl_url.'/js/PIE.htc")}';
 	$this->addCustomTag(PHP_EOL.'<!--[if lt IE 9]><style type="text/css">'.$IECSS3Targets.'</style><![endif]-->');
-  	$templateHelper->addStyleDeclaration($IECSS3Targets, 'lt IE 9');
+	$templateHelper->addStyleDeclaration($IECSS3Targets, 'lt IE 9');
 }
 
 if ($useStickyFooter && $stickyFooterHeight > 1) {
@@ -286,7 +294,7 @@ if ($useStickyFooter && $stickyFooterHeight > 1) {
 	$styleDeclarations[] = '.sticky-footer #body-container {padding-bottom:'.$stickyFooterHeight.'px;}';
 	$styleDeclarations[] = '.sticky-footer .page-foot {margin-top:-'.$stickyFooterHeight.'px;height:'.$stickyFooterHeight.'px;}';
 	$this->addCustomTag(PHP_EOL.'<!--[if lt IE 7]><style type="text/css">.sticky-footer #page-top {display:table;height:100%}</style><![endif]-->');
-  	$templateHelper->addStyleDeclaration('.sticky-footer #page-top {display:table;height:100%}', 'lt IE 7');
+	$templateHelper->addStyleDeclaration('.sticky-footer #page-top {display:table;height:100%}', 'lt IE 7');
 }
 
 $css   = array();
@@ -299,11 +307,11 @@ if ($fullWidth) {
 }
 
 $this->addCustomTag(
-		 PHP_EOL . '<!--[if lt IE 7]>'
-		.PHP_EOL . '<link rel="stylesheet" href="'.$tmpl_url.'/css/core/ie6.css" type="text/css" media="screen" />'
-		.PHP_EOL . '<style type="text/css">'.implode(PHP_EOL,$css).'</style>'
-		.PHP_EOL . '<![endif]-->'
-		);
+PHP_EOL . '<!--[if lt IE 7]>'
+.PHP_EOL . '<link rel="stylesheet" href="'.$tmpl_url.'/css/core/ie6.css" type="text/css" media="screen" />'
+.PHP_EOL . '<style type="text/css">'.implode(PHP_EOL,$css).'</style>'
+.PHP_EOL . '<![endif]-->'
+);
 $templateHelper->addHeadLink($tmpl_url.'/css/core/ie6.css', 'lt IE 7', array('media'=>'screen'));
 $templateHelper->addStyleDeclaration($css, 'lt IE 7');
 unset($css);
