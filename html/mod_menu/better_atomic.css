@@ -1,0 +1,40 @@
+/* äöü - just checking */
+/*! 
+ * better_atomic.css - Atomic specific formatting
+ * @version 27.08.2011
+ * 
+ * @license DWTF
+ */
+
+ol.menu,
+ol.submenu		{list-style:none; margin-left:0; padding-left:0; -moz-margin-start:0;-webkit-margin-start:0;-ms-margin-start:0}
+
+li.mi 			{list-style:none; margin:0; padding:0;}
+li.mi:before	{margin-left:0; padding-right:1ex; display:inline-block; font:normal 104% Georgia,'Adobe Garamond Pro',Geramond,serif; letter-spacing:-.4px;}
+
+li.mi .submenu	{margin-bottom:.5ex;}
+
+/* reset counters per OL level, increment per LI */
+ol.menu 				{counter-reset: 	level1;}
+ol.menu > li			{counter-increment: level1;}
+ol .submenu 			{counter-reset: 	level2;}
+ol .submenu > li		{counter-increment: level2;}
+ol ol .submenu 			{counter-reset: 	level3;}
+ol ol .submenu > li		{counter-increment: level3;}
+ol ol ol .submenu 		{counter-reset: 	level4;}
+ol ol ol .submenu > li	{counter-increment: level4;}
+
+/* numbering 1.2.3.4) */
+ol.menu  > li.mi:before					{content: counter(level1) ')';}
+.menu .submenu > li.mi:before			{content: counter(level1) '.' counter(level2) ')';}
+.menu ol .submenu > li.mi:before		{content: counter(level1) '.' counter(level2) '.' counter(level3) ')';}
+.menu ol ol .submenu > li.mi:before		{content: counter(level1) '.' counter(level2) '.' counter(level3) '.' counter(level4) ')';}
+
+/*
+ol.menu  > li.mi:before					{color:red;}
+.menu .submenu > li.mi:before			{color:green;}
+.menu ol .submenu > li.mi:before		{color:blue;}
+.menu ol ol .submenu > li.mi:before		{color:orange;}
+*/
+
+/* .eof */

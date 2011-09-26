@@ -1,0 +1,19 @@
+CACHE MANIFEST
+# REV {build-id}
+FALLBACK:
+/ /offline.html
+NETWORK:
+/media/deal/time.php
+/media/deal/js/jquery.countdown.min.js
+/media/deal/js/jquery.countdown-de.js
+*
+CACHE:
+# core
+/favicon.ico
+/templates/construct/css/core/base.css
+/templates/construct/css/core/oocss.css
+/templates/construct/css/core/screen.css
+/templates/construct/css/core/rtl.css
+# theme
+/templates/construct/css/deal-site.css
+/media/deal/js/jquery.countdown.css

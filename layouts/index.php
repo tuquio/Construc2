@@ -10,7 +10,7 @@
 defined('_JEXEC') or die;
 
 ?><!DOCTYPE html>
-<html lang="<?php echo $this->language; ?>" dir="<?php echo $this->direction; ?>" >
+<html lang="<?php echo $this->language; ?>" <?php echo $cache_manifest ?> dir="<?php echo $this->direction; ?>" >
 <head>
 <jdoc:include type="head" />
 </head>

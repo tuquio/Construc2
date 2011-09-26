@@ -213,7 +213,7 @@ div.countdown 		{font-weight:normal;}
 .mainmenu li.active {font-weight:bolder; padding-bottom:3ex; }
 
 .legalsmenu			,
-.legalsmenu .hmenu	{text-align:center; margin:5px auto;}
+.legalsmenu .hmenu	{text-align:center; margin:5px auto; color: #FFF;}
 .legalsmenu li.mi	{display:inline; padding:.4ex 2px .4px 1ex}
 
 /*

@@ -580,11 +580,11 @@ class ConstructTemplateHelper
 		$head    = $this->tmpl->getHeadData();
 
 		// CDNs take precendence
-		$scripts = array('cdn'=>array(), 'system'=>array(), 'media'=>array(), 'template'=>array());
+		$scripts = array('cdn'=>array(), 'media'=>array(), 'templates'=>array());
 
 		// @todo bother with others than jquery as well, like... mootools
-		$loaded  = preg_grep($libs['jquery'], array_keys($head['scripts']));
-		foreach ((array) $loaded as $src)
+		$jquery  = preg_grep($libs['jquery'], array_keys($head['scripts']));
+		foreach ((array) $jquery as $src)
 		{
 			foreach ($CDN as $host => $lib)
 			{
@@ -596,15 +596,21 @@ class ConstructTemplateHelper
 			}
 		}
 
-		if (count($loaded) > 0) {
-			$this->addScriptDeclaration('if (window.jQuery){jQuery.noConflict();}');
+		// followed by media/system, templates/system
+		foreach (preg_grep('#(media|templates)/system/#', array_keys($head['scripts'])) as $key)
+		{
+			$location = array_shift(explode('/', trim($key, '/')));
+			$scripts[$location][$key] = $head['scripts'][$key];
+			// nuke old entry
+			unset($head['scripts'][$key]);
 		}
 
-		$head['scripts'] = $scripts['cdn']
-		+ $scripts['system']
-		+ $scripts['media']
-		+ $scripts['template']
-		+ $head['scripts'];
+		// rebuild
+		$head['scripts'] = $scripts['cdn'] + $scripts['media'] + $scripts['templates'] + $head['scripts'];
+
+		if (count($jquery) > 0) {
+			$this->addScriptDeclaration('if (window.jQuery){jQuery.noConflict();}');
+		}
 
 		// put everything back
 		$this->tmpl->setHeadData($head);
@@ -618,10 +624,10 @@ class ConstructTemplateHelper
 	public static function beforeCompileHead()
 	{
 		self::$helper
-		->buildHeadElements()
-		->sortScripts()
-		->renderHeadElements()
-		;
+			->buildHeadElements()
+			->sortScripts()
+			->renderHeadElements()
+			;
 	}
 
 	/**

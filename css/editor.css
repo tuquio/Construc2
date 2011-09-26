@@ -1,0 +1,21 @@
+.mceContentBody {font-family: Arial,sans-serif;line-height: 1.3em;font-size: 96%;color: #333}
+a:link, a:visited {color: #1B57B1; text-decoration: none;font-weight: normal}
+a:hover {color: #00c;text-decoration: underline;font-weight: normal}
+
+#tinymce {background-color: #FEFEFE;}
+
+#tinymce h1, #tinymce td.mce_h1
+#tinymce h2, #tinymce td.mce_h2
+#tinymce h3, #tinymce td.mce_h3
+#tinymce h4, #tinymce td.mce_h4, 
+#tinymce h5, #tinymce td.mce_h5, 
+#tinymce h6, #tinymce td.mce_h6 {line-height:normal; color:#007777; font-style:normal;}
+
+#tinymce h1, #tinymce td.mce_h1 {font-size:2em; font-weight:normal}
+#tinymce h1, #tinymce td.mce_h2 {font-size:1.7em; font-weight:normal}
+#tinymce h2, #tinymce td.mce_h3 {font-size:1.4em; font-weight:normal}
+#tinymce h3, #tinymce td.mce_h4 {font-size:1.2em; font-weight:bold}
+#tinymce h5, #tinymce td.mce_h5,
+#tinymce h6, #tinymce td.mce_h6 {font-size:1.0em; font-weight:bold}
+
+#tinymce td.mce_address {}

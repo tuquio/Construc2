@@ -231,7 +231,9 @@ if ($ssiIncludes) {
 }
 
 // cheap and all but smart
-if ( in_array(JRequest::get('layout','cmd'), array('edit','form')) ) {
+if ( in_array(JRequest::getCmd('layout'), array('edit','form'))
+	|| JFactory::getUser()->authorise('core.edit') /* do we need more ACL checks */
+	) {
 	$this->addStyleSheet($tmpl_url.'/css/core/edit-form.css','text/css','screen');
 }
 
@@ -245,6 +247,13 @@ if ($enableSwitcher) {
 	$this->addHeadLink($tmpl_url.'/css/core/diagnostic.css', 'alternate stylesheet', 'rel', $attribs = array('title'=>'diagnostic'));
 	$this->addHeadLink($tmpl_url.'/css/core/wireframe.css', 'alternate stylesheet', 'rel', $attribs = array('title'=>'wireframe'));
 	$this->addScript($tmpl_url.'/js/styleswitch.js');
+}
+
+// HTML5 cache manifest
+if ($this->direction == 'rtl') {
+	$cache_manifest = 'manifest="'.$tmpl_url.'/'.$this->template.'_rtl.manifest"';
+} else {
+	$cache_manifest = 'manifest="'.$tmpl_url.'/'.$this->template.'.manifest"';
 }
 
 // Layout Declarations

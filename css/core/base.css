@@ -45,7 +45,7 @@ legend{border:0;*margin-left:-7px;}
 button,input{line-height:normal;*overflow:visible;}
 button,input,select,textarea{font-family:sans-serif;vertical-align:baseline;*vertical-align:middle;}
 table button,table input{*overflow:auto;}
-button,html input[type="button"],input[type="reset"],input[type="submit"]{cursor:pointer;-webkit-appearance:button;}
+button,input[type="button"],input[type="reset"],input[type="submit"]{cursor:pointer;-webkit-appearance:button;}
 input[type="checkbox"],input[type="radio"]{box-sizing:border-box;}
 input[type="search"]{-webkit-appearance:textfield;-moz-box-sizing:content-box;-webkit-box-sizing:content-box;box-sizing:content-box;}
 input[type="search"]::-webkit-search-decoration{-webkit-appearance:none;}
@@ -126,7 +126,7 @@ br.clear, hr.clear {float:none;clear:both;display:block;border:none;height:0;mar
 * html br.clear,
 *:first-child+html hr.clear,
 *:first-child+html br.clear{position:relative;font-size:0;line-height:0;border:0 solid;margin:-9px 0}
-.menu li a, .hmenu li a {color:inherit !ie;}
+.menu li a, .hmenu li a {color:inherit !ie;text-decoration:none;}
 
 /* simple print styles for common stuff (at least of what I do)
  * inlined to avoid another HTTP connection 'cos browsers
