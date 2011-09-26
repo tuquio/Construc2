@@ -74,16 +74,20 @@
 					<option value="1">Show</option>
 					<option value="0">Hide</option>
 				</field>
-				<field name="customStyleSheet" type="filelist" default="" 
+				<field name="customStyleSheet" type="filelist" default=""
 					label="TPL_JE_CONSTRUCT_COMMUNITY_CUSTOM_STYLE_SHEET_LABEL"
-					description="TPL_JE_CONSTRUCT_COMMUNITY_CUSTOM_STYLE_SHEET_DESC"  
-					directory="templates/construct/css" filter="\.css" 
-					exclude="(template|editor|ie\d+|test.+|x~.+)\.css" 
+					description="TPL_JE_CONSTRUCT_COMMUNITY_CUSTOM_STYLE_SHEET_DESC"
+					directory="templates/construct/css" filter="\.css"
+					exclude="(template|editor|ie\d+|test.+|x~.+)\.css"
 					/>
 				<field name="setGeneratorTag" type="text" default="" label="TPL_JE_CONSTRUCT_COMMUNITY_CUSTOM_GENERATOR_TAG" description="TPL_JE_CONSTRUCT_COMMUNITY_CUSTOM_GENERATOR_TAG_DESC" size="56" />
 				<field name="showDateContainer" type="radio" default="0" label="TPL_JE_CONSTRUCT_COMMUNITY_ENABLE_DATECONTAINER_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_ENABLE_DATECONTAINER_DESC">
 					<option value="1">Show</option>
 					<option value="0">Hide</option>
+				</field>
+				<field name="html5manifest" type="radio" default="0" label="HTML5 Cache Manifest" description="Creates a theme-based .manifest file to cache default styles and script libraries for offline caching in supporting browsers.">
+				  <option value="0">No</option>
+				  <option value="1">Yes</option>
 				</field>
 			</fieldset>
 

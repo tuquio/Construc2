@@ -32,6 +32,8 @@ $enableSwitcher 		= (bool) $this->params->get('enableSwitcher');
 $showDiagnostics 		= (bool) $this->params->get('showDiagnostics');
 $showDateContainer 		= (bool) $this->params->get('showDateContainer');
 
+$html5manifest 			= (bool) $this->params->get('html5manifest');
+
 $useStickyFooter 		= (bool) $this->params->get('useStickyFooter');
 $stickyFooterHeight		= (int)	 $this->params->get('stickyFooterHeight');
 $IECSS3					= (bool) $this->params->get('IECSS3');
@@ -249,11 +251,16 @@ if ($enableSwitcher) {
 	$this->addScript($tmpl_url.'/js/styleswitch.js');
 }
 
-// HTML5 cache manifest
-if ($this->direction == 'rtl') {
-	$cache_manifest = 'manifest="'.$tmpl_url.'/'.$this->template.'_rtl.manifest"';
+// HTML5 cache manifest (not rendered by default in the <html> element)
+// triggers "This website (xxx) is asking to store data on your computer for offline use" in browsers
+if ($html5manifest) {
+	if ($this->direction == 'rtl') {
+		$cache_manifest = ' manifest="'.$tmpl_url.'/'.$this->template.'_rtl.manifest"';
+	} else {
+		$cache_manifest = ' manifest="'.$tmpl_url.'/'.$this->template.'.manifest"';
+	}
 } else {
-	$cache_manifest = 'manifest="'.$tmpl_url.'/'.$this->template.'.manifest"';
+	$cache_manifest = '';
 }
 
 // Layout Declarations
