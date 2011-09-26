@@ -71,6 +71,11 @@ JLoader::register('SearchHelper', JPATH_ADMINISTRATOR .'/components/com_search/h
 $elt = 'ul';
 $ol_types = array();
 
+// no active menu item, use default (home)
+if (!$active) {
+	$active = JFactory::getApplication()->getMenu()->getDefault();
+}
+
 // ordered list requested?
 if ( preg_match('#(?:[_|-](ordered|ol))#iu', $class_sfx, $settings) )
 {
@@ -82,10 +87,6 @@ if ( preg_match('#(?:[_|-](ordered|ol))#iu', $class_sfx, $settings) )
 		'a'=>'lower-alpha',
 		'A'=>'upper-alpha',
 		);
-
-FB::log($settings	, 'Better '. $params->get('menutype').' $settings');
-FB::log($params		, 'Better '. $params->get('menutype').' $params');
-FB::log($active		, 'Better '. $params->get('menutype').' $active');
 
 	// remove "magic" class setting
 	$class_sfx	= str_replace($settings[0], '', $class_sfx);
