@@ -82,7 +82,7 @@ function modChrome_mod( $module, &$params, &$attribs ) {
 		$attribs['oocss'] = 'mod';
 	}
 
-	modChrome_mod( $module, $params, $attribs );
+	modChrome_jexhtml( $module, $params, $attribs );
 }
 
 /**

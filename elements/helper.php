@@ -504,12 +504,8 @@ class ConstructTemplateHelper
 	{
 		$groups = array('meta'=>'', 'links'=>'', 'style'=>'', 'scripts'=>'', 'script'=>'', 'custom'=>'');
 
-		FB::group(__FUNCTION__, array('Collapsed'=>true, 'Color'=>'teal'));
-
 		ksort(self::$head);
 		$uastack = '';
-
-		FB::log(self::$head, __FUNCTION__);
 
 		foreach (self::$head as $ua => $stuff)
 		{
@@ -542,9 +538,6 @@ class ConstructTemplateHelper
 
 		// put everything back
 		$this->tmpl->setHeadData($head);
-
-		FB::log($head, __FUNCTION__);
-		FB::groupEnd();
 	}
 
 	/**
