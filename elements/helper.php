@@ -550,6 +550,8 @@ class ConstructTemplateHelper
 	/**
 	 * Attempts to order the script elements by pushing MooTools and jQuery
 	 * up the stack to avoid conflicts among those libraries.
+	 * Execution depends on the "Sort Styles and Scripts" (headCleanup)
+	 * template parameter to be enabled.
 	 *
 	 * Component views, plugins and modules might use optional jQuery plugins,
 	 * but "our" jQuery loaded during the templare rendering phase will come
@@ -558,11 +560,18 @@ class ConstructTemplateHelper
 	 * @return ConstructTemplateHelper for fluid interface
 	 * @see buildHeadElements(), renderHeadElements()
 	 *
-	 * @todo make this mess a decorator for other libs
+	 * @static $libs array regexps to locate jquery and mootools libraries
+	 * @static $CDN  array assoc array with CDN URLs and version regexps
+	 *
+	 * @todo move static vars and make this mess a decorator for other libs
 	 * @todo handle scripts version conflicts loaded elsewhere
 	 */
 	public function sortScripts()
 	{
+		if (!$this->tmpl->params->get('headCleanup')) {
+			return $this;
+		}
+
 		// matter of concerns
 		static $libs = array(
 					'jquery'	=> '#/(jquery\.)#',
@@ -577,7 +586,7 @@ class ConstructTemplateHelper
 				'cdnjs.cloudflare.com'	=> array('jquery'=>'/jquery/(\d\.\d\.\d)/', 'mootools'=>'/mootools/(\d\.\d\.\d)/'),
 		);
 
-		$head    = $this->tmpl->getHeadData();
+		$head = $this->tmpl->getHeadData();
 
 		// CDNs take precendence
 		$scripts = array('cdn'=>array(), 'media'=>array(), 'templates'=>array());
@@ -599,7 +608,8 @@ class ConstructTemplateHelper
 		// followed by media/system, templates/system
 		foreach (preg_grep('#(media|templates)/system/#', array_keys($head['scripts'])) as $key)
 		{
-			$location = array_shift(explode('/', trim($key, '/')));
+			$parts    = explode('/', trim($key, '/'));
+			$location = array_shift($parts);
 			$scripts[$location][$key] = $head['scripts'][$key];
 			// nuke old entry
 			unset($head['scripts'][$key]);
@@ -608,8 +618,14 @@ class ConstructTemplateHelper
 		// rebuild
 		$head['scripts'] = $scripts['cdn'] + $scripts['media'] + $scripts['templates'] + $head['scripts'];
 
+		// jQuery compat
 		if (count($jquery) > 0) {
-			$this->addScriptDeclaration('if (window.jQuery){jQuery.noConflict();}');
+			if (false === strpos($head['script']['text/javascript'], 'jQuery.noConflict'))
+			{
+				$head['script']['text/javascript'] =
+						'if (window.jQuery){jQuery.noConflict();}' .PHP_EOL.
+						trim($head['script']['text/javascript']);
+			}
 		}
 
 		// put everything back

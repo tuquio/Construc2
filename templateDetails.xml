@@ -85,9 +85,13 @@
 					<option value="1">Show</option>
 					<option value="0">Hide</option>
 				</field>
-				<field name="html5manifest" type="radio" default="0" label="HTML5 Cache Manifest" description="Creates a theme-based .manifest file to cache default styles and script libraries for offline caching in supporting browsers.">
-				  <option value="0">No</option>
-				  <option value="1">Yes</option>
+				<field name="html5manifest" type="radio" default="0" label="TPL_JE_CONSTRUCT_COMMUNITY_ENABLE_HTML5MANIFEST_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_ENABLE_HTML5MANIFEST_DESC">
+					<option value="1">Yes</option>
+					<option value="0">No</option>
+				</field>
+				<field name="headCleanup" type="radio" default="0" label="TPL_JE_CONSTRUCT_COMMUNITY_ENABLE_HEADCLEANUP_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_ENABLE_HEADCLEANUP_DESC">
+					<option value="1">Yes</option>
+					<option value="0">No</option>
 				</field>
 			</fieldset>
 
