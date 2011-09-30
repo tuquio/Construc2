@@ -58,10 +58,10 @@ ul:first-child {margin-top:0}
 header.above	,
 header.below	{margin:0 auto;}
 
-.content-main {}
+.content-main	{}
 
 .main-only .load-first		{}
-.alpha-main	.load-first		{width:80%; float:left;}
+.alpha-main	.content-main	{width:80%; float:left;}
 .main-beta .load-first 		{width:80%; float:left;}
 .main-beta .page-foot 		{width:80%;}
 .alpha-main-beta .load-first{width:60%; float:left;}

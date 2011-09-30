@@ -29,6 +29,7 @@ defined('_JEXEC') or die;
 	<?php endif; ?>
 
 		<div id="header" class="line page-head">
+			<h1 id="logo"><a href="<?php echo $this->baseurl ?>/" title="<?php echo $app->getCfg('sitename');?>"><?php echo $app->getCfg('sitename');?></a></h1>
 			<?php if ($showDateContainer) : ?>
 			<div class="date-container"><?php echo $templateHelper->dateContainer(); ?></div>
 			<?php endif; ?>
@@ -40,7 +41,6 @@ defined('_JEXEC') or die;
 				<?php if($catId)		echo '<li>category-'.$catId.'</li>'; ?>
 			</ul>
 			<?php endif; ?>
-			<h1 id="logo"><a href="<?php echo $this->baseurl ?>/" title="<?php echo $app->getCfg('sitename');?>"><?php echo $app->getCfg('sitename');?></a></h1>
 			<?php if ($this->countModules('header')) : ?>
 				<?php $templateHelper->renderModules('header', 'jexhtml'); ?>
 			<?php endif; ?>
@@ -61,16 +61,16 @@ defined('_JEXEC') or die;
 			</header><!-- end header-below -->
 		<?php endif; ?>
 
-		<?php if ($this->countModules('breadcrumbs')) : ?>
-			<div id="breadcrumbs">
-			<?php $templateHelper->renderModules('breadcrumbs'); ?>
-			</div>
-		<?php endif; ?>
-
 		<?php if ($this->countModules('nav')) : ?>
 			<nav id="nav" class="line">
-			<?php $templateHelper->renderModules('nav', 'jexhtml'); ?>
+			<?php $templateHelper->renderModules('nav'); ?>
 			</nav><!-- end nav-->
+		<?php endif; ?>
+
+		<?php if ($this->countModules('breadcrumbs')) : ?>
+			<div class="line" id="breadcrumbs">
+			<?php $templateHelper->renderModules('breadcrumbs'); ?>
+			</div>
 		<?php endif; ?>
 
 			<div class="line content-container">

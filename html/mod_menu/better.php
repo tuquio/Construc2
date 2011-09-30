@@ -19,7 +19,7 @@
  * to work and deal with:
  *	$module			stdClass Object of the Module itself
  *					->params in JSON format
- *	$attribs		assoc array with the attribute from <jdoc:load .../>
+ *	$attribs		assoc array with all attributes from <jdoc:load .../>
  *
  *	$params 		JRegistry version of $Module->params
  * 	$class_sfx		value of that module parameter
@@ -31,16 +31,16 @@
  *	$active_id		same as $active->id (Itemid)
  *	$path 			array depicting the nesting level of the current menu item
  *
- * 	$app			JSite or JAdmin depends on where we are
+ * 	$app			JSite instance
  * 	$lang 			JLanguage instance
  * 	$menu			JMenuSite instance of the WHOLE menu
  *	$scope			previous application scope, but usually an empty string
- *	$option			current component name incl. com_
+ *	$option			active component name incl. com_
  *	$chrome			this file's path
  *	$content		comes in as an empty string and might be deprecated;
- *					represents the "output" of a module layout and if not
- *					empty after rendering a Layout will discard that rendered
- *					content and use $content instead. somwhat weired...
+ *					Eventually represents the module's "output". No need to set
+ *					this manually here unless you want to discard the default output
+ *					of this layout and return any other 'content'. utterly weired...
  *
  * @package     Template
  * @subpackage  HTML
@@ -165,21 +165,21 @@ foreach ($list as $i => &$item) :
 	// @todo test if JLanguage was patched to contain getSingular()
 	// @todo test if Localise::INFLECTION is true
 	// even if it proxies, singularization is fine for this
-	if ($item->language == 'de-DE' || $locale == 'de-DE') {
-		if ( method_exists('de_DELocalise', 'singularize') ) {
-			$alias = de_DELocalise::singularize($alias);
+	if ($item->language == 'de-DE' || ($item->language == '*' && $locale == 'de-DE') ) {
+		if ( method_exists('de_DELocalise', 'singularise') ) {
+			$alias = de_DELocalise::singularise($alias);
 		}
 	}
 	// fall back for english
-	elseif ($item->language == 'en-GB' || $locale == 'en-GB') {
-		if ( method_exists('en_GBLocalise', 'singularize') ) {
-			$alias = en_GBLocalise::singularize($alias);
+	elseif ($item->language == 'en-GB' || ($item->language == '*' && $locale == 'en-GB') ) {
+		if ( method_exists('en_GBLocalise', 'singularise') ) {
+			$alias = en_GBLocalise::singularise($alias);
 		}
 	}
 	else {
 		// @todo do some smart check for other xx-XXLocalise classes
-		if ( method_exists('en_GBLocalise', 'singularize') ) {
-			$alias = en_GBLocalise::singularize($alias);
+		if ( method_exists('en_GBLocalise', 'singularise') ) {
+			$alias = en_GBLocalise::singularise($alias);
 		}
 	}
 
