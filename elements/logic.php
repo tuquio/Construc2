@@ -1,11 +1,10 @@
 <?php defined('_JEXEC') or die;
 /**
  * @package		Templates
- * @subpackage  Helper
- * @author		Joomla Engineering http://joomlaengineering.com
- * @copyright	Copyright (C) 2010, 2011 Matt Thomas | Joomla Engineering. All rights reserved.
+ * @subpackage  Construc2
  * @author		WebMechanic http://webmechanic.biz
  * @copyright	(C) 2011 WebMechanic
+ * @copyright	Copyright (C) 2010, 2011 Matt Thomas | Joomla Engineering. All rights reserved.
  * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  *
  * @return JDocumentHtml
@@ -40,11 +39,15 @@ $IECSS3					= (bool) $this->params->get('IECSS3');
 $IECSS3Targets			=		 $this->params->get('IECSS3Targets');
 $IE6TransFix			= (bool) $this->params->get('IE6TransFix');
 $IE6TransFixTargets		=		 $this->params->get('IE6TransFixTargets');
+
 $fluidMedia				= (bool) $this->params->get('fluidMedia');
 $fullWidth				=		 $this->params->get('fullWidth');
 $siteWidth				= (int)	 $this->params->get('siteWidth');
 $siteWidthType			=		 $this->params->get('siteWidthType');
 $siteWidthUnit			=		 $this->params->get('siteWidthUnit');
+
+$mod_oocss				= true;
+
 $loadModal				= (bool) $this->params->get('loadModal');
 $loadMoo 				= (bool) $this->params->get('loadMoo', $loadModal);
 $loadJQuery 			=		 $this->params->get('loadjQuery');
@@ -337,6 +340,20 @@ if ($IE6TransFix) {
 	$scriptDeclarations[] = "\t/* IE6TransFix */ if (DD_belatedPNG) {DD_belatedPNG.fix('". $IE6TransFixTargets ."')}";
 	$templateHelper->addScript($tmpl_url.'/js/DD_belatedPNG_0.0.8a-min.js', 'lt IE 7');
 	$templateHelper->addScriptDeclaration("/* IE6TransFix */ if (DD_belatedPNG) {DD_belatedPNG.fix('". $IE6TransFixTargets ."')}", 'lt IE 7');
+}
+
+/* Preview Module Styles for use with index.php?tp=1 */
+if ($app->get('input')->get('tp', 0) == 1 /* && tp use allowed == true */ ) {
+$css = '.mod-preview{position:relative}
+.mod-preview-wrapper{border:1px solid #ccc;-moz-border-radius:10px;-webkit-border-radius:10px;border-radius:10px;-webkit-box-shadow:2px 2px 6px rgba(0,0,0,0.6); -moz-box-shadow:2px 2px 6px rgba(0,0,0,0.6); box-shadow:2px 2px 6px rgba(0,0,0,0.6); padding:5px 10px;margin:5px 0;opacity:0.9;background:#666;z-index:999;min-height:50px}
+.mod-preview-wrapper div.moduletable,
+.mod-preview-wrapper .menu,
+.mod-preview-wrapper #breadcrumbs{opacity:0}
+.mod-preview-info{color:#fff;background:none;border:none;z-index:999;position:absolute;left:5px;top:5px;font-size:110%}
+#left .mod-preview-wrapper,
+#left2 .mod-preview-wrapper,
+#right .mod-preview-wrapper,
+#right2 .mod-preview-wrapper{height:940px}';
 }
 
 // add collected custom style declarations

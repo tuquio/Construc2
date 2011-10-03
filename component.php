@@ -1,27 +1,28 @@
 <?php
 /**
  * @package     Templates
- * @subpackage  Layouts
- * @author		Joomla Engineering http://joomlaengineering.com
- * @author		WebMechanic http://webmechanic.biz
- * @copyright	Copyright (C) 2010, 2011 Matt Thomas | Joomla Engineering. All rights reserved.
- * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
+ * @subpackage  Construc2
+ * @author      WebMechanic http://webmechanic.biz
+ * @copyright   (C) 2011 WebMechanic
+ * @license     GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
+ * @todo TEST!
  */
 defined('_JEXEC') or die;
 
-// Define relative shortcut for current template directory
-$template 	= 'templates/'.$this->template;
-?><!DOCTYPE html>
-<html lang="<?php echo $this->language; ?>" dir="<?php echo $this->direction; ?>" >
-<head>
-<jdoc:include type="head" />
-<?php $this->addStyleSheet($template.'/css/core/print.css','text/css','print'); ?>
-</head>
-<body class="contentpane">
-<?php if ($this->countModules('print-popup')) : ?>
-	<jdoc:include type="modules" name="print-popup" style="raw" />
-<?php endif; ?>
-	<jdoc:include type="message" />
-	<jdoc:include type="component" />
-</body>
-</html>
+// Load template logic
+require JPATH_THEMES.'/'.$this->template.'/elements/logic.php';
+
+// Add custom layout overrides for components or section here
+/* eg:
+ * $templateHelper->addLayout('component');
+ * $templateHelper->addLayout(42, 'section');
+ */
+
+// Check for alternate index file, load it if it exists, and leave
+if ($alternateIndexFile = $templateHelper->getLayout()) {
+	require_once $alternateIndexFile['path'];
+	return;
+}
+
+// load component-index.php
+require_once JPATH_THEMES.'/'.$this->template.'/layouts/component-index.php';

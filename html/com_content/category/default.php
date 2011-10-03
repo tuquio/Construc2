@@ -33,10 +33,12 @@ $page_subheading     = $this->params->get('page_subheading');
 	?></h2>
 <?php if ($show_page_heading && ($this->params->get('show_category_title', 1) || $page_subheading)) : ?>
 </hgroup>
-<?php endif; ?>
-<?php endif; ?>
+<?php endif;
+endif;
 
-<?php if (($desc = $this->params->get('show_description')) || ($desc_img = $this->params->def('show_description_image')) ) : ?>
+$desc     = $this->params->get('show_description');
+$desc_img = $this->params->def('show_description_image');
+if ($desc || $desc_img ) : ?>
 <div class="category-desc">
 	<?php if ($desc_img && ($img_src = $this->category->getParams()->get('image')) ) : ?>
 	<img src="<?php echo $img_src; ?>"/>

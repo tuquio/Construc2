@@ -45,15 +45,15 @@
  * @package     Template
  * @subpackage  HTML
  * @author      WebMechanic http://webmechanic.biz
- * @copyright   Copyright (C)2011 WebMechanic. All rights reserved.
- * @copyright   Copyright (C)2005 - 2011 Open Source Matters, Inc. All rights reserved.
+ * @copyright   (C)2011 WebMechanic.
+ * @copyright   (C)2005 - 2011 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 // No direct access.
 defined('_JEXEC') or die;
 
-$class_sfx .= ' '.$params->get('menutype').'_menu';
+$class_sfx .= ' '.$params->get('menutype');
 
 // cleanup moduleclass_sfx
 if ( preg_match('#(?:[_|-](chapters|book_chapters))#iu', ($msfx = $params->get('moduleclass_sfx', '')), $m) )
@@ -67,8 +67,9 @@ if ( preg_match('#(?:[_|-](chapters|book_chapters))#iu', ($msfx = $params->get('
  */
 JLoader::register('SearchHelper', JPATH_ADMINISTRATOR .'/components/com_search/helpers/search.php');
 
-// unordered list
-$elt = 'ul';
+// menu got "lost" in XHTML for no reason, but
+// has always been supported by any browser on earth
+$elt = 'menu';
 $ol_types = array();
 
 // no active menu item, use default (home)

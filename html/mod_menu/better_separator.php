@@ -22,4 +22,4 @@ else {
 }
 	// no additional "mi" class  mi here.
 	// separator should be fine in the context of .menu and .submenu
-?><span class="separator"><?php echo $title; ?><?php echo $linktype; ?></span>
+?><span class="sep"><?php echo $title; ?><?php echo $linktype; ?></span>

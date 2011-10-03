@@ -4,34 +4,28 @@
  */
 defined('_JEXEC') or die;
 $modcount = count($headerBelowCount);
-?>
-<?php if ($modcount > 1 && $navBelowCount[1]) : ?>
-	<div id="nav-below-1" class="<?php echo $navBelowClass ?>">
-	<?php $templateHelper->renderModules('nav-below-1', 'mod'); ?>
-	</div><!-- end nav-below-1 -->
-<?php endif; ?>
-<?php if ($modcount > 2 && $navBelowCount[2]) : ?>
-	<div id="nav-below-2" class="<?php echo $navBelowClass ?>">
-	<?php $templateHelper->renderModules('nav-below-2', 'mod'); ?>
-	</div><!-- end nav-below-2 -->
-<?php endif; ?>
-<?php if ($modcount > 3 && $navBelowCount[3]) : ?>
-	<div id="nav-below-3" class="<?php echo $navBelowClass ?>">
-	<?php $templateHelper->renderModules('nav-below-3', 'mod'); ?>
-	</div><!-- end nav-below-3 -->
-<?php endif; ?>
-<?php if ($modcount > 4 && $navBelowCount[4]) : ?>
-	<div id="nav-below-4" class="<?php echo $navBelowClass ?>">
-	<?php $templateHelper->renderModules('nav-below-4', 'mod'); ?>
-	</div><!-- end nav-below-4 -->
-<?php endif; ?>
-<?php if ($modcount > 5 && $navBelowCount[5]) : ?>
-	<div id="nav-below-5" class="<?php echo $navBelowClass ?>">
-	<?php $templateHelper->renderModules('nav-below-5', 'mod'); ?>
-	</div><!-- end nav-below-5 -->
-<?php endif; ?>
-<?php if ($modcount > 6 && $navBelowCount[6]) : ?>
-	<div id="nav-below-6" class="<?php echo $navBelowClass ?>">
-	<?php $templateHelper->renderModules('nav-below-6', 'mod'); ?>
-	</div><!-- end nav-below-6 -->
-<?php endif; ?>
+
+$chunks = array(
+		'module_before' => '<div id="{position}" class="{class}">',
+		'module_after'  => '</div>'
+);
+$templateHelper->setChunks($chunks, true);
+
+if ($modcount > 1 && $navBelowCount[1]) :
+	$templateHelper->renderModules('nav-below-1', 'mod');
+endif;
+if ($modcount > 2 && $navBelowCount[2]) :
+	$templateHelper->renderModules('nav-below-2', 'mod');
+endif;
+if ($modcount > 3 && $navBelowCount[3]) :
+	$templateHelper->renderModules('nav-below-3', 'mod');
+endif;
+if ($modcount > 4 && $navBelowCount[4]) :
+	$templateHelper->renderModules('nav-below-4', 'mod');
+endif;
+if ($modcount > 5 && $navBelowCount[5]) :
+	$templateHelper->renderModules('nav-below-5', 'mod');
+endif;
+if ($modcount > 6 && $navBelowCount[6]) :
+	$templateHelper->renderModules('nav-below-6', 'mod');
+endif;

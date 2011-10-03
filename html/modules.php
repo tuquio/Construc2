@@ -29,24 +29,35 @@ function modChrome_jexhtml( $module, &$params, &$attribs ) {
 
 	$css	= array();
 	$css[] 	= $oocss ? $attribs['oocss'] : '';
-	$css[]	= str_replace('_', '-', $module->module);
-	$css[] 	= $params->get('moduleclass_sfx');
+
+	// 'custom' makes for a pretty weired name
+	if ('custom' != $module->module) {
+		$css[]	= str_replace('_', '-', $module->module);
+	}
 
 	$css[] 	= isset($attribs['module-class'])  ? $attribs['module-class'] : 'moduletable';
 	$css[] 	= isset($attribs['outline-style']) ? 'outline-'.$attribs['outline-style'] : '';
+	$css[] 	= $params->get('moduleclass_sfx');
+	$css    = trim(implode(' ', array_unique($css) ));
 
-	echo '<div class="', trim(implode(' ', $css)), '">';
+	echo '<div class="', $css, '">';
 	if ($oocss) echo '<b class="top"><b class="tl"></b><b class="tr"></b></b>', PHP_EOL;
 
 	echo '<div class="inner">', PHP_EOL;
 
 	if ($module->showtitle) {
-		$level = isset($attribs['level'])         ? (int) $attribs['level'] : 3;
-		$css   = array();
-		$css[] = str_replace('_', '-', $module->module);
-		$css[] = isset($attribs['header-class'])  ? $attribs['header-class'] : 'je-header';
+		$level = isset($attribs['level']) ? (int) $attribs['level'] : 3;
+
+		$css = array();
+		if ('custom' != $module->module) {
+			$css[] = str_replace(array('_','mod_'), array('_',''), $module->module);
+		}
+		$css[] = isset($attribs['header-class']) ? $attribs['header-class'] : 'je-header';
+
+		$css   = trim(implode(' ', array_unique($css) ));
+
 		if ($oocss) echo '<div class="hd">';
-		echo ' <h', $level, ' class="', trim(implode(' ', $css)), '">', $module->title, '</h', $level, '>';
+		echo ' <h', $level, ' class="', $css, '">', $module->title, '</h', $level, '>';
 		if ($oocss) echo '</div>', PHP_EOL;
 	}
 
@@ -150,23 +161,14 @@ function modChrome_bubble( $module, &$params, &$attribs )
 }
 
 /**
- * Enter description here ...
+ * Trigger content plugins on module content. As of J1.7 this feature is built in.
  * @param string $content
  * @param JParameter $params
  */
-function modChrome_withevent(&$content, $params)
+function modChrome_withevent( $module, &$params, &$attribs )
 {
-	static $item;
-	if (null == $item) {
-		// Create temporary article-stub to have all req. attriutes
-		$item = JTable::getInstance('content');
-		$item->parameters = new JRegistry('');
-	}
-	$item->text = $content;
+	$module->content = JHtml::_('content.prepare', $module->content, $params);
 
-	// Apply content plugins to custom module content
-	# JFactory::getApplication()->triggerEvent('onPrepareContent', array (&$item, &$params, 1));
-	JDispatcher::getInstance()->trigger('onPrepareContent', array (&$item, &$params, 1));
-	$content = $item->text;
+	modChrome_jexhtml( $module, $params, $attribs );
 }
 

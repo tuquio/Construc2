@@ -1,12 +1,4 @@
 <?php
-/**
- * @version		$Id: blog_item.php 17224 2010-05-23 09:14:11Z infograf768 $
- * @package		Joomla.Site
- * @subpackage	Templates.beez5
- * @copyright	Copyright (C) 2005 - 2009 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
- */
-
 // no direct access
 defined('_JEXEC') or die;
 $params  = $this->item->params;
@@ -18,45 +10,37 @@ JHtml::addIncludePath(JPATH_COMPONENT_SITE .DS. 'helpers');
 <div class="system-unpublished">
 <?php endif; ?>
 <?php if ($params->get('show_title')) : ?>
-	<h2>
-		<?php if ($params->get('link_titles') && $params->get('access-view')) : ?>
-			<a href="<?php echo JRoute::_(ContentHelperRoute::getArticleRoute($this->item->slug, $this->item->catid)); ?>">
-			<?php echo $this->escape($this->item->title); ?></a>
-		<?php else : ?>
-			<?php echo $this->escape($this->item->title); ?>
-		<?php endif; ?>
-	</h2>
+	<h2><?php if ($params->get('link_titles') && $params->get('access-view')) :
+		?><a href="<?php echo JRoute::_(ContentHelperRoute::getArticleRoute($this->item->slug, $this->item->catid))
+		?>"><?php echo $this->escape($this->item->title); ?></a>
+<?php else :
+		echo $this->escape($this->item->title);
+	endif; ?></h2>
 <?php endif; ?>
 
 <?php if ($params->get('show_print_icon') || $params->get('show_email_icon') || $canEdit) : ?>
 	<ul class="actions">
-		<?php if ($params->get('show_print_icon')) : ?>
-		<li class="print-icon">
-			<?php echo JHtml::_('icon.print_popup', $this->item, $params); ?>
-		</li>
-		<?php endif; ?>
-		<?php if ($params->get('show_email_icon')) : ?>
-		<li class="email-icon">
-			<?php echo JHtml::_('icon.email', $this->item, $params); ?>
-		</li>
-		<?php endif; ?>
-		<?php if ($canEdit) : ?>
-		<li class="edit-icon">
-			<?php echo JHtml::_('icon.edit', $this->item, $params); ?>
-		</li>
-		<?php endif; ?>
+<?php if ($params->get('show_print_icon')) : ?>
+		<li class="print-icon"><?php echo JHtml::_('icon.print_popup', $this->item, $params); ?></li>
+<?php endif; ?>
+<?php if ($params->get('show_email_icon')) : ?>
+		<li class="email-icon"><?php echo JHtml::_('icon.email', $this->item, $params); ?></li>
+<?php endif; ?>
+<?php if ($canEdit) : ?>
+		<li class="edit-icon"><?php echo JHtml::_('icon.edit', $this->item, $params); ?></li>
+<?php endif; ?>
 	</ul>
-<?php endif; ?>
+<?php endif;
 
-<?php if (!$params->get('show_intro')) : ?>
-	<?php echo $this->item->event->afterDisplayTitle; ?>
-<?php endif; ?>
+if (!$params->get('show_intro')) :
+	echo $this->item->event->afterDisplayTitle;
+endif;
 
-<?php echo $this->item->event->beforeDisplayContent; ?>
+echo $this->item->event->beforeDisplayContent;
 
-<?php // to do not that elegant would be nice to group the params ?>
+//@TODO not that elegant would be nice to group the params
 
-<?php if (($params->get('show_author')) or ($params->get('show_category')) or ($params->get('show_create_date')) or ($params->get('show_modify_date')) or ($params->get('show_publish_date')) or ($params->get('show_parent_category')) or ($params->get('show_hits'))) : ?>
+if (($params->get('show_author')) or ($params->get('show_category')) or ($params->get('show_create_date')) or ($params->get('show_modify_date')) or ($params->get('show_publish_date')) or ($params->get('show_parent_category')) or ($params->get('show_hits'))) : ?>
  <dl class="article-info">
  <dt class="article-info-term"><?php echo JText::_('COM_CONTENT_ARTICLE_INFO'); ?></dt>
 <?php endif; ?>
@@ -156,8 +140,6 @@ JHtml::addIncludePath(JPATH_COMPONENT_SITE .DS. 'helpers');
 <?php if ($this->item->state == 0) : ?>
 </div>
 <?php endif; ?>
+<span class="clr item-separator"></span>
 
-<div class="item-separator"></div>
 <?php echo $this->item->event->afterDisplayContent; ?>
-
-<?php } ?>

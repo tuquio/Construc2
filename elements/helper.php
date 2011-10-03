@@ -1,9 +1,10 @@
 <?php
 /**
- * @package     Templates
- * @author      Joomla Engineering http://joomlaengineering.com
+ * @package		Templates
+ * @subpackage  Construc2
  * @author		WebMechanic http://webmechanic.biz
- * @copyright   Copyright (C) 2010, 2011 Matt Thomas | Joomla Engineering. All rights reserved.
+ * @copyright	(C) 2011 WebMechanic
+ * @copyright	Copyright (C) 2010, 2011 Matt Thomas | Joomla Engineering. All rights reserved.
  * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
 defined('_JEXEC') or die;
@@ -23,15 +24,12 @@ function ConstructTemplateHelperCompileHead()
 /**
  * ConstructTemplateHelper
  *
- * Helper functions for the Construct Template Framework
- *
- * @package	   Templates
- * @subpackage Helper
+ * Helper functions for the Construc2 Template.
  * @since 1.0
  */
 class ConstructTemplateHelper
 {
-	const MAX_MODULES  = 6;
+	const MAX_MODULES  = 4;
 	const MAX_COLUMNS  = 4;
 	const MAX_WEBFONTS = 3;
 
@@ -46,6 +44,8 @@ class ConstructTemplateHelper
 	/** @var ConstructTemplateHelper instance of self
 	 * @see getInstance() */
 	public static $helper;
+
+	protected $groupcount = array();
 
 	/**
 	 * @staticvar array chunks from the static html file(s) *
@@ -171,41 +171,36 @@ class ConstructTemplateHelper
 	}
 
 	/**
-	 * getLayoutOverride
+	 * Determine if a layout file is available and return path or false condition
 	 *
-	 * determine if file is available and return path or false condition
+	 * Layout files in COnstruc2 are "overrides" for "overrides" based on the
+	 * current menu item or request and allow for granular HTML markup specific
+	 * for a given page.
 	 *
-	 * usage:
+	 * To introduce a new layout populate you apply the conditions into a
+	 * main template bootstrap, like index.php, component,php etc.
+	 * (the .php suffix is added automatically).
+	 * <code>
+	 * $helper->addLayout('index')
+	 *     ->addLayout($themeName, 'index')
+	 *     ->addLayout($currentComponent, 'component')
+	 *     ->addLayout($sectionId, 'section');
+	 * </code>
+	 * See {@link addLayout()} for more details on conditions and rules.
 	 *
-	 * 1. include Joomla File and Folder classes
-	 *
-	 * jimport('joomla.filesystem.file');
-	 * jimport('joomla.filesystem.folder');
-	 *
-	 * 2. instantiate the ConstructTemplateHelper class
-	 *   if (JFile::exists(dirname(__FILE__).'/library/template.php')) {
-	 *     include dirname(__FILE__).'/library/template.php';
-	 *   }
-	 *   $helper = new ConstructTemplateHelper ($this);
-	 *
-	 * 3. populate the ConstructTemplateHelper property (the .php suffix is added automatically)
-	 *		@see addLayout() for more details
-	 *
-	 *   $helper->addLayout('index')
-	 *          ->addLayout($themeName, 'index')
-	 *          ->addLayout($currentComponent, 'component')
-	 *          ->addLayout($sectionId, 'section');
-	 *
-	 * 4. call the ConstructTemplateHelper getIncludeFile method
-	 *
-	 * 	if ($alternateIndexFile = $layoutOverride->getIncludeFile()) {
-	 * 	    include_once $alternateIndexFile;
-	 *      return;
+	 * The call the {@ink getIncludeFile()} method and load to include the
+	 * filename being returned. If no file was found to match a condition, the
+	 * standard "index.php" layout will load.
+	 * <code>
+	 * if ($alternateIndexFile = $layoutOverride->getIncludeFile()) {
+	 *     include_once $alternateIndexFile;
+	 *     return;
 	 * 	}
+	 * </code>
 	 *
 	 * @return string  filepath of layout or void if not found
 	 *
-	 * @todo do some additional magic based on the active menu item
+	 * @todo implement additional magic based on the active menu item
 	 */
 	public function getLayout()
 	{
@@ -213,7 +208,7 @@ class ConstructTemplateHelper
 			return;
 		}
 
-		$jmenu = JFactory::getApplication()->getMenu()->getActive();
+		// $jmenu = JFactory::getApplication()->getMenu()->getActive();
 
 		foreach ($this->layouts as $layout) {
 			// return first file that exists
@@ -224,7 +219,7 @@ class ConstructTemplateHelper
 	}
 
 	/**
-	 * Returns the list of registered (and found) layout files.
+	 * Returns the list of registered (and present) layout files.
 	 *
 	 * @return array
 	 */
@@ -234,12 +229,17 @@ class ConstructTemplateHelper
 	}
 
 	/**
-	 * Will load the static html file names and prepare its depended "chunks"
+	 * Will load the static html file names and prepare its related "chunks"
 	 * for later inclusion in "static_html.php".
+	 * Default chunks are: 'header', 'footer', 'aside', 'nav', 'section', 'article'.
+	 * Use setChunks() to configure the list.
+	 *
+	 * Static HTML files are useful for prototyping a layout or to include contents
+	 * that are not managed (manageable) within the CMS.
 	 *
 	 * @param  array  $layout
 	 * @return array
-	 * @see loadStaticHtml(), setChunks()
+	 * @see self::$chunks, loadStaticHtml(), setChunks()
 	 */
 	public function getStaticHtml(array &$layout)
 	{
@@ -279,21 +279,26 @@ class ConstructTemplateHelper
 	}
 
 	/**
-	 * Accepts an array with basename prefixes for the static html feature provided
-	 * with "static_html.php". For a list of default chunk names see {@link self::$chunks}.
-	 * If your current html testfile is "ipsum.html" additional files will be loaded named
-	 * "ipsum-header.html", "ipsum-footer.html" etc.
+	 * Accepts an array with basename prefixes for the static html feature
+	 * provided with "static_html.php". For a list of default chunk names see
+	 * {@link self::$chunks}.
+	 * If your current html testfile is "ipsum.html" additional files will be
+	 * loaded named "ipsum-header.html", "ipsum-footer.html" etc.
 	 *
-	 * @param array $chunks
+	 * @param  array  $chunks
+	 * @param  bool   $replace  false
 	 *
 	 * @return ConstructTemplateHelper for fluid interface
 	 */
-	static public function setChunks(array $chunks)
+	static public function setChunks(array $chunks, $replace = false)
 	{
 		if (count($chunks)) {
-			self::$chunks = $chunks;
+			if ($replace) {
+				self::$chunks = $chunks;
+			} else {
+				self::$chunks = array_merge(self::$chunks, $chunks);
+			}
 		}
-		return $this;
 	}
 
 	/**
@@ -309,6 +314,8 @@ class ConstructTemplateHelper
 		settype($max, 'int');
 		if ($max < 1) $max = 1;
 
+		$this->groupcount[$group] = 0;
+
 		$modules = array_fill(0, $max, 0);
 
 		for ($i=1; $i<=$max; $i++) :
@@ -320,9 +327,13 @@ class ConstructTemplateHelper
 			return null;
 		}
 
-		$modules[0] = $i;
+		$this->groupcount[$group] = $modules[0] = $i;
 
 		return $modules;
+	}
+
+	public function numModules($group) {
+		return isset($this->groupcount[$group]) ? $this->groupcount[$group] : 0;
 	}
 
 	/**
@@ -340,9 +351,31 @@ class ConstructTemplateHelper
 		$params['name'] = $position;
 		($style) ? $params['style'] = $style : true;
 
+		$css = array();
+		if (isset($params['autocols'])) {
+			if ( $pos = strrpos($position, '-') ) {
+				$group = substr($position, 0, $pos);
+				if ( $n = $this->numModules($group) ) {
+					settype($params['oocss'], 'string');
+					$css[] = 'unit size1of'.$n;
+				}
+			}
+			unset($params['autocols']);
+		}
+
 		foreach (JModuleHelper::getModules($position) as $_module)
 		{
+			if (isset(self::$chunks['module_before'])) {
+				echo str_replace(
+						array('{position}', '{class}'),
+						array($position, implode(' ', $css)),
+						self::$chunks['module_before']
+						);
+			}
 			echo JModuleHelper::renderModule($_module, $params);
+			if (isset(self::$chunks['module_after'])) {
+				echo self::$chunks['module_after'];
+			}
 		}
 		return $this;
 	}
@@ -613,11 +646,15 @@ class ConstructTemplateHelper
 
 		// jQuery compat
 		if (count($jquery) > 0) {
-			if (false === strpos($head['script']['text/javascript'], 'jQuery.noConflict'))
+			$noconflict = 'if (window.jQuery){jQuery.noConflict();}';
+			if ( isset($head['script']['text/javascript']) )
 			{
-				$head['script']['text/javascript'] =
-						'if (window.jQuery){jQuery.noConflict();}' .PHP_EOL.
-						trim($head['script']['text/javascript']);
+				if ( false === strpos($head['script']['text/javascript'], 'jQuery.noConflict') ) {
+					$head['script']['text/javascript'] = $noconflict . trim($head['script']['text/javascript']);
+				}
+			}
+			else {
+				$this->tmpl->addScriptDeclaration($noconflict);
 			}
 		}
 
@@ -640,8 +677,8 @@ class ConstructTemplateHelper
 	}
 
 	/**
-	 * Returns the given date (or today) wrapped in HTML elements for individual formatting of
-	 * each date fragent, day, month, year, via CSS.
+	 * Returns the given date (or today) wrapped in HTML elements for individual
+	 * formatting of each date fragent, day, month, year, via CSS.
 	 *
 	 * - $dateformat: supported date formater characters: l, d, F, Y or a DATE_FORMAT_XXX string
 	 * - $date: a value JDate() considers a valid date value, 'now'|null|false result in current date
@@ -654,7 +691,7 @@ class ConstructTemplateHelper
 	 * @param  string  $elt			defaults to 'span' as the date fragment wrapper element
 	 * @return string
 	 */
-	public function dateContainer($date='now', $dateformat='DATE_FORMAT_LC3', $elt='span')
+	public function dateContainer($date='now', $dateformat='DATE_FORMAT_LC4', $elt='span')
 	{
 		if (!$dateformat) $dateformat = 'DATE_FORMAT_LC3';
 		if (!$date) $date = 'now';
