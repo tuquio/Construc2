@@ -1,16 +1,15 @@
 <?php defined('_JEXEC') or die;
 /**
  * @package		Templates
- * @author		Joomla Engineering http://joomlaengineering.com
- * @copyright	Copyright (C) 2010 Matt Thomas | Joomla Engineering. All rights reserved.
+ * @subpackage  Construc2
+ * @author		WebMechanic http://webmechanic.biz
+ * @copyright	(C) 2011 WebMechanic
+ * @copyright	Copyright (C) 2010, 2011 Matt Thomas | Joomla Engineering. All rights reserved.
  * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
 
 /**
  * Provides a list of jQuery versions
- *
- * @package    Templates
- * @subpackage Elements
  */
 class JFormFieldJqueryversion extends JFormFieldList
 {
@@ -38,7 +37,7 @@ class JFormFieldJqueryversion extends JFormFieldList
 
 		$options[]	= JHtml::_('select.option', '', '- Not Loaded -');
 		/* using protocol relative URLs */
-		$options[]	= JHtml::_('select.option', '1', JText::_('TPL_JE_CONSTRUCT_COMMUNITY_JQUERY_LATEST'));
+		$options[]	= JHtml::_('select.option', '1', JText::_('TPL_CONSTRUCT_JQUERY_LATEST'));
 		foreach (self::$versions as $v) {
 			$options[]	= JHtml::_('select.option', $v, $v);
 		}

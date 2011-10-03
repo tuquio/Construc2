@@ -24,7 +24,7 @@ class JFormFieldConstructupdate extends JFormField {
 	{
 		// check for cURL support before we do anything else
 		if (!function_exists("curl_init")) {
-			return JText::_('TPL_JE_CONSTRUCT_COMMUNITY_VERSION_CURL_ERROR');
+			return JText::_('TPL_CONSTRUCT_VERSION_CURL_ERROR');
 		}
 
 		// fetch version from xml manifest
@@ -57,21 +57,21 @@ class JFormFieldConstructupdate extends JFormField {
 		curl_close($curl);
 	}
 
-		$message = JText::sprintf('TPL_JE_CONSTRUCT_COMMUNITY_VERSION_CHECK_USING', self::$version) .'<br />';
+		$message = JText::sprintf('TPL_CONSTRUCT_VERSION_CHECK_USING', self::$version) .'<br />';
 
 		// If the current version is out of date, notify the user and provide a download link.
 		if ( version_compare(self::$version, $str, 'lt') ) {
 			$message .= '<a href="http://joomlaengineering.com" target="_blank">'
-					.	JText::sprintf('TPL_JE_CONSTRUCT_COMMUNITY_VERSION_CHECK_UPDATE', $str)
+					.	JText::sprintf('TPL_CONSTRUCT_VERSION_CHECK_UPDATE', $str)
 					.	'</a><br /><a href="http://joomlaengineering.com/construct-community-1-6-changelog" target="_blank">'
-					.	JText::_('TPL_JE_CONSTRUCT_COMMUNITY_VERSION_CHECK_WHATSNEW')
+					.	JText::_('TPL_CONSTRUCT_VERSION_CHECK_WHATSNEW')
 					.	'</a></label>';
 		}
 		// If the current version is up to date, notify the user and provide a link to the change log
 		else {
-			$message .= JText::_('TPL_JE_CONSTRUCT_COMMUNITY_VERSION_CHECK_NOUPDATE')
+			$message .= JText::_('TPL_CONSTRUCT_VERSION_CHECK_NOUPDATE')
 					.	'<br /><a href="http://joomlaengineering.com/construct-community-1-6-changelog" target="_blank">'
-					.	JText::_('TPL_JE_CONSTRUCT_COMMUNITY_VERSION_CHECK_CHANGELOG')
+					.	JText::_('TPL_CONSTRUCT_VERSION_CHECK_CHANGELOG')
 					.	'</a>';
 		}
 
@@ -84,7 +84,7 @@ class JFormFieldConstructupdate extends JFormField {
 	 */
 	protected function _webfontsCheck()
 	{
-		$message = JText::plural('TPL_JE_CONSTRUCT_COMMUNITY_WEBFONTS_CHECK_UPDATE', 0);
+		$message = JText::plural('TPL_CONSTRUCT_WEBFONTS_CHECK_UPDATE', 0);
 
 		return $message;
 	}

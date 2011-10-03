@@ -15,7 +15,7 @@ html{font-size:13px;overflow-y:scroll;-webkit-text-size-adjust:100%;-ms-text-siz
 /* iPhone 4=326 ppi (std. 112 x 2,911) */
 @media screen and (min-resolution: 320dpi){html{font-size:38px}}
 
-article,aside,details,figcaption,figure,footer,header,hgroup,nav,section{display:block;}
+article,aside,details,figcaption,figure,footer,header,hgroup,nav,menu,section{display:block;}
 audio,canvas,video{display:inline-block;*display:inline;*zoom:1;}
 audio:not([controls]){display:none;}
 [hidden]{display:none;}

@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE install PUBLIC "-//Joomla! 1.6//DTD template 1.0//EN" "http://www.joomla.org/xml/dtd/1.6/template-install.dtd">
-<extension version="1.6" type="template" client="site" method="upgrade" >
-	<name>construct</name>
+<extension version="1.7" type="template" client="site" method="upgrade" >
+	<name>Construc2</name>
 	<creationDate>June 20th, 2011</creationDate>
-	<author>Joomla Engineering</author>
-	<authorEmail>support@joomlaengineering.com</authorEmail>
-	<authorUrl>http://joomlaengineering.com</authorUrl>
-	<copyright>Copyright (C) 2010, 2011 Matt Thomas | Joomla Engineering. All rights reserved.</copyright>
+	<author>WebMechanic</author>
+	<authorEmail>joomla@webmechanic.biz</authorEmail>
+	<authorUrl>http://joomla.webmechanic.biz</authorUrl>
+	<copyright>Copyright (C) 2011 WebMechanic. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
-	<version>1.6.664</version>
-	<description>TPL_JE_CONSTRUCT_COMMUNITY_DESCRIPTION</description>
+	<version>1.7.1</version>
+	<description>TPL_CONSTRUCT_DESCRIPTION</description>
+	<credits><![CDATA[
+	Inspired by "Construct Community 1.6", (C) 2010, 2011 Matt Thomas | Joomla Engineering. All rights reserved.
+	See CREDITS.php, README.md
+	]]></credits>
 
 	<positions>
 		<position>analytics</position>
@@ -22,42 +25,30 @@
 		<position>content-above-2</position>
 		<position>content-above-3</position>
 		<position>content-above-4</position>
-		<position>content-above-5</position>
-		<position>content-above-6</position>
 		<position>content-below-1</position>
 		<position>content-below-2</position>
 		<position>content-below-3</position>
 		<position>content-below-4</position>
-		<position>content-below-5</position>
-		<position>content-below-6</position>
 		<position>debug</position>
 		<position>footer</position>
 		<position>footer-above-1</position>
 		<position>footer-above-2</position>
 		<position>footer-above-3</position>
 		<position>footer-above-4</position>
-		<position>footer-above-5</position>
-		<position>footer-above-6</position>
 		<position>header</position>
 		<position>header-above-1</position>
 		<position>header-above-2</position>
 		<position>header-above-3</position>
 		<position>header-above-4</position>
-		<position>header-above-5</position>
-		<position>header-above-6</position>
 		<position>header-below-1</position>
 		<position>header-below-2</position>
 		<position>header-below-3</position>
 		<position>header-below-4</position>
-		<position>header-below-5</position>
-		<position>header-below-6</position>
 		<position>nav</position>
 		<position>nav-below-1</position>
 		<position>nav-below-2</position>
 		<position>nav-below-3</position>
 		<position>nav-below-4</position>
-		<position>nav-below-5</position>
-		<position>nav-below-6</position>
 		<position>offline</position>
 		<position>print-popup</position>
 		<position>syndicate</position>
@@ -66,172 +57,148 @@
 	<config>
 		<fields name="params">
 			<fieldset name="general" addfieldpath="/templates/construct/elements" >
-				<field name="enableSwitcher" type="radio" default="0" label="TPL_JE_CONSTRUCT_COMMUNITY_ENABLE_SWITCHER_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_ENABLE_SWITCHER_DESC">
-					<option value="1">Show</option>
-					<option value="0">Hide</option>
+				<field name="enableSwitcher" type="radio" default="0" label="TPL_CONSTRUCT_ENABLE_SWITCHER_LABEL" description="TPL_CONSTRUCT_ENABLE_SWITCHER_DESC">
+					<option value="1">JShow</option>
+					<option value="0">JHide</option>
 				</field>
-				<field name="showDiagnostics" type="radio" default="0" label="TPL_JE_CONSTRUCT_COMMUNITY_ENABLE_DIAGNOSTICS_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_ENABLE_DIAGNOSTICS_DESC">
-					<option value="1">Show</option>
-					<option value="0">Hide</option>
+				<field name="showDiagnostics" type="radio" default="0" label="TPL_CONSTRUCT_ENABLE_DIAGNOSTICS_LABEL" description="TPL_CONSTRUCT_ENABLE_DIAGNOSTICS_DESC">
+					<option value="1">JShow</option>
+					<option value="0">JHide</option>
 				</field>
 				<field name="customStyleSheet" type="filelist" default=""
-					label="TPL_JE_CONSTRUCT_COMMUNITY_CUSTOM_STYLE_SHEET_LABEL"
-					description="TPL_JE_CONSTRUCT_COMMUNITY_CUSTOM_STYLE_SHEET_DESC"
+					label="TPL_CONSTRUCT_CUSTOM_STYLE_SHEET_LABEL"
+					description="TPL_CONSTRUCT_CUSTOM_STYLE_SHEET_DESC"
 					directory="templates/construct/css" filter="\.css"
-					exclude="(template|editor|ie\d+|test.+|x~.+)\.css"
+					exclude="(template|editor|tinymce|codemirror|jce|ie\d+|test.+|x~.+)\.css"
 					/>
-				<field name="setGeneratorTag" type="text" default="" label="TPL_JE_CONSTRUCT_COMMUNITY_CUSTOM_GENERATOR_TAG" description="TPL_JE_CONSTRUCT_COMMUNITY_CUSTOM_GENERATOR_TAG_DESC" size="56" />
-				<field name="showDateContainer" type="radio" default="0" label="TPL_JE_CONSTRUCT_COMMUNITY_ENABLE_DATECONTAINER_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_ENABLE_DATECONTAINER_DESC">
-					<option value="1">Show</option>
-					<option value="0">Hide</option>
+				<field name="setGeneratorTag" type="text" default="" label="TPL_CONSTRUCT_CUSTOM_GENERATOR_TAG" description="TPL_CONSTRUCT_CUSTOM_GENERATOR_TAG_DESC" size="56" />
+				<field name="showDateContainer" type="radio" default="0" label="TPL_CONSTRUCT_ENABLE_DATECONTAINER_LABEL" description="TPL_CONSTRUCT_ENABLE_DATECONTAINER_DESC">
+					<option value="1">JShow</option>
+					<option value="0">JHide</option>
 				</field>
-				<field name="html5manifest" type="radio" default="0" label="TPL_JE_CONSTRUCT_COMMUNITY_ENABLE_HTML5MANIFEST_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_ENABLE_HTML5MANIFEST_DESC">
-					<option value="1">Yes</option>
-					<option value="0">No</option>
-				</field>
-				<field name="headCleanup" type="radio" default="0" label="TPL_JE_CONSTRUCT_COMMUNITY_ENABLE_HEADCLEANUP_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_ENABLE_HEADCLEANUP_DESC">
-					<option value="1">Yes</option>
-					<option value="0">No</option>
+				<field name="html5manifest" type="radio" default="0" label="TPL_CONSTRUCT_ENABLE_HTML5MANIFEST_LABEL" description="TPL_CONSTRUCT_ENABLE_HTML5MANIFEST_DESC">
+					<option value="1">JYes</option>
+					<option value="0">JNo</option>
 				</field>
 			</fieldset>
 
 			<fieldset name="javascript">
-				<field name="loadMoo" type="radio" default="1" label="TPL_JE_CONSTRUCT_COMMUNITY_LOAD_MOO_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_LOAD_MOO_DESC">
-					<option value="1">Yes</option>
-					<option value="0">No</option>
+				<field name="loadMoo" type="radio" default="1" label="TPL_CONSTRUCT_LOAD_MOO_LABEL" description="TPL_CONSTRUCT_LOAD_MOO_DESC">
+					<option value="1">JYes</option>
+					<option value="0">JNo</option>
 				</field>
-				<field name="loadModal" type="radio" default="1" label="TPL_JE_CONSTRUCT_COMMUNITY_LOAD_MODAL_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_LOAD_MODAL_DESC">
-					<option value="1">Yes</option>
-					<option value="0">No</option>
+				<field name="loadModal" type="radio" default="1" label="TPL_CONSTRUCT_LOAD_MODAL_LABEL" description="TPL_CONSTRUCT_LOAD_MODAL_DESC">
+					<option value="1">JYes</option>
+					<option value="0">JNo</option>
 				</field>
-				<field name="loadjQuery" type="jqueryversion" default="" label="TPL_JE_CONSTRUCT_COMMUNITY_LOAD_JQUERY_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_LOAD_JQUERY_DESC" />
+				<field name="loadjQuery" type="jqueryversion" default="" label="TPL_CONSTRUCT_LOAD_JQUERY_LABEL" description="TPL_CONSTRUCT_LOAD_JQUERY_DESC" />
+				<field name="headCleanup" type="radio" default="0" label="TPL_CONSTRUCT_ENABLE_HEADCLEANUP_LABEL" description="TPL_CONSTRUCT_ENABLE_HEADCLEANUP_DESC">
+					<option value="1">JYes</option>
+					<option value="0">JNo</option>
+				</field>
 			</fieldset>
 
 			<fieldset name="Layout">
-				<field name="siteWidth" type="text" default="80.5" label="TPL_JE_CONSTRUCT_COMMUNITY_SITE_WIDTH_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_SITE_WIDTH_DESC" size="10" />
-				<field name="siteWidthType" type="radio" default="max-width" label="TPL_JE_CONSTRUCT_COMMUNITY_SITE_WIDTH_TYPE_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_SITE_WIDTH_TYPE_DESC">
+				<field name="siteWidth" type="text" default="" label="TPL_CONSTRUCT_SITE_WIDTH_LABEL" description="TPL_CONSTRUCT_SITE_WIDTH_DESC" size="10" />
+				<field name="siteWidthType" type="radio" default="max-width" label="TPL_CONSTRUCT_SITE_WIDTH_TYPE_LABEL" description="TPL_CONSTRUCT_SITE_WIDTH_TYPE_DESC">
 					<option value="max-width">Fluid Max Width</option>
 					<option value="width">Fixed Width</option>
 				</field>
-				<field name="siteWidthUnit" type="radio" default="em" label="TPL_JE_CONSTRUCT_COMMUNITY_SITE_WIDTH_UNIT_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_SITE_WIDTH_UNIT_DESC">
-					<option value="em">Em</option>
-					<option value="px">Pixel</option>
-					<option value="%">Percent</option>
+				<field name="siteWidthUnit" type="radio" default="em" label="TPL_CONSTRUCT_SITE_WIDTH_UNIT_LABEL" description="TPL_CONSTRUCT_SITE_WIDTH_UNIT_DESC">
+					<option value="em">em</option>
+					<option value="px">px</option>
+					<option value="%">%</option>
 				</field>
-				<field name="fluidMedia" type="radio" default="0" label="TPL_JE_CONSTRUCT_COMMUNITY_FLUID_MEDIA_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_FLUID_MEDIA_DESC">
-				  <option value="1">Yes</option>
-				  <option value="0">No</option>
+				<field name="fluidMedia" type="radio" default="0" label="TPL_CONSTRUCT_FLUID_MEDIA_LABEL" description="TPL_CONSTRUCT_FLUID_MEDIA_DESC">
+				  <option value="1">JYes</option>
+				  <option value="0">JNo</option>
 				</field>
-				<field name="fullWidth" type="radio" default="1" label="TPL_JE_CONSTRUCT_COMMUNITY_FULL_WIDTH_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_FULL_WIDTH_DESC">
-				  <option value="1">Yes</option>
-				  <option value="0">No</option>
+				<field name="fullWidth" type="radio" default="1" label="TPL_CONSTRUCT_FULL_WIDTH_LABEL" description="TPL_CONSTRUCT_FULL_WIDTH_DESC">
+				  <option value="1">JYes</option>
+				  <option value="0">JNo</option>
 				</field>
-				<field name="useStickyFooter" type="radio" default="1" label="TPL_JE_CONSTRUCT_COMMUNITY_USE_STICKY_FOOTER_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_USE_STICKY_FOOTER_DESC">
+				<field name="useStickyFooter" type="radio" default="1" label="TPL_CONSTRUCT_USE_STICKY_FOOTER_LABEL" description="TPL_CONSTRUCT_USE_STICKY_FOOTER_DESC">
         			<option value="1">On</option>
         			<option value="0">Off</option>
 		    	</field>
-				<field name="stickyFooterHeight" type="text" default="175" label="TPL_JE_CONSTRUCT_COMMUNITY_STICKY_FOOTER_HEIGHT_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_STICKY_FOOTER_HEIGHT_DESC" size="5" />
+				<field name="stickyFooterHeight" type="text" default="" label="TPL_CONSTRUCT_STICKY_FOOTER_HEIGHT_LABEL" description="TPL_CONSTRUCT_STICKY_FOOTER_HEIGHT_DESC" size="5" />
 			</fieldset>
 
 <!-- EXPERI-MENTAL NOTE (high impact probability on logic.php and index.php)
-	<fieldset name="modulegroups" description="TPL_JE_CONSTRUCT_COMMUNITY_MODULEGROUPS">
-		<field name="mod_header_above"  type="text" default="6" label="TPL_JE_CONSTRUCT_COMMUNITY_MODULES_HEADER_ABOVE"  description="TPL_JE_CONSTRUCT_COMMUNITY_MODULES_GROUPS_DESC" size="5" />
-		<field name="mod_header_below"  type="text" default="6" label="TPL_JE_CONSTRUCT_COMMUNITY_MODULES_HEADER_BELOW"  description="TPL_JE_CONSTRUCT_COMMUNITY_MODULES_GROUPS_DESC" size="5" />
-		<field name="mod_nav_below"     type="text" default="6" label="TPL_JE_CONSTRUCT_COMMUNITY_MODULES_HEADER_ABOVE"  description="TPL_JE_CONSTRUCT_COMMUNITY_MODULES_GROUPS_DESC" size="5" />
-		<field name="mod_content_above" type="text" default="6" label="TPL_JE_CONSTRUCT_COMMUNITY_MODULES_NAV_BELOW"     description="TPL_JE_CONSTRUCT_COMMUNITY_MODULES_GROUPS_DESC" size="5" />
-		<field name="mod_content_below" type="text" default="6" label="TPL_JE_CONSTRUCT_COMMUNITY_MODULES_CONTENT_ABOVE" description="TPL_JE_CONSTRUCT_COMMUNITY_MODULES_GROUPS_DESC" size="5" />
-		<field name="mod_footer_above"  type="text" default="6" label="TPL_JE_CONSTRUCT_COMMUNITY_MODULES_CONTENT_BELOW" description="TPL_JE_CONSTRUCT_COMMUNITY_MODULES_GROUPS_DESC" size="5" />
-		<field name="mod_alpha_column" type="checkboxes" default="1" label="TPL_JE_CONSTRUCT_COMMUNITY_MODULES_ALPHA_COLUMN" description="TPL_JE_CONSTRUCT_COMMUNITY_MODULES_GROUPS_DESC">
+	<fieldset name="modulegroups" description="TPL_CONSTRUCT_MODULEGROUPS">
+		<field name="mod_header_above"  type="text" default="6" label="TPL_CONSTRUCT_MODULES_HEADER_ABOVE"  description="TPL_CONSTRUCT_MODULES_GROUPS_DESC" size="5" />
+		<field name="mod_header_below"  type="text" default="6" label="TPL_CONSTRUCT_MODULES_HEADER_BELOW"  description="TPL_CONSTRUCT_MODULES_GROUPS_DESC" size="5" />
+		<field name="mod_nav_below"     type="text" default="6" label="TPL_CONSTRUCT_MODULES_HEADER_ABOVE"  description="TPL_CONSTRUCT_MODULES_GROUPS_DESC" size="5" />
+		<field name="mod_content_above" type="text" default="6" label="TPL_CONSTRUCT_MODULES_NAV_BELOW"     description="TPL_CONSTRUCT_MODULES_GROUPS_DESC" size="5" />
+		<field name="mod_content_below" type="text" default="6" label="TPL_CONSTRUCT_MODULES_CONTENT_ABOVE" description="TPL_CONSTRUCT_MODULES_GROUPS_DESC" size="5" />
+		<field name="mod_footer_above"  type="text" default="6" label="TPL_CONSTRUCT_MODULES_CONTENT_BELOW" description="TPL_CONSTRUCT_MODULES_GROUPS_DESC" size="5" />
+		<field name="mod_alpha_column" type="checkboxes" default="1" label="TPL_CONSTRUCT_MODULES_ALPHA_COLUMN" description="TPL_CONSTRUCT_MODULES_GROUPS_DESC">
 			<option value="1">1</option>
 			<option value="2">2</option>
 		</field>
-		<field name="mod_beta_column" type="checkboxes" default="1" label="TPL_JE_CONSTRUCT_COMMUNITY_MODULES_BETA_COLUMN" description="TPL_JE_CONSTRUCT_COMMUNITY_MODULES_GROUPS_DESC">
+		<field name="mod_beta_column" type="checkboxes" default="1" label="TPL_CONSTRUCT_MODULES_BETA_COLUMN" description="TPL_CONSTRUCT_MODULES_GROUPS_DESC">
 			<option value="1">1</option>
 			<option value="2">2</option>
 		</field>
 	</fieldset>
  -->
 
-			<fieldset name="typography" description="TPL_JE_CONSTRUCT_COMMUNITY_GOOGLE_WEB_FONT">
-				<field name="googleWebFont1" type="googlewebfont" default="" label="TPL_JE_CONSTRUCT_COMMUNITY_GOOGLE_WEB_FONT_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_GOOGLE_WEB_FONT_DESC" />
-				<field name="googleWebFontTargets1" type="text" default="h1,h2,h3,h4,h5,h6" label="TPL_JE_CONSTRUCT_COMMUNITY_GOOGLE_WEB_FONT_TARGETS_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_GOOGLE_WEB_FONT_TARGETS_DESC" size="50" />
-				<field name="googleWebFontSize1" type="text" default="" label="TPL_JE_CONSTRUCT_COMMUNITY_GOOGLE_WEB_FONT_SIZE_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_GOOGLE_WEB_FONT_SIZE_DESC" size="5" />
+			<fieldset name="typography" description="TPL_CONSTRUCT_GOOGLE_WEB_FONT">
+				<field name="googleWebFontApi" type="text" default="" label="Web Fonts API Key" description="To retrieve the dynamic list of web fonts offered by the Google Web Fonts service enter your Web Fonts API key: http://code.google.com/intl/de-DE/apis/webfonts/docs/developer_api.html" size="50" />
+				<field name="googleWebFont1" type="googlewebfont" default="" label="TPL_CONSTRUCT_GOOGLE_WEB_FONT_LABEL" description="TPL_CONSTRUCT_GOOGLE_WEB_FONT_DESC" />
+				<field name="googleWebFontTargets1" type="text" default="h1,h2,h3,h4,h5,h6" label="TPL_CONSTRUCT_GOOGLE_WEB_FONT_TARGETS_LABEL" description="TPL_CONSTRUCT_GOOGLE_WEB_FONT_TARGETS_DESC" size="50" />
+				<field name="googleWebFontSize1" type="text" default="" label="TPL_CONSTRUCT_GOOGLE_WEB_FONT_SIZE_LABEL" description="TPL_CONSTRUCT_GOOGLE_WEB_FONT_SIZE_DESC" size="5" />
 				<field type="spacer" default=" " />
-				<field name="googleWebFont2" type="googlewebfont" default="" label="TPL_JE_CONSTRUCT_COMMUNITY_GOOGLE_WEB_FONT_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_GOOGLE_WEB_FONT_DESC" />
-				<field name="googleWebFontTargets2" type="text" default="" label="TPL_JE_CONSTRUCT_COMMUNITY_GOOGLE_WEB_FONT_TARGETS_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_GOOGLE_WEB_FONT_TARGETS_DESC" size="50"/>
-				<field name="googleWebFontSize2" type="text" default="" label="TPL_JE_CONSTRUCT_COMMUNITY_GOOGLE_WEB_FONT_SIZE_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_GOOGLE_WEB_FONT_SIZE_DESC" size="5" />
+				<field name="googleWebFont2" type="googlewebfont" default="" label="TPL_CONSTRUCT_GOOGLE_WEB_FONT_LABEL" description="TPL_CONSTRUCT_GOOGLE_WEB_FONT_DESC" />
+				<field name="googleWebFontTargets2" type="text" default="" label="TPL_CONSTRUCT_GOOGLE_WEB_FONT_TARGETS_LABEL" description="TPL_CONSTRUCT_GOOGLE_WEB_FONT_TARGETS_DESC" size="50"/>
+				<field name="googleWebFontSize2" type="text" default="" label="TPL_CONSTRUCT_GOOGLE_WEB_FONT_SIZE_LABEL" description="TPL_CONSTRUCT_GOOGLE_WEB_FONT_SIZE_DESC" size="5" />
 				<field type="spacer" default=" " />
-				<field name="googleWebFont3" type="googlewebfont" default="" label="TPL_JE_CONSTRUCT_COMMUNITY_GOOGLE_WEB_FONT_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_GOOGLE_WEB_FONT_DESC" />
-				<field name="googleWebFontTargets3" type="text" default="" label="TPL_JE_CONSTRUCT_COMMUNITY_GOOGLE_WEB_FONT_TARGETS_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_GOOGLE_WEB_FONT_TARGETS_DESC" size="50" />
-				<field name="googleWebFontSize3" type="text" default="" label="TPL_JE_CONSTRUCT_COMMUNITY_GOOGLE_WEB_FONT_SIZE_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_GOOGLE_WEB_FONT_SIZE_DESC" size="5" />
+				<field name="googleWebFont3" type="googlewebfont" default="" label="TPL_CONSTRUCT_GOOGLE_WEB_FONT_LABEL" description="TPL_CONSTRUCT_GOOGLE_WEB_FONT_DESC" />
+				<field name="googleWebFontTargets3" type="text" default="" label="TPL_CONSTRUCT_GOOGLE_WEB_FONT_TARGETS_LABEL" description="TPL_CONSTRUCT_GOOGLE_WEB_FONT_TARGETS_DESC" size="50" />
+				<field name="googleWebFontSize3" type="text" default="" label="TPL_CONSTRUCT_GOOGLE_WEB_FONT_SIZE_LABEL" description="TPL_CONSTRUCT_GOOGLE_WEB_FONT_SIZE_DESC" size="5" />
 			</fieldset>
 
-			<fieldset name="IE" description="TPL_JE_CONSTRUCT_COMMUNITY_IE_DESC">
-				<field name="loadGcf" type="radio" default="0" label="TPL_JE_CONSTRUCT_COMMUNITY_CHROME_FRAME_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_CHROME_FRAME_DESC">
-		        	<option value="1">Yes</option>
-		        	<option value="0">No</option>
+			<fieldset name="IE" description="TPL_CONSTRUCT_IE_DESC">
+				<field name="loadGcf" type="radio" default="0" label="TPL_CONSTRUCT_CHROME_FRAME_LABEL" description="TPL_CONSTRUCT_CHROME_FRAME_DESC">
+		        	<option value="1">JYes</option>
+		        	<option value="0">JNo</option>
 		    	</field>
-				<field name="IECSS3" type="radio" default="1" label="TPL_JE_CONSTRUCT_COMMUNITY_IE_CSS3_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_IE_CSS3_DESC">
-		        	<option value="1">Yes</option>
-		        	<option value="0">No</option>
+				<field name="IECSS3" type="radio" default="1" label="TPL_CONSTRUCT_IE_CSS3_LABEL" description="TPL_CONSTRUCT_IE_CSS3_DESC">
+		        	<option value="1">JYes</option>
+		        	<option value="0">JNo</option>
 		    	</field>
-				<field name="IECSS3Targets" type="textarea" default=".drop-shadow, .outline, .rounded, ul.menu li" label="TPL_JE_CONSTRUCT_COMMUNITY_IE_CSS3_TARGETS_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_IE_CSS3_TARGETS_DESC" rows="5" cols="50" />
-				<field name="IE6TransFix" type="radio" default="1" label="TPL_JE_CONSTRUCT_COMMUNITY_IE6_TRANS_FIX_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_IE6_TRANS_FIX_DESC">
-		        	<option value="1">Yes</option>
-		        	<option value="0">No</option>
+				<field name="IECSS3Targets" type="textarea" default=".drop-shadow, .outline, .rounded, ul.menu li" label="TPL_CONSTRUCT_IE_CSS3_TARGETS_LABEL" description="TPL_CONSTRUCT_IE_CSS3_TARGETS_DESC" rows="5" cols="50" />
+				<field name="IE6TransFix" type="radio" default="1" label="TPL_CONSTRUCT_IE6_TRANS_FIX_LABEL" description="TPL_CONSTRUCT_IE6_TRANS_FIX_DESC">
+		        	<option value="1">JYes</option>
+		        	<option value="0">JNo</option>
 		    	</field>
-				<field name="IE6TransFixTargets" type="textarea" default="h1 a" label="TPL_JE_CONSTRUCT_COMMUNITY_IE6_TRANS_FIX_TARGETS_LABEL" description="TPL_JE_CONSTRUCT_COMMUNITY_IE6_TRANS_FIX_TARGETS_DESC" rows="5" cols="50" />
+				<field name="IE6TransFixTargets" type="textarea" default="h1 a" label="TPL_CONSTRUCT_IE6_TRANS_FIX_TARGETS_LABEL" description="TPL_CONSTRUCT_IE6_TRANS_FIX_TARGETS_DESC" rows="5" cols="50" />
 			</fieldset>
-
+<!--
 			<fieldset name="version_check">
-				<field label="TPL_JE_CONSTRUCT_COMMUNITY_VERSION_CHECK_LABEL" type="constructupdate" />
+				<field label="TPL_CONSTRUCT_VERSION_CHECK_LABEL" type="constructupdate" />
 			</fieldset>
+-->
 		</fields>
 	</config>
 
 	<files>
-		<filename>css/diagnostic.css</filename>
-		<filename>css/editor.css</filename>
-		<filename>css/index.html</filename>
-		<filename>css/modal.css</filename>
-		<filename>css/print.css</filename>
-		<filename>css/rtl.css</filename>
-		<filename>css/screen.css</filename>
-		<filename>css/wireframe.css</filename>
-		<filename>elements/googlewebfont.php</filename>
-		<filename>elements/index.html</filename>
-		<filename>elements/helper.php</filename>
-		<filename>elements/jqueryversion.php</filename>
-		<filename>elements/logic.php</filename>
-		<filename>elements/upgradecheck.php</filename>
-		<filename>html/modules.php</filename>
-		<filename>html/pagination.php</filename>
-		<filename>html/index.html</filename>
-		<filename>html/mod_footer/default.php</filename>
-		<filename>html/mod_footer/index.html</filename>
-		<filename>html/mod_login/index.html</filename>
-		<filename>html/mod_login/default.php</filename>
-		<filename>images/editor-buttons/index.html</filename>
-		<filename>images/editor-buttons/j_button2_blank.png</filename>
-		<filename>images/editor-buttons/j_button2_image.png</filename>
-		<filename>images/editor-buttons/j_button2_left.png</filename>
-		<filename>images/editor-buttons/j_button2_pagebreak.png</filename>
-		<filename>images/editor-buttons/j_button2_readmore.png</filename>
-		<filename>images/editor-buttons/j_button2_right.png</filename>
-		<filename>images/index.html</filename>
-		<filename>images/selector-arrow.png</filename>
-		<filename>js/DD_belatedPNG_0.0.8a-min.js</filename>
-		<filename>js/ie_suckerfish.js</filename>
-		<filename>js/index.html</filename>
-		<filename>js/PIE.htc</filename>
-		<filename>js/styleswitch.js</filename>
-		<filename>layouts/index.html</filename>
-		<filename>component.php</filename>
+		<folder>css</folder>
+		<folder>elements</folder>
+		<folder>html</folder>
+		<folder>images</folder>
+		<folder>js</folder>
+		<folder>language</folder>
+		<folder>layouts</folder>
+		<filename>.htaccess</filename>
 		<filename>favicon.ico</filename>
-		<filename>favicon.png</filename>
-		<filename>index.html</filename>
+		<filename>README.md</filename>
 		<filename>index.php</filename>
+		<!-- <filename>mobile.php</filename> -->
+		<filename>component.php</filename>
+		<filename>error.php</filename>
 		<filename>modal.php</filename>
+		<filename>offline.php</filename>
 		<filename>templateDetails.xml</filename>
 		<filename>template_thumbnail.png</filename>
 	</files>
@@ -239,6 +206,8 @@
 	<languages>
 		<language tag="en-GB">language/en-GB/en-GB.tpl_construct.ini</language>
 		<language tag="en-GB">language/en-GB/en-GB.tpl_construct.sys.ini</language>
+		<language tag="de-DE">language/de-DE/de-DE.tpl_construct.ini</language>
+		<language tag="de-DE">language/de-DE/de-DE.tpl_construct.sys.ini</language>
 	</languages>
 
 </extension>

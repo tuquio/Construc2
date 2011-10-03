@@ -1,4 +1,3 @@
-
 /* -- Layout -- */
 .load-first {position:relative}
 
@@ -12,20 +11,6 @@ html, .sticky-footer{height:100%}
 
 /* -- Base Typography -- */
 body{color:#333;line-height:1.6em;}
-body.arial{font-family:Arial, Helvetica, sans-serif}
-body.arial-black{font-family:Arial Black, Gadget, sans-serif}
-body.courier{font-family:"Courier New", Courier, monospace}
-body.georgia{font-family:Georgia, serif}
-body.helvetica{font-family:Helvetica,Arial,FreeSans,sans-serif;}
-body.impact{font-family:Impact, Charcoal, sans-serif}
-body.lucida-console{font-family:"Lucida Console", Monaco, monospace}
-body.lucida-grande{font-family:"Lucida Grande",Lucida,Verdana,sans-serif}
-body.lucida-sans{font-family:"Lucida Sans Unicode", "Lucida Grande", sans-serif}
-body.palatino{font-family:"Palatino Linotype", "Book Antiqua", Palatino, serif}
-body.tahoma{font-family:Tahoma, Geneva, sans-serif}
-body.times{font-family:"Times New Roman", Times, serif}
-body.trebuchet{font-family:"Trebuchet MS", Helvetica, sans-serif}
-body.verdana{font-family:Verdana, Geneva, sans-serif}
 
 h1,.H1{font-size:2em;font-weight:normal}
 h2,.H2{font-size:1.7em;font-weight:normal}
@@ -66,6 +51,7 @@ table.category {border:1px solid #000}
 .edit .formelm .radio label span{float:left;width:14em}
 .edit .formelm-area label{float:none !important;display:block;font-weight:bold}
 .even {background:#eeeeee}
+
 ol.form{float:left; list-style:none; width:100%}
 ol.form li{clear:both;float:left;margin:0 0 10px;width:100%;position:relative}
 ol.form label{cursor:pointer;display:block;font-weight:bold;margin:0 10px 0 0}
@@ -83,8 +69,10 @@ ol.form span.error{position:absolute;top:0;right:0}
 input.invalid,
 textarea.invalid{border:solid 2px #ff0000}
 label.invalid{color:#ff0000;font-weight:bold;text-decoration:underline}
+
 .login-fields {padding:0 0 5px 0}
 .login-fields label{cursor:pointer;display:block;float:left;margin:0 10px 0 0;min-width:90px}
+
 .outline{border:1px solid #ccc;-moz-border-radius:10px;-webkit-border-radius:10px;border-radius:10px;padding:5px;margin:5px}
 .pagination{margin:10px 0 0;padding:10px 0}
 .pagination{list-style-type:none;margin:0;padding:0}
@@ -122,21 +110,11 @@ label.invalid{color:#ff0000;font-weight:bold;text-decoration:underline}
 .search input{padding:3px 5px}
 .search .word {padding:10px 10px 10px 0;border:solid 0 !important}
 .search .word input {border:1px solid #ccc;margin:0 0 0 10px;padding:2px}
+
 .tip {float:left;background:#ffc;border:1px solid #D4D5AA;padding:5px;max-width:400px;z-index:50;-webkit-box-shadow:5px 5px 10px rgba(0,0,0,0.6);-moz-box-shadow:5px 5px 10px rgba(0,0,0,0.6);box-shadow:5px 5px 10px rgba(0,0,0,0.6)}
 .tip-title {padding:0;margin:0;font-size:1em;font-weight:bold;margin-top:-15px;padding-top:15px;padding-bottom:5px;background:url(../images/selector-arrow.png) no-repeat;}
 .tip-text {font-size:1em;margin:0}
 
-/* #access{float:left;clear:left} */
-#access{float:left;clear:left}
-
-#breadcrumbs{margin:0 0 1em;padding:0}
-#breadcrumbs span{font-size:0.9em;padding:7px}
-
-#content-top {padding-bottom:15px}
-#editor-xtd-buttons{background:#efefef;margin-top:1em}
-#diagnostics {float:right;clear:right}
-
-.page-foot {text-align:center;}
 .footer .menu, .footer .menu li {display:inline;list-style:none;margin:0;padding:0;}
 .footer .menu li a, .footer .menu a:visited {font-weight:normal;padding:1px 3px;text-decoration:none;}
 
@@ -145,15 +123,6 @@ label.invalid{color:#ff0000;font-weight:bold;text-decoration:underline}
 #form-login ul li {margin-left:0}
 
 .page-head {margin:0;text-align:left}
-#logo {float:left;margin:0}
-#logo a {display:block;width:300px;height:100px;text-decoration:none;}
-#logo a:focus{outline:none}
-
-#siteinfo-legal{text-align:left;width:500px;margin:0 auto}
-
-#style-switch{list-style-type:none;float:right;clear:right}
-
-.syndicate {position:absolute;left:20px}
 
 #system-message dt{display:none}
 #system-message dd{clear:both;padding:5px 0;text-align:left;border-top:2px solid;}
@@ -164,29 +133,5 @@ label.invalid{color:#ff0000;font-weight:bold;text-decoration:underline}
 #system-message dd.warning{color:#F00;background:#FBAD18;border-color:#F57E20}
 #system-message dd.warning ul{margin-bottom:0}
 #system-message dd.error{color:#F00;background:#FBEEF1;border-color:#FEABB9}
-
-/* -- Menu CSS -- */
-#nav {z-index:277;}
-
-/* suckerfish functionality */
-.menu li:hover ul ul,
-.menu li.pie_hover ul ul {left:-999em}
-.menu li:hover ul,
-.menu li.pie_hover ul {left:auto}
-
-.column-group .menu    ,
-.column-group .menu ul ,
-.column-group .menu ol {display:block;width:100%;margin:0}
-.column-group .menu li {width:100%;margin:0}
-
-/* -- Preview Module Styles for use with index.php?tp=1 -- */
-.mod-preview{position:relative}
-.mod-preview-wrapper{border:1px solid #ccc;-moz-border-radius:10px;-webkit-border-radius:10px;border-radius:10px;-webkit-box-shadow:2px 2px 6px rgba(0,0,0,0.6); -moz-box-shadow:2px 2px 6px rgba(0,0,0,0.6); box-shadow:2px 2px 6px rgba(0,0,0,0.6); padding:5px 10px;margin:5px 0;opacity:0.9;background:#666;z-index:999;min-height:50px}
-.mod-preview-wrapper div.moduletable, .mod-preview-wrapper div.moduletable_menu, .mod-preview-wrapper div.moduletable_text, .mod-preview-wrapper ul.menu, .mod-preview-wrapper #breadcrumbs{opacity:0}
-.mod-preview-info{color:#fff;background:none;border:none;z-index:999;position:absolute;left:5px;top:5px;font-family:BebasNeueRegular;font-size:2em}
-#left .mod-preview-wrapper,
-#left2 .mod-preview-wrapper,
-#right .mod-preview-wrapper,
-#right2 .mod-preview-wrapper{height:940px}
 
 /* .eof */

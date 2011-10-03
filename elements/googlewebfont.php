@@ -1,16 +1,15 @@
 <?php defined('_JEXEC') or die;
 /**
- * @package    Templates
- * @author     Joomla Engineering http://joomlaengineering.com
- * @copyright  Copyright (C) 2010 Matt Thomas | Joomla Engineering. All rights reserved.
- * @license    GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
+ * @package		Templates
+ * @subpackage  Construc2
+ * @author		WebMechanic http://webmechanic.biz
+ * @copyright	(C) 2011 WebMechanic
+ * @copyright	Copyright (C) 2010, 2011 Matt Thomas | Joomla Engineering. All rights reserved.
+ * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
 
 /**
  * Provides a list of Google Web Fonts.
- *
- * @package    Templates
- * @subpackage Elements
  * @since 1.0
  */
 class JFormFieldGooglewebfont extends JFormFieldList
@@ -24,12 +23,25 @@ class JFormFieldGooglewebfont extends JFormFieldList
 	 * Generates list options
 	 *
 	 * @return array  The field option objects.
+	 * @todo use API http://code.google.com/intl/de-DE/apis/webfonts/docs/developer_api.html
 	 */
 	protected function getOptions()
 	{
-		$options	= array();
+# FB::log($this->form->getFieldset('typography'), __METHOD__);
 
-		$options[]	= JHtml::_('select.option', '', JText::_('TPL_JE_CONSTRUCT_COMMUNITY_GOOGLE_WEB_FONT_SELECT'));
+		if ( false ) { // check field "googleWebFontApi"
+			$options[]	= JHtml::_('select.option', '', JText::_('TPL_CONSTRUCT_GOOGLE_WEB_FONT_SELECT'));
+		} else {
+			$options = self::_staticFontList();
+		}
+
+		return $options;
+	}
+
+	static protected function _staticFontList()
+	{
+		$options    = array();
+		$options[]	= JHtml::_('select.option', '', JText::_('TPL_CONSTRUCT_GOOGLE_WEB_FONT_SELECT'));
 		$options[]	= JHtml::_('select.option', 'Abel', 'Abel');
 		$options[]	= JHtml::_('select.option', 'Aclonica', 'Aclonica');
 		$options[]	= JHtml::_('select.option', 'Actor', 'Actor');
@@ -271,8 +283,6 @@ class JFormFieldGooglewebfont extends JFormFieldList
 		$options[]	= JHtml::_('select.option', 'Yellowtail', 'Yellowtail');
 		$options[]	= JHtml::_('select.option', 'Yeseva+One', 'Yeseva One');
 		$options[]	= JHtml::_('select.option', 'Zeyada', 'Zeyada');
-
 		return $options;
-
 	}
 }
