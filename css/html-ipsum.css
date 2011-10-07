@@ -1,9 +1,9 @@
 /*
  * html-ipsum.css is a dummy and placeholder stylesheet and triggers the
  * inclusion of the STATIC HTML page "/layouts/html/ipsum.html". As you
- * may have guessed, you can use other "html-foobar.css" files for your
- * other foobar.html files to test a design and its stylesheets without
- * cluttering your Joomla module list. 
+ * may have guessed, you can use other "html-foobar.css" files for some
+ * other "/layouts/html/foobar.html" files to test a design and its 
+ * stylesheets bevfore messing with module positions in the backend. 
  */
 div.ipsum {position:relative}
 div.ipsum:before {content:'Static Ipsum by Andy Clarke';display:block;position:absolute;outline:1px solid red;background-color:floralwhite;color:#444;}

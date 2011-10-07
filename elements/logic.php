@@ -53,8 +53,13 @@ $loadMoo 				= (bool) $this->params->get('loadMoo', $loadModal);
 $loadJQuery 			=		 $this->params->get('loadjQuery');
 $loadChromeFrame		=		 $this->params->get('loadGcf');
 
-// old-school concatenating of files and free server based compression
+// "old-school" concatenating of files and free server based compression
 $ssiIncludes			= (bool) $this->params->get('ssiIncludes', 0);
+$ssiTheme				= 		 $this->params->get('ssiTheme');
+
+// 'filelist' params return -1 for none. make FALSE
+if (($customStyleSheet + 1) == 0) $customStyleSheet = false;
+if (($ssiTheme + 1) == 0) $ssiTheme = false;
 
 // will contain custom <script> code depending on selected params
 $scriptDeclarations	= array();
@@ -106,7 +111,7 @@ else {
 	// Remove MooTools if set to no.
 	$head = $this->getHeadData();
 	// without MooTools we must drop all but core.js
-	$moos	= preg_grep('#/media/system/js(\/(?!core))#', array_keys($head['scripts']));
+	$moos = preg_grep('#/media/system/js(\/(?!core))#', array_keys($head['scripts']));
 	foreach ($moos as $src) {
 		unset($head['scripts'][$src]);
 	}
@@ -115,7 +120,6 @@ else {
 }
 
 #----------------------------- Module Counts -----------------------------#
-// from http://groups.google.com/group/joomla-dev-general/browse_thread/thread/b54f3f131dd173d
 
 if ($headerAboveCount = $templateHelper->getModulesCount('header-above', ConstructTemplateHelper::MAX_MODULES)) :
 $headerAboveClass = 'above count-'.$headerAboveCount[0];
@@ -222,9 +226,12 @@ for ($i=1; $i <= ConstructTemplateHelper::MAX_WEBFONTS; $i++) {
 // Style sheets
 if ($ssiIncludes) {
 	if ($this->direction == 'rtl') {
-		$this->addStyleSheet($tmpl_url.'/construct_rtl.styles','text/css');
+		$this->addStyleSheet($tmpl_url.'/css/construct_rtl.styles','text/css');
 	} else {
-		$this->addStyleSheet($tmpl_url.'/construct.styles','text/css');
+		$this->addStyleSheet($tmpl_url.'/css/construct.styles','text/css');
+	}
+	if ($ssiTheme) {
+		$this->addStyleSheet($base_url.'templates/themes/'.$ssiTheme,'text/css');
 	}
 } else {
 	$this->addStyleSheet($tmpl_url.'/css/core/base.css','text/css');
@@ -240,11 +247,12 @@ if ( in_array(JRequest::getCmd('layout'), array('edit','form'))
 	|| JFactory::getUser()->authorise('core.edit') /* do we need more ACL checks */
 	) {
 	$this->addStyleSheet($tmpl_url.'/css/core/edit-form.css','text/css','screen');
+} else {
+	$this->addStyleSheet($tmpl_url.'/css/core/print.css','text/css','print');
 }
 
-$this->addStyleSheet($tmpl_url.'/css/core/print.css','text/css','print');
 if ($customStyleSheet) {
-	$this->addStyleSheet($tmpl_url.'/css/'.$customStyleSheet,'text/css','screen,projection');
+	$this->addStyleSheet($tmpl_url.'/css/'.$customStyleSheet, 'text/css','screen,projection');
 }
 
 // Style sheet switcher
@@ -343,8 +351,8 @@ if ($IE6TransFix) {
 }
 
 /* Preview Module Styles for use with index.php?tp=1 */
-if ($app->get('input')->get('tp', 0) == 1 /* && tp use allowed == true */ ) {
-$css = '.mod-preview{position:relative}
+if ($app->get('input')->getBool('tp') && JComponentHelper::getParams('com_templates')->get('template_positions_display') ) {
+	$styleDeclarations[] = '.mod-preview{position:relative}
 .mod-preview-wrapper{border:1px solid #ccc;-moz-border-radius:10px;-webkit-border-radius:10px;border-radius:10px;-webkit-box-shadow:2px 2px 6px rgba(0,0,0,0.6); -moz-box-shadow:2px 2px 6px rgba(0,0,0,0.6); box-shadow:2px 2px 6px rgba(0,0,0,0.6); padding:5px 10px;margin:5px 0;opacity:0.9;background:#666;z-index:999;min-height:50px}
 .mod-preview-wrapper div.moduletable,
 .mod-preview-wrapper .menu,
