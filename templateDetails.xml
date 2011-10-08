@@ -72,7 +72,7 @@
 				<field name="ssiTheme" type="filelist" default=""
 						label="SSI Theme"
 						description="TPL_CONSTRUCT_ENABLE_SSITHEME_DESC"
-						directory="templates/themes"
+						directory="templates/construct/themes"
 					/>
 				<field name="enableSwitcher" type="radio" default="0" label="TPL_CONSTRUCT_ENABLE_SWITCHER_LABEL" description="TPL_CONSTRUCT_ENABLE_SWITCHER_DESC">
 					<option value="1">JShow</option>

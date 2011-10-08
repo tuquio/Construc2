@@ -17,13 +17,16 @@ JLoader::register('ConstructTemplateHelper', dirname(__FILE__) . '/helper.php');
 $templateHelper = ConstructTemplateHelper::getInstance($this);
 
 /** @var $app JSite To enable use of site configuration */
-$app 					= JFactory::getApplication();
+$app 		= JFactory::getApplication();
+
 /** @var $base_url string Get the base URL of the website */
-$base_url 				= JURI::base(true);
+$base_url 	= JURI::base(true);
+
 /** @var $tmpl_url string Define relative shortcut for current template directory */
-$tmpl_url 				= $base_url. 'templates/'. $this->template;
+$tmpl_url 	= $base_url. 'templates/'. $this->template;
+
 /** @var $url JURI Get the current URL */
-$url 					= clone(JURI::getInstance());
+$url 		= clone(JURI::getInstance());
 
 /* Define shortcuts for often used template parameters */
 $customStyleSheet 		=		 $this->params->get('customStyleSheet');
@@ -176,7 +179,7 @@ if ($columnGroupAlphaCount > 0) {
 	$columnLayout = 'main-beta';
 }
 
-if ($jmenu->getActive() == $jmenu->getDefault() ) {
+if ($jmenu->getActive() == $jmenu->getDefault()) {
 	$columnLayout .= ' home';
 } else if ($jmenu->getActive() && $jmenu->getActive()->type == 'component') {
 	if (array_key_exists('view', $jmenu->getActive()->query)) {
@@ -188,16 +191,19 @@ if ($jmenu->getActive() == $jmenu->getDefault() ) {
 #TODO get positions from xml and transform names into variable counterparts
 if ($app->getCfg('debug') && JRequest::getInt('tpos'))
 {
-	FB::info($app->getCfg('debug') .':'. JRequest::getInt('tpos'),__FILE__); #HACK FB debug positions
-	$headerAboveCount  = $headerBelowCount      = $navBelowCount        =
-	$contentAboveCount = $contentBelowCount     = $footerAboveCount     = range(0, ConstructTemplateHelper::MAX_MODULES, 1);
+	#HACK debug positions via FirePHP
+	if (class_exists('FB', false) {
+		FB::info($app->getCfg('debug') .':'. JRequest::getInt('tpos'),__FILE__);
+	}
+
+	$headerAboveCount  = $headerBelowCount  = $navBelowCount    =
+	$contentAboveCount = $contentBelowCount = $footerAboveCount = range(0, ConstructTemplateHelper::MAX_MODULES, 1);
 
 	$columnGroupCount  = range(0, ConstructTemplateHelper::MAX_COLUMNS, 1);
 	$columnGroupAlphaCount = $columnGroupBetaCount = ($columnGroupCount > 1) ? floor($columnGroupCount / 2) : $columnGroupCount;
 }
 
 #---------------------------- Head Elements --------------------------------#
-
 // Custom tags
 // tell mobile devices to treat the viewport as being the same width as the
 // physical width of the device to make width work in media-queries as expected
@@ -226,19 +232,19 @@ for ($i=1; $i <= ConstructTemplateHelper::MAX_WEBFONTS; $i++) {
 // Style sheets
 if ($ssiIncludes) {
 	if ($this->direction == 'rtl') {
-		$this->addStyleSheet($tmpl_url.'/css/construct_rtl.styles','text/css');
+		$this->addStyleSheet($tmpl_url.'/css/construct_rtl.styles', 'text/css');
 	} else {
-		$this->addStyleSheet($tmpl_url.'/css/construct.styles','text/css');
+		$this->addStyleSheet($tmpl_url.'/css/construct.styles', 'text/css');
 	}
 	if ($ssiTheme) {
-		$this->addStyleSheet($base_url.'templates/themes/'.$ssiTheme,'text/css');
+		$this->addStyleSheet($tmpl_url.'/css/themes/'.$ssiTheme, 'text/css');
 	}
 } else {
-	$this->addStyleSheet($tmpl_url.'/css/core/base.css','text/css');
-	$this->addStyleSheet($tmpl_url.'/css/core/oocss.css','text/css');
-	$this->addStyleSheet($tmpl_url.'/css/core/screen.css','text/css','screen');
+	$this->addStyleSheet($tmpl_url.'/css/core/base.css', 'text/css');
+	$this->addStyleSheet($tmpl_url.'/css/core/oocss.css', 'text/css');
+	$this->addStyleSheet($tmpl_url.'/css/core/screen.css', 'text/css', 'screen');
 	if ($this->direction == 'rtl') {
-		$this->addStyleSheet($tmpl_url.'/css/core/rtl.css','text/css','screen');
+		$this->addStyleSheet($tmpl_url.'/css/core/rtl.css', 'text/css', 'screen');
 	}
 }
 
@@ -246,9 +252,9 @@ if ($ssiIncludes) {
 if ( in_array(JRequest::getCmd('layout'), array('edit','form'))
 	|| JFactory::getUser()->authorise('core.edit') /* do we need more ACL checks */
 	) {
-	$this->addStyleSheet($tmpl_url.'/css/core/edit-form.css','text/css','screen');
+	$this->addStyleSheet($tmpl_url.'/css/core/edit-form.css', 'text/css', 'screen');
 } else {
-	$this->addStyleSheet($tmpl_url.'/css/core/print.css','text/css','print');
+	$this->addStyleSheet($tmpl_url.'/css/core/print.css', 'text/css', 'print');
 }
 
 if ($customStyleSheet) {
