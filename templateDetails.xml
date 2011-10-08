@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE extension>
 <extension version="1.7" type="template" client="site" method="upgrade" >
 	<name>Construc2</name>
 	<creationDate>June 20th, 2011</creationDate>
@@ -60,7 +61,7 @@
 				<field name="customStyleSheet" type="filelist" default=""
 						label="TPL_CONSTRUCT_CUSTOM_STYLE_SHEET_LABEL"
 						description="TPL_CONSTRUCT_CUSTOM_STYLE_SHEET_DESC"
-						directory="templates/construct/css" 
+						directory="templates/construct/css"
 						filter="\.css"
 						exclude="(template|editor|tinymce|codemirror|jce|ie\d+|test.+|x~.+)\.css"
 					/>
@@ -71,7 +72,7 @@
 				<field name="ssiTheme" type="filelist" default=""
 						label="SSI Theme"
 						description="TPL_CONSTRUCT_ENABLE_SSITHEME_DESC"
-						directory="templates/themes" 
+						directory="templates/themes"
 					/>
 				<field name="enableSwitcher" type="radio" default="0" label="TPL_CONSTRUCT_ENABLE_SWITCHER_LABEL" description="TPL_CONSTRUCT_ENABLE_SWITCHER_DESC">
 					<option value="1">JShow</option>
