@@ -1,0 +1,63 @@
+@charset "UTF-8";
+/*!
+ * Style sheet "Padawan" (HTML5 edition)
+ * CSS3 Webfonts module.
+ * @author    WebMechanic.biz
+ * @copyright (c)2010 Serradeil, WebMechanic.biz
+ */
+
+/*
+Free with 25,000 Pageviews/month
+	1 Website, 2 Fonts per site, Typekit badge required
+
+Angie STD Sans Bold
+- http://typekit.com/fonts/angie-std-sans/n7/wfs
+Edo Regular
+- http://typekit.com/fonts/edo/n4/wfs
+Adobe Garamond Pro
+- http://typekit.com/fonts/adobe-garamond-pro/i6/wfs
+
+FOUT:
+	http://blog.typekit.com/2010/10/18/more-control-with-typekits-font-events/
+	http://blog.typekit.com/2010/10/29/font-events-controlling-the-fout/
+	http://www.stevesouders.com/blog/2009/10/13/font-face-and-performance/
+	http://paulirish.com/2009/fighting-the-font-face-fout/
+GOTCHAS:
+	http://paulirish.com/2010/font-face-gotchas/
+
+Sprachspezifisch = kleiner:
+	http://blog.typekit.com/2010/10/28/announcing-speakeasy-a-new-open-source-language-tool-from-typekit/
+	http://typekit.zendesk.com/entries/306499-german-language-support
+
+*/
+
+@font-face {
+	font-family: 'Padawan';
+	src: url('padawan.eot');
+	src: local('©'),
+		url('padawan.woff') format('woff'),
+		url('padawan.ttf') format('truetype');
+
+	/* these values are defaults in FF/Opera/IE but not webkit and allow for "faux-bold" et al */
+	font-weight:normal;
+	font-style:normal;
+	font-variant:normal;
+
+	/* Latin1 x0F - xFF */
+	unicode-range:U+00??;
+
+}
+
+/*
+Internet Explorer <9 has a bug in the parser for the src attribute.
+If you include more than one font format in the src, IE fails to load
+it and reports a 404 error. The question mark fools IE into thinking
+the rest of the string is a query string and loads just the EOT file.
+*/
+@font-face {
+	font-family: 'Padawan';
+	src: 	url('padawan.eot?') format('eot'),
+			url('padawan.woff') format('woff'),
+			url('padawan.ttf')  format('truetype'),
+			url('padawan.svg#Padawan') format('svg');
+}
