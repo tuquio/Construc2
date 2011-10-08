@@ -192,7 +192,7 @@ if ($jmenu->getActive() == $jmenu->getDefault()) {
 if ($app->getCfg('debug') && JRequest::getInt('tpos'))
 {
 	#HACK debug positions via FirePHP
-	if (class_exists('FB', false) {
+	if (class_exists('FB', false)) {
 		FB::info($app->getCfg('debug') .':'. JRequest::getInt('tpos'),__FILE__);
 	}
 
