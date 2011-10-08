@@ -1,0 +1,55 @@
+@charset "UTF-8"; /* äöü - just checking */
+/* mobile.css for the fancy non-desktops
+ @version 1.0.0 11.04.2011
+ @license DWTF
+*/
+
+/* some desktop browser apply this if the window size
+   match "landscape" (wide) or "portrait" (narrow)
+ */
+@media (orientation: landscape) {
+} /* :landscape */
+
+@media (orientation: portrait) {
+body {font-size:21px}
+
+#mainmenu	,
+.hmenu 		{position:relative;max-width:100%;}
+.logo		{width:auto;max-width:100%;overflow:hidden;text-align:center}
+.logo h1	,
+.logo h2	{display:inline;padding:1ex;}
+
+/* containers */
+#container	,
+#foot		,
+.sidebar 	{float:none;clear:both;margin:0.6em 0;width:auto}
+
+#container .crumbs	{margin-top:1.6em;margin-left:0;padding-left:1em;}
+
+#mainmenu	,
+.sidebar	,
+.pada-default #container	,
+.pada-multicol #container	{width:auto}
+.main		{padding-right:0;}
+
+.sidebar	{
+	-moz-column-count: 2;
+	-moz-column-gap: 1em;
+	}
+
+.enclosure			{width:50%; max-width:50%;font-size:120%}
+.enclosure:hover ol	{bottom:2em} /* avoid "click" on last download item */
+
+} /* :portrait */
+
+
+/* iPhone 3G: 480 x 320 px @ 163 ppi */
+@media (min-resolution: 160dpi) {
+	body {color:red;}
+} /* :160dpi */
+
+/* iPhone 4/ iPad1 : 960 x 640 px @ 326 ppi */
+@media (min-resolution: 320dpi) {
+	body {color:green;}
+} /* :320dpi */
+
