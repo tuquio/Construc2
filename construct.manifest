@@ -3,6 +3,9 @@ CACHE MANIFEST
 FALLBACK:
 / /offline.html
 NETWORK:
+/media/deal/time.php
+/media/deal/js/jquery.countdown.min.js
+/media/deal/js/jquery.countdown-de.js
 *
 CACHE:
 # core
@@ -12,3 +15,5 @@ CACHE:
 /templates/construct/css/core/oocss.css
 /templates/construct/css/core/screen.css
 # theme
+/templates/construct/css/deal-site.css
+/media/deal/js/jquery.countdown.css
