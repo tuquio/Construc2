@@ -1,0 +1,741 @@
+@charset "UTF-8"; /* äöü - just checking */
+/*!
+ * Style sheet "Padawan" (HTML5 edition)
+ * Lowkey (aka "dark") grayscalish scheme with light text on dark backgrounds incl. print styles at the end.
+ * @author    WebMechanic.biz
+ * @copyright (c)2010 Serradeil, WebMechanic.biz
+ * @version   0.6.5-frickin-beta
+ * @require   core.css "HTML5 ed." 1.5+ (aka "base-not-reset")
+ * @require   Modernizr 1.7+ (for CSS3/HTML5 goodies)
+@import url("diagnostic.css");
+ */
+
+/*
+ * ~layout
+ */
+html,body {min-width:1000px;min-height:100%}
+
+/*
+ * excerpt of TinyMCE style sheet
+ */
+.warn { color:#c55; font-size:1.1em; }
+.float_right {float:right; margin:.6em 0 1ex .6em;}
+.float_left  {float:left;  margin:.6em .6em 1ex 0;}
+
+/*
+ * ~structure blocks
+ * major and essential width/height settings
+ * @todo one fine day we can use units like
+ 	vw	viewport width		IE9+
+ 	vh	viewport height		IE9+
+ 	vm	viewport min		IE9+
+ 	rem root elt fontsize	IE9+,FF36+,CR5+,SF5+
+ */
+#wrapper	{position:relative;padding:0 2%}
+section		,
+article		,
+footer 		{position:relative;float:none;clear:left}
+footer		{display:block}
+
+/* containers */
+#container	,
+.sidebar 	{float:left;clear:right}
+.crumbs 	{margin-bottom:.6em;padding:.4ex 0.6em;width:99%}
+.main		{padding-right:1.6em;}
+
+#mainmenu	,
+.hmenu 		{position:fixed;right:0;max-width:75%;z-index:277;margin-top:0;padding:0 2% 0 1px;vertical-align:middle}
+#mainmenu 	{top:1em;overflow:hidden}
+.hmenu		{top:3.5em}
+
+#cron 		{display:none}
+#back2top 	{display:none;position:fixed;right:4%;bottom:0;z-index:277;padding:1ex;cursor:pointer}
+
+.logo		{width:38%;max-width:40%;overflow:hidden}
+
+.sidebar			{width:20%;margin-top:.6ex}
+.sidebar > .block	{padding:1ex 1ex 1ex 0;margin-bottom:1.6em}
+
+.pada-default .crumbs		{margin-left:-6%;padding-left:6%;}
+.pada-default #container	{width:79%}
+.pada-default #submenu		{margin-left:1%}
+
+.pada-multicol #utils		{margin-left:-1%;margin-right:1%;}
+.pada-multicol #container	{width:80%}
+.pada-multicol .main 		{width:78%}
+
+.pada-widescreen #container {width:100%}
+.pada-widescreen .crumbs	{margin-left:-6%;padding-left:6%;}
+
+.main section	,
+.main article	{margin-bottom:0.6em}
+.main .ce_text	{padding-bottom:0.6em}
+
+#foot div.inside {padding:1ex 1em}
+
+
+/*
+ * :: laptops, netbooks, cheep desktops (1024,1150+)
+@media screen and (max-width:1150px) {
+	#wrapper { min-width:940px; }
+}
+
+ * :: Larger screens (1280-1650)
+@media screen and (min-width:1151px) and (max-width:1490px) {
+	#wrapper { min-width:1000px; max-width:1250px;}
+}
+
+ * :: Super wide-screen - "freez'em" to 1200px
+@media screen and (min-width:1200px) {
+	#wrapper { min-width:1000px; max-width:1200px;}
+}
+*/
+@media screen and (min-width:1100px) {
+	.main .mod_newslist {
+		-moz-column-count: 2;
+		-moz-column-gap: 1em;
+	}
+	.main .news_short {
+		min-height:14em;
+		background:0 none;
+	}
+}
+
+/* ~margins - push/contract */
+.ce_text .float_left	,
+.ce_text .float_right	{margin-top:.6em}
+
+.gallery		{margin-top:.6em;margin-bottom:1.6em}
+.ce_comments	{margin:1.6em 0 .6em 4%}
+
+blockquote		{ margin:1.6em 0 1.6em 4em; float:none; clear:both; width:75%; padding:.6em 1em .5ex .6em; }
+
+.info			{ margin-bottom:0; }
+
+.back			,
+.readmore		{margin-bottom:.6em}
+.pdf_link 		{position:absolute;right:0;padding:.5ex}
+
+
+/* call-outs and asides flush right within their containing box
+ * in-context position using negative margins somewhere else below
+ */
+details.meta		,
+.news_full .pubinfo	time,
+.gallery .pubinfo	,
+.enclosure			{position:absolute; top:auto; z-index:27}
+
+details.meta		{right:0}
+.news_full .pubinfo	time,
+.gallery .pubinfo	{right:-1px}
+.enclosure			{right:4px}
+
+.news_full .pubinfo	time {margin-top:-1em}
+
+/*
+ * ~typography
+ * essentiall covers font-*, text-*, "spacing & leading" (padding,
+ * line-height, letter-spacing) and outlines if considered "essential"
+
+ Nochmal gucken: http://www.w3.org/TR/2008/REC-CSS2-20080411/fonts.html#font-styling
+	font-stretch: normal | wider | narrower | ultra-condensed | extra-condensed | condensed | semi-condensed | semi-expanded | expanded | extra-expanded | ultra-expanded | inherit
+	font-variant: normal | small-caps | inherit
+	font-size-adjust: <number>
+ */
+
+body, table { font-family: "Trebuchet MS","DejaVu Sans Condensed","Bitstream Vera Sans",sans-serif; }
+h1,h2,h3,h4 { font-family: "Lucida Sans Unicode","Lucida Grande","DejaVu Sans Condensed","Bitstream Vera Sans","Trebuchet MS",Arial,Helvetica,sans-serif; }
+/* for <abbr title="und">&amp; using beautiful ampersands in headings */
+h1 abbr,h2 abbr,h3 abbr,h4 abbr	{ border:0 none; font-style:italic; font-family:"Adobe Poetica","Adobe Garamond Pro","Adobe Caslon Pro","Palatino","Palatino Linotype",Constantia,Georgia,"Times New Roman",cursive,serif; }
+.logo h1,.logo h2,q:before,q:after { font-family: "Adobe Poetica","Adobe Garamond Pro","Adobe Caslon Pro","Palatino","Palatino Linotype",Constantia,Georgia,"Times New Roman",cursive,serif; }
+input, optgroup, select, textarea { font-family: sans-serif; }
+p,address	,
+blockquote	,
+dl,ol,ul	{font-size:100%;line-height:1.4}
+section abbr[title], section dfn[title] {border-bottom:1px dotted;cursor:help}
+
+aside		,
+figure		{font-size:100%}
+summary		,
+.caption	,
+figcaption	{font-size:85%;font-style:normal;line-height:normal;text-align:center}
+
+/* expected font-sizes according to HTML5
+		WHAT-WG HTML5    "13.2.5 Fonts and colors"
+		WHAT-WG Web-Apps "15.2.5 Fonts and colors"
+		ARTICLE, ASIDE, NAV, and SECTION elements are expected to affect
+		the font size of H1	elements, based on the nesting depth!
+	h1: 2.00em					= <BODY><H1>, <BODY><DIV><DIV><DIV><H1>
+	h2: 1.50em	~ H1 @ depth 2	~ <ARTICLE><H1>
+	h3: 1.17em	~ H1 @ depth 3	~ <SECTION><ARTICLE><H1>
+	h4: 1.00em	~ H1 @ depth 4	~ <ARTICLE><SECTION><NAV><H1>
+	h5: 0.83em	~ H1 @ depth 5	~ <ARTICLE><SECTION><ARTICLE><H1>
+	h6: 0.67em	~ H1 @ depth 6	~ <ARTICLE><SECTION><ARTICLE><NAV><H1>
+*/
+h1,.logo	{font-size:162%}
+h2			{font-size:135%}
+h3			{font-size:117%}
+h4			{font-size:100%}
+h1,h2,h3,h4 {padding:.5ex 1ex;font-stretch:condensed}
+
+.main h1	,
+.main h2	{letter-spacing:-0.08ex;text-shadow:0 0 4px #000}
+
+.sidebar h1	,
+.sidebar h2	,
+.sidebar h3	,
+.sidebar h4	{font-size:117%;letter-spacing:-0.08ex;padding:0 1ex}
+
+footer h1	,
+footer h2	,
+footer h3	{padding:0}
+
+/* ~ mozified nested levels 2-4
+	http://hacks.mozilla.org/2010/05/moz-any-selector-grouping/
+ */
+:-moz-any(section, article, aside, nav) h1 {font-size:162%}
+:-moz-any(section, article, aside, nav)
+:-moz-any(section, article, aside, nav) h1 {font-size:135%}
+:-moz-any(section, article, aside, nav)
+:-moz-any(section, article, aside, nav)
+:-moz-any(section, article, aside, nav) h1 {font-size:117%}
+
+/* must not brech weg zwischen words */
+.logo		{line-height:1;text-align:right;cursor:default}
+.logo h1	,
+.logo h2	{padding:.5ex 0;white-space:pre;letter-spacing:-0.08ex}
+.logo h2	{font-size:122%}
+.logo i		{font-style:italic}
+
+.enclosure label,
+li.current		,
+li.trail		,
+li.active		,
+span.qty		,
+b,strong,dt		{font-weight:bold}
+
+p.info			,
+div.comment		,
+.pubinfo time	{padding:.5ex 1ex}
+
+.ce_text p		{padding-left:1em;padding-right:1em;line-height:1.6;margin-top:.6em;margin-bottom:1em}
+footer .ce_text p {padding-left:0}
+
+/* news in sidebar */
+.sidebar p.entry			{padding-left:1ex;line-height:1.6em}
+.sidebar time				{font-size:85%}
+
+/* [footer].pubinfo */
+.pubinfo			{padding-top:1ex;display:block;}
+.pubinfo .author	{padding-left:1em}
+.pubinfo .comments	{}
+.pubinfo time	{ display:block; line-height:1; }
+  time b		{ display:block; text-align:center; }
+  time b.d		{ font-size:162%; }
+  time b.m		{ font-size:91%; text-transform:uppercase;}
+  time b.y		{ font-size:81%; font-weight:normal;}
+
+p.info			,
+aside.meta		{ position:relative; float:none; clear:both; text-align:left; }
+details.meta	{ padding:0 1ex; margin-top:-1.35em; }
+details summary	{ cursor:help; }
+	/* 'shadow' DOM */
+	summary::-webkit-details-marker { color:lime; }
+
+/* ~shadows and "glows" generic use */
+#foot h3		,
+#foot .subcr	{text-shadow:0 0 4px #000}
+
+.crumbs .active	{text-shadow:0 0 2px #000}
+
+
+/*
+ * Individual Page styles
+ */
+
+/* Impressum */
+dl.credits	{ margin:.6em 0 .6em 4em; width:75%; }
+
+
+/*
+ * ~any links
+ */
+a 			{text-decoration:none}
+dl a, p a	{border-bottom:1px dotted}
+dl a:hover,
+p a:hover	{border-bottom-style:solid}
+
+hgroup a,
+hgroup a:focus,
+#mainmenu a,
+#mainmenu a:focus,
+.pagination a,
+.pagination a:focus {border:0 none;outline:0 none}
+
+
+/*
+ * ~menus and navigation
+ * #mainmenu == div.mod_navigation ~ div.menu
+ * mod_booknav
+ */
+#mainmenu li	{float:left;text-align:center}
+
+.files li		,
+.menu li		{list-style:none inside none;word-wrap:break-word}
+
+.level_1 ul		{margin-left:1em;margin-bottom:0}
+.files a		,
+.level_1 a		,
+.level_1 span	{display:block;padding:.35ex 1em }
+.level_1 span	{cursor:default; }
+
+.pagination		{display:table;padding:1ex 0}
+ul.pages		{display:block}
+ul.pages li 	{float:left;margin-right:1ex}
+.pgn			{display:block;padding:3px;text-align:center;min-height:2.5ex;min-width:2.5ex}
+
+.hmenu			{display:table}
+.hmenu li		{float:left;position:relative}
+.hmenu ul		{margin-left:0}
+.hmenu li li	{min-width:10em}
+
+.hmenu li ul		{display:none;position:absolute;z-index:277}
+.hmenu li:hover ul	{display:block}
+
+/* tabbable Skip-Links (mod_navigation.tpl) */
+a.skiplink:focus,
+a.skiplink:active	{position:static; left:0; width:auto; height:auto; overflow:visible; text-decoration:underline; }
+
+/*
+ * ~module stuff
+ * .spotlights (YAMLish)
+ * .c40l .first
+ * .mod_colsetPart .c40l .second
+ * .mod_colsetPart .c20r .third .last
+
+	div.mod_colsetPart { }
+	div.c40l, div.c20r { }
+	div.subcl	{ }
+	div.subc 	{ }
+	div.subcr	{ }
+ */
+.spotlights .level_1,
+.spotlights .ce_text { padding:1ex 1em; }
+
+
+/*
+ * articles
+ */
+div.teaser	{}
+
+/*
+ * The image gallery
+ *
+ Just for the fun of more variation...
+ 	.ce_gallery			single gallery from core content element
+ 	.mod_gallery		single gallery from the extension
+ 	.mod_gallerylist	list of galleries from the extension
+ */
+
+/* right padding ~ pretty rough estimate of "DETAILS.meta SUMMARY" width based on .7em font scale */
+[class^=mod_gallery] .gal-container	{ margin-left:90px; margin-right:3.2em; }
+
+.gallery				{position:relative}
+.gallery header h2		{text-indent:90px; padding-left:.4em; padding-right:6em; overflow:hidden; -o-text-overflow:ellipsis; text-overflow:ellipsis; }
+.gallery figure.poster	{position:absolute;margin-left:-1%;margin-top:-1.35em;}
+.gallery .poster		{width:80px;height:160px}
+
+.ce_gallery 			{margin-bottom:1.6em}
+
+.gal-container		{padding:.6em}
+.gal-container p	{margin-top:0; margin-bottom:.6em;}
+
+/* :width = li:nth-of-type X (.thumb:width + li margins)
+			+ 2 X .preview:border
+			~ 385px
+			+ "container margins and paddings"
+			= 400px
+
+	article.gallery
+	  div.gal-container .multi-page
+
+*/
+.gal-items li	{float:left;margin-right:6px;margin-bottom:6px;text-align:center;line-height:1em;}
+.gal-items a	{display:block;}
+
+.gal-items .preview { border:3px solid #fff; }
+.gal-items .thumb				{opacity:0.5;width:120px;height:120px}
+.gal-items:hover .thumb:hover	{opacity:1}
+
+/* previews, featured */
+.pada-default .gal-container .pagination		{clear:left}
+.pada-default .gal-items 						{float:left}
+.pada-default    .gal-items li:nth-of-type(3n+1) ,
+.pada-widescreen .gal-items li:nth-of-type(6n+1) {clear:left}
+
+
+/* fullpage gallery */
+.pada-widescreen .description	{clear:both}
+
+
+/* "pop-up" box with gallery item details */
+details dl		{display:none}
+details dd		{padding-left:1em}
+details:hover summary ,
+details:hover dl	  {display:block}
+details[open] dl {display:initial}
+
+/* image "attachment" .ce_text, .news_xxx */
+figure.placard		{position:relative;display:block;float:right;padding:1em;margin-left:1em;text-align:center}
+figure.captioned	{padding-bottom:0}
+
+/* img positioning */
+figure.left		{float:left;margin:0 1ex 1em 0}
+figure.above,
+figure.below	{float:none;clear:both;margin:1ex auto;text-align:center} /* presumably */
+
+/* .tiny .small .medium .large .huge */
+figure.tiny		{font-size:82%}
+figure.small	{font-size:88%}
+figure.medium	{font-size:94%}
+
+
+/* search results */
+#query_type				{}
+#query_type span		{display:block}
+
+.mod_search > div		{padding:1ex}
+.mod_search .highlight	{color:orange}
+.mod_search .relevance	{font-weight:normal;font-size:.8em}
+.mod_search .url 		{}
+.url .filesize			{}
+
+
+/*
+ * news and news-blog and archive and ...
+ * news_full.tpl, news_short.tpl
+ */
+/* make room for "time pubdate" */
+.news_short footer	{width:100%}
+.news_short time	{float:right}
+.news_full .ce_text	{margin-right:4.2em}
+
+hgroup time b { font-size:70%;display:inline; }
+
+/* ~ aside.enclosure (attachments)
+ * \event_full.tpl, mod_faqreader.tpl, news_full.tpl, mod_newsletter_reader.tpl
+ */
+.enclosure			{ bottom:-1.65em; width:25%; max-width:25%; }
+ol.files			{ position:absolute; right:2707px; padding:.5ex; font-size:.9em; vertical-align:top; background:#555; }
+.enclosure:hover ol	{ right:0px; bottom:2px; } /* <- match with spread value of .sh-spread */
+.enclosure label	{ display:block; text-align:center; cursor:pointer; }
+span.size			{ font-size:.9em; display:inline-block; }
+
+/* article tools (print,pdf,social buzz) */
+.tools			{position:absolute; right:0; top:0; margin-top:1ex; width:100px;}
+.tools a:focus	,
+.tools a:active {background-color:transparent}
+
+span.output	,
+span.share	{position:relative; display:inline-block;}
+span.print	{cursor:pointer}
+
+/* css sprite grid: 25x25, icons: 16x16
+ *   0: plain,foto1,foto2,paint,audio,video,cam,prt,--,--
+ * 250: zip  ,pdf  ,fla  ,ps   ,twitt,fbook */
+span.iconify, a.iconify, b.iconify {
+  display: inline-block;
+  width: 23px;
+  height: 21px;
+  overflow: hidden;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+  background: transparent url("icongrid25.gif") no-repeat scroll left top;
+}
+.files li.iconify	{padding-left:20px}
+
+/* @todo grundraster erhöhen im png oder mit CSS3 versuchen
+CSS3 als border-image?
+CSS3 [-moz|o|webkit-]background-size: x y
+*/
+
+/* news_full: article.news_full aside.tools .iconify.XYZ */
+.tools .tw		{background-position:0px -348px}
+.tools .fb		{background-position:0px -373px}
+.tools .rss		{background-position:0px -400px}
+.tools .print	{background-position:0px -175px}
+
+/* news_full: article.news_full[.enclosure] ol.files li.iconify b.iconify.XYZ
+ * @todo a[href$=".xxx"] doesn't catch properly
+ */
+ol.files b.iconify	{position:absolute; margin-left: -16px; margin-top: 2px;}
+.files .rar	,
+.files .zip	{background-position:0px -250px}
+.tools .pdf	,
+.files .pdf	{background-position:0px -273px}
+.files .ogg	,
+.files .mp3	{background-position:0px -100px}
+.files .swf	,
+.files .f4v	,
+.files .flv	{background-position:0px -300px}
+.files .ogv	,
+.files .mov	,
+.files .mp4	{background-position:0px -125px}
+.files .jpg	{background-position:0px -150px}
+.files .tif	{background-position:0px -50px}
+.files .psd	{background-position:0px -325px}
+
+/*
+ * ~core colors 		MORE CSS3 GLORY @ fancy.css
+ *
+	hex / rgb
+	#22 /  34
+	#33 /  51	#30 /  48
+	#44 /  68	#40 /  64
+	#55 /  85	#50 /  80		#555 BACKGROUND
+	#66 / 102	#60 /  96
+	#77 / 119	#70 / 112
+	#88 / 136	#80 / 128		"50% gray"
+	#99 / 153	#90 / 144
+	#AA / 170	#A0 / 160
+	#BB / 187	#B0 / 176
+	#CC / 204	#C0 / 192
+	#DD / 221	#D0 / 208		#ddd TEXT
+	#EE / 238	#E0 / 224
+ */
+body, .grainy		{background:#555 url("bg_body.gif") left top repeat}
+
+.sidebar > .block	,
+.decor				{background:#ddd url("deco.png") right center repeat}
+
+li a, p a 	{color:#e0e0e0}
+li a:hover	,
+p a:hover 	{color:#fefefe}
+
+#mainmenu a:hover {text-shadow:0 0 3px #333}
+
+.main a:focus,
+* html a:active {background:#fafafa;color:#333 !important;text-shadow:none}
+
+figure.placard	{background-color:rgb(238,238,238)}
+
+/*
+ * non-css3 fallbacks, fancy.css features rgba and gradients
+ */
+#mainmenu			,
+.hmenu				,
+.hmenu ul			,
+.hmenu li			,
+.pagination li 		{background-color:#404040}
+
+.menu li.current	{color:#333;background-color:#909090}
+#back2top			,
+.gallery time		{background-color:#909090}
+.pubinfo span 		{color:#bbb}
+
+/* fancy headings (and other blobs) */
+.main .ce_text h1	,
+.main .ce_text h2	,
+.main header		{background:url("deco.png")}
+
+/* menus and navigation */
+#mainmenu li.active { color:#e0e0e0;outline:1px solid #fff;outline-offset:-1px }
+
+.no-boxshadow #mainmenu	,
+.no-boxshadow .hmenu	{outline:1px solid #444;outline-offset:3px}
+
+/* header logo */
+.logo h1 			,
+.logo h2 			{ color:#333; text-shadow:0 1px 2px #eee; }
+.logo:hover h2		,
+.logo:hover span	{ color:#404040; }
+.logo:hover i		{ color:#505050; }
+
+/* headlines and captions */
+.caption	,
+figcaption	{color:#333;background-color:rgb(238,238,238)}
+
+
+/* form "widget" styles are all about colors anyway, even if there's some padding here and there :) */
+input[type=email]	,
+input[type=tel]		,
+input[type=text]	,
+input[type=password],
+select				,
+textarea 			{ background:#e0e0e0; border:1px inset white; -webkit-appearance: none}
+textarea			,
+input[type=email]	,
+input[type=tel]		,
+input[type=text]	,
+input[type=password] {padding:2px 4px;}
+
+button				,
+input[type=button]	,
+input[type=submit]	,
+input[type=reset] 	{
+	padding: 2px 6px;
+	border-style:outset;
+	background:#666;
+	color: white;
+	text-shadow:1px 1px 1px #333;
+}
+
+button:active				,
+input[type=button]:active	,
+input[type=submit]:active	,
+input[type=reset]:active 	{ border-style:inset; }
+
+.submit_container	{ padding:.5ex 1ex;}
+
+/* forms in sidebar */
+.sidebar form				{padding:1ex}
+.sidebar .login label		{display:block}
+
+/* "mod_newsreader.tpl"
+ * comments form and list */
+.ce_comments .formbody	{padding:1ex;}
+.ce_comments .widget	{position:relative;}
+
+/* form control containers
+	(the initial 'c' stands for C[ontrol|ontainer|omment], pick yours) */
+.cname		,
+.cemail		,
+.cwebsite	,
+.captcha	{margin:0 0 .5ex 0;padding:0;display:inline-block}
+.clegend	,
+.ccomment	{margin:0 0 .5ex 0;padding:0;}
+
+/* @todo one fine day we can use width:calc(49em/3 - 26px*3) [IE9+,FF:-moz-calc] */
+.ce_comments .text		,
+.ce_comments .captcha	{display:inline;padding-left:26px;width:14.5em; border-style:solid;border-width:1px}
+.ce_comments .textarea	{display:inline;padding-left:26px;width:49em;   border-style:solid;border-width:1px}
+
+.clegend	{text-align:left}
+
+/* form controls line-up als columns */
+.cname .text 		{background:#e0e0e0 url("icon/user_18x24.png") no-repeat scroll 3px 50%;}
+.cemail .text 		{background:#e0e0e0 url("icon/mail_24x18.png") no-repeat scroll 0 50%;}
+.cwebsite .text 	{background:#e0e0e0 url("icon/link_24x24.png") no-repeat scroll 0 50%;}
+.ccomment .textarea {background:#e0e0e0 url("icon/chat_24x24.png") no-repeat scroll 0 0;}
+
+.ce_comments .text:focus,
+.ce_comments .textarea:focus	{background-color:#fff;}
+
+/* BREAKS in IE8- */
+.ce_comments label 	{position:absolute;display:inline;left:-1000px;top:-1000px;font-weight:normal;white-space:pre;white-space-collapsing:preserve;}
+.ccaptcha label 	{position:relative;left:auto;top:auto;font-weight:bold}
+
+/* */
+.haserror .widget	{padding-top:1.2em}
+.haserror .cname	,
+.haserror .cemail	,
+.haserror .cwebsite	{padding-top:2.2em}
+.haserror p.error	{position:absolute;top:0;padding:0;font-size:92%;line-height:1;color:hsl(90, 100%, 63%)}
+
+.ce_comments input:focus + label {z-index:277;left:0;top:auto;bottom:-1.4em;font-size:94%;line-height:1;height:auto;width:99%;padding:2px 5px;display:block;background:floralwhite;color:#000}
+
+/*
+ * ~generated content, by definition uses individual styling
+ */
+blockquote			{position:relative}
+blockquote:before	,
+blockquote:after	{position:absolute;display:inline;font:bold 4em/.5 sans-serif,serif;color:#B0B0B0;text-shadow:0 0 4px #fff}
+blockquote:before	{content:'\275c\275c';left:0; margin-left:-.9em}
+blockquote:after	{content:'\275b\275b';right:-.9em; margin-top:-.4em}
+
+/* targetting Slimbox'ed images displays a "lightbulb'ish" overlay character
+	to disappear on :hover, best use with opacity transitions */
+.preview:before 		{content:'\2742';position:absolute;display:inline-block;padding:5px;font-size:40px;line-height:.9;color:#eee;}
+.preview:hover:before	{display:none}
+
+/*
+ * vendor "annoyances" and haxx and pseudo classes ... and goodies ;)
+
+ Standard AND vendor-prefixed selectors CANNOT be mixed in a single rule.
+ Rules have to be doubled to avoid being stripped off by ALL browsers.
+ Ignored by all browsers:
+	::-moz-bla, div.bla { padding-left:0; }
+ Separate rules work:
+	::-moz-bla { padding-left:0; }
+	div.foo { padding-left:0; }
+
+ Eigenschaften zurücksetzen:
+ 	display:-moz-initial, initial;
+ */
+
+@media screen {
+	::selection{background:#fafafa;color:#000;text-shadow:none;}
+}
+
+/* webkidz */
+ol,ul {-webkit-padding-start:0px;-webkit-margin-start:0px}
+.main ol:not([class]),
+.main ul:not([class]) {-webkit-padding-start:3ex}
+a:-webkit-any-link {color:inherit}
+@media screen {
+	figure.poster img {-webkit-color-rendering:optimizeQuality;-webkit-image-rendering:optimizeQuality}
+	a:-webkit-any-link:focus > img {border:0 none;outline:0 none}
+	input::-webkit-input-placeholder {color: #333;}
+}
+
+/* dinosaurs */
+ol,ul,li {-moz-padding-start:0px;-moz-margin-start:0px}
+.main ol:not([class]),
+.main ul:not([class]) {-moz-padding-start:3ex}
+a:-moz-any-link {color:inherit}
+@media screen {
+	/* FF 3.x: found in SVG, not defined in any CSS standard */
+	figure.poster img {image-rendering:optimizeQuality}
+	a:-moz-any-link:focus > img	{-moz-outline:none;}
+	::-moz-selection {background:#fafafa;color:#000;text-shadow:none;}
+	input:-moz-placeholder {color: #333;}
+	/* FF: make button "height" eq. to text */
+	input[type="submit"]::-moz-focus-inner {border:0;}
+}
+
+/* vikings */
+
+/* not (yet) covered by Modernizr */
+a.unclickable {pointer-events : none;}
+
+/* simple print styles
+ * inlined to avoid another HTTP connection 'cos browsers
+ * download "print styles" anyway and always. http://www.phpied.com/delay-loading-your-print-css/
+ * in FF @page, orphans, windows are screwed up, page-break-* are broken
+ */
+@media print {
+	/* hidden from dead trees */
+	.menu, .pagination, .crumbs, .back, #back2top,
+	.enclosure, .tools, .gallery details,
+	.ce_comments, .comments	{display:none;}
+
+	/* generated content */
+	blockquote:before, blockquote:after	,
+	.preview:before	,
+	.logo a:after, .logo abbr:after		{ content:""; display:none; }
+
+	* { background: transparent !important; color: #444 !important; text-shadow: none !important; filter:none !important; -ms-filter:none !important; } /* black prints faster */
+	a, a:visited { color: #444 !important; text-decoration: underline; }
+	a:after { content: " (" attr(href) ")"; }
+	abbr:after { content: " (" attr(title) ")"; }
+	pre,blockquote { border: 1px solid #999; }
+	table[border] {box-decoration-break:clone;}
+	thead { display: table-header-group; } /* css-discuss.incutio.com/wiki/Printing_Tables */
+	p,h2,h3 { orphans: 3; widows: 3; }
+	pre, blockquote,tr,img,h2,h3 { page-break-after: avoid; }
+
+	.logo {width:auto;max-width:100%;overflow:hidden;text-align:left}
+	.logo h1, .logo h2 {display:inline;margin:0;padding:1ex;}
+
+}
+
+/*
+ * ~debug
+.mod_article {outline:1px solid orange}
+ */
+xmp.dbg {display:block;float:none;clear:both; white-space:pre-wrap; max-width:90%;max-height:50em;overflow:scroll;background:white;color:black;border:1px solid orange;}
+
+section:empty {padding: 0.5ex; background: yellow;}
+article:empty {padding: 0.5ex; background: orange;}
+
+/* .eof */
