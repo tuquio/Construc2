@@ -1,0 +1,41 @@
+@charset "UTF-8"; /* äöü - just checking */
+/* core.css "HTML5ish edition"
+ @version 1.5.3 30.04.2011
+ my personal likings + defaults for THIS WEBSITE ONLY mixed with inspirational input from E. Meyer, Yahoo!, N. Sullivan, and the Interwebs, hence:
+ @license DWTF
+*/
+/* kinda layout */
+html,body{display:block;margin:0;padding:0;position:relative}
+html{overflow-y:scroll}
+article,footer,header,hgroup,section,aside,nav,figure,figcaption,summary,details{display:block}
+h1,h2,h3,h4,h5,h6,dl,dt,dd,ul,ol,li{display:block}
+h1,h2,h3,h4,h5,h6,dt,dd,li,form,fieldset,legend,p,th,td,pre,xmp,listing{margin:0;padding:0}
+blockquote,figure,dl,ul,ol{margin:0;padding:0}
+table{border-collapse:collapse;border-spacing:0}
+fieldset,img,abbr{border:0 none}
+/* abbr[title],dfn[title]{border-bottom:1px dotted} */
+img{vertical-align:bottom}
+/* sorta typography */
+body{font:13px/1.231 sans-serif;word-wrap:break-word}
+h1,h2,h3,h4,h5,h6,table,dl,ol,ul{font-size:100%;font-weight:normal}
+b,strong,dt{font-weight:bold}
+i,em{font-style:italic}
+caption,th{text-align:center;font-weight:bold}
+tbody th{text-align:left;vertical-align:top}
+address,caption,cite,dfn,figcaption,details{font:inherit}
+pre,xmp,samp,code,tt,kbd,listing{font-size:83%;font-family:monospace,sans-serif;}
+form,fieldset{font-size:100%}
+select,input,button,textarea{font:99% sans-serif}
+/* once for all and anything */
+a:focus{outline:0 none}
+q:before,q:after{font-family:"Adobe Caslon Pro",Georgia,"Times New Roman",Times,serif;font-size:1.1em}
+q{quotes:'\201E' '\201C' '\201A' '\201B'}
+q[lang|=fr]{quotes:'\00AB' '\00BB' '\2039' '\203A'}
+.clearfix:after{clear:both;display:block;content:"\00A0";visibility:hidden;overflow:hidden;height:0 !important;line-height:0}
+.invisible{position:absolute;display:inline;width:0;height:0;left:-1000px;top:-1000px;overflow:hidden;}
+/* bits of color */
+body{color:#ddd;background:#555}
+a{color:inherit;background:transparent}
+::selection {background:currentColor;color:#333;text-shadow:none}
+/* hacks, of course */
+*html body{*font-size:small}
