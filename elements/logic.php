@@ -237,7 +237,7 @@ if ($ssiIncludes) {
 		$this->addStyleSheet($tmpl_url.'/css/construct.styles', 'text/css');
 	}
 	if ($ssiTheme) {
-		$this->addStyleSheet($tmpl_url.'/css/themes/'.$ssiTheme, 'text/css');
+		$this->addStyleSheet($tmpl_url.'/themes/'.$ssiTheme, 'text/css');
 	}
 } else {
 	$this->addStyleSheet($tmpl_url.'/css/core/base.css', 'text/css');
