@@ -2,8 +2,9 @@
 // no direct access
 defined('_JEXEC') or die;
 
-JHtml::addIncludePath(JPATH_COMPONENT_SITE .DS. 'helpers');
+JHtml::addIncludePath(JPATH_COMPONENT_SITE '/helpers');
 $cparams = JComponentHelper::getParams('com_media');
+
 ?>
 <section class="blog">
 	<header><?php
