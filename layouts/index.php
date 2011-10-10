@@ -10,7 +10,7 @@
 defined('_JEXEC') or die;
 
 ?><!DOCTYPE html>
-<html lang="<?php echo $this->language; ?>" <?php echo $cache_manifest ?> dir="<?php echo $this->direction; ?>" >
+<html lang="<?php echo $this->language; ?>" dir="<?php echo $this->direction; ?>" <?php echo $cache_manifest ?>>
 <head>
 <jdoc:include type="head" />
 </head>
@@ -28,7 +28,7 @@ defined('_JEXEC') or die;
 		</header><!-- end header-above -->
 	<?php endif; ?>
 
-		<h1 id="logo"><a href="<?php echo $this->baseurl ?>/" title="<?php echo $app->getCfg('sitename');?>"><?php echo $app->getCfg('sitename');?></a></h1>
+		<h1 id="logo"><a href="<?php echo $this->baseurl ?>/"><span><?php echo $app->getCfg('sitename');?></span></a></h1>
 		<?php if ($showDateContainer) : ?>
 		<div class="date-container"><?php echo $templateHelper->dateContainer(); ?></div>
 		<?php endif; ?>
