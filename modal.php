@@ -16,8 +16,10 @@ require JPATH_THEMES.'/'.$this->template.'/elements/logic.php';
 <link rel="stylesheet" href="<?php echo $baseUrl.'templates/'.$this->template; ?>/css/screen.css" type="text/css" media="screen" />
 <link rel="stylesheet" href="<?php echo $baseUrl.'templates/'.$this->template; ?>/css/modal.css" type="text/css" media="screen" />
 </head>
-
 <body>
+<?php if ($this->getBuffer('message')) : ?>
+	<jdoc:include type="message" />
+<?php endif; ?>
 	<jdoc:include type="component" />
 </body>
 </html>

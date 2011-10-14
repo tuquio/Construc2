@@ -17,6 +17,9 @@
 <!--[if IE 7]><div class="ie7 ltie8 ltie9 ltie10"><![endif]-->
 <!--[if IE 8]><div class="ie8 ltie9 ltie10"><![endif]-->
 <!--[if IE 9]><div class="ie9 ltie10"><![endif]-->
+<?php if ($this->getBuffer('message')) : ?>
+	<jdoc:include type="message" />
+<?php endif; ?>
 	<jdoc:include type="component" />
 <!--[if IE]></div><![endif]-->
 	</body>
