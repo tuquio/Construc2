@@ -115,11 +115,14 @@ else {
 	$head = $this->getHeadData();
 	// without MooTools we must drop all but core.js
 	$moos = preg_grep('#/media/system/js(\/(?!core))#', array_keys($head['scripts']));
-	foreach ($moos as $src) {
-		unset($head['scripts'][$src]);
+	if (count($moos) > 0) {
+		foreach ($moos as $src) {
+			unset($head['scripts'][$src]);
+		}
+		$this->setHeadData($head);
+		unset($src, $moos);
 	}
-	$this->setHeadData($head);
-	unset($head, $src, $moos);
+	unset($head);
 }
 
 #----------------------------- Module Counts -----------------------------#
@@ -218,14 +221,12 @@ if (is_file(JPATH_THEMES .'/'. $this->template .'/favicon.png')) {
 for ($i=1; $i <= ConstructTemplateHelper::MAX_WEBFONTS; $i++) {
 	if ($googleWebFont[$i]) {
 		// Fix Google Web Font name for CSS
-		$googleWebFontFamily[$i] = str_replace(array('+',':bold',':italic'), ' ', $googleWebFont[$i]);
+		$googleWebFontFamily = str_replace(array('+',':bold',':italic'), ' ', $googleWebFont[$i]);
 		$this->addStyleSheet('//fonts.googleapis.com/css?family='.$googleWebFont[$i].'');
-		$this->addStyleDeclaration(
-		$googleWebFontTargets[$i]
-		.' {font-family:'.$googleWebFontFamily[$i].', serif;'
-		.(($googleWebFontSize[$i]>0) ? 'font-size:'.$googleWebFontSize[$i].';' : '')
-		.'}'
-		);
+		$styleDeclarations[] = $googleWebFontTargets[$i]
+							. ' {font-family:'.$googleWebFontFamily.', serif;'
+							. (($googleWebFontSize[$i]>0) ? 'font-size:'.$googleWebFontSize[$i].';' : '')
+							. '}';
 	}
 }
 
