@@ -370,6 +370,8 @@ if ($app->get('input')->getBool('tp') && JComponentHelper::getParams('com_templa
 #right2 .mod-preview-wrapper{height:940px}';
 }
 
+$scriptDeclarations[] = "if (typeof window.JSON === 'undefined') {document.write('<script src=\"".$tmpl_url."/js/json2.js\"><\/script>');}";
+
 // add collected custom style declarations
 if ( count($styleDeclarations) ) {
 	$this->addStyleDeclaration(implode(PHP_EOL,$styleDeclarations));
@@ -381,4 +383,3 @@ if ( count($scriptDeclarations) ) {
 	$this->addScriptDeclaration(implode(PHP_EOL,$scriptDeclarations));
 	$templateHelper->addScriptDeclaration($scriptDeclarations);
 }
-
