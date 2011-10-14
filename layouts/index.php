@@ -16,10 +16,10 @@ defined('_JEXEC') or die;
 </head>
 
 <body class="<?php echo $columnLayout ?>">
-<!--[if IE 6]><div class="ie6 ltie7 ltie8 ltie9 ltie10"><![endif]-->
-<!--[if IE 7]><div class="ie7 ltie8 ltie9 ltie10"><![endif]-->
-<!--[if IE 8]><div class="ie8 ltie9 ltie10"><![endif]-->
-<!--[if IE 9]><div class="ie9 ltie10"><![endif]-->
+<!--[if IE 6]><div class="msie ie6 ltie7 ltie8 ltie9 ltie10"><![endif]-->
+<!--[if IE 7]><div class="msie ie7 ltie8 ltie9 ltie10"><![endif]-->
+<!--[if IE 8]><div class="msie ie8 ltie9 ltie10"><![endif]-->
+<!--[if IE 9]><div class="msie ie9 ltie10"><![endif]-->
 	<div id="page-top">
 		<div id="header" class="line page-head">
 	<?php if ($headerAboveCount) : ?>
