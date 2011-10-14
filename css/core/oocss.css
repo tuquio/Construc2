@@ -4,11 +4,10 @@
  * @version 2011-09-10 (grids.css, grids_rtl.css, mods.css)
  */
 /* grids.css */
-.line{float: none;*zoom:1}
-
+line,.lastUnit{overflow:hidden; *overflow:visible;*zoom:1;}
 .unit{float:left}
 .unitRight{float:right}
-.lastUnit{float:none;display:block;display:table-cell;width:9999em;*width:auto;*zoom:1;_position:relative;_left:-3px;_margin-right:-3px}
+.lastUnit{float:none;width:auto;_position:relative;_left:-3px;_margin-right:-3px;}
 aside .unit, aside .unitRight{float: none !important; width: auto !important}
 @media print, screen and (max-width: 481px) {.unit,.unitRight{float: none !important; width: auto !important}}
 
@@ -42,7 +41,8 @@ aside .unit, aside .unitRight{float: none !important; width: auto !important}
 /* mod.css (.mod > .inner > .hd|bd|ft) */
 .mod {margin:10px}
 .mod .inner{/* background stuff goes here */}
-.bd, .ft, .hd{display:inline-block;width:100%;*display:block;*width:auto;zoom:1}
+/* .bd,.ft,.hd{display:inline-block;width:100%;*display:block;*width:auto;zoom:1} */
+.bd,.ft,.hd{overflow:hidden; *overflow:visible; zoom:1;}
 .inner{position:relative}
 /* (.mod > b.top|bottom) (b.top > .tl|tr) (b.bottom > .bl|br) */
 b.top, b.top b, b.bottom, b.bottom b{display:block;background-repeat:no-repeat;font-size:1%;position:relative;z-index:10}
