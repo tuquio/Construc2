@@ -2,15 +2,12 @@
 .load-first {position:relative}
 
 /* -- Sticky Footer -- *//*http://www.cssstickyfooter.com/*/
-html, .sticky-footer{height:100%}
+html, body, .sticky-footer{height:100%}
 .sticky-footer #page-top {min-height:100%}
 .sticky-footer .page-foot {position:relative;clear:both}
 .sticky-footer:before{content:"";height:100%;float:left;width:0;margin-top:-32767px}/*Opera Fix*/
 
 .fluid-media img, .fluid-media object {max-width:100%;-ms-interpolation-mode: bicubic;}
-
-/* -- Base Typography -- */
-body{color:#333;line-height:1.6em;}
 
 h1,.H1{font-size:2em;font-weight:normal}
 h2,.H2{font-size:1.7em;font-weight:normal}
