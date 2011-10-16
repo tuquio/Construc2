@@ -6,8 +6,6 @@
  * @copyright   (C) 2011 WebMechanic
  * @license     GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
-defined('_JEXEC') or die;
-
 // Load template logic
 require JPATH_THEMES.'/'.$this->template.'/elements/logic.php';
 
@@ -27,5 +25,5 @@ if ($alternateIndexFile = $templateHelper->getLayout()) {
 	return;
 }
 
-// load standard index.php
+// fallback: load standard index.php
 require_once JPATH_THEMES.'/'.$this->template.'/layouts/index.php';

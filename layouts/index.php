@@ -10,16 +10,16 @@
 defined('_JEXEC') or die;
 
 ?><!DOCTYPE html>
-<html lang="<?php echo $this->language; ?>" <?php echo $cache_manifest ?> dir="<?php echo $this->direction; ?>" >
+<html lang="<?php echo $this->language; ?>" dir="<?php echo $this->direction; ?>" <?php echo $cache_manifest ?>>
 <head>
 <jdoc:include type="head" />
 </head>
 
 <body class="<?php echo $columnLayout ?>">
-<!--[if IE 6]><div class="ie6 ltie7 ltie8 ltie9 ltie10"><![endif]-->
-<!--[if IE 7]><div class="ie7 ltie8 ltie9 ltie10"><![endif]-->
-<!--[if IE 8]><div class="ie8 ltie9 ltie10"><![endif]-->
-<!--[if IE 9]><div class="ie9 ltie10"><![endif]-->
+<!--[if IE 6]><div class="msie ie6 ltie7 ltie8 ltie9 ltie10"><![endif]-->
+<!--[if IE 7]><div class="msie ie7 ltie8 ltie9 ltie10"><![endif]-->
+<!--[if IE 8]><div class="msie ie8 ltie9 ltie10"><![endif]-->
+<!--[if IE 9]><div class="msie ie9 ltie10"><![endif]-->
 	<div id="page-top">
 		<div id="header" class="line page-head">
 	<?php if ($headerAboveCount) : ?>
@@ -28,7 +28,7 @@ defined('_JEXEC') or die;
 		</header><!-- end header-above -->
 	<?php endif; ?>
 
-		<h1 id="logo"><a href="<?php echo $this->baseurl ?>/" title="<?php echo $app->getCfg('sitename');?>"><?php echo $app->getCfg('sitename');?></a></h1>
+		<h1 id="logo"><a href="<?php echo $this->baseurl ?>/"><span><?php echo $app->getCfg('sitename');?></span></a></h1>
 		<?php if ($showDateContainer) : ?>
 		<div class="date-container"><?php echo $templateHelper->dateContainer(); ?></div>
 		<?php endif; ?>
