@@ -1,12 +1,1 @@
-body img {padding:5px;background:white;max-width:100%;}
-
-/* TinyMCE style sheets */
-.ext  {color:#c55}
-.fright {float:right;margin:.6em 0 1ex .6em}
-.feft {float:left;margin:.6em .6em 1ex 0}
-
-/* Custom Styles (typography.css) */
-.error { padding: 5px; color: #BF0000;}
-.warning { padding: 5px; color: #BF0000;font-size:1.1em}
-.message { padding: 5px; color: #069;}
-.tips { padding: 5px; color: #EE9600;}
+@import url("tinymce.css");
