@@ -18,19 +18,25 @@ $page_subheading     = $this->params->get('page_subheading');
 $toggle_headings     = ($show_category_title || $page_subheading);
 ?>
 <section class="category-list">
-<?php if ($show_page_heading) { ?>
-<?php if ($show_page_heading && $toggle_headings) { ?><hgroup><?php } ?>
+<?php
+if ($show_page_heading)
+{
+	if ($show_page_heading && $toggle_headings) { ?><hgroup><?php } ?>
 	<h1><?php echo $this->escape($this->params->get('page_heading')); ?></h1>
-<?php } ?>
+<?php
 
-<?php if ($show_category_title || $page_subheading) { ?>
+	if ($show_category_title || $page_subheading) { ?>
 	<h2><?php
-	echo $this->escape($page_subheading);
-	if ($show_category_title) {
-		echo '<span class="subheading-category">'.$this->category->title.'</span>';
+		echo $this->escape($page_subheading);
+		if ($show_category_title) {
+			echo '<span class="subheading-category">'.$this->category->title.'</span>';
+		}
+		?></h2><?php
 	}
-	?></h2>
-<?php if ($show_page_heading && $toggle_headings) { ?></hgroup><?php } ?>
+
+	if ($show_page_heading && $toggle_headings) { ?></hgroup><?php }
+}
+?>
 
 <?php
 $desc     = $this->params->get('show_description');
@@ -49,7 +55,8 @@ if ($desc || $desc_img ) { ?>
 
 if (is_array($this->children[$this->category->id])
 	&& count($this->children[$this->category->id]) > 0
-	&& $this->params->get('maxLevel') !=0) { ?>
+	&& $this->params->get('maxLevel') !=0
+) { ?>
 <div class="cat-children">
 <?php
 echo ($toggle_headings) ? '<h3>' : '<h2>' ;
@@ -57,7 +64,7 @@ echo JTEXT::_('JGLOBAL_SUBCATEGORIES');
 echo ($toggle_headings) ? '</h3>' : '</h2>' ;
 
 if (count($this->children[$this->category->id]) > 0) {
-	echo $this->loadTemplate('children'); */
+	echo $this->loadTemplate('children');
 }
 
 ?>
@@ -65,7 +72,7 @@ if (count($this->children[$this->category->id]) > 0) {
 <?php } ?>
 
 <div class="cat-items">
-<?php /* echo $this->loadTemplate('articles'); */ ?>
+<?php echo $this->loadTemplate('articles'); ?>
 </div>
 
 </section>

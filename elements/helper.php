@@ -103,6 +103,83 @@ class ConstructTemplateHelper
 	}
 
 	/**
+	 * Returns true if the currentpage represents the default "homepage"
+	 * of the website.
+	 * @return bool
+	 */
+	static public function isHomePage()
+	{
+		static $front;
+		if ($front !== null) return $front;
+		$jmenu = JFactory::getApplication()->getMenu();
+		$front = ( $jmenu->getActive() == $jmenu->getDefault() );
+		return $front;
+	}
+
+	/**
+	 * Liefert den Alias des aktiven Menüeintrag.
+	 * Ist $parent true wird der Alias des aktiven "top level" Eintrags
+	 * geliefert. Gibt es keinen aktiven Eintrag wird "Home" verwendet
+	 * und der Kurzname der aktuellen Komponente ($option), z.B. 'search'.
+	 * Dies ist der Fall bei Verwendung des Suchmoduls oder Querverweisen
+	 * auf Komponenten deren Inhalt(e) nicht über ein Menü erreichbar sind
+	 * (inkl. Kontakte).
+	 *
+	 * @param bool $parent Alias des Elternelements verwenden
+	 * @see JApplication::getMenu() JMenu::getActive()
+	 */
+	static public function getPageAlias($parent = false)
+	{
+		static $alias = array(false,false);
+
+		$app    = JFactory::getApplication();
+		$parent = (int)$parent;
+
+		if ( $alias[$parent] !== false) return $alias[$parent];
+
+		if (self::isHomePage()) {
+			$alias[$parent] = 'home';
+			return $alias[$parent];
+		}
+
+		$jmenu = $app->getMenu()->getActive();
+		if (!$jmenu) {
+			$option = $app->get('input')->getCmd('option');
+			$jmenu  = $app->getMenu()->getDefault();
+			$alias[$parent] = ($jmenu->home) ? str_replace('com_', '', $option) : $jmenu->alias;
+		} else {
+			$alias[$parent] = $jmenu->alias;
+		}
+
+		if ($parent && $jmenu->parent_id >= 1) {
+			$jmenu = $app->getMenu()->getItem($jmenu->parent_id);
+			if ($jmenu) {
+				$alias[$parent] = $jmenu->alias;
+			}
+		}
+
+		return $alias[$parent];
+	}
+
+	/**
+	 * Branding pages and areas using
+	 *
+	 * @uses getPageAlias(), JRequest::getCmd()
+	 */
+	static public function getPageAliases($parent = false)
+	{
+		$app     = JFactory::getApplication();
+		$option  = $app->get('input')->getCmd('option');
+		$layout  = $app->get('input')->getCmd('layout', $app->get('input')->getCmd('task', ''));
+		$bodyCss = trim(implode(' ', array(
+						str_replace('com_', '', $option),
+						$layout,
+						self::getPageAlias($parent)
+					)));
+		return str_replace('  ', ' ', $bodyCss);
+	}
+
+	/**
 	 * Registers a layout file for use with a specific component name,
 	 * section id or article id.
 	 *
@@ -301,6 +378,27 @@ class ConstructTemplateHelper
 		}
 	}
 
+	static public function getChunk($name, $suffixes = null)
+	{
+		$chunks = array($name);
+		if (is_string($suffixes)) {
+			$chunks = array($name .' '. $suffixes);
+		}
+		elseif (is_array($suffixes)) {
+			$chunks = array();
+			foreach ($suffixes as $suffix) {
+				$chunks[] = trim($name .' '. $suffix);
+			}
+		}
+
+		foreach ($chunks as $chunk) {
+			if (isset(self::$chunks[$chunk])) {
+				return self::$chunks[$chunk];
+			}
+		}
+		return false;
+	}
+
 	/**
 	 * Counts and returns the amount of active Modules in the given position group.
 	 *
@@ -339,44 +437,45 @@ class ConstructTemplateHelper
 	/**
 	 * @param string $position
 	 * @param string $style
-	 * @param array  $params
+	 * @param array  $attribs
 	 *
 	 * @return ConstructTemplateHelper for fluid interface
 	 */
-	public function renderModules($position, $style=null, $params=null)
+	public function renderModules($position, $style=null, $attribs=null)
 	{
-		if ( !$params ) {
-			$params = array();
+		if ( !$attribs ) {
+			$attribs = array();
 		}
-		$params['name'] = $position;
-		($style) ? $params['style'] = $style : true;
+		$attribs['name'] = $position;
+		($style) ? $attribs['style'] = $style : true;
 
 		$css = array();
-		if (isset($params['autocols'])) {
+		if (isset($attribs['autocols'])) {
 			if ( $pos = strrpos($position, '-') ) {
 				$group = substr($position, 0, $pos);
 				if ( $n = $this->numModules($group) ) {
-					settype($params['oocss'], 'string');
+					settype($attribs['oocss'], 'string');
 					$css[] = 'unit size1of'.$n;
 				}
 			}
-			unset($params['autocols']);
+			unset($attribs['autocols']);
 		}
 
 		foreach (JModuleHelper::getModules($position) as $_module)
 		{
-			if (isset(self::$chunks['module_before'])) {
+			if ($chunk = self::getChunk('module', array($_module->module, 'before')) ) {
 				echo str_replace(
 						array('{position}', '{class}'),
 						array($position, implode(' ', $css)),
-						self::$chunks['module_before']
+						$chunk
 						);
 			}
-			echo JModuleHelper::renderModule($_module, $params);
-			if (isset(self::$chunks['module_after'])) {
-				echo self::$chunks['module_after'];
+			echo JModuleHelper::renderModule($_module, $attribs);
+			if ($chunk = self::getChunk('module', array($_module->module, 'after')) ) {
+				echo $chunk;
 			}
 		}
+
 		return $this;
 	}
 

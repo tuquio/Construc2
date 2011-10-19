@@ -20,9 +20,9 @@ defined('_JEXEC') or die;
 <!--[if IE 8]><div class="msie ie8 ltie9 ltie10"><![endif]-->
 <!--[if IE 9]><div class="msie ie9 ltie10"><![endif]-->
 <?php if ($this->getBuffer('message')) : ?>
-	<jdoc:include type="message" />
+<div class="line"><jdoc:include type="message" /></div>
 <?php endif; ?>
-	<jdoc:include type="component" />
+<div class="line"><jdoc:include type="component" /></div>
 <!--[if IE]></div><![endif]-->
 </body>
 </html>
