@@ -194,11 +194,6 @@ if ($jmenu->getActive() == $jmenu->getDefault()) {
 #TODO get positions from xml and transform names into variable counterparts
 if ($app->getCfg('debug') && JRequest::getInt('tpos'))
 {
-	#HACK debug positions via FirePHP
-	if (class_exists('FB', false)) {
-		FB::info($app->getCfg('debug') .':'. JRequest::getInt('tpos'),__FILE__);
-	}
-
 	$headerAboveCount  = $headerBelowCount  = $navBelowCount    =
 	$contentAboveCount = $contentBelowCount = $footerAboveCount = range(0, ConstructTemplateHelper::MAX_MODULES, 1);
 
