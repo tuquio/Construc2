@@ -1,0 +1,6 @@
+WOW!
+Parserbug in Chrome?
+auskommentieren und im andere stylesheet drinlassen geht nicht, 
+das zerhaut alles. vermutlich wegen dem / im "image/gif"
+
+.main a.ext { padding-right:13px; background:url("data:image/gif;base64,R0lGODlhCwALAJH/AMDAwISEhAAAAAAAACH5BAEAAAAALAAAAAALAAsAQAIdjI8SwMKvoJhttelA1Fnij1nPuF3ZhmlVM64tVAAAOw==") scroll no-repeat 100% 62%; } 

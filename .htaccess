@@ -1,0 +1,16 @@
+## {{ --------------------------------------------------
+## -- combine files into one using SSI to allow better caching
+## -- i.e. create 'jq-142-ui-185.scripts' (versioning for proxy caches)
+##	  <!--#include file="jquery-1.4.2.min.js" -->
+##	  <!--#include file="jquery-ui-1.8.5.min.js" -->
+## -- will combine both files into one and allows DEFLATE to be applied
+## -- have elsehere: AddOutputFilterByType DEFLATE text/css text/javascript
+
+AddCharset utf-8 .styles .scripts
+
+AddHandler server-parsed .styles
+AddType text/css .styles
+
+AddHandler server-parsed .scripts
+AddType text/javascript .scripts
+## ---------------------------------------------------- }}
