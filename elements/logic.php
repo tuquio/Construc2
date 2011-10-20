@@ -245,7 +245,7 @@ if ($ssiIncludes) {
 }
 
 // cheap and all but smart
-if ( in_array(JRequest::getCmd('layout'), array('edit','form'))
+if ( in_array($app->get('input')->getCmd('layout'), array('edit','form'))
 	|| JFactory::getUser()->authorise('core.edit') /* do we need more ACL checks */
 	) {
 	$this->addStyleSheet($tmpl_url.'/css/core/edit-form.css', 'text/css', 'screen');
@@ -277,11 +277,13 @@ if ($html5manifest) {
 }
 
 // Layout Declarations
-if ($siteWidth) {
-	$styleDeclarations[] = '#body-container, header.above {'.$siteWidthType.':'.$siteWidth.$siteWidthUnit.'}';
-}
 if (($siteWidthType == 'max-width') && $fluidMedia ) {
 	$columnLayout .= ' fluid-media';
+}
+$columnLayout .= ' '.ConstructTemplateHelper::getPageAlias(true);
+
+if ($siteWidth) {
+	$styleDeclarations[] = '#body-container, header.above {'.$siteWidthType.':'.$siteWidth.$siteWidthUnit.'}';
 }
 if (!$fullWidth) {
 	$styleDeclarations[] = '.page-head, .page-foot {'.$siteWidthType.':'.$siteWidth.$siteWidthUnit.'; margin:0 auto}';
