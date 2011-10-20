@@ -2,6 +2,8 @@
 .mceContentBody   {font-size:100%; padding:10px;margin:0;}
 a:link, a:visited {color: #1B57B1;}
 .mceContentBody img {padding:5px;background:white;max-width:98%;}
+#system-readmore {height:3px; padding:1px 0 0 0; border:1px dotted darkred; border-bottom:1px dashed darkred; margin-bottom:1em;}
+#system-readmore:before {content: '[Umbruch]'; display:block; text-align:right; font:normal 10px/normal sans-serif, monospace; color:darkgray;}
 
 table {font-size:100%;}
 td,th {font-size:100%;padding:3px 1ex;vertical-align:top}
