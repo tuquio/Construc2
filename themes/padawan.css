@@ -109,6 +109,10 @@ details.meta	{padding:0 1ex; margin-top:10px; margin-bottom:10px; }
 .item-page .meta	{max-width:75%}
 .items-row .meta	{max-width:90%}
 
+/* aside classes, combine with floats or indents */
+.pullquote	{}
+.sidenote	{}
+
 /*
 .items-leading details.meta	{margin-top:-2em; right:0}
 .items-leading details.meta	{position:absolute; top:auto; z-index:27}
