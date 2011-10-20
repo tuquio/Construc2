@@ -54,7 +54,7 @@ defined('_JEXEC') or die;
 		<?php endif; ?>
 		</div><!-- .page-head -->
 
-		<div id="body-container">
+		<div id="body-container" class="<?= ConstructTemplateHelper::getPageAlias()?>">
 		<?php if ($headerBelowCount) : ?>
 			<header class="line below">
 		<?php include JPATH_THEMES .'/'. $this->template . '/layouts/mod_header_below.php' ?>
@@ -83,9 +83,9 @@ defined('_JEXEC') or die;
 						<?php include JPATH_THEMES .'/'. $this->template . '/layouts/mod_content_above.php' ?>
 						</div><!--.content-above -->
 					<?php endif; ?>
-					<?php if ($this->getBuffer('message')) : ?>
-						<jdoc:include type="message" />
-					<?php endif; ?>
+<?php if ($this->getBuffer('message')) : ?>
+<div class="line"><jdoc:include type="message" /></div>
+<?php endif; ?>
 <div class="line"><jdoc:include type="component" /></div>
 					<?php if ($contentBelowCount) : ?>
 						<div class="line content-below">
