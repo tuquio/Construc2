@@ -54,7 +54,7 @@ $mod_oocss				= true;
 $loadModal				= (bool) $this->params->get('loadModal');
 $loadMoo 				= (bool) $this->params->get('loadMoo', $loadModal);
 $loadJQuery 			=		 $this->params->get('loadjQuery');
-$loadChromeFrame		=		 $this->params->get('loadGcf');
+$loadChromeFrame		=		 $this->params->get('loadGcf'); // if set, contains the version number, i.e '1.0.2'
 
 // "old-school" concatenating of files and free server based compression
 $ssiIncludes			= (bool) $this->params->get('ssiIncludes', 0);
@@ -302,7 +302,7 @@ $templateHelper->addScript($tmpl_url.'/js/html5.js', 'lt IE 9');
 // offer Chrome Frame for IE lt 9
 $templateHelper->addMetaData('X-UA-Compatible', 'IE=Edge,chrome=1', 'lt IE 9', true);
 if ($loadChromeFrame) {
-	$templateHelper->addScript('//ajax.googleapis.com/ajax/libs/chrome-frame/1.0.2/CFInstall.min.js',
+	$templateHelper->addScript('//ajax.googleapis.com/ajax/libs/chrome-frame/' . $loadChromeFrame . '/CFInstall.min.js',
 		'lt IE 9',
 	array('defer'=>true, 'onload'=>
 		'var e=document.createElement("DIV");'.
