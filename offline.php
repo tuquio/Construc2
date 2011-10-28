@@ -1,16 +1,16 @@
-<?php
+<!DOCTYPE html><?php
 /**
- * @version		$Id: offline.php 22183 2011-09-30 09:04:32Z infograf768 $
- * @package		Joomla.Site
- * @copyright	Copyright (C) 2005 - 2011 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * @package     Templates
+ * @subpackage  Construc2
+ * @author      WebMechanic http://webmechanic.biz
+ * @copyright   (C) 2011 WebMechanic
+ * @license     GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
-
 defined('_JEXEC') or die;
+
 $app = JFactory::getApplication();
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $this->language; ?>" lang="<?php echo $this->language; ?>" dir="<?php echo $this->direction; ?>">
+<html lang="<?php echo $this->language; ?>" dir="<?php echo $this->direction; ?>">
 <head>
 	<jdoc:include type="head" />
 	<link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/system/css/offline.css" type="text/css" />
@@ -22,19 +22,13 @@ $app = JFactory::getApplication();
 <body>
 <jdoc:include type="message" />
 	<div id="frame" class="outline">
-		<img src="images/joomla_logo_black.jpg" alt="Joomla! Logo" />
-		<h1>
-			<?php echo $app->getCfg('sitename'); ?>
-		</h1>
-	<?php if ($app->getCfg('display_offline_message', 1) == 1 && str_replace(' ', '', $app->getCfg('offline_message')) != ''): ?>
-		<p>
-			<?php echo $app->getCfg('offline_message'); ?>
-		</p>
-	<?php elseif ($app->getCfg('display_offline_message', 1) == 2 && str_replace(' ', '', JText::_('JOFFLINE_MESSAGE')) != ''): ?>
-		<p>
-			<?php echo JText::_('JOFFLINE_MESSAGE'); ?>
-		</p>
-	<?php  endif; ?>
+		<h1><?php echo $app->getCfg('sitename'); ?></h1>
+<?php if ($app->getCfg('display_offline_message', 1) == 1 && str_replace(' ', '', $app->getCfg('offline_message')) != ''): ?>
+		<p><?php echo $app->getCfg('offline_message'); ?></p>
+<?php elseif ($app->getCfg('display_offline_message', 1) == 2 && str_replace(' ', '', JText::_('JOFFLINE_MESSAGE')) != ''): ?>
+		<p><?php echo JText::_('JOFFLINE_MESSAGE'); ?></p>
+<?php endif; ?>
+<?php if ( (int)$app->getCfg('root_user', 0) > 0) : /* public $root_user="nnn" */ ?>
 	<form action="<?php echo JRoute::_('index.php', true); ?>" method="post" id="form-login">
 	<fieldset class="input">
 		<p id="form-login-username">
@@ -56,6 +50,7 @@ $app = JFactory::getApplication();
 		<?php echo JHtml::_('form.token'); ?>
 	</fieldset>
 	</form>
+<?php endif; ?>
 	</div>
 </body>
 </html>
