@@ -172,7 +172,7 @@
 
 			<fieldset name="IE" description="TPL_CONSTRUCT_IE_DESC">
 				<field name="loadGcf" type="radio" default="0" label="TPL_CONSTRUCT_CHROME_FRAME_LABEL" description="TPL_CONSTRUCT_CHROME_FRAME_DESC">
-		        	<option value="1">JYes</option>
+		        	<option value="1.0.2">JYes</option><!-- field value = version number-->
 		        	<option value="0">JNo</option>
 		    	</field>
 				<field name="IECSS3" type="radio" default="1" label="TPL_CONSTRUCT_IE_CSS3_LABEL" description="TPL_CONSTRUCT_IE_CSS3_DESC">
