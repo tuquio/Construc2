@@ -197,17 +197,22 @@
 		<folder>js</folder>
 		<folder>language</folder>
 		<folder>layouts</folder>
-		<filename>.htaccess</filename>
+		<folder>themes</folder>
+		<filename>ajax.php</filename>
 		<filename>component.php</filename>
+		<filename>construct.manifest</filename>
+		<filename>construct_rtl.manifest</filename>
 		<filename>CREDITS.php</filename>
+		<filename>embed.php</filename>
 		<filename>error.php</filename>
+		<filename>favicon.ico</filename>
 		<filename>gz.php</filename>
+		<filename>htaccess.txt</filename>
 		<filename>index.php</filename>
 		<!-- <filename>mobile.php</filename> -->
 		<filename>modal.php</filename>
 		<filename>offline.php</filename>
 		<filename>README.md</filename>
-		<filename>templateDetails.xml</filename>
 	</files>
 
 	<languages>
