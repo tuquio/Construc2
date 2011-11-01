@@ -1,16 +1,8 @@
 # OS generated files #
 ######################
-Thumbs.db
-.project
-*.bak
-*.tmp
 
 # File List #
 #############
-fonts/*
-bebas*
-x~*
-test-*
 
 # customizations #
 #############
