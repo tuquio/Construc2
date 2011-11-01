@@ -17,7 +17,7 @@ $leadingcount=0 ;
 if (!empty($this->lead_items)) : ?>
 <div class="line items-leading">
 <?php foreach ($this->lead_items as &$item) : ?>
-	<article class="leading-<?php echo $leadingcount; echo $item->state == 0 ? ' system-unpublished' : null; ?>">
+	<article class="leading-<?php echo $leadingcount .' '. $item->category_alias . ($item->state == 0 ? ' system-unpublished' : ''); ?>">
 	<?php
 	$this->item = &$item;
 	echo $this->loadTemplate('item');
@@ -39,9 +39,9 @@ if (!empty($this->intro_items)) :
 	$row 		= $counter / $this->columns ;
 
 	if ($rowcount==1) : ?>
-	<div class="line items-row <?php echo 'row-'.$row ; ?>">
+	<div class="line items-row <?php echo 'row-'.$row ?>">
 <?php endif; ?>
-	<article class="unit size1of<?php echo (int) $this->columns;?> column-<?php echo $rowcount; echo $item->state == 0 ? ' system-unpublished"' : null; ?>">
+	<article class="unit size1of<?php echo (int) $this->columns .' column-' . $rowcount .' '. $item->category_alias . ($item->state == 0 ? ' system-unpublished"' :''); ?>">
 	<?php
 	$this->item = &$item;
 	echo $this->loadTemplate('item');
@@ -57,7 +57,7 @@ if (!empty($this->intro_items)) :
 endif;
 
 if (!empty($this->link_items)) : ?>
-	<div class="items-more"><?php echo $this->loadTemplate('links'); ?></div>
+	<div class="line items-more"><?php echo $this->loadTemplate('links'); ?></div>
 <?php endif;
 
 if ($this->params->def('show_pagination', 2) == 1  || ($this->params->get('show_pagination') == 2 && $this->pagination->get('pages.total') > 1)) :
