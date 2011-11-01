@@ -1,0 +1,20 @@
+@charset "UTF-8"; /* äöü */
+/*!
+ * Style sheet "Padawan Contrast" (HTML5 edition)
+ * High contrast color scheme, wider space and line leading to support accessibility recommendations.
+ * @author    WebMechanic.biz
+ * @copyright (c)2010 Serradeil, WebMechanic.biz
+ * @require   core.css "HTML5 ed." 1.5+ (aka "reset")
+ * @require   Modernizr 1.5+ (for CSS3/HTML5 goodies)
+ */
+
+/* revert core.css */
+/* typography */
+html{font-size:100.1%;}
+body{font-size:16px;*font-size:normal;}
+
+a			{ background: transparent; }
+a:link 		{ color:red; }
+a:visited	{ color:blue; }
+a:active	{ color:green; }
+a:hover		{ color:inherit;}
