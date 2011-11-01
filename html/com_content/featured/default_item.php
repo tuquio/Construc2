@@ -10,15 +10,12 @@
 // no direct access
 defined('_JEXEC') or die;
 
+$templateparams = JFactory::getApplication()->getTemplate(true)->params;
+
 // Create a shortcut for params.
 $canEdit	= $this->item->params->get('access-edit');
 $params		= $this->item->params;
-
-JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');
 ?>
-
-<?php if ($this->item->state == 0) : ?><div class="line system-unpublished"><?php endif; ?>
-
 <?php if ($params->get('show_title')) : ?>
 	<h2><?php
 	if ($params->get('link_titles') && $params->get('access-view')) :
@@ -117,11 +114,10 @@ if (($params->get('show_author')) or ($params->get('show_category')) or ($params
 <?php endif; ?>
 	</dl>
 </details>
-<?php endif; ?>
+<?php endif;
 
-<?php echo $this->item->introtext; ?>
+echo $this->item->introtext;
 
-<?php
 if ($params->get('show_readmore') && $this->item->readmore) :
 	if ($params->get('access-view')) :
 		$link = JRoute::_(ContentHelperRoute::getArticleRoute($this->item->slug, $this->item->catid));
@@ -135,8 +131,7 @@ if ($params->get('show_readmore') && $this->item->readmore) :
 		$link->setVar('return', base64_encode($returnURL));
 	endif;
 ?>
-<p class="readmore"><a href="<?php echo $link; ?>">
-<?php
+<p class="readmore"><a href="<?php echo $link; ?>"><?php
 	if (!$params->get('access-view')) :
 		echo JText::_('COM_CONTENT_REGISTER_TO_READ_MORE');
 	elseif ($readmore = $this->item->alternative_readmore) :
@@ -149,9 +144,10 @@ if ($params->get('show_readmore') && $this->item->readmore) :
 	else :
 		echo JText::_('COM_CONTENT_READ_MORE');
 		echo JHtml::_('string.truncate', ($this->item->title), $params->get('readmore_limit'));
-	endif; ?></a></p>
-<?php endif; ?>
-
-<?php if ($this->item->state == 0) : ?></div><?php endif;
+	endif; ?></a>
+</p>
+<?php
+endif;
 
 echo $this->item->event->afterDisplayContent;
+
