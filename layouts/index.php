@@ -16,18 +16,10 @@ defined('_JEXEC') or die;
 </head>
 
 <body class="<?php echo $columnLayout ?>">
-<!--[if IE 6]><div class="msie ie6 ltie7 ltie8 ltie9 ltie10"><![endif]-->
-<!--[if IE 7]><div class="msie ie7 ltie8 ltie9 ltie10"><![endif]-->
-<!--[if IE 8]><div class="msie ie8 ltie9 ltie10"><![endif]-->
-<!--[if IE 9]><div class="msie ie9 ltie10"><![endif]-->
+<?= ConstructTemplateHelper::msieSwatter() ?>
 	<div id="page-top">
 		<div id="header" class="line page-head">
-	<?php if ($headerAboveCount) : ?>
-		<header class="line above">
-	<?php include JPATH_THEMES .'/'. $this->template . '/layouts/mod_header_above.php' ?>
-		</header><!-- end header-above -->
-	<?php endif; ?>
-
+<?php if ($headerAboveCount) : include JPATH_THEMES .'/'. $this->template . '/layouts/mod_header_above.php'; endif; ?>
 		<h1 id="logo"><a href="<?php echo $this->baseurl ?>/"><span><?php echo $app->getCfg('sitename');?></span></a></h1>
 		<?php if ($showDateContainer) : ?>
 		<div class="date-container"><?php echo $templateHelper->dateContainer(); ?></div>
@@ -40,11 +32,9 @@ defined('_JEXEC') or die;
 			<?php if($catId)		echo '<li>category-'.$catId.'</li>'; ?>
 		</ul>
 		<?php endif; ?>
-		<?php
-		if ($this->countModules('header')) :
-			$templateHelper->renderModules('header', 'jexhtml');
-		endif;
-		?>
+
+<?php if ($this->countModules('header')) : $templateHelper->renderModules('header'); endif; ?>
+
 		<?php if ($enableSwitcher) : ?>
 		<ul id="style-switch" class="menu hmenu" onclick="toggleStylesheet()">
 			<li><a href="#" onclick="setActiveStyleSheet('wireframe'); return false;" title="Wireframe"><?php echo JText::_('TPL_CONSTRUCT_STYLE_WIREFRAME') ?></a></li>
@@ -54,61 +44,40 @@ defined('_JEXEC') or die;
 		<?php endif; ?>
 		</div><!-- .page-head -->
 
-		<div id="body-container" class="<?= ConstructTemplateHelper::getPageAlias()?>">
-		<?php if ($headerBelowCount) : ?>
-			<header class="line below">
-		<?php include JPATH_THEMES .'/'. $this->template . '/layouts/mod_header_below.php' ?>
-			</header><!-- .below  -->
-		<?php endif; ?>
+		<div id="body-container" class="<?= ConstructTemplateHelper::getPageAlias(true)?>">
+<?php if ($headerBelowCount) : include JPATH_THEMES .'/'. $this->template . '/layouts/mod_header_below.php'; endif; ?>
+
 		<?php if ($this->countModules('nav')) : ?>
 			<nav id="nav" class="line mainnavi" role="navigation">
 			<?php $templateHelper->renderModules('nav'); ?>
 			</nav><!-- #nav .mainnavi-->
 		<?php endif; ?>
-<?php
-		if ($this->countModules('breadcrumbs')) :
-			$templateHelper->renderModules('breadcrumbs');
-		endif;
-?>
+
+<?php if ($this->countModules('breadcrumbs')) : $templateHelper->renderModules('breadcrumbs'); endif; ?>
+
 			<div class="line content-container">
-			<?php if ($navBelowCount) : ?>
-				<div id="nav-below" class="nav-below">
-				<?php include JPATH_THEMES .'/'. $this->template . '/layouts/mod_nav_below.php' ?>
-				</div><!-- .nav-below -->
-			<?php endif; ?>
+<?php if ($navBelowCount) : include JPATH_THEMES .'/'. $this->template . '/layouts/mod_nav_below.php'; endif; ?>
+
 				<div id="content" class="load-first">
 					<div class="content-main">
-					<?php if ($contentAboveCount) : ?>
-						<div class="line content-above">
-						<?php include JPATH_THEMES .'/'. $this->template . '/layouts/mod_content_above.php' ?>
-						</div><!--.content-above -->
-					<?php endif; ?>
+<?php if ($contentAboveCount) :	include JPATH_THEMES .'/'. $this->template . '/layouts/mod_content_above.php'; endif; ?>
+
 <?php if ($this->getBuffer('message')) : ?>
-<div class="line"><jdoc:include type="message" /></div>
+<jdoc:include type="message" />
 <?php endif; ?>
-<div class="line"><jdoc:include type="component" /></div>
-					<?php if ($contentBelowCount) : ?>
-						<div class="line content-below">
-						<?php include JPATH_THEMES .'/'. $this->template . '/layouts/mod_content_below.php' ?>
-						</div><!-- .content-below -->
-					<?php endif; ?>
+
+<section class="line component">
+<jdoc:include type="component" />
+</section>
+
+<?php if ($contentBelowCount) : include JPATH_THEMES .'/'. $this->template . '/layouts/mod_content_below.php'; endif; ?>
 					</div><!-- .content-main -->
-				<?php if ($columnGroupAlphaCount) : ?>
-					<div class="column-group group-alpha">
-					<?php include JPATH_THEMES .'/'. $this->template . '/layouts/mod_column_group_alpha.php' ?>
-					</div><!-- .column-group.group-alpha -->
-				<?php endif; ?>
+
+<?php if ($columnGroupAlphaCount) : include JPATH_THEMES .'/'. $this->template . '/layouts/mod_column_group_alpha.php'; endif; ?>
 				</div><!-- end load-first -->
-			<?php if ($columnGroupBetaCount) : ?>
-				<div class="column-group group-beta">
-				<?php include JPATH_THEMES .'/'. $this->template . '/layouts/mod_column_group_beta.php' ?>
-				</div><!-- .column-group.group-beta -->
-			<?php endif; ?>
-			<?php if ($footerAboveCount) : ?>
-				<div class="line footer-above">
-				<?php include JPATH_THEMES .'/'. $this->template . '/layouts/mod_footer_above.php' ?>
-				</div><!-- .footer-above -->
-			<?php endif; ?>
+<?php if ($columnGroupBetaCount) : include JPATH_THEMES .'/'. $this->template . '/layouts/mod_column_group_beta.php'; endif; ?>
+
+<?php if ($footerAboveCount) : include JPATH_THEMES .'/'. $this->template . '/layouts/mod_footer_above.php'; endif; ?>
 			</div><!-- .content-container -->
 		</div><!-- #body-container -->
 	</div><!-- #page-top -->
@@ -123,14 +92,10 @@ defined('_JEXEC') or die;
 	<?php $templateHelper->renderModules('footer', 'jexhtml'); ?>
 	</footer><!-- end footer -->
 <?php
-if ($this->countModules('debug')) :
-	$templateHelper->renderModules('debug', 'raw');
-endif;
+if ($this->countModules('debug')) : $templateHelper->renderModules('debug', 'raw'); endif;
+if ($this->countModules('analytics')) : $templateHelper->renderModules('analytics', 'raw'); endif;
 
-if ($this->countModules('analytics')) :
-	$templateHelper->renderModules('analytics');
-endif;
+ConstructTemplateHelper::msieSwatter()
 ?>
-<!--[if IE]></div><![endif]-->
 	</body>
 </html>

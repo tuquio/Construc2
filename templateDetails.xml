@@ -125,11 +125,15 @@
 				  <option value="1">JYes</option>
 				  <option value="0">JNo</option>
 				</field>
-				<field name="fullWidth" type="radio" default="1" label="TPL_CONSTRUCT_FULL_WIDTH_LABEL" description="TPL_CONSTRUCT_FULL_WIDTH_DESC">
+				<field name="fullWidth" type="radio" default="0" label="TPL_CONSTRUCT_FULL_WIDTH_LABEL" description="TPL_CONSTRUCT_FULL_WIDTH_DESC">
 				  <option value="1">JYes</option>
 				  <option value="0">JNo</option>
 				</field>
-				<field name="useStickyFooter" type="radio" default="1" label="TPL_CONSTRUCT_USE_STICKY_FOOTER_LABEL" description="TPL_CONSTRUCT_USE_STICKY_FOOTER_DESC">
+				<field name="modOocss" type="radio" default="0" label="TPL_CONSTRUCT_USE_MODOOCSS_LABEL" description="TPL_CONSTRUCT_USE_MODOOCSS_DESC">
+        			<option value="1">On</option>
+        			<option value="0">Off</option>
+		    	</field>
+				<field name="useStickyFooter" type="radio" default="0" label="TPL_CONSTRUCT_USE_STICKY_FOOTER_LABEL" description="TPL_CONSTRUCT_USE_STICKY_FOOTER_DESC">
         			<option value="1">On</option>
         			<option value="0">Off</option>
 		    	</field>
