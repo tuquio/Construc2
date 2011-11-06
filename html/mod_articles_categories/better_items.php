@@ -29,25 +29,21 @@ foreach ($list as $item) :
 	// all classes for the list item
 	$licss = implode(' ', $css);
 
-	// submenu classes
-	$css   = array('submenu');
-	$css[] = $item->level < 1 ? 'nope' : 'level-'. ($item->level - 1);
-	$css[] = $current ? ($active ? 'active-sub' : 'current-sub') : '';
-
-	// all classes for the submenu
-	$subcss = implode(' ', $css);
-
 ?><li id="catid-<?php echo $item->id ?>" class="<?php echo $licss ?>">
 <a href="<?php echo JRoute::_($route) ?>"><span class="li <?php echo 'H'. ($item_heading + $levelup) ?>"><?php echo $item->title ?></span></a>
 <?php
 if ($params->get('show_description', 0)) {
-	echo JHtml::_('content.prepare',$item->description, $item->getParams());
+	echo JHtml::_('content.prepare', $item->description, $item->getParams());
 }
 
 if ($params->get('show_children', 0) && (($params->get('maxlevel', 0) == 0) || ($params->get('maxlevel') >= ($item->level - $startLevel))) && count($item->getChildren()))
 {
-	echo '<menu class="', $subcss, '">';
 	$list = $item->getChildren();
+
+	// submenu classes
+	$css   = array('submenu');
+	$css[] = $item->level < 1 ? 'leaf' : 'level-'. ($item->level - 1);
+	echo '<menu class="', implode(' ', $css) ,'">';
 	require __FILE__;
 	echo '</menu>';
 }?>
