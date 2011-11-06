@@ -3,7 +3,7 @@
  * Subtemplate loaded if $navBelowCount > 0
  */
 defined('_JEXEC') or die;
-$modcount = count($headerBelowCount);
+$modcount = count($navBelowCount);
 
 $style	= 'mod';
 $chunks = array(
