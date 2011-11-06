@@ -79,10 +79,10 @@ for ($i=1; $i <= ConstructTemplateHelper::MAX_WEBFONTS; $i++) {
 // Change generator tag
 $this->setGenerator( trim($this->params->get('setGeneratorTag')) );
 
-$jmenu = $app->getMenu();
-
 if ($showDiagnostics) {
+	$jmenu = $app->getMenu();
 	$amenu = $jmenu->getActive();
+
 	$currentComponent = $amenu->component;
 	$catId = $itemId = $articleId = '';
 	if ($amenu->component == 'com_content' ) {
@@ -246,7 +246,7 @@ if ( in_array($app->get('input')->getCmd('layout'), array('edit','form'))
 }
 
 if ($customStyleSheet) {
-	$this->addStyleSheet($tmpl_url.'/css/'.$customStyleSheet, 'text/css','screen,projection');
+	$this->addStyleSheet($tmpl_url.'/themes/'.$customStyleSheet, 'text/css','screen,projection');
 }
 
 // Style sheet switcher

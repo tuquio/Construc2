@@ -33,7 +33,7 @@ defined('_JEXEC') or die;
 		</ul>
 		<?php endif; ?>
 
-<?php if ($this->countModules('header')) : $templateHelper->renderModules('header'); endif; ?>
+<?php if ($this->countModules('header')) : $templateHelper->renderModules('header', 'mod'); endif; ?>
 
 		<?php if ($enableSwitcher) : ?>
 		<ul id="style-switch" class="menu hmenu" onclick="toggleStylesheet()">

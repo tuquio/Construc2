@@ -1,16 +1,7 @@
 <?php
-/**
- * @version		$Id: default.php 17187 2010-05-19 11:18:22Z infograf768 $
- * @package		Joomla.Site
- * @subpackage	Templates.beez5
- * @copyright	Copyright (C) 2005 - 2009 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
- */
-
-// no direct access
 defined('_JEXEC') or die;
 
-JHtml::addIncludePath(JPATH_COMPONENT_SITE .DS. 'helpers');
+JHtml::addIncludePath(JPATH_COMPONENT_SITE .'/helpers');
 
 $show_page_heading   = $this->params->get('show_page_heading');
 $show_category_title = $this->params->get('show_category_title');
