@@ -1,13 +1,4 @@
 <?php
-/**
- * @version		$Id: default_children.php 17017 2010-05-13 10:48:48Z eddieajau $
- * @package		Joomla.Site
- * @subpackage	Templates.beez5
- * @copyright	Copyright (C) 2005 - 2011 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
- */
-
-// no direct access
 defined('_JEXEC') or die;
 
 if (count($this->children[$this->category->id]) > 0) {

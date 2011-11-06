@@ -148,12 +148,16 @@ class ConstructTemplateHelper
 		if (!$jmenu) {
 			$jmenu  = $app->getMenu()->getDefault();
 			$css[]	= 'home';
-			$option = $app->get('input')->getCmd('option');
-			$css[]  = str_replace('com_', '', $option);
 		}
+		$option = $app->get('input')->getCmd('option');
+		$css[]  = str_replace('com_', '', $option);
 
 		if ($jmenu->type == 'component' && array_key_exists('view', $jmenu->query)) {
 			$css[] = $jmenu->query['view'];
+
+			if ($option == 'com_content' && $jmenu->query['view'] = 'category') {
+				$css[] = self::_catSlug();
+			}
 		}
 
 		if ($parent && $jmenu->parent_id > 1) {
@@ -167,26 +171,15 @@ class ConstructTemplateHelper
 		$css	= array_unique($css);
 
 		$alias[$parent] = implode(' ', $css);
-
+FB::info($alias[$parent], __FUNCTION__);
 		return $alias[$parent];
 	}
 
-	/**
-	 * Branding pages and areas using
-	 *
-	 * @uses getPageAlias(), JRequest::getCmd()
-	 */
-	static public function getPageAliases($parent = false)
+	protected function _catSlug()
 	{
-		$app     = JFactory::getApplication();
-		$option  = $app->get('input')->getCmd('option');
-		$layout  = $app->get('input')->getCmd('layout', $app->get('input')->getCmd('task', ''));
-		$bodyCss = trim(implode(' ', array(
-						str_replace('com_', '', $option),
-						$layout,
-						self::getPageAlias($parent)
-					)));
-		return str_replace('  ', ' ', $bodyCss);
+		$route = JRoute::_(ContentHelperRoute::getCategoryRoute( JRequest::getInt('id') ));
+		preg_match('#/(?:\d+)\-(\w+)#', $route, $m);
+		return isset($m[1]) ? $m[1] : null;
 	}
 
 	/**

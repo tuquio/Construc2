@@ -1,38 +1,25 @@
 <?php
-/**
- * @version		$Id: default.php 17130 2010-05-17 05:52:36Z eddieajau $
- * @package		Joomla.Site
- * @subpackage	Templates.beez5
- * @copyright	Copyright (C) 2005 - 2011 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
- */
-
-// no direct access
 defined('_JEXEC') or die;
 
-JHtml::addIncludePath(JPATH_COMPONENT_SITE .DS. 'helpers');
+JHtml::addIncludePath(JPATH_COMPONENT_SITE .'/helpers');
 
 ?>
 <div class="categories-list">
-<?php if ($this->params->get('show_page_heading', 1)) : ?>
-<h1>
-	<?php echo $this->escape($this->params->get('page_heading')); ?>
-</h1>
-<?php endif; ?>
-<?php if ($this->params->get('show_base_description')) : ?>
-	<?php 	//If there is a description in the menu parameters use that; ?>
-		<?php if($this->params->get('categories_description')) : ?>
-			<?php echo  JHtml::_('content.prepare',$this->params->get('categories_description')); ?>
-		<?php  else: ?>
-			<?php //Otherwise get one from the database if it exists. ?>
-			<?php  if ($this->parent->description) : ?>
-				<div class="category-desc">
-					<?php  echo JHtml::_('content.prepare', $this->parent->description); ?>
-				</div>
-			<?php  endif; ?>
-		<?php  endif; ?>
-<?php endif; ?>
-<?php
-echo $this->loadTemplate('items');
-?>
+<?php if ($this->params->get('show_page_heading', 1)) { ?>
+<h1 class="H2"><?php echo $this->escape($this->params->get('page_heading')); ?></h1>
+<?php }
+
+	if ($this->params->get('show_base_description')) {
+		//If there is a description in the menu parameters use that;
+		if($this->params->get('categories_description')) {
+			echo  JHtml::_('content.prepare',$this->params->get('categories_description'));
+		} else {
+		//Otherwise get one from the database if it exists.
+			if ($this->parent->description) { ?>
+	<div class="category-desc"><?php echo JHtml::_('content.prepare', $this->parent->description); ?></div>
+<?php  		}
+		}
+	}
+
+echo $this->loadTemplate('items');?>
 </div>
