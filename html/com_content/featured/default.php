@@ -12,49 +12,52 @@ JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');
 	<h1><?php echo $this->escape($this->params->get('page_heading')); ?></h1>
 <?php endif;
 
-$leadingcount=0 ;
+$leadingcount = $rowcount = $row = 0;
 
-if (!empty($this->lead_items)) : ?>
-<div class="line items-leading">
-<?php foreach ($this->lead_items as &$item) : ?>
-	<article class="leading-<?php echo $leadingcount .' '. $item->category_alias . ($item->state == 0 ? ' system-unpublished' : ''); ?>">
-	<?php
-	$this->item = &$item;
-	echo $this->loadTemplate('item');
-	?>
-	</article>
+if (!empty($this->lead_items)) { ?>
+<div class="line items-leading"><?php
+	foreach ($this->lead_items as $item)
+	{
+		$leadingcount++;
+
+		$this->item = $item;
+?>
+<article class="leading-<?php echo $leadingcount .' '. $item->category_alias . ($item->state == 0 ? ' system-unpublished' : ''); ?>">
+<?php echo $this->loadTemplate('item'); ?>
+</article>
+<?php } ?>
+</div>
 <?php
-	$leadingcount++;
-	endforeach; ?>
-</div> <?php
-endif;
+}
 
 $introcount = (count($this->intro_items));
 $counter    = 0;
 
-if (!empty($this->intro_items)) :
-	foreach ($this->intro_items as $key => &$item) :
-	$key		= ($key-$leadingcount) + 1;
-	$rowcount	= ( ((int)$key-1) %	(int) $this->columns) + 1;
-	$row 		= $counter / $this->columns ;
+if (!empty($this->intro_items))
+{
+	foreach ($this->intro_items as $key => $item)
+	{
+		$key		= ($key - $leadingcount) + 1;
+		$rowcount	= (($key - 1) % (int)$this->columns) + 1;
+		$row 		= $counter / $this->columns ;
+		if ($rowcount == 1)
+		{ ?>
+<div class="line items-row <?php echo 'row-'.$row ?>"><?php
+		}
 
-	if ($rowcount==1) : ?>
-	<div class="line items-row <?php echo 'row-'.$row ?>">
-<?php endif; ?>
-	<article class="unit size1of<?php echo (int) $this->columns .' column-' . $rowcount .' '. $item->category_alias . ($item->state == 0 ? ' system-unpublished"' :''); ?>">
-	<?php
-	$this->item = &$item;
-	echo $this->loadTemplate('item');
-	?>
-	</article>
+		$this->item = $item;
+?>
+<article class="unit size1of<?php echo (int) $this->columns .' column-' . $rowcount .' '. $item->category_alias . ($item->state == 0 ? ' system-unpublished"' :''); ?>">
+<?php echo $this->loadTemplate('item'); ?>
+</article>
 <?php
-
-	$counter++;
-	if (($rowcount == $this->columns) or ($counter == $introcount)): ?>
-	</div>
-<?php endif;
-	endforeach;
-endif;
+		$counter++;
+		if (($rowcount == $this->columns) or ($counter == $introcount))
+		{ ?>
+</div><?php
+		}
+	}
+}
 
 if (!empty($this->link_items)) : ?>
 	<div class="line items-more"><?php echo $this->loadTemplate('links'); ?></div>
