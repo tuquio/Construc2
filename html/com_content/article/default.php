@@ -65,58 +65,57 @@ $useDefList  = ($params->get('show_author') || $params->get('show_category' ) ||
 	<summary><?php echo JText::_('COM_CONTENT_ARTICLE_INFO'); ?></summary>
 	<dl class="article-info">
  <?php if ($params->get('show_author') && !empty($this->item->author )) : ?>
-		<dt class="createdby"><?php
+	<dt class="createdby"><?php JText::printf('COM_CONTENT_WRITTEN_BY', ''); /* just the label */ ?></dt>
+		<dd class="createdby"><?php
 	$author =  $this->item->author;
 	$author = ($this->item->created_by_alias ? $this->item->created_by_alias : $author);
 	if (!empty($this->item->contactid ) &&  $params->get('link_author') == true):
-		echo JText::sprintf('COM_CONTENT_WRITTEN_BY' , JHtml::_('link',JRoute::_('index.php?option=com_contact&view=contact&id='.$this->item->contactid),$author));
+		echo JHtml::_('link',JRoute::_('index.php?option=com_contact&view=contact&id='.$this->item->contactid), $author);
 	else :
-		echo JText::sprintf('COM_CONTENT_WRITTEN_BY', $author);
-	endif;?></dt>
- <?php endif;
-
+		echo $author;
+	endif;?></dd>
+<?php endif;
  	if ($params->get('show_parent_category') && $this->item->parent_slug != '1:root') : ?>
+ 	<dt class="parent-category-name"><?php JText::printf('COM_CONTENT_PARENT', ''); ?></dt>
 		<dd class="parent-category-name"><?php
 	$title = $this->escape($this->item->parent_title);
 	if ($params->get('link_parent_category') && $this->item->parent_slug) :
-		$url = '<a href="'.JRoute::_(ContentHelperRoute::getCategoryRoute($this->item->parent_slug)).'">'.$title.'</a>';
-		echo JText::sprintf('COM_CONTENT_PARENT', $url);
+		echo '<a href="'.JRoute::_(ContentHelperRoute::getCategoryRoute($this->item->parent_slug)).'">'.$title.'</a>';
 	else :
-		echo JText::sprintf('COM_CONTENT_PARENT', $title);
+		echo $title;
 	endif;
 		?></dd>
 <?php endif;
-
 	if ($params->get('show_category')) : ?>
+	<dt class="category-name"><?php JText::printf('COM_CONTENT_CATEGORY', ''); ?></dt>
 		<dd class="category-name"><?php
 	$title = $this->escape($this->item->category_title);
-	if ($params->get('link_category') && $this->item->catslug) :
-		$url = '<a href="'.JRoute::_(ContentHelperRoute::getCategoryRoute($this->item->catslug)).'">'.$title.'</a>';
-		echo JText::sprintf('COM_CONTENT_CATEGORY', $url);
+	if ($params->get('link_category') ) :
+		echo '<a href="'.JRoute::_(ContentHelperRoute::getCategoryRoute($this->item->catid)).'">'.$title.'</a>';
 	else :
-		echo JText::sprintf('COM_CONTENT_CATEGORY', $title);
+		echo $title;
 	endif;
 		?></dd>
 <?php endif;
-
 	if ($params->get('show_create_date')) : ?>
-		<dd class="create"><?php echo JText::sprintf('COM_CONTENT_CREATED_DATE_ON', JHtml::_('date',$this->item->created, JText::_('DATE_FORMAT_LC2'))); ?></dd>
+	<dt class="create"><?php JText::printf('COM_CONTENT_CREATED_DATE_ON', '') ?></dt>
+		<dd class="create"><?php echo JHtml::_('date',$this->item->created, JText::_('DATE_FORMAT_LC2')); ?></dd>
 <?php endif;
-
 	if ($params->get('show_modify_date')) : ?>
-		<dd class="modified"><?php echo JText::sprintf('COM_CONTENT_LAST_UPDATED', JHtml::_('date',$this->item->modified, JText::_('DATE_FORMAT_LC2'))); ?></dd>
+	<dt class="modified"><?php JText::printf('COM_CONTENT_LAST_UPDATED', '') ?></dt>
+		<dd class="modified"><?php echo JHtml::_('date',$this->item->modified, JText::_('DATE_FORMAT_LC2')); ?></dd>
 <?php endif;
-
 	if ($params->get('show_publish_date')) : ?>
-		<dd class="published"><?php echo JText::sprintf('COM_CONTENT_PUBLISHED_DATE', JHtml::_('date',$this->item->publish_up, JText::_('DATE_FORMAT_LC2'))); ?></dd>
+	<dt class="published"><?php JText::printf('COM_CONTENT_PUBLISHED_DATE', '') ?></dt>
+		<dd class="published"><?php echo JHtml::_('date',$this->item->publish_up, JText::_('DATE_FORMAT_LC2')); ?></dd>
 <?php endif;
-
 	if ($params->get('show_hits')) : ?>
-		<dd class="hits"><?php echo JText::sprintf('COM_CONTENT_ARTICLE_HITS', $this->item->hits); ?></dd>
+	<dt class="hits"><?php JText::printf('COM_CONTENT_ARTICLE_HITS', '') ?></dt>
+		<dd class="hits"><?php echo $this->item->hits; ?></dd>
 <?php endif; ?>
 	</dl>
 </details>
-<?php endif; ?>
+<?php endif; /* $useDefList */ ?>
 
 <?php
 if (isset ($this->item->toc)) :
