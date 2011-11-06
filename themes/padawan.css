@@ -27,6 +27,8 @@ FOOTER#footer
   .syndicate
 
  */
+@import url(http://fonts.googleapis.com/css?family=Kristi);
+
 body {min-width:960px}
 
 /* template param override (#body-container,#header-above 100%) */
@@ -40,8 +42,8 @@ body {min-width:960px}
 
 #logo   {font-size:60px;height:100px;font-family:'Unna',Georgia,serif;}
 #logo   ,
-#logo a {float:none;margin:0 auto;text-align:center;line-height:1;text-rendering: optimizelegibility;}
-#logo a {height:auto;font-size:1em;width:auto}
+#logo a {float:left;margin:10px;text-align:left;line-height:1;text-rendering: optimizelegibility;}
+#logo a {height:auto;font-size:1em;width:auto;text-decoration:none;}
 
 #to-page-top	{position:absolute;right:10px;text-align:right;}
 #diagnostics	{position:absolute;right:10px;top:20px;max-width:90px}
@@ -51,6 +53,8 @@ h1,h2,h3,h4,h5,h6 {line-height:normal;text-rendering: optimizelegibility;}
 
 ol:first-child,
 ul:first-child {margin-top:0}
+
+p {-webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto;}
 
 /* =column layout [[20|60]20] */
 #body-container	,
@@ -84,7 +88,13 @@ header.below	{margin:0 auto;}
 /*
  * =contents
  */
-.blog article	{padding:1em 1em 1.6em 1em; margin-bottom:1.6em; margin-right:20px}
+.blog .category-desc	,
+.blog article			,
+article.item-page		{padding:1em; margin-bottom:1.6em; margin-right:20px}
+.blog article		,
+article.item-page	{padding-bottom:1.6em}
+
+.category-desc p:only-child { margin-bottom:0 }
 
 .item-page		{ min-height:30em; }
 
@@ -101,13 +111,16 @@ header.below	{margin:0 auto;}
 
 /*@todo make <details> see padawan.css */
 /* call-outs and asides flush right within their containing box
- * in-context position using negative margins somewhere else below
+ * in-context position using negative margins somewhere else below.
+ * the disclosure widget will still be displayed if you don't provide a summary element
  */
 details.meta	{padding:0 1ex; margin-top:10px; margin-bottom:10px; }
 .meta summary	{cursor:help;}
-.items-leading .meta,
-.item-page .meta	{max-width:75%}
-.items-row .meta	{max-width:90%}
+summary::-webkit-details-marker { color: #444; font-size:1.2em}
+
+.items-leading .meta ,
+.items-row .meta	{max-width:80%}
+.item-page .meta	{max-width:100%}
 
 /*
 .items-leading details.meta	{margin-top:-2em; right:0}
@@ -122,13 +135,19 @@ details.meta	{padding:0 1ex; margin-top:10px; margin-bottom:10px; }
  */
 .blog img,
 .blog-featured img ,
-.portrait img {height:auto; padding:8px; background:#fff;}
-.portrait img {outline:1px solid #CDCDCD}
+.item-page img	,
+.portrait img 	{height:auto; padding:8px; background:#fff;}
+.portrait img 	{outline:1px solid #CDCDCD}
 
 .blog img,
-.items-leading img,
-.item-page img		{max-width:600px;height:auto;margin-top:1em;}
-.items-row img		{max-width:90%;margin-top:1em;}
+.items-leading img	{height:auto;margin-top:1em;}
+
+.blog img,
+.items-leading img	,
+.items-row img		{max-width:80%}
+.item-page img		{max-width:96%}
+
+.items-leading article p:first-of-type img {float:right ;max-width:40%; margin-left:1em;}
 
 /*
  * =modules
@@ -172,8 +191,6 @@ menu.categories .H6			{font-weight:bold;font-size:110%}
 menu.categories > li.current {background-color:rgba(200,200,200, 0.2);}
 menu.categories span.active {text-transform:uppercase;}
 
-menu.current-sub			{}
-
 /* =misc */
 .contact-item	{}
 
@@ -183,7 +200,8 @@ menu.current-sub			{}
 html, body		{background:#F0F0F0;color:#444}
 
 h2,h3,h4,
-.H2,.H3,.H4		{text-shadow:0 1px 0 #FFFFFF}
+.H2,.H3,.H4		{text-shadow:0 1px 0 #FFF}
+.category-desc	{text-shadow:0 1px 0 #FFF; text-shadow:0px 0px 1px #888;}
 
 .page-head		{}
 #logo, #logo a	{}
@@ -196,7 +214,9 @@ nav, .menu, .hmenu	{background:#fff}
 
 .breadcrumbs				{}
 
-.blog article,
+.blog .category-desc	,
+.blog article			,
+article.item-page		,
 .column-group .inner	{background:#fff}
 
 .column-group fieldset	{}
@@ -230,15 +250,24 @@ li.mi:hover, .tslt { text-shadow:0 0 2px #AAA; }
 h1,.H1,
 .hts { text-shadow:0 0 2px #666; }
 
+/*
+ * =branding - category and page styles
+ */
+.category-desc p {font-size:100%;}
+.fotokunst .category-desc	,
+.alltag .category-desc		,
+.gedicht .category-desc 	{padding:1ex; font:normal 2.15em/1 'Kristi',cursive; text-shadow:0px 0px 3px #888; text-align:center; text-rendering: optimizelegibility; font-size-adjust:0.455; font-stretch: expanded;}
+
 /* =box drop shadows CSS3 */
 .meta,
-.ds   {-webkit-box-shadow: 0 0 3px #888; -moz-box-shadow: 0 0 3px #888; box-shadow: 0 0 3px #888;}
+.ds   {-webkit-box-shadow:0 0 3px #888; -moz-box-shadow:0 0 3px #888; box-shadow:0 0 3px #888;}
 
 .mainnavi, .breadcrumbs,
-.dslt {-webkit-box-shadow: 0 0 3px #ccc; -moz-box-shadow: 0 0 3px #ccc; box-shadow: 0 0 3px #ccc;}
+.dslt {-webkit-box-shadow:0 0 3px #ccc; -moz-box-shadow:0 0 3px #ccc; box-shadow:0 0 3px #ccc;}
 
 .blog img,
 .blog-featured img,
-.hbox-ds {-webkit-box-shadow: -4px 0 4px -1px #888; -moz-box-shadow: -4px 0 4px -1px #888; box-shadow: -4px 0 4px -1px #888;}
+.item-page img,
+.hbox-ds {-webkit-box-shadow:-2px 3px 6px 2px #888; -moz-box-shadow:-2px 3px 6px 2px #888; box-shadow:-2px 3px 6px 2px #888;}
 
 /* .eof */
