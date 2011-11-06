@@ -130,33 +130,43 @@ class ConstructTemplateHelper
 	 */
 	static public function getPageAlias($parent = false)
 	{
-		static $alias = array(false,false);
+		static $alias = array(0=>false,1=>false);
 
-		$app    = JFactory::getApplication();
 		$parent = (int)$parent;
 
-		if ( $alias[$parent] !== false) return $alias[$parent];
+		if ($alias[$parent] !== false) return $alias[$parent];
+
+		$app	= JFactory::getApplication();
+		$jmenu	= $app->getMenu()->getActive();
 
 		if (self::isHomePage()) {
-			$alias[$parent] = 'home';
+			$alias[$parent] = 'home ' . @$jmenu->query['view'];
 			return $alias[$parent];
 		}
 
-		$jmenu = $app->getMenu()->getActive();
+		$css = array();
 		if (!$jmenu) {
-			$option = $app->get('input')->getCmd('option');
 			$jmenu  = $app->getMenu()->getDefault();
-			$alias[$parent] = ($jmenu->home) ? str_replace('com_', '', $option) : $jmenu->alias;
-		} else {
-			$alias[$parent] = $jmenu->alias;
+			$css[]	= 'home';
+			$option = $app->get('input')->getCmd('option');
+			$css[]  = str_replace('com_', '', $option);
 		}
 
-		if ($parent && $jmenu->parent_id >= 1) {
-			$jmenu = $app->getMenu()->getItem($jmenu->parent_id);
-			if ($jmenu) {
-				$alias[$parent] = $jmenu->alias;
+		if ($jmenu->type == 'component' && array_key_exists('view', $jmenu->query)) {
+			$css[] = $jmenu->query['view'];
+		}
+
+		if ($parent && $jmenu->parent_id > 1) {
+			if ( ($jmenu = $app->getMenu()->getItem($jmenu->parent_id)) ) {
+				if ($jmenu->type == 'component' && array_key_exists('view', $jmenu->query)) {
+					$css[] = $jmenu->query['view'];
+				}
 			}
 		}
+		$css[]	= $jmenu->alias;
+		$css	= array_unique($css);
+
+		$alias[$parent] = implode(' ', $css);
 
 		return $alias[$parent];
 	}
@@ -804,6 +814,22 @@ class ConstructTemplateHelper
 
 		$html = preg_replace(array_keys($placeholder), array_values($placeholder), JText::_($dateformat));
 		return str_replace('@X@', $elt, $html);
+	}
+
+	static function msieSwatter($min=6, $max=9)
+	{
+		static $flap = 0;
+		$flap++;
+		if ($flap % 2 != 0) {
+			echo '<!--[if IE]><div class="msie"><![endif]-->'.PHP_EOL;
+/*
+<!--[if IE 6]><div class="msie ie6 ltie7 ltie8 ltie9 ltie10"><![endif]-->
+<!--[if IE 7]><div class="msie ie7 ltie8 ltie9 ltie10"><![endif]-->
+<!--[if IE 8]><div class="msie ie8 ltie9 ltie10"><![endif]-->
+<!--[if IE 9]><div class="msie ie9 ltie10"><![endif]-->
+*/
+		}
+		if ($flap % 2 == 0) echo '<!--[if IE]></div><![endif]-->'.PHP_EOL;
 	}
 
 }

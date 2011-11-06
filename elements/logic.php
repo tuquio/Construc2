@@ -43,13 +43,13 @@ $IECSS3Targets			=		 $this->params->get('IECSS3Targets');
 $IE6TransFix			= (bool) $this->params->get('IE6TransFix');
 $IE6TransFixTargets		=		 $this->params->get('IE6TransFixTargets');
 
-$fluidMedia				= (bool) $this->params->get('fluidMedia');
+$fluidMedia				= (bool) $this->params->get('fluidMedia') ? 'fluid-media' : '';
 $fullWidth				=		 $this->params->get('fullWidth');
 $siteWidth				= (int)	 $this->params->get('siteWidth');
 $siteWidthType			=		 $this->params->get('siteWidthType');
 $siteWidthUnit			=		 $this->params->get('siteWidthUnit');
 
-$mod_oocss				= true;
+$mod_oocss				= (bool) $this->params->get('modOocss', 1);
 
 $loadModal				= (bool) $this->params->get('loadModal');
 $loadMoo 				= (bool) $this->params->get('loadMoo', $loadModal);
@@ -172,22 +172,14 @@ $columnGroupBetaCount = $columnGroupCount[3] + $columnGroupCount[4];
 if ($columnGroupBetaCount) : $columnGroupBetaClass = 'column-beta colcount-'.$columnGroupBetaCount; endif;
 
 # alpha-X-main-beta-Y
-$columnLayout = 'main-only';
+$columnLayout = array('main-only');
 if ($columnGroupAlphaCount > 0) {
-	$columnLayout = 'alpha-main';
+	$columnLayout = array('alpha-main');
 	if ($columnGroupBetaCount > 0) {
-		$columnLayout .= '-beta';
+		$columnLayout = array('alpha-main-beta');
 	}
 } elseif ($columnGroupBetaCount > 0) {
-	$columnLayout = 'main-beta';
-}
-
-if ($jmenu->getActive() == $jmenu->getDefault()) {
-	$columnLayout .= ' home';
-} else if ($jmenu->getActive() && $jmenu->getActive()->type == 'component') {
-	if (array_key_exists('view', $jmenu->getActive()->query)) {
-		$columnLayout .= ' '. $jmenu->getActive()->query['view'];
-	}
+	$columnLayout = array('main-beta');
 }
 
 #--------------------------- Debug Positions -------------------------------#
@@ -277,10 +269,7 @@ if ($html5manifest) {
 }
 
 // Layout Declarations
-if (($siteWidthType == 'max-width') && $fluidMedia ) {
-	$columnLayout .= ' fluid-media';
-}
-$columnLayout .= ' '.ConstructTemplateHelper::getPageAlias(true);
+$columnLayout[] = ConstructTemplateHelper::getPageAlias(true);
 
 if ($siteWidth) {
 	$styleDeclarations[] = '#body-container, header.above {'.$siteWidthType.':'.$siteWidth.$siteWidthUnit.'}';
@@ -320,7 +309,7 @@ if ($IECSS3 && !empty($IECSS3Targets)) {
 }
 
 if ($useStickyFooter && $stickyFooterHeight > 1) {
-	$columnLayout .= ' sticky-footer';
+	$columnLayout[] = 'sticky-footer';
 
 	$styleDeclarations[] = '.sticky-footer #body-container {padding-bottom:'.$stickyFooterHeight.'px;}';
 	$styleDeclarations[] = '.sticky-footer .page-foot {margin-top:-'.$stickyFooterHeight.'px;height:'.$stickyFooterHeight.'px;}';
@@ -381,3 +370,9 @@ if ( count($scriptDeclarations) ) {
 	$this->addScriptDeclaration(implode(PHP_EOL,$scriptDeclarations));
 	$templateHelper->addScriptDeclaration($scriptDeclarations);
 }
+
+// merge $columnLayout into a string
+$columnLayout[] = $fluidMedia;
+$columnLayout = array_unique($columnLayout);
+$columnLayout = implode(' ', $columnLayout);
+
