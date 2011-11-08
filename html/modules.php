@@ -12,7 +12,7 @@
  * of class names to the container.
  * Accepted attributes:
  * - level: default 3, the heading level to apply. 3 = <h3>
- * - header-class: default 'je-header', CSS class for the Hx element
+ * - header-class: default 'ct-header', CSS class for the Hx element
  * In addition to moduleclass and moduleclass_sfx
  * - module-class: optional CSS class for the DIV container
  * - outline-style: optional CSS class for the DIV container
@@ -20,7 +20,7 @@
  * @param JRegistry  $params
  * @param array      $attribs
  */
-function modChrome_jexhtml( $module, &$params, &$attribs ) {
+function modChrome_chtml( $module, &$params, &$attribs ) {
 
 	$module->content = trim($module->content);
 	if (empty($module->content)) return;
@@ -50,9 +50,9 @@ function modChrome_jexhtml( $module, &$params, &$attribs ) {
 
 		$css = array();
 		if ('custom' != $module->module) {
-			$css[] = str_replace(array('_','mod_'), array('_',''), $module->module);
+			$css[] = str_replace(array('_','mod_'), array('_',''), $module->module) .'-title';
 		}
-		$css[] = isset($attribs['header-class']) ? $attribs['header-class'] : 'je-header';
+		$css[] = isset($attribs['header-class']) ? $attribs['header-class'] : 'ct-header';
 
 		$css   = trim(implode(' ', array_unique($css) ));
 
@@ -82,7 +82,9 @@ function modChrome_jexhtml( $module, &$params, &$attribs ) {
  * @link  http://oocss.org
  * @author WebMechanic http://webmechanic.biz
  */
-function modChrome_mod( $module, &$params, &$attribs ) {
+function modChrome_mod( $module, &$params, &$attribs )
+{
+	static $toggle = 0;
 
 	$module->content = trim($module->content);
 	if (empty($module->content)) return;
@@ -93,7 +95,14 @@ function modChrome_mod( $module, &$params, &$attribs ) {
 		$attribs['oocss'] = 'mod';
 	}
 
-	modChrome_jexhtml( $module, $params, $attribs );
+	if (array_key_exists('toggle', $attribs)) {
+		$params->set('moduleclass_sfx', ($toggle % 2 ? 'even' : 'odd'));
+		$toggle++;
+	} else {
+		$toggle = 0;
+	}
+
+	modChrome_chtml( $module, $params, $attribs );
 }
 
 /**
@@ -169,6 +178,6 @@ function modChrome_withevent( $module, &$params, &$attribs )
 {
 	$module->content = JHtml::_('content.prepare', $module->content, $params);
 
-	modChrome_jexhtml( $module, $params, $attribs );
+	modChrome_chtml( $module, $params, $attribs );
 }
 

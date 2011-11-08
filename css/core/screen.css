@@ -19,7 +19,7 @@ h6,.H6{font-size:0.8em;font-weight:bold}
 h1,.H1,h2,.H2,h3,.H3,h4,.H4,h5,.H5,h6,.H6{margin:.3em 0}
 h3+ul, h3+ol {margin-top:-.3em}
 
-input.button{padding:0 10px}
+input.button {padding:0 10px}
 
 table.category {border:1px solid #000}
 .category thead {background:#333}
@@ -48,7 +48,6 @@ table.category {border:1px solid #000}
 .edit .formelm .radio label{float:none;width:14em}
 .edit .formelm .radio label span{float:left;width:14em}
 .edit .formelm-area label{float:none !important;display:block;font-weight:bold}
-.even {background:#eeeeee}
 
 ol.form{float:left; list-style:none; width:100%}
 ol.form li{clear:both;float:left;margin:0 0 10px;width:100%;position:relative}

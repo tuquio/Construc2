@@ -20,7 +20,7 @@ defined('_JEXEC') or die;
 	<div id="page-top">
 		<div id="header" class="line page-head">
 <?php if ($headerAboveCount) : include JPATH_THEMES .'/'. $this->template . '/layouts/mod_header_above.php'; endif; ?>
-		<h1 id="logo"><a href="<?php echo $this->baseurl ?>/"><span><?php echo $app->getCfg('sitename');?></span></a></h1>
+		<h1 id="logo"><a class="site-link" href="<?php echo $this->baseurl ?>/"><span class="site-name"><?php echo $app->getCfg('sitename');?></span></a></h1>
 		<?php if ($showDateContainer) : ?>
 		<div class="date-container"><?php echo $templateHelper->dateContainer(); ?></div>
 		<?php endif; ?>
@@ -89,7 +89,7 @@ defined('_JEXEC') or die;
 		<?php $templateHelper->renderModules('syndicate'); ?>
 		</div><!-- .syndicate -->
 	<?php endif; ?>
-	<?php $templateHelper->renderModules('footer', 'jexhtml'); ?>
+	<?php $templateHelper->renderModules('footer', 'mod'); ?>
 	</footer><!-- end footer -->
 <?php
 if ($this->countModules('debug')) : $templateHelper->renderModules('debug', 'raw'); endif;

@@ -27,7 +27,6 @@ b,strong{font-weight:bold;}
 blockquote{margin:1em 40px;}
 dfn{font-style:italic;}
 mark{background:#ff0;color:#000;}
-pre,code,kbd,samp{font-family:monospace,serif;_font-family:'courier new',monospace;}
 pre{white-space:pre;white-space:pre-wrap;word-wrap:break-word;}
 q{quotes:none;}
 q:before,q:after{content:'';content:none;}
@@ -72,7 +71,7 @@ p,address,blockquote,li,dt,dd{line-height: 1.6;}
 caption,th{text-align:center;font-weight:bold}
 tbody th{text-align:left;vertical-align:top}
 address,caption,cite,dfn,ins,del,figcaption,details{font:inherit}
-pre,xmp,samp,code,tt,kbd,listing{font-size:94%;font-family:'Lucida Console',monospace,sans-serif}
+pre,xmp,samp,code,tt,kbd,listing{font-size:94%;font-family:'Lucida Console','Andale Mono','Courier New',monospace,sans-serif}
 pre {overflow-x:auto; /* Firefox 2 */
 	word-wrap:break-word; /* Internet Explorer 5.5+ */
 	white-space:-moz-pre-wrap !important; /* Mozilla, since 1999 */
