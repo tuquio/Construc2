@@ -27,7 +27,7 @@ $chunks = $templateHelper->getStaticHtml($alternateIndexFile);
 			<div class="mod clearfix">
 				<h1 id="logo"><a href="<?php echo $this->baseurl ?>/" title="<?php echo $app->getCfg('sitename');?>"><?php echo $app->getCfg('sitename');?></a></h1>
 				<?php if ($this->countModules('header')) : ?>
-					<jdoc:include type="modules" name="header" style="jexhtml" />
+					<jdoc:include type="modules" name="header" style="mod" />
 				<?php endif; ?>
 <?php if (isset($chunks['header'])) : ?>
 <?php echo $templateHelper->loadStaticHtml('header') ?>
@@ -56,7 +56,7 @@ $chunks = $templateHelper->getStaticHtml($alternateIndexFile);
 
 	<div id="footer" class="clear clearfix">
 		<div class="mod clearfix">
-		<jdoc:include type="modules" name="footer" style="jexhtml" />
+		<jdoc:include type="modules" name="footer" style="mod" />
 
 <?php if (isset($chunks['header'])) : ?>
 <?php echo $templateHelper->loadStaticHtml('footer') ?>

@@ -85,6 +85,13 @@ class ConstructTemplateHelper
 
 		$this->addLayout('index');
 
+		// @see renderModules()
+		$chunks = array(
+			'unit_before' => '<div class="{class}">',
+			'unit_after'  => '</div>'
+		);
+		$this->setChunks($chunks);
+
 		// register event handler
 		JDispatcher::getInstance()->register('onBeforeCompileHead', 'ConstructTemplateHelperCompileHead');
 	}
@@ -140,7 +147,7 @@ class ConstructTemplateHelper
 		$jmenu	= $app->getMenu()->getActive();
 
 		if (self::isHomePage()) {
-			$alias[$parent] = 'home ' . @$jmenu->query['view'];
+			$alias[$parent] = 'home';
 			return $alias[$parent];
 		}
 
@@ -385,20 +392,24 @@ FB::info($alias[$parent], __FUNCTION__);
 	{
 		$chunks = array($name);
 		if (is_string($suffixes)) {
-			$chunks = array($name .' '. $suffixes);
+			$chunks = array($name, $suffixes, $name .' '. $suffixes);
 		}
 		elseif (is_array($suffixes)) {
 			$chunks = array();
 			foreach ($suffixes as $suffix) {
-				$chunks[] = trim($name .' '. $suffix);
+				$chunks[] = trim($name .'_'. $suffix);
+				$chunks[] = trim($name);
+				$chunks[] = trim($suffix);
 			}
 		}
 
+		$chunks = array_unique($chunks);
 		foreach ($chunks as $chunk) {
 			if (isset(self::$chunks[$chunk])) {
 				return self::$chunks[$chunk];
 			}
 		}
+
 		return false;
 	}
 
@@ -453,20 +464,37 @@ FB::info($alias[$parent], __FUNCTION__);
 		($style) ? $attribs['style'] = $style : true;
 
 		$css = array();
-		if (isset($attribs['autocols'])) {
+		$prefixes = array(
+				'before' => array('before'),
+				'after'  => array('after')
+				);
+		if (isset($attribs['autocols']) && $attribs['autocols'])
+		{
+			$group = $position;
+			$prefixes['before'][] = 'unit_before';
+			$prefixes['after'][]  = 'unit_after';
+
+			$this->getModulesCount($group);
+
 			if ( $pos = strrpos($position, '-') ) {
 				$group = substr($position, 0, $pos);
-				if ( $n = $this->numModules($group) ) {
-					settype($attribs['oocss'], 'string');
-					$css[] = 'unit size1of'.$n;
-				}
+				$n = $this->numModules($group);
+			} else {
+				$n = $this->tmpl->countModules($group);
+			}
+			if ( $n > 0 ) {
+				settype($attribs['oocss'], 'string');
+				$css[] = 'unit size1of'.$n;
 			}
 			unset($attribs['autocols']);
 		}
 
 		foreach (JModuleHelper::getModules($position) as $_module)
 		{
-			if ($chunk = self::getChunk('module', array($_module->module, 'before')) ) {
+			$prefixes['before'][] = $_module->module;
+			$prefixes['after'][]  = $_module->module;
+
+			if ($chunk = self::getChunk('module', $prefixes['before']) ) {
 				echo str_replace(
 						array('{position}', '{class}'),
 						array($position, implode(' ', $css)),
@@ -474,7 +502,7 @@ FB::info($alias[$parent], __FUNCTION__);
 						);
 			}
 			echo JModuleHelper::renderModule($_module, $attribs);
-			if ($chunk = self::getChunk('module', array($_module->module, 'after')) ) {
+			if ($chunk = self::getChunk('module', $prefixes['after']) ) {
 				echo $chunk;
 			}
 		}
