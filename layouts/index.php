@@ -82,7 +82,7 @@ defined('_JEXEC') or die;
 		</div><!-- #body-container -->
 	</div><!-- #page-top -->
 
-	<footer id="footer" class="line page-foot">
+	<footer id="footer" class="line page-foot"><div class="foot-inner">
 	<?php /* echo JText::_('TPL_CONSTRUCT_JUMP_BACK_TO_TOP') */ ?>
 	<?php if ($this->countModules('syndicate')) : ?>
 		<div class="mod syndicate">
@@ -90,7 +90,7 @@ defined('_JEXEC') or die;
 		</div><!-- .syndicate -->
 	<?php endif; ?>
 	<?php $templateHelper->renderModules('footer', 'mod'); ?>
-	</footer><!-- end footer -->
+	</div></footer><!-- end footer -->
 <?php
 if ($this->countModules('debug')) : $templateHelper->renderModules('debug', 'raw'); endif;
 if ($this->countModules('analytics')) : $templateHelper->renderModules('analytics', 'raw'); endif;
