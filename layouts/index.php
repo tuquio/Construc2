@@ -1,10 +1,11 @@
 <?php
 /**
+ * Main Template layout.
+ *
  * @package     Templates
  * @subpackage  Layouts
- * @author		Joomla Engineering http://joomlaengineering.com
  * @author		WebMechanic http://webmechanic.biz
- * @copyright	Copyright (C) 2010, 2011 Matt Thomas | Joomla Engineering. All rights reserved.
+ * @copyright	Copyright (C) 2011 WebMechanic http://webmechanic.biz. All rights reserved.
  * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
 defined('_JEXEC') or die;
@@ -14,7 +15,6 @@ defined('_JEXEC') or die;
 <head>
 <jdoc:include type="head" />
 </head>
-
 <body class="<?php echo $columnLayout ?>">
 <?= ConstructTemplateHelper::msieSwatter() ?>
 	<div id="page-top">
@@ -48,7 +48,7 @@ defined('_JEXEC') or die;
 <?php if ($headerBelowCount) : include JPATH_THEMES .'/'. $this->template . '/layouts/mod_header_below.php'; endif; ?>
 
 		<?php if ($this->countModules('nav')) : ?>
-			<nav id="nav" class="line mainnavi" role="navigation">
+			<nav id="nav" class="line mainnavi">
 			<?php $templateHelper->renderModules('nav'); ?>
 			</nav><!-- #nav .mainnavi-->
 		<?php endif; ?>

@@ -1,6 +1,13 @@
 <?php
 /**
  * Subtemplate loaded if $navBelowCount > 0
+ *
+ * @package     Templates
+ * @subpackage  Layouts
+ * @author		Joomla Engineering http://joomlaengineering.com
+ * @author		WebMechanic http://webmechanic.biz
+ * @copyright	Copyright (C) 2010, 2011 Matt Thomas | Joomla Engineering. All rights reserved.
+ * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
 defined('_JEXEC') or die;
 $modcount = count($navBelowCount);

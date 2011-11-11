@@ -1,6 +1,12 @@
 <?php
 /**
  * Subtemplate loaded if $columnGroupBetaCount > 0
+ *
+ * @package     Templates
+ * @subpackage  Layouts
+ * @author		WebMechanic http://webmechanic.biz
+ * @copyright	Copyright (C) 2011 WebMechanic http://webmechanic.biz. All rights reserved.
+ * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
 defined('_JEXEC') or die;
 $modcount = count($columnGroupCount);

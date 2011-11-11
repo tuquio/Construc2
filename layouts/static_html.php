@@ -1,8 +1,11 @@
 <?php
 /**
- * @package		Template Framework for Joomla! 1.6
+ * EXPERIMENTAL! Main Layout to render HTML file fragments (aka chunks).
+ *
+ * @package     Templates
+ * @subpackage  Layouts
  * @author		WebMechanic http://webmechanic.biz
- * @copyright	Copyright (C)2011 WebMechanic. All rights reserved.
+ * @copyright	Copyright (C) 2011 WebMechanic http://webmechanic.biz. All rights reserved.
  * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
 defined('_JEXEC') or die;
@@ -14,12 +17,8 @@ $chunks = $templateHelper->getStaticHtml($alternateIndexFile);
 <head>
 <jdoc:include type="head" />
 </head>
-
-<body class="<?php echo $columnLayout; if($useStickyFooter) echo ' sticky-footer'; ?>">
-<!--[if IE 6]><div class="ie6 ltie7 ltie8 ltie9 ltie10"><![endif]-->
-<!--[if IE 7]><div class="ie7 ltie8 ltie9 ltie10"><![endif]-->
-<!--[if IE 8]><div class="ie8 ltie9 ltie10"><![endif]-->
-<!--[if IE 9]><div class="ie9 ltie10"><![endif]-->
+<body class="<?php echo $columnLayout ?>">
+<?= ConstructTemplateHelper::msieSwatter() ?>
 	<div id="footer-push">
 	<a id="page-top"></a>
 
@@ -67,7 +66,6 @@ $chunks = $templateHelper->getStaticHtml($alternateIndexFile);
 <?php if ($this->countModules('debug')) : ?>
 <jdoc:include type="modules" name="debug" style="raw" />
 <?php endif; ?>
-
-<!--[if IE lte 9]></div><![endif]-->
+<?= ConstructTemplateHelper::msieSwatter() ?>
 </body>
 </html>

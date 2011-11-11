@@ -842,17 +842,29 @@ FB::info($alias[$parent], __FUNCTION__);
 		static $flap = 0;
 		$flap++;
 		if ($flap % 2 != 0) {
-			echo '<!--[if IE]><div class="msie"><![endif]-->'.PHP_EOL;
+			($min < 5.0) ? $min = 5 : true;
+			($max > 9.0) ? $max = 9 : true;
+			$cc = array('<!-- "CSS handles" for Browser Emulators -->');
+			for ($i = $min; $i <= $max; $i++)
+			{
+				$ltie = '';
+				$l    = $i + 1;
+				while ($l <= $max + 1) {
+					$ltie .= ' ltie'.$l;
+					$l++;
+				}
+				$cc[] = '<!--[if IE '.$i.']><div class="msie ie'. $i . $ltie .'"><![endif]-->';
+			}
+			echo implode(PHP_EOL, $cc), PHP_EOL;
 /*
-<!--[if IE 6]><div class="msie ie6 ltie7 ltie8 ltie9 ltie10"><![endif]-->
+echo '<!--[if IE 6]><div class="msie ie6 ltie7 ltie8 ltie9 ltie10"><![endif]-->
 <!--[if IE 7]><div class="msie ie7 ltie8 ltie9 ltie10"><![endif]-->
 <!--[if IE 8]><div class="msie ie8 ltie9 ltie10"><![endif]-->
-<!--[if IE 9]><div class="msie ie9 ltie10"><![endif]-->
+<!--[if IE 9]><div class="msie ie9 ltie10"><![endif]-->';
 */
 		}
-		if ($flap % 2 == 0) echo '<!--[if IE]></div><![endif]-->'.PHP_EOL;
+		if ($flap % 2 == 0) echo '<!--[if IE]></div><![endif]-->', PHP_EOL;
 	}
 
 }
-// JLoader would look for this; not workin' tho
-// class ElementsHelper extends ConstructTemplateHelper {}
+

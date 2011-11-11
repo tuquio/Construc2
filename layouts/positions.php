@@ -1,8 +1,12 @@
 <?php defined('_JEXEC') or die;
 /**
- * stub layout to previz all module positions in 'index.php'
+ * EXPERIMENTAL! Stub layout to previz all module positions in 'index.php'
+ *
  * @package     Templates
  * @subpackage  Layouts
+ * @author		WebMechanic http://webmechanic.biz
+ * @copyright	Copyright (C) 2011 WebMechanic http://webmechanic.biz. All rights reserved.
+ * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
 
 $this->setTitle('Dummy Positions');
@@ -28,12 +32,8 @@ body.debug .names:after  {text-align:right; content:'Classes: ' attr(class);}
 
 </style>
 </head>
-
-<body class="debug <?php echo $columnLayout; if ($useStickyFooter) echo ' sticky-footer'; ?>">
-<!--[if IE 6]><div class="ie6 ltie7 ltie8 ltie9 ltie10"><![endif]-->
-<!--[if IE 7]><div class="ie7 ltie8 ltie9 ltie10"><![endif]-->
-<!--[if IE 8]><div class="ie8 ltie9 ltie10"><![endif]-->
-<!--[if IE 9]><div class="ie9 ltie10"><![endif]-->
+<body class="<?php echo $columnLayout ?>">
+<?= ConstructTemplateHelper::msieSwatter() ?>
 <header class="line above">
 <?php include JPATH_THEMES .'/'. $this->template . '/layouts/mod_header_above.php' ?>
 </header>
@@ -81,7 +81,6 @@ available template position, which is the whole idea of using them in the first 
 </div>
 
 </div><!-- end body-container -->
-
-<!--[if IE]></div><![endif]-->
+<?= ConstructTemplateHelper::msieSwatter() ?>
 </body>
 </html>
