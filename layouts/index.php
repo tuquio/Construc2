@@ -37,9 +37,9 @@ defined('_JEXEC') or die;
 
 		<?php if ($enableSwitcher) : ?>
 		<ul id="style-switch" class="menu hmenu" onclick="toggleStylesheet()">
-			<li><a href="#" onclick="setActiveStyleSheet('wireframe'); return false;" title="Wireframe"><?php echo JText::_('TPL_CONSTRUCT_STYLE_WIREFRAME') ?></a></li>
-			<li><a href="#" onclick="setActiveStyleSheet('diagnostic'); return false;" title="Diagnostic"><?php echo JText::_('TPL_CONSTRUCT_STYLE_DIAGNOSTIC_MODE') ?></a></li>
-			<li><a href="#" onclick="setActiveStyleSheet('normal'); return false;" title="Normal"><?php echo JText::_('TPL_CONSTRUCT_STYLE_NORMAL_MODE') ?></a></li>
+			<li><a href="#" onclick="setActiveStyleSheet('wireframe'); return false;" title="Wireframe"><?php echo JText::_('TPL_CONSTRUC2_STYLE_WIREFRAME') ?></a></li>
+			<li><a href="#" onclick="setActiveStyleSheet('diagnostic'); return false;" title="Diagnostic"><?php echo JText::_('TPL_CONSTRUC2_STYLE_DIAGNOSTIC_MODE') ?></a></li>
+			<li><a href="#" onclick="setActiveStyleSheet('normal'); return false;" title="Normal"><?php echo JText::_('TPL_CONSTRUC2_STYLE_NORMAL_MODE') ?></a></li>
 		</ul>
 		<?php endif; ?>
 		</div><!-- .page-head -->
@@ -83,7 +83,7 @@ defined('_JEXEC') or die;
 	</div><!-- #page-top -->
 
 	<footer id="footer" class="line page-foot"><div class="foot-inner">
-	<?php /* echo JText::_('TPL_CONSTRUCT_JUMP_BACK_TO_TOP') */ ?>
+	<?php /* echo JText::_('TPL_CONSTRUC2_JUMP_BACK_TO_TOP') */ ?>
 	<?php if ($this->countModules('syndicate')) : ?>
 		<div class="mod syndicate">
 		<?php $templateHelper->renderModules('syndicate'); ?>

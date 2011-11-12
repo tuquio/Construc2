@@ -37,7 +37,7 @@ class JFormFieldJqueryversion extends JFormFieldList
 
 		$options[]	= JHtml::_('select.option', '', '- Not Loaded -');
 		/* using protocol relative URLs */
-		$options[]	= JHtml::_('select.option', '1', JText::_('TPL_CONSTRUCT_JQUERY_LATEST'));
+		$options[]	= JHtml::_('select.option', '1', JText::_('TPL_CONSTRUC2_JQUERY_LATEST'));
 		foreach (self::$versions as $v) {
 			$options[]	= JHtml::_('select.option', $v, $v);
 		}
