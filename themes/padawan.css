@@ -33,7 +33,7 @@ body {min-width:960px}
 
 /* template param override (#body-container,#header-above 100%) */
 @media screen and (max-width:1039px) 						{ body #body-container, body #header-above {max-width:980px} }
-@media screen and (min-width:1040px) and (max-width:1159px) { body #body-container, body #header-above {max-width:94%} }
+@media screen and (min-width:1040px) and (max-width:1149px) { body #body-container, body #header-above {max-width:94%} }
 @media screen and (min-width:1150px) and (max-width:1279px) { body #body-container, body #header-above {max-width:90%} }
 @media screen and (min-width:1280px)						{ body #body-container, body #header-above {max-width:1150px} }
 
@@ -63,18 +63,18 @@ header.below	{margin:0 auto;}
 
 .content-main	{width:auto; float:none}
 .load-first 	{width:auto; float:none}
-.column-group 	{width:20%;}
+.column-group 	{width:25%;}
 .group-alpha	{float:left}
 .group-beta		{float:left}
 
-.main-beta .load-first	  {width:80%;float:left;}
+.main-beta .load-first	  {width:75%;float:left;}
 .alpha-main .content-main ,
 
-.alpha-main-beta .load-first	{width:80%;float:left;}
-.alpha-main-beta .content-main	{width:80%;float:right;}
+.alpha-main-beta .load-first	{width:75%;float:left;}
+.alpha-main-beta .content-main	{width:75%;float:right;}
 
-.main-beta .page-foot 		{width:80%;}
-.alpha-main-beta .page-foot {width:60%;}
+.main-beta .page-foot 		{width:75%;}
+.alpha-main-beta .page-foot {width:50%;}
 
 /*
  * =columns context
@@ -85,14 +85,23 @@ header.below	{margin:0 auto;}
 .column-group .inner	{}
 .column-group h3		{margin:0; padding:0;}
 
+.column-group .notice .inner {padding:1ex 1em}
+
 /*
  * =contents
  */
+.blog .items-leading	{}
+.blog .items-row		{}
+.blog .items-more		{}
+
 .blog .category-desc	,
 .blog article			,
 article.item-page		{padding:1em; margin-bottom:1.6em; margin-right:20px}
 .blog article		,
 article.item-page	{padding-bottom:1.6em}
+
+.items-leading h2	{margin-top:0}
+.items-leading article {min-height:11em}
 
 .category-desc p:only-child { margin-bottom:0 }
 
@@ -114,13 +123,23 @@ article.item-page	{padding-bottom:1.6em}
  * in-context position using negative margins somewhere else below.
  * the disclosure widget will still be displayed if you don't provide a summary element
  */
-details.meta	{padding:0 1ex; margin-top:10px; margin-bottom:10px; }
+details.meta {
+	padding: 0 1ex;
+	float:right;
+	margin-top:-2.4em;
+	margin-left:1em;
+	width: 30%;
+}
+.meta dt	{display:inline;}
+.meta dd	{display:inline;}
+.meta dd:after {display:block;content:' '}
+
 .meta summary	{cursor:help;}
 summary::-webkit-details-marker { color: #444; font-size:1.2em}
 
 .items-leading .meta ,
 .items-row .meta	{max-width:80%}
-.item-page .meta	{max-width:100%}
+.item-page .meta	{max-width:100%;margin-top:-3em;}
 
 /*
 .items-leading details.meta	{margin-top:-2em; right:0}
@@ -134,7 +153,6 @@ summary::-webkit-details-marker { color: #444; font-size:1.2em}
  * =bilder in artikeln
  */
 .blog img,
-.blog-featured img ,
 .item-page img	,
 .portrait img 	{height:auto; padding:8px; background:#fff;}
 .portrait img 	{outline:1px solid #CDCDCD}
@@ -147,21 +165,20 @@ summary::-webkit-details-marker { color: #444; font-size:1.2em}
 .items-row img		{max-width:80%}
 .item-page img		{max-width:96%}
 
-.items-leading article p:first-of-type img {float:right ;max-width:40%; margin-left:1em;}
-
 /*
  * =modules
  */
-.mod-login ul	{margin-left:10px;padding-left:.7em}
-.mod-banner		{}
-.banneritem img {display:block;margin-left:auto;margin-right:auto;text-align:center;}
-.mod-search 	{margin-right:10px;float:right}
-.mod-search label {padding-right:1em}
+.mod-login ul		{margin-left:10px;padding-left:.7em}
+.mod-banner			{}
+.banneritem img 	{display:block;margin-left:auto;margin-right:auto;text-align:center;}
+.mod-search 		{margin-right:10px;float:right}
+.mod-search label	{padding-right:1em}
 
-.mod .je-header {font:1.4em 'Unna',Georgia,serif;}
+.mod .je-header 	{font:1.4em 'Unna',Georgia,serif;}
 
 .mod-articles-categories .inner {padding:5px;}
-.portrait		{text-align:center;padding:5px;}
+
+.portrait			{text-align:center}
 
 /*
  * =module groups
@@ -218,6 +235,7 @@ nav, .menu, .hmenu	{background:#fff}
 .blog article			,
 article.item-page		,
 .column-group .inner	{background:#fff}
+.portrait .inner		{background: none;}
 
 .column-group fieldset	{}
 .group-alpha .mod		{}
@@ -238,6 +256,7 @@ li.active {}
 .mt0 {margin-top:0}  .mr0 {margin-right:0}  .mb0 {margin-bottom:0}  .ml0 {margin-left:0}
 .pt0 {padding-top:0} .pr0 {padding-right:0} .pb0 {padding-bottom:0} .pl0 {padding-left:0}
 .bt0 {border-top:0}  .br0 {border-right:0}  .bb0 {border-bottom:0}  .bl0 {border-left:0}
+.lft {float:left} .rgt {float:right}
 
 /* =text shadows CSS3 */
 .ts { text-shadow:0 0 2px #888; }
@@ -253,20 +272,19 @@ h1,.H1,
 /*
  * =branding - category and page styles
  */
-.category-desc p {font-size:100%;}
-.fotokunst .category-desc	,
-.alltag .category-desc		,
-.gedicht .category-desc 	{padding:1ex; font:normal 2.15em/1 'Kristi',cursive; text-shadow:0px 0px 3px #888; text-align:center; text-rendering: optimizelegibility; font-size-adjust:0.455; font-stretch: expanded;}
+.category-desc {font-size:100%;}
+.category-desc blockquote {padding:1ex; font:normal 2.15em/1 'Kristi',cursive; text-shadow:0px 0px 3px #888; text-align:center; text-rendering: optimizelegibility; font-size-adjust:0.455; font-stretch: expanded;}
+
+.schriftstellerei article p:first-of-type img {float:right; max-width:40%; margin-left:1em; }
 
 /* =box drop shadows CSS3 */
-.meta,
+.meta {-webkit-box-shadow:inset 0 0 6px #aaa; -moz-box-shadow:inset 0 0 6px #aaa; box-shadow:inset 0 0 6px #aaa;}
 .ds   {-webkit-box-shadow:0 0 3px #888; -moz-box-shadow:0 0 3px #888; box-shadow:0 0 3px #888;}
 
 .mainnavi, .breadcrumbs,
 .dslt {-webkit-box-shadow:0 0 3px #ccc; -moz-box-shadow:0 0 3px #ccc; box-shadow:0 0 3px #ccc;}
 
 .blog img,
-.blog-featured img,
 .item-page img,
 .hbox-ds {-webkit-box-shadow:-2px 3px 6px 2px #888; -moz-box-shadow:-2px 3px 6px 2px #888; box-shadow:-2px 3px 6px 2px #888;}
 
