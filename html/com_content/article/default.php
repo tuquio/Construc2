@@ -99,15 +99,15 @@ $useDefList  = ($params->get('show_author') || $params->get('show_category' ) ||
 <?php endif;
 	if ($params->get('show_create_date')) : ?>
 	<dt class="create"><?php JText::printf('COM_CONTENT_CREATED_DATE_ON', '') ?></dt>
-		<dd class="create"><?php echo JHtml::_('date',$this->item->created, JText::_('DATE_FORMAT_LC2')); ?></dd>
+		<dd class="create"><?php echo JHtml::_('date',$this->item->created, JText::_('DATE_FORMAT_LC4')); ?></dd>
 <?php endif;
 	if ($params->get('show_modify_date')) : ?>
 	<dt class="modified"><?php JText::printf('COM_CONTENT_LAST_UPDATED', '') ?></dt>
-		<dd class="modified"><?php echo JHtml::_('date',$this->item->modified, JText::_('DATE_FORMAT_LC2')); ?></dd>
+		<dd class="modified"><?php echo JHtml::_('date',$this->item->modified, JText::_('DATE_FORMAT_LC4')); ?></dd>
 <?php endif;
 	if ($params->get('show_publish_date')) : ?>
 	<dt class="published"><?php JText::printf('COM_CONTENT_PUBLISHED_DATE', '') ?></dt>
-		<dd class="published"><?php echo JHtml::_('date',$this->item->publish_up, JText::_('DATE_FORMAT_LC2')); ?></dd>
+		<dd class="published"><?php echo JHtml::_('date',$this->item->publish_up, JText::_('DATE_FORMAT_LC4')); ?></dd>
 <?php endif;
 	if ($params->get('show_hits')) : ?>
 	<dt class="hits"><?php JText::printf('COM_CONTENT_ARTICLE_HITS', '') ?></dt>
