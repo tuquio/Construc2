@@ -27,8 +27,6 @@ class JFormFieldGooglewebfont extends JFormFieldList
 	 */
 	protected function getOptions()
 	{
-# FB::log($this->form->getFieldset('typography'), __METHOD__);
-
 		if ( false ) { // check field "googleWebFontApi"
 			$options[]	= JHtml::_('select.option', '', JText::_('TPL_CONSTRUC2_GOOGLE_WEB_FONT_SELECT'));
 		} else {
