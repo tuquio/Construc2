@@ -20,7 +20,7 @@ $templateHelper = ConstructTemplateHelper::getInstance($this);
 $app 		= JFactory::getApplication();
 
 /** @var $base_url string Get the base URL of the website */
-$base_url 	= JURI::base(true);
+$base_url 	= JURI::base(true) . '/';
 
 /** @var $tmpl_url string Define relative shortcut for current template directory */
 $tmpl_url 	= $base_url. 'templates/'. $this->template;
