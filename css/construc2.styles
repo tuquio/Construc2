@@ -1,0 +1,4 @@
+/**! Construct core.styles */
+<!--#include virtual="/templates/construc2/css/core/base.css" -->
+<!--#include virtual="/templates/construc2/css/core/oocss.css" -->
+<!--#include virtual="/templates/construc2/css/core/screen.css" -->
