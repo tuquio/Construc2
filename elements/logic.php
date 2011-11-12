@@ -220,9 +220,9 @@ for ($i=1; $i <= ConstructTemplateHelper::MAX_WEBFONTS; $i++) {
 // Style sheets
 if ($ssiIncludes) {
 	if ($this->direction == 'rtl') {
-		$this->addStyleSheet($tmpl_url.'/css/construct_rtl.styles', 'text/css');
+		$this->addStyleSheet($tmpl_url.'/css/construc2_rtl.styles', 'text/css');
 	} else {
-		$this->addStyleSheet($tmpl_url.'/css/construct.styles', 'text/css');
+		$this->addStyleSheet($tmpl_url.'/css/construc2.styles', 'text/css');
 	}
 	if ($ssiTheme) {
 		$this->addStyleSheet($tmpl_url.'/themes/'.$ssiTheme, 'text/css');

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE extension>
 <extension version="1.7" type="template" client="site" method="upgrade" >
-	<name>Construc2</name>
+	<name>Construct</name>
 	<creationDate>June 20th, 2011</creationDate>
 	<author>WebMechanic</author>
 	<authorEmail>joomla@webmechanic.biz</authorEmail>
 	<authorUrl>http://joomla.webmechanic.biz</authorUrl>
 	<copyright>Copyright (C)2011 WebMechanic. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
-	<version>1.7.5</version>
+	<version>1.8.0</version>
 	<description>TPL_CONSTRUCT_DESCRIPTION</description>
 	<credits><![CDATA[
 	Inspired by "Construct Community", (C) 2010, 2011 Matt Thomas | Joomla Engineering. All rights reserved.
@@ -57,11 +57,11 @@
 
 	<config>
 		<fields name="params">
-			<fieldset name="general" addfieldpath="/templates/construct/elements" >
+			<fieldset name="general" addfieldpath="/templates/construc2/elements" >
 				<field name="customStyleSheet" type="filelist" default=""
 						label="TPL_CONSTRUCT_CUSTOM_STYLE_SHEET_LABEL"
 						description="TPL_CONSTRUCT_CUSTOM_STYLE_SHEET_DESC"
-						directory="templates/construct/themes"
+						directory="templates/construc2/themes"
 						filter="\.css"
 						exclude="(template|editor|tinymce|codemirror|jce|ie\d+|test.+|x~.+)\.css"
 					/>
@@ -72,7 +72,7 @@
 				<field name="ssiTheme" type="filelist" default=""
 						label="SSI Theme"
 						description="TPL_CONSTRUCT_ENABLE_SSITHEME_DESC"
-						directory="templates/construct/themes"
+						directory="templates/construc2/themes"
 						filter="\.styles"
 					/>
 				<field name="enableSwitcher" type="radio" default="0" label="TPL_CONSTRUCT_ENABLE_SWITCHER_LABEL" description="TPL_CONSTRUCT_ENABLE_SWITCHER_DESC">
@@ -204,8 +204,8 @@
 		<folder>themes</folder>
 		<filename>ajax.php</filename>
 		<filename>component.php</filename>
-		<filename>construct.manifest</filename>
-		<filename>construct_rtl.manifest</filename>
+		<filename>construc2.manifest</filename>
+		<filename>construc2_rtl.manifest</filename>
 		<filename>CREDITS.php</filename>
 		<filename>embed.php</filename>
 		<filename>error.php</filename>
@@ -220,10 +220,10 @@
 	</files>
 
 	<languages>
-		<language tag="en-GB">language/en-GB/en-GB.tpl_construct.ini</language>
-		<language tag="en-GB">language/en-GB/en-GB.tpl_construct.sys.ini</language>
-		<language tag="de-DE">language/de-DE/de-DE.tpl_construct.ini</language>
-		<language tag="de-DE">language/de-DE/de-DE.tpl_construct.sys.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.tpl_construc2.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.tpl_construc2.sys.ini</language>
+		<language tag="de-DE">language/de-DE/de-DE.tpl_construc2.ini</language>
+		<language tag="de-DE">language/de-DE/de-DE.tpl_construc2.sys.ini</language>
 	</languages>
 
 </extension>
