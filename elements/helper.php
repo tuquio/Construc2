@@ -178,7 +178,7 @@ class ConstructTemplateHelper
 		$css	= array_unique($css);
 
 		$alias[$parent] = implode(' ', $css);
-FB::info($alias[$parent], __FUNCTION__);
+
 		return $alias[$parent];
 	}
 
