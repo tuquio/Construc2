@@ -25,9 +25,6 @@ $base_url 	= JURI::base(true) . '/';
 /** @var $tmpl_url string Define relative shortcut for current template directory */
 $tmpl_url 	= $base_url. 'templates/'. $this->template;
 
-/** @var $url JURI Get the current URL */
-$url 		= clone(JURI::getInstance());
-
 /* Define shortcuts for often used template parameters */
 $customStyleSheet 		=		 $this->params->get('customStyleSheet');
 $enableSwitcher 		= (bool) $this->params->get('enableSwitcher');
