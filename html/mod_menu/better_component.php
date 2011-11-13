@@ -11,29 +11,31 @@
  */
 defined('_JEXEC') or die;
 
-$class = $item->anchor_css   ? 'class="mi '.$item->anchor_css.'"' : 'class="mi"';
-$title = $item->anchor_title ? 'title="'.$item->anchor_title.'"'  : '';
+$aclass = $item->anchor_css ? array('mi',$item->anchor_css) : array('mi');
+in_array('active', $liclass) && $aclass[] = 'active';
+
+$title = $item->anchor_title && ($item->anchor_title != $item->title) ? 'title="'.$item->anchor_title.'"'  : '';
 if ($item->menu_image) {
 	$item->params->get('menu_text', 1 )
-		? $linktype = '<img src="'.$item->menu_image.'" alt="'.$item->title.'" /><span class="mi image-title">'.$item->title.'</span> '
+		? $linktype = '<img src="'.$item->menu_image.'" alt="'.$item->title.'" /><span class="'. trim(implode(' ', $aclass)) .' image-title">'.$item->title.'</span> '
 		: $linktype = '<img src="'.$item->menu_image.'" alt="'.$item->title.'" />';
 }
 else {
-	$linktype = '<span class="mi">'. $item->title . '</span>';
+	$linktype = '<span class="'. trim(implode(' ', $aclass)) .'">'. $item->title . '</span>';
 }
 
 switch ($item->browserNav) :
 	default:
 	case 0:
-?><a <?php echo $class; ?> href="<?php echo $item->flink; ?>" <?php echo $title; ?>><?php echo $linktype; ?></a><?php
+?><a class="<?php echo trim(implode(' ', $aclass)); ?>" href="<?php echo $item->flink; ?>" <?php echo $title; ?>><?php echo $linktype; ?></a><?php
 		break;
 	case 1:
 		// _blank
-?><a <?php echo $class; ?> href="<?php echo $item->flink; ?>" target="_blank" <?php echo $title; ?>><?php echo $linktype; ?></a><?php
+?><a class="<?php echo trim(implode(' ', $aclass)); ?>" href="<?php echo $item->flink; ?>" target="_blank" <?php echo $title; ?>><?php echo $linktype; ?></a><?php
 		break;
 	case 2:
 	// window.open
-?><a <?php echo $class; ?> href="<?php echo $item->flink; ?>" onclick="window.open(this.href,'targetWindow','toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes');return false;" <?php echo $title; ?>><?php echo $linktype; ?></a>
+?><a class="<?php echo trim(implode(' ', $aclass)); ?>" href="<?php echo $item->flink; ?>" onclick="window.open(this.href,'targetWindow','toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes');return false;" <?php echo $title; ?>><?php echo $linktype; ?></a>
 <?php
 		break;
 endswitch;
