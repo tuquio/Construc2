@@ -208,11 +208,8 @@ foreach ($list as $i => &$item) :
 		$class[] = 'parent';
 	}
 
-	if (!empty($class)) {
-		$class = ' class="'. implode(' ', $class) .'"';
-	}
-
-	echo '<li id="item-'.$item->id.'"'.$class.'>';
+	$liclass = $class;
+	echo '<li id="item-'.$item->id.'" class="'.trim(implode(' ', $class)).'">';
 
 	// Render the menu items using our local overrides.
 	switch ($item->type) :
