@@ -16,7 +16,7 @@ JHtml::addIncludePath(JPATH_COMPONENT_SITE .DS. 'helpers');
 $params = $this->item->params;
 
 ?>
-<article class="item-page">
+<article class="line item-page">
 <?php if ($this->params->get('show_page_heading', 1)) : ?>
 	<?php if ($this->params->get('show_page_heading', 1) && $params->get('show_title')) :?>
 	<hgroup>
@@ -32,30 +32,35 @@ $params = $this->item->params;
 <?php endif; ?>
 
 <?php if ($params->get('access-edit') ||  $params->get('show_print_icon') || $params->get('show_email_icon')) : ?>
-	<ul class="actions">
+	<ul class="menu actions">
 	<?php if (!$this->print) : ?>
 		<?php if ($params->get('show_print_icon')) : ?>
-		<li class="print-icon"><?php echo JHtml::_('icon.print_popup',  $this->item, $params); ?></li>
+		<li class="mi print-icon"><?php echo JHtml::_('icon.print_popup',  $this->item, $params); ?></li>
 		<?php endif; ?>
 		<?php if ($params->get('show_email_icon')) : ?>
-		<li class="email-icon"><?php echo JHtml::_('icon.email',  $this->item, $params); ?></li>
+		<li class="mi email-icon"><?php echo JHtml::_('icon.email',  $this->item, $params); ?></li>
 		<?php endif; ?>
 		<?php if ($this->user->authorise('core.edit', 'com_content.article.'.$this->item->id)) : ?>
-		<li class="edit-icon"><?php echo JHtml::_('icon.edit', $this->item, $params); ?></li>
+		<li class="mi edit-icon"><?php echo JHtml::_('icon.edit', $this->item, $params); ?></li>
 		<?php endif; ?>
 	<?php else : ?>
-		<li><?php echo JHtml::_('icon.print_screen',  $this->item, $params); ?></li>
+		<li class="mi"><?php echo JHtml::_('icon.print_screen',  $this->item, $params); ?></li>
 	<?php endif; ?>
 	</ul>
-<?php endif; ?>
+<?php endif;
 
-	<?php  if (!$params->get('show_intro')) :
-		echo $this->item->event->afterDisplayTitle;
-	endif; ?>
+if (!$params->get('show_intro')) :
+	echo $this->item->event->afterDisplayTitle;
+endif;
 
-	<?php echo $this->item->event->beforeDisplayContent; ?>
+echo $this->item->event->beforeDisplayContent;
 
-<?php
+if (isset ($this->item->toc)) :
+	echo $this->item->toc;
+endif;
+
+echo $this->item->text;
+
 $useDefList  = ($params->get('show_author') || $params->get('show_category' ) || ($params->get('show_parent_category'))
 			|| ($params->get('show_create_date')) || ($params->get('show_modify_date')) || ($params->get('show_publish_date'))
 			|| ($params->get('show_hits'))); ?>
@@ -117,11 +122,6 @@ $useDefList  = ($params->get('show_author') || $params->get('show_category' ) ||
 </details>
 <?php endif; /* $useDefList */ ?>
 
-<?php
-if (isset ($this->item->toc)) :
-	echo $this->item->toc;
-endif;
-echo $this->item->text;
-echo $this->item->event->afterDisplayContent;
-?>
+<?php echo $this->item->event->afterDisplayContent; ?>
+
 </article>

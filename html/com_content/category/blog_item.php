@@ -6,9 +6,6 @@ $canEdit = $params->get('access-edit');
 
 JHtml::addIncludePath(JPATH_COMPONENT_SITE .DS. 'helpers');
 ?>
-<?php if ($this->item->state == 0) : ?>
-<div class="system-unpublished">
-<?php endif; ?>
 <?php if ($params->get('show_title')) : ?>
 	<h2><?php if ($params->get('link_titles') && $params->get('access-view')) :
 		?><a href="<?php echo JRoute::_(ContentHelperRoute::getArticleRoute($this->item->slug, $this->item->catid))
@@ -19,15 +16,15 @@ JHtml::addIncludePath(JPATH_COMPONENT_SITE .DS. 'helpers');
 <?php endif; ?>
 
 <?php if ($params->get('show_print_icon') || $params->get('show_email_icon') || $canEdit) : ?>
-	<ul class="actions">
+	<ul class="menu actions">
 <?php if ($params->get('show_print_icon')) : ?>
-		<li class="print-icon"><?php echo JHtml::_('icon.print_popup', $this->item, $params); ?></li>
+		<li class="mi print-icon"><?php echo JHtml::_('icon.print_popup', $this->item, $params); ?></li>
 <?php endif; ?>
 <?php if ($params->get('show_email_icon')) : ?>
-		<li class="email-icon"><?php echo JHtml::_('icon.email', $this->item, $params); ?></li>
+		<li class="mi email-icon"><?php echo JHtml::_('icon.email', $this->item, $params); ?></li>
 <?php endif; ?>
 <?php if ($canEdit) : ?>
-		<li class="edit-icon"><?php echo JHtml::_('icon.edit', $this->item, $params); ?></li>
+		<li class="mi edit-icon"><?php echo JHtml::_('icon.edit', $this->item, $params); ?></li>
 <?php endif; ?>
 	</ul>
 <?php endif;
@@ -38,11 +35,44 @@ endif;
 
 echo $this->item->event->beforeDisplayContent;
 
+echo $this->item->introtext;
+
+if ($params->get('show_readmore') && $this->item->readmore) :
+	if ($params->get('access-view')) :
+		$link = JRoute::_(ContentHelperRoute::getArticleRoute($this->item->slug, $this->item->catid));
+	else :
+		$menu = JSite::getMenu();
+		$active = $menu->getActive();
+		$itemId = $active->id;
+		$link1 = JRoute::_('index.php?option=com_users&view=login&Itemid=' . $itemId);
+		$returnURL = JRoute::_(ContentHelperRoute::getArticleRoute($this->item->slug));
+		$link = new JURI($link1);
+		$link->setVar('return', base64_encode($returnURL));
+	endif;
+?>
+
+<p class="line readmore"><a href="<?php echo $link; ?>"><?php
+	if (!$params->get('access-view')) :
+		echo JText::_('COM_CONTENT_REGISTER_TO_READ_MORE');
+	elseif ($readmore = $this->item->alternative_readmore) :
+		echo $readmore;
+		if ($params->get('show_readmore_title', 0) != 0) :
+			echo JHtml::_('string.truncate', ($this->item->title), $params->get('readmore_limit'));
+		endif;
+	elseif ($params->get('show_readmore_title', 0) == 0) :
+		echo JText::sprintf('COM_CONTENT_READ_MORE_TITLE');
+	else :
+		echo JText::_('COM_CONTENT_READ_MORE');
+		echo JHtml::_('string.truncate', ($this->item->title), $params->get('readmore_limit'));
+	endif; ?></a></p>
+<?php
+endif;
+
 $useDefList  = ($params->get('show_author') || $params->get('show_category' ) || ($params->get('show_parent_category'))
 			|| ($params->get('show_create_date')) || ($params->get('show_modify_date')) || ($params->get('show_publish_date'))
-			|| ($params->get('show_hits'))); ?>
+			|| ($params->get('show_hits')));
 
-<?php if ($useDefList) : ?>
+if ($useDefList) : ?>
 <details class="meta">
 	<summary><?php echo JText::_('COM_CONTENT_ARTICLE_INFO'); ?></summary>
 	<dl class="article-info">
@@ -98,43 +128,5 @@ $useDefList  = ($params->get('show_author') || $params->get('show_category' ) ||
 	</dl>
 </details>
 <?php endif; /* $useDefList */ ?>
-
-<?php echo $this->item->introtext; ?>
-
-<?php if ($params->get('show_readmore') && $this->item->readmore) :
-	if ($params->get('access-view')) :
-		$link = JRoute::_(ContentHelperRoute::getArticleRoute($this->item->slug, $this->item->catid));
-	else :
-		$menu = JSite::getMenu();
-		$active = $menu->getActive();
-		$itemId = $active->id;
-		$link1 = JRoute::_('index.php?option=com_users&view=login&Itemid=' . $itemId);
-		$returnURL = JRoute::_(ContentHelperRoute::getArticleRoute($this->item->slug));
-		$link = new JURI($link1);
-		$link->setVar('return', base64_encode($returnURL));
-	endif;
-?>
-		<p class="readmore">
-				<a href="<?php echo $link; ?>">
-					<?php if (!$params->get('access-view')) :
-						echo JText::_('COM_CONTENT_REGISTER_TO_READ_MORE');
-					elseif ($readmore = $this->item->alternative_readmore) :
-						echo $readmore;
-						if ($params->get('show_readmore_title', 0) != 0) :
-						    echo JHtml::_('string.truncate', ($this->item->title), $params->get('readmore_limit'));
-						endif;
-					elseif ($params->get('show_readmore_title', 0) == 0) :
-						echo JText::sprintf('COM_CONTENT_READ_MORE_TITLE');
-					else :
-						echo JText::_('COM_CONTENT_READ_MORE');
-						echo JHtml::_('string.truncate', ($this->item->title), $params->get('readmore_limit'));
-					endif; ?></a>
-		</p>
-<?php endif; ?>
-
-<?php if ($this->item->state == 0) : ?>
-</div>
-<?php endif; ?>
-<span class="clr item-separator"></span>
 
 <?php echo $this->item->event->afterDisplayContent; ?>

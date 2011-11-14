@@ -47,6 +47,8 @@ $params		= $this->item->params;
 
 echo $this->item->event->beforeDisplayContent;
 
+echo $this->item->introtext;
+
 $useDefList  = ($params->get('show_author') || $params->get('show_category' ) || ($params->get('show_parent_category'))
 			|| ($params->get('show_create_date')) || ($params->get('show_modify_date')) || ($params->get('show_publish_date'))
 			|| ($params->get('show_hits'))); ?>
@@ -108,8 +110,6 @@ $useDefList  = ($params->get('show_author') || $params->get('show_category' ) ||
 </details>
 <?php endif; /* $useDefList */
 
-echo $this->item->introtext;
-
 if ($params->get('show_readmore') && $this->item->readmore) :
 	if ($params->get('access-view')) :
 		$link = JRoute::_(ContentHelperRoute::getArticleRoute($this->item->slug, $this->item->catid));
@@ -123,7 +123,7 @@ if ($params->get('show_readmore') && $this->item->readmore) :
 		$link->setVar('return', base64_encode($returnURL));
 	endif;
 ?>
-<p class="readmore"><a href="<?php echo $link; ?>"><?php
+<p class="line readmore"><a href="<?php echo $link; ?>"><?php
 	if (!$params->get('access-view')) :
 		echo JText::_('COM_CONTENT_REGISTER_TO_READ_MORE');
 	elseif ($readmore = $this->item->alternative_readmore) :
@@ -142,4 +142,3 @@ if ($params->get('show_readmore') && $this->item->readmore) :
 endif;
 
 echo $this->item->event->afterDisplayContent;
-
