@@ -29,12 +29,12 @@ if (!empty($this->category->description) && ($this->params->get('show_descriptio
 <?php
 endif;
 
-$leadingcount=0 ;
+$leadingcount = 0;
 
 if (!empty($this->lead_items)) : ?>
 <div class="line items-leading">
 <?php foreach ($this->lead_items as &$item) : ?>
-	<article class="leading-<?php echo $leadingcount; ?><?php echo $item->state == 0 ? 'system-unpublished' : null; ?>">
+	<article class="item-<?php echo $leadingcount . ($item->state == 0 ? 'system-unpublished' : '') ?>">
 <?php
 	$this->item = &$item;
 	echo $this->loadTemplate('item');
@@ -42,54 +42,54 @@ if (!empty($this->lead_items)) : ?>
 	</article>
 <?php $leadingcount++; ?>
 <?php endforeach; ?>
-</div>
+</div><!-- .items-leading -->
 <?php
 endif;
 
 $introcount = (count($this->intro_items));
-$counter=0;
+$counter    = 0;
 
 if (!empty($this->intro_items)) :
+	settype($this->columns, 'int');
 
-	foreach ($this->intro_items as $key => &$item) :
-		$key= ($key-$leadingcount)+1;
-		$rowcount=( ((int)$key-1) %	(int) $this->columns) +1;
-		$row = $counter / $this->columns ;
+	foreach ($this->intro_items as $key => $item) :
+		$key      = (int)($key - $leadingcount) + 1;
+		$rowcount = ($key - 1) % ($this->columns + 1);
+		$row      = $counter / $this->columns ;
 
-		if ($rowcount==1) : ?>
-	<div class="line items-row cols-<?php echo (int) $this->columns;?> <?php echo 'row-'.$row ; ?>">
-	<?php endif; ?>
-	<article class="item column-<?php echo $rowcount;?><?php echo $item->state == 0 ? ' system-unpublished' : null; ?>">
+	if ($rowcount == 1) : ?><div class="line items-row cols-<?php echo (int) $this->columns;?> <?php echo 'row-'.$row ; ?>"><?php endif; ?>
+	<article class="item-<?php echo $rowcount . ($item->state == 0 ? ' system-unpublished' : '') ?>">
 		<?php
 			$this->item = &$item;
 			echo $this->loadTemplate('item');
 		?>
 	</article>
-	<?php $counter++; ?>
-	<?php if (($rowcount == $this->columns) or ($counter ==$introcount)): ?>
-	</div>
-		<?php endif; ?>
-	<?php endforeach; ?>
-<?php endif; ?>
+	<?php
+	$counter++;
 
-<?php if (!empty($this->link_items)) : ?>
-	<?php echo $this->loadTemplate('links'); ?>
-<?php endif; ?>
+	endforeach;
 
-	<?php if (is_array($this->children[$this->category->id]) && count($this->children[$this->category->id]) > 0 && $this->params->get('maxLevel') !=0) : ?>
-		<div class="line cat-children">
-		<h3><?php echo JTEXT::_('JGLOBAL_SUBCATEGORIES'); ?></h3>
-			<?php echo $this->loadTemplate('children'); ?>
-		</div>
-	<?php endif; ?>
+endif;
 
-<?php if (($this->params->def('show_pagination', 1) == 1  || ($this->params->get('show_pagination') == 2)) && ($this->pagination->get('pages.total') > 1)) : ?>
+if (!empty($this->link_items)) :
+	echo $this->loadTemplate('links');
+endif;
+
+if (is_array($this->children[$this->category->id]) && count($this->children[$this->category->id]) > 0 && $this->params->get('maxLevel') !=0) : ?>
+	<div class="line cat-children">
+	<h3><?php echo JTEXT::_('JGLOBAL_SUBCATEGORIES'); ?></h3>
+	<?php echo $this->loadTemplate('children'); ?>
+	</div><?php
+
+endif;
+
+if (($this->params->def('show_pagination', 1) == 1  || ($this->params->get('show_pagination') == 2)) && ($this->pagination->get('pages.total') > 1)) { ?>
 	<div class="line pagination">
-<?php  if ($this->params->def('show_pagination_results', 1)) : ?>
+	<?php if ($this->params->def('show_pagination_results', 1)) { ?>
 	<p class="counter"><?php echo $this->pagination->getPagesCounter(); ?></p>
-<?php endif; ?>
-<?php echo $this->pagination->getPagesLinks(); ?>
+	<?php } ?>
+	<?php echo $this->pagination->getPagesLinks(); ?>
 	</div>
-<?php  endif; ?>
+<?php } ?>
 
-</section>
+</section><!-- .blog -->
