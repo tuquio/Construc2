@@ -1,0 +1,291 @@
+/*!
+ * padawan.css (Frontend Template)
+
+HEADER.above
+#header
+  #logo
+.body-container
+  HEADER.below
+  #breadcrumbs
+  NAV#nav
+  .content-container
+    #nav-below
+      .below .count-1 - .count-6			[#nav-below-1 - #nav-below-6]
+    #content .load-first
+      .content-main
+        .content-above
+           .above .count-1 - .count-6		[#content-above-1 - #content-above-6]
+        [message] [component]
+        .content-below
+          .below .count-1 - .count-6		[#content-below-1 - #content-below-6]
+        .column-group .group-alpha
+    .column-group .group-beta
+    .footer-above
+      .above .count-1 - .count-6			[#footer-above-1 - #footer-above-6]
+
+FOOTER#footer
+  .syndicate
+
+ */
+@import url(http://fonts.googleapis.com/css?family=Kristi);
+
+body {min-width:960px}
+
+/* template param override (#body-container,#header-above 100%) */
+@media screen and (max-width:1039px) 						{ body #body-container, body #header-above {max-width:980px} }
+@media screen and (min-width:1040px) and (max-width:1149px) { body #body-container, body #header-above {max-width:94%} }
+@media screen and (min-width:1150px) and (max-width:1279px) { body #body-container, body #header-above {max-width:90%} }
+@media screen and (min-width:1280px)						{ body #body-container, body #header-above {max-width:1150px} }
+
+#nav	{margin-top:1em }
+.content-container { margin-top:1em }
+
+#logo   {font-size:60px;height:100px;font-family:'Unna',Georgia,serif;}
+#logo   ,
+#logo a {float:left;margin:10px;text-align:left;line-height:1;text-rendering: optimizelegibility;}
+#logo a {height:auto;font-size:1em;width:auto;text-decoration:none;}
+
+#to-page-top	{position:absolute;right:10px;text-align:right;}
+#diagnostics	{position:absolute;right:10px;top:20px;max-width:90px}
+#diagnostics li	{padding:0;margin:0;line-height: 1}
+
+h1,h2,h3,h4,h5,h6 {line-height:normal;text-rendering: optimizelegibility;}
+
+ol:first-child,
+ul:first-child {margin-top:0}
+
+p {-webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto;}
+
+/* =column layout [[20|60]20] */
+#body-container	,
+header.above	,
+header.below	{margin:0 auto;}
+
+.content-main	{width:auto; float:none}
+.load-first 	{width:auto; float:none}
+.column-group 	{width:25%;}
+.group-alpha	{float:left}
+.group-beta		{float:left}
+
+.main-beta .load-first	  {width:75%;float:left;}
+.alpha-main .content-main ,
+
+.alpha-main-beta .load-first	{width:75%;float:left;}
+.alpha-main-beta .content-main	{width:75%;float:right;}
+
+.main-beta .page-foot 		{width:75%;}
+.alpha-main-beta .page-foot {width:50%;}
+
+/*
+ * =columns context
+ */
+.column-group .mod		{margin-top:0}
+.column-group .moduletable {margin-bottom:10px}
+.column-group fieldset	{padding:5px;}
+.column-group .inner	{}
+.column-group h3		{margin:0; padding:0;}
+
+.column-group .notice .inner {padding:1ex 1em}
+
+/*
+ * =contents
+ */
+.blog .items-leading	{}
+.blog .items-row		{}
+.blog .items-more		{}
+
+.blog .category-desc	,
+.blog article			,
+article.item-page		{padding:1em; margin-bottom:1.6em; margin-right:20px}
+.blog article		,
+article.item-page	{padding-bottom:1.6em}
+
+.items-leading h2	{margin-top:0}
+.items-leading article {min-height:11em}
+
+.category-desc p:only-child { margin-bottom:0 }
+
+.item-page		{ min-height:30em; }
+
+.item-page h1, .item-page .H1 {}
+.item-page h2, .item-page .H2 {}
+.item-page h3, .item-page .H3 {margin-top:1.5em;}
+.item-page h4, .item-page .H4 {margin-top:1.2em;}
+.item-page h3:target {}
+
+.page-toc	{float:right; width:40%;}
+#aii		{margin-top:0}
+
+.items-leading p { margin-left:10px }
+
+/*@todo make <details> see padawan.css */
+/* call-outs and asides flush right within their containing box
+ * in-context position using negative margins somewhere else below.
+ * the disclosure widget will still be displayed if you don't provide a summary element
+ */
+details.meta {
+	padding: 0 1ex;
+	float:right;
+	margin-top:-2.4em;
+	margin-left:1em;
+	width: 30%;
+}
+.meta dt	{display:inline;}
+.meta dd	{display:inline;}
+.meta dd:after {display:block;content:' '}
+
+.meta summary	{cursor:help;}
+summary::-webkit-details-marker { color: #444; font-size:1.2em}
+
+.items-leading .meta ,
+.items-row .meta	{max-width:80%}
+.item-page .meta	{max-width:100%;margin-top:-3em;}
+
+/*
+.items-leading details.meta	{margin-top:-2em; right:0}
+.items-leading details.meta	{position:absolute; top:auto; z-index:27}
+*/
+.article-info	{margin:0}
+	/* 'shadow' DOM */
+	summary::-webkit-details-marker { color:lime; }
+
+/*
+ * =bilder in artikeln
+ */
+.blog img,
+.item-page img	,
+.portrait img 	{height:auto; padding:8px; background:#fff;}
+.portrait img 	{outline:1px solid #CDCDCD}
+
+.blog img,
+.items-leading img	{height:auto;margin-top:1em;}
+
+.blog img,
+.items-leading img	,
+.items-row img		{max-width:80%}
+.item-page img		{max-width:96%}
+
+/*
+ * =modules
+ */
+.mod-login ul		{margin-left:10px;padding-left:.7em}
+.mod-banner			{}
+.banneritem img 	{display:block;margin-left:auto;margin-right:auto;text-align:center;}
+.mod-search 		{margin-right:10px;float:right}
+.mod-search label	{padding-right:1em}
+
+.mod .je-header 	{font:1.4em 'Unna',Georgia,serif;}
+
+.mod-articles-categories .inner {padding:5px;}
+
+.portrait			{text-align:center}
+
+/*
+ * =module groups
+ */
+header.above div.above	{}
+
+/*
+ * =menus
+ */
+.hmenu 			{padding:.5ex 0}
+li.active		{font-weight:bold}
+
+/* align with menu items */
+.breadcrumbs	{margin-top:1em}
+.breadcrumbs a.mi	,
+.breadcrumbs .active {padding:0.25ex 0.6em}
+
+.sep 			{padding:0.25ex}
+
+/* .mod-articles-categories .moduletable .<moduleclass_sfx> */
+h3.mod-articles-categories	{}
+menu.categories .H2,
+menu.categories .H3,
+menu.categories .H4,
+menu.categories .H5,
+menu.categories .H6			{font-weight:bold;font-size:110%}
+menu.categories > li.current {background-color:rgba(200,200,200, 0.2);}
+menu.categories span.active {text-transform:uppercase;}
+
+/* =misc */
+.contact-item	{}
+
+/*
+ * =color scheme, borders, eye-candy; and not
+ */
+html, body		{background:#F0F0F0;color:#444}
+
+h2,h3,h4,
+.H2,.H3,.H4		{text-shadow:0 1px 0 #FFF}
+.category-desc	{text-shadow:0 1px 0 #FFF; text-shadow:0px 0px 1px #888;}
+
+.page-head		{}
+#logo, #logo a	{}
+
+nav, .menu, .hmenu	{background:#fff}
+
+.mainmenu					{}
+.mainmenu .active			{}
+.mainmenu .active a:hover	{}
+
+.breadcrumbs				{}
+
+.blog .category-desc	,
+.blog article			,
+article.item-page		,
+.column-group .inner	{background:#fff}
+.portrait .inner		{background: none;}
+
+.column-group fieldset	{}
+.group-alpha .mod		{}
+.group-beta .mod		{}
+
+li.active {}
+
+.meta	{background:#FFF}
+
+/* Tips, Error, Message, Hightlight */
+.error, .warning, .notice, .message, .tips { border: 1px solid; background: white  no-repeat 5px 5px; }
+.error, .warning { color: #BF0000; }
+.notice, .message { color: #069; }
+.tips { color: #EE9600; }
+
+/* =supplemental property classes */
+.prel {position:relative} .pabs {position:absolute}
+.mt0 {margin-top:0}  .mr0 {margin-right:0}  .mb0 {margin-bottom:0}  .ml0 {margin-left:0}
+.pt0 {padding-top:0} .pr0 {padding-right:0} .pb0 {padding-bottom:0} .pl0 {padding-left:0}
+.bt0 {border-top:0}  .br0 {border-right:0}  .bb0 {border-bottom:0}  .bl0 {border-left:0}
+.lft {float:left} .rgt {float:right}
+
+/* =text shadows CSS3 */
+.ts { text-shadow:0 0 2px #888; }
+li.mi:hover, .tslt { text-shadow:0 0 2px #AAA; }
+
+.moduletable h3, .moduletable .H3,
+.moduletable h4, .moduletable .H4,
+.moduletable h5, .moduletable .H5 {text-shadow:none}
+
+h1,.H1,
+.hts { text-shadow:0 0 2px #666; }
+
+/*
+ * =branding - category and page styles
+ */
+.category-desc {font-size:100%;}
+.category-desc blockquote {padding:1ex; font:normal 2.15em/1 'Kristi',cursive; text-shadow:0px 0px 3px #888; text-align:center; text-rendering: optimizelegibility; font-size-adjust:0.455; font-stretch: expanded;}
+
+.schriftstellerei article p:first-of-type img {float:right; max-width:40%; margin-left:1em; }
+
+/* =box drop shadows CSS3 */
+.meta {-webkit-box-shadow:inset 0 0 6px #aaa; -moz-box-shadow:inset 0 0 6px #aaa; box-shadow:inset 0 0 6px #aaa;}
+.ds   {-webkit-box-shadow:0 0 3px #888; -moz-box-shadow:0 0 3px #888; box-shadow:0 0 3px #888;}
+
+.mainnavi, .breadcrumbs,
+.dslt {-webkit-box-shadow:0 0 3px #ccc; -moz-box-shadow:0 0 3px #ccc; box-shadow:0 0 3px #ccc;}
+
+.blog img,
+.item-page img,
+.hbox-ds {-webkit-box-shadow:-2px 3px 6px 2px #888; -moz-box-shadow:-2px 3px 6px 2px #888; box-shadow:-2px 3px 6px 2px #888;}
+
+/* .eof */
