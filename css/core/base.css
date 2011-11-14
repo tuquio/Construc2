@@ -104,7 +104,7 @@ blockquote{margin-left:1.2ex}
 
 /* =bits of color */
 body{color:#222; background:white;}
-a{color:inherit;background:transparent}
+a,a:hover {color:inherit}
 body a {*color:#222 !ie;}
 mark{background:yellow}
 ::selection{background:#333;color:#eee;text-shadow:none}
