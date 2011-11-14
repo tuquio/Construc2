@@ -32,10 +32,10 @@ FOOTER#footer
 body {min-width:960px}
 
 /* template param override (#body-container,#header-above 100%) */
-@media screen and (max-width:1039px) 						{ body #body-container, body #header-above {max-width:980px} }
-@media screen and (min-width:1040px) and (max-width:1149px) { body #body-container, body #header-above {max-width:94%} }
-@media screen and (min-width:1150px) and (max-width:1279px) { body #body-container, body #header-above {max-width:90%} }
-@media screen and (min-width:1280px)						{ body #body-container, body #header-above {max-width:1150px} }
+@media screen and (max-width:1039px) 						{ body #body-container, body #header-above, .page-foot {max-width:980px} }
+@media screen and (min-width:1040px) and (max-width:1149px) { body #body-container, body #header-above, .page-foot {max-width:94%} }
+@media screen and (min-width:1150px) and (max-width:1279px) { body #body-container, body #header-above, .page-foot {max-width:90%} }
+@media screen and (min-width:1280px)						{ body #body-container, body #header-above, .page-foot {max-width:1150px} }
 
 #nav	{margin-top:1em }
 .content-container { margin-top:1em }
@@ -73,8 +73,16 @@ header.below	{margin:0 auto;}
 .alpha-main-beta .load-first	{width:75%;float:left;}
 .alpha-main-beta .content-main	{width:75%;float:right;}
 
-.main-beta .page-foot 		{width:75%;}
-.alpha-main-beta .page-foot {width:50%;}
+.page-foot	{margin:0 auto}
+.foot-inner	{
+	-moz-column-count: 2;
+	-webkit-column-count: 2;
+	column-count: 2;
+	-moz-column-gap: 10px;
+	-webkit-column-gap: 10px;
+	column-gap: 10px;
+}
+.foot-inner	fieldset {border:none; outline:none}
 
 /*
  * =columns context
@@ -97,8 +105,6 @@ header.below	{margin:0 auto;}
 .blog .category-desc	,
 .blog article			,
 article.item-page		{padding:1em; margin-bottom:1.6em; margin-right:20px}
-.blog article		,
-article.item-page	{padding-bottom:1.6em}
 
 .items-leading h2	{margin-top:0}
 .items-leading article {min-height:11em}
@@ -118,28 +124,20 @@ article.item-page	{padding-bottom:1.6em}
 
 .items-leading p { margin-left:10px }
 
+.readmore	{}
+
 /*@todo make <details> see padawan.css */
 /* call-outs and asides flush right within their containing box
  * in-context position using negative margins somewhere else below.
  * the disclosure widget will still be displayed if you don't provide a summary element
  */
-details.meta {
-	padding: 0 1ex;
-	float:right;
-	margin-top:-2.4em;
-	margin-left:1em;
-	width: 30%;
-}
-.meta dt	{display:inline;}
-.meta dd	{display:inline;}
-.meta dd:after {display:block;content:' '}
+details.meta	{clear:both;padding:.5ex 1em;margin-top:20px}
+ .meta dt		{display:inline;}
+ .meta dd		{display:inline;}
+ .meta dd:after	{display:block;content:' '}
 
 .meta summary	{cursor:help;}
 summary::-webkit-details-marker { color: #444; font-size:1.2em}
-
-.items-leading .meta ,
-.items-row .meta	{max-width:80%}
-.item-page .meta	{max-width:100%;margin-top:-3em;}
 
 /*
 .items-leading details.meta	{margin-top:-2em; right:0}
@@ -152,15 +150,11 @@ summary::-webkit-details-marker { color: #444; font-size:1.2em}
 /*
  * =bilder in artikeln
  */
-.blog img,
 .item-page img	,
+.items-leading img	,
 .portrait img 	{height:auto; padding:8px; background:#fff;}
 .portrait img 	{outline:1px solid #CDCDCD}
 
-.blog img,
-.items-leading img	{height:auto;margin-top:1em;}
-
-.blog img,
 .items-leading img	,
 .items-row img		{max-width:80%}
 .item-page img		{max-width:96%}
@@ -275,7 +269,8 @@ h1,.H1,
 .category-desc {font-size:100%;}
 .category-desc blockquote {padding:1ex; font:normal 2.15em/1 'Kristi',cursive; text-shadow:0px 0px 3px #888; text-align:center; text-rendering: optimizelegibility; font-size-adjust:0.455; font-stretch: expanded;}
 
-.schriftstellerei article p:first-of-type img {float:right; max-width:40%; margin-left:1em; }
+.schriftstellerei article p:first-of-type img {float:right; margin-left:1em; max-width:40%; position:relative;z-index:10}
+.schriftstellerei .items-leading img:first-child {margin:-1em 0 1em 1em;}
 
 /* =box drop shadows CSS3 */
 .meta {-webkit-box-shadow:inset 0 0 6px #aaa; -moz-box-shadow:inset 0 0 6px #aaa; box-shadow:inset 0 0 6px #aaa;}
