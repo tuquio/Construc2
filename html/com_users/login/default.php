@@ -1,13 +1,13 @@
 <?php
 /**
- * @version		$Id: default.php 20196 2011-01-09 02:40:25Z ian $
- * @package		Joomla.Site
- * @subpackage	com_users
- * @copyright	Copyright (C) 2005 - 2011 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
- * @since		1.5
+ * Custom Override for com_users login and logout
+ *
+ * @package		Templates
+ * @subpackage  Construc2
+ * @author		WebMechanic http://webmechanic.biz
+ * @copyright	(C) 2011 WebMechanic. All rights reserved.
+ * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
-
 defined('_JEXEC') or die;
 
 if ($this->user->get('guest')):
