@@ -39,8 +39,8 @@ dd{margin:0 0 0 3ex;} /* using ex */
 nav ul,nav ol{list-style:none;list-style-image:none;}
 img{border:0;-ms-interpolation-mode:bicubic;}
 svg:not(:root){overflow:hidden;}
-fieldset{margin:0 2px;padding:.35em .625em .75em;}
-legend{border:0;*margin-left:-7px;}
+fieldset{margin:0 2px 1em 2px;padding:1ex .625em 1ex;}
+legend{border:0;*margin-left:-7px;padding-left:.625em;padding-right:.625em}
 button,input{line-height:normal;*overflow:visible;}
 button,input,select,textarea{font-family:sans-serif;vertical-align:baseline;*vertical-align:middle;}
 table button,table input{*overflow:auto;}
@@ -92,7 +92,7 @@ q { quotes: '„' '“' '‚' '‘' }
 [lang|=fr] q,q[lang|=fr] { quotes: '«' '»' '<' '>'; }
 
 /* =lists */
-ul,ol,dl{margin:1ex auto .6ex 1ex;padding-left:1ex}
+ul,ol,dl{margin:1ex auto .625em 1ex;padding-left:1ex}
 ol {list-style:decimal}
 ul {list-style:disc}
 li{display:list-item;list-style-position:outside;text-indent:0;margin-left:1.2ex}
