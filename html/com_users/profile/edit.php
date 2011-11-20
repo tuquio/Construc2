@@ -19,7 +19,8 @@ JHtml::_('behavior.formvalidation');
 <?php endif; ?>
 
 <form class="form-validate" action="<?php echo JRoute::_('index.php?option=com_users&task=profile.save'); ?>" method="post" enctype="multipart/form-data">
-
+        
+    
 	<fieldset class="profile-edit account">
 	<legend><?php echo JText::sprintf('COM_USERS_PROFILE_EDIT_LABEL', $this->form->getValue('username')) ?></legend>
 
@@ -27,7 +28,7 @@ JHtml::_('behavior.formvalidation');
 	<dl class="account">
 		<dt class="name"><?php echo $this->form->getLabel('name'); ?></dt>
 		<dd class="name"><?php echo $this->form->getInput('name'); ?></dd>
-		<dt class="username hidden"><?php echo $this->form->getLabel('username'); ?></dt>
+                <dt class="username hidden"><?php echo $this->form->getLabel('username'); ?></dt>
 		<dd class="username hidden"><?php echo $this->form->getInput('username'); ?></dd>
 
 		<dt class="email"><?php echo $this->form->getLabel('email1'); ?></dt>
@@ -85,21 +86,22 @@ JHtml::_('behavior.formvalidation');
 	Hier kommen dann ggf. weitere Profilfelder hinein, wenn geklärt ist
 	wie man diese "anlegt" und "welche" überhaupt Sinn ergeben ...
 */ ?>
-		<dt class="dob"><?php echo $this->form->getLabel('dob','profile'); ?></dt>
+                <dt class="dob"><?php echo $this->form->getLabel('dob','profile'); ?></dt>
 		<dd class="dob"><?php echo $this->form->getInput('dob','profile'); ?></dd>
-		<dt class="aboutme"><?php echo $this->form->getLabel('aboutme', 'profile') ?></dt>
-		<dd class="aboutme"><?php echo $this->form->getInput('aboutme', 'profile');; ?></dd>
+		<dt class="me"><?php echo $this->form->getLabel('aboutme', 'profile') ?></dt>
+		<dd class="me"><?php echo $this->form->getInput('aboutme', 'profile');; ?></dd>
 	</dl>
 	</fieldset>
 
-	<div class="line button">
-		<button type="submit" class="validate"><span><?php echo JText::_('JSUBMIT'); ?></span></button>
-		<?php echo JText::_('COM_USERS_OR'); ?>
-		<a href="<?php echo JRoute::_('index.php?option=com_users&view=profile'); ?>" title="<?php echo JText::_('JCANCEL'); ?>"><?php echo JText::_('JCANCEL'); ?></a>
 
-		<input type="hidden" name="option" value="com_users" />
-		<input type="hidden" name="task" value="profile.save" />
+	<div class="line button">
+                <button type="submit" class="validate"><span><?php echo JText::_('JSUBMIT'); ?></span></button>
+                <?php echo JText::_('COM_USERS_OR'); ?>
+                <a href="<?php echo JRoute::_(''); ?>" title="<?php echo JText::_('JCANCEL'); ?>"><?php echo JText::_('JCANCEL'); ?></a>
+
+                <input type="hidden" name="option" value="com_users" />
+                <input type="hidden" name="task" value="profile.save" />
 	<?php echo JHtml::_('form.token');?>
-	</div>
+        </div>
 </form>
 </div>
