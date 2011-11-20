@@ -35,7 +35,7 @@ table.category {border:1px solid #000}
 .date-weekday, .date-month, .date-day, .date-year {/* intentionally left blank */}
 
 .edit legend{font-size:1.2em;font-weight:bold;padding:2px}
-.edit fieldset{border:solid 1px #ccc;padding:20px;margin:10px 0}
+.edit fieldset{border-color:#ccc;padding:20px;margin:10px 0}
 .edit .formelm label {display:inline-block;vertical-align:top;width:12em;}
 .edit .formelm #jform_description-lbl {float:none;display:block}
 .edit .formelm .radio label{float:none;width:14em}
