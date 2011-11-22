@@ -25,39 +25,41 @@ $fields = array(
 	$this->form->getField('tos', 'profile')
 );
 
+// Menüitem ID des "AGB" Artikels wie er in der Komponente hinterlegt ist
+// @todo sollte besser in den Params des Plugins gesetzt werden, ist aber trickier
 $tosLink = (int) JComponenthelper::getParams('com_deal')->get('tos_link', 0);
 
 $cp = JComponenthelper::getParams('com_deal');
 
 $tosLink = ($tosLink > 0)
-		? '<a href="'. JRoute::_('index.php?option=com_content&tmpl=modal&Itemid='.$tosLink) .'" class="readTOS modal" rel="{handler: \'iframe\', size: {x:800, y:600}}">'.JText::_('Read the terms of service').'</a>'
+		? '<a class="tos-link modal" href="'. JRoute::_('index.php?option=com_content&tmpl=modal&Itemid='.$tosLink) .'" rel="{handler: \'iframe\', size: {x:800, y:600}}">'.JText::_('Read the terms of service').'</a>'
 		: JText::_('Please set up a page that points to your TOS');
 ?>
-
 <div class="registration">
 	<?php if ($this->params->get('show_page_heading')) : ?>
-	<h1><?php echo $this->escape($this->params->get('page_heading')); ?></h1>
+	<h1><?php echo $this->escape($this->params->get('page_heading')) ?></h1>
 	<?php endif; ?>
-	<form id="member-registration" action="<?php echo JRoute::_('index.php?option=com_users&task=registration.register'); ?>" method="post" class="form-validate">
+	<form class="form-validate" id="member-registration" action="<?php echo JRoute::_('index.php?option=com_users&task=registration.register') ?>" method="post">
 		<?php if (count($fields)) : ?>
 		<fieldset>
-			<legend><?php echo JText::_('Registration'); ?></legend>
+			<legend><?php echo JText::_('Registration') ?></legend>
 			<dl>
 			<?php foreach ($fields as $field) : ?>
 				<dt><?php echo $field->label; ?></dt>
 				<dd><?php echo $field->input; ?></dd>
 			<?php endforeach; ?>
 			</dl>
-			<?php echo $tosLink; ?>
+			<p class="tos-link"><?php echo $tosLink; ?></p>
 		</fieldset>
 		<?php endif; ?>
 		<div>
-			<button type="submit" class="validate"><?php echo JText::_('JREGISTER'); ?></button>
-			<?php echo JText::_('COM_USERS_OR'); ?>
-			<a href="<?php echo JRoute::_('index.php?option=com_content'); ?>" title="<?php echo JText::_('JCANCEL'); ?>"><?php echo JText::_('JCANCEL'); ?></a>
-			<input type="hidden" name="option" value="com_users" />
-			<input type="hidden" name="task" value="registration.register" />
-			<?php echo JHtml::_('form.token'); ?>
+		<button type="submit" class="validate"><?php echo JText::_('JREGISTER') ?></button>
+		<?php echo JText::_('COM_USERS_OR'); ?>
+		<!-- cancel registration - go back to the homepage -->
+		<a href="<?php echo JRoute::_(JUri::base(false)) ?>" title="<?php echo JText::_('JCANCEL') ?>"><?php echo JText::_('JCANCEL') ?></a>
+		<input type="hidden" name="option" value="com_users" />
+		<input type="hidden" name="task" value="registration.register" />
+		<?php echo JHtml::_('form.token'); ?>
 		</div>
 	</form>
 </div>
