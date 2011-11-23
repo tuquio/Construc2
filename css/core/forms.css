@@ -19,7 +19,7 @@ fieldset dd		{width:50%}
 textarea		{border:1px solid; resize:vertical; width:90%}
 input			{border-style:solid; border-width:0 0 2px 1px; padding-left:.2ex; width:90%}
 input[type=radio] {width:2em;border:none}
-input[type=image] {width:auto}
+input[type=image] {width:auto;border:none;outline:none}
 
 input[readonly]	{border:none; cursor:default}
 
