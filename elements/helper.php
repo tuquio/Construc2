@@ -84,6 +84,9 @@ class ConstructTemplateHelper
 		}
 
 		$this->addLayout('index');
+		$_request = new JInput();
+		$this->addLayout( $_request->getCmd('tmpl') );
+		$this->addLayout( $_request->getCmd('layout') );
 
 		// @see renderModules()
 		$chunks = array(
@@ -224,6 +227,10 @@ class ConstructTemplateHelper
 				$scope    = $_base;
 				$basename = $_name;
 			}
+		}
+
+		if (empty($scope) && empty($basename)) {
+			return $this;
 		}
 
 		$ext = '.php';
