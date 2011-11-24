@@ -27,12 +27,14 @@ $fields = array(
 
 // Menüitem ID des "AGB" Artikels wie er in der Komponente hinterlegt ist
 // @todo sollte besser in den Params des Plugins gesetzt werden, ist aber trickier
-$tosLink = (int) JComponenthelper::getParams('com_deal')->get('tos_link', 0);
+$tosid   = (int) JComponenthelper::getParams('com_deal')->get('tos_link', 0);
+$mitem   = JFactory::getApplication('site')->getMenu()->getItem($tosid);
+$tosLink = $mitem ? $mitem->link . '&tmpl=modal' : null;
 
 $cp = JComponenthelper::getParams('com_deal');
 
-$tosLink = ($tosLink > 0)
-		? '<a class="tos-link modal" href="'. JRoute::_('index.php?option=com_content&tmpl=modal&Itemid='.$tosLink) .'" rel="{handler: \'iframe\', size: {x:800, y:600}}">'.JText::_('Read the terms of service').'</a>'
+$tosLink = ($tosLink)
+		? '<a class="tos-link modal" href="'. JRoute::_($tosLink) .'" rel="{handler: \'iframe\'}">'.JText::_('Read the terms of service').'</a>'
 		: JText::_('Please set up a page that points to your TOS');
 ?>
 <div class="registration">
