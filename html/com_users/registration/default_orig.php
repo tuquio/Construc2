@@ -92,7 +92,7 @@ JHtml::_('behavior.formvalidation');
 	<button type="submit" class="validate"><span><?php echo JText::_('JREGISTER');?></span></button>
 	<?php echo JText::_('COM_USERS_OR');?>
 	<!-- cancel registration - go back to the homepage -->
-	<a href="<?php echo JRoute::_(JUri::base(false)) ?>" title="<?php echo JText::_('JCANCEL');?>"><?php echo JText::_('JCANCEL');?></a>
+	<a class="button" href="<?php echo JRoute::_(JUri::base(false)) ?>" title="<?php echo JText::_('JCANCEL');?>"><?php echo JText::_('JCANCEL');?></a>
 	</div>
 
 	<input type="hidden" name="option" value="com_users" />
