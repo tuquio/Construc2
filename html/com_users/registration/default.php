@@ -19,10 +19,10 @@ JHtml::_('behavior.modal');
 $this->form->addFieldPath('components/com_deal/models/forms/fields');
 
 $fields = array(
-	$this->form->getField('email1'),
-	$this->form->getField('password1'),
-	$this->form->getField('password2'),
-	$this->form->getField('tos', 'profile')
+	'email1'    => $this->form->getField('email1'),
+	'password1' => $this->form->getField('password1'),
+	'password2' => $this->form->getField('password2'),
+//	'tos'       => $this->form->getField('tos', 'profile')
 );
 
 // Menüitem ID des "AGB" Artikels wie er in der Komponente hinterlegt ist
@@ -34,31 +34,37 @@ $tosLink = $mitem ? $mitem->link . '&tmpl=modal' : null;
 $cp = JComponenthelper::getParams('com_deal');
 
 $tosLink = ($tosLink)
-		? '<a class="tos-link modal" href="'. JRoute::_($tosLink) .'" rel="{handler: \'iframe\'}">'.JText::_('Read the terms of service').'</a>'
+		? '<a class="tos-link modal" href="'. JRoute::_($tosLink) .'" rel="{handler: \'iframe\'}">'
+			. JText::_('Read our terms of service')
+			. '</a>'
 		: JText::_('Please set up a page that points to your TOS');
 ?>
-<div class="registration">
+<div class="line account registration">
 	<?php if ($this->params->get('show_page_heading')) : ?>
 	<h1><?php echo $this->escape($this->params->get('page_heading')) ?></h1>
 	<?php endif; ?>
-	<form class="form-validate" id="member-registration" action="<?php echo JRoute::_('index.php?option=com_users&task=registration.register') ?>" method="post">
-		<?php if (count($fields)) : ?>
-		<fieldset>
-			<legend><?php echo JText::_('Registration') ?></legend>
-			<dl>
-			<?php foreach ($fields as $field) : ?>
-				<dt><?php echo $field->label; ?></dt>
-				<dd><?php echo $field->input; ?></dd>
-			<?php endforeach; ?>
-			</dl>
-			<p class="tos-link"><?php echo $tosLink; ?></p>
+	<form class="form-validate" action="<?php echo JRoute::_('index.php?option=com_users&task=registration.register') ?>" method="post">
+		<fieldset class="registration account" >
+		<legend><?php echo JText::_('COM_USERS_REGISTRATION_DEFAULT_LABEL') ?></legend>
+		<!-- registration - preparation -->
+		<dl class="account">
+		<?php foreach ($fields as $field) : ?>
+			<dt class="<?php echo $field->name ?>"><?php echo $field->label ?></dt>
+			<dd class="<?php echo $field->name ?>"><?php echo $field->input ?></dd>
+		<?php endforeach; ?>
+		</dl>
+		<p class="tos-link"><?php echo $tosLink; ?></p>
+		<p class="tos"><?php echo $this->form->getField('tos', 'profile')->input ?></p>
 		</fieldset>
-		<?php endif; ?>
 		<div>
+
+		<div class="line button">
 		<button type="submit" class="validate"><?php echo JText::_('JREGISTER') ?></button>
 		<?php echo JText::_('COM_USERS_OR'); ?>
 		<!-- cancel registration - go back to the homepage -->
-		<a href="<?php echo JRoute::_(JUri::base(false)) ?>" title="<?php echo JText::_('JCANCEL') ?>"><?php echo JText::_('JCANCEL') ?></a>
+		<a class="button" href="<?php echo JRoute::_(JUri::base(false)) ?>" title="<?php echo JText::_('JCANCEL') ?>"><?php echo JText::_('JCANCEL') ?></a>
+		</div>
+
 		<input type="hidden" name="option" value="com_users" />
 		<input type="hidden" name="task" value="registration.register" />
 		<?php echo JHtml::_('form.token'); ?>
