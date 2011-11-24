@@ -114,14 +114,4 @@ label.invalid{color:#ff0000;font-weight:bold;text-decoration:underline}
 
 .page-head {margin:0;text-align:left}
 
-#system-message dt{display:none}
-#system-message dd{clear:both;padding:5px 0;text-align:left;border-top:2px solid;}
-#system-message dd:after{clear:both;content:".";font:1px/0;display:block;height:0;visibility:hidden}
-#system-message dd ul li{list-style:none}
-#system-message dd.message{color:#0055BB;background:#C3D2E5;border-color:#84A7DB}
-#system-message dd.message ul{margin-bottom:0}
-#system-message dd.warning{color:#F00;background:#FBAD18;border-color:#F57E20}
-#system-message dd.warning ul{margin-bottom:0}
-#system-message dd.error{color:#F00;background:#FBEEF1;border-color:#FEABB9}
-
 /* .eof */
