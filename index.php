@@ -1,5 +1,7 @@
 <?php defined('_JEXEC') or die;
 /**
+ * Main Template entry script.
+ *
  * @package     Templates
  * @subpackage  Construc2
  * @author      WebMechanic http://webmechanic.biz
@@ -11,7 +13,7 @@ require JPATH_THEMES.'/'.$this->template.'/elements/logic.php';
 
 // Add custom layout overrides for components or section here
 /* eg:
- * $templateHelper->addLayout('index');
+ * $templateHelper->addLayout('contact');
  * $templateHelper->addLayout(42, 'section');
  */
 

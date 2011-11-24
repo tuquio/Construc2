@@ -302,12 +302,34 @@ class ConstructTemplateHelper
 			return;
 		}
 
-		// $jmenu = JFactory::getApplication()->getMenu()->getActive();
+		$jmenu	= JFactory::getApplication()->getMenu()->getActive();
 
-		foreach ($this->layouts as $layout) {
+		$req	= new JInput();
+		$tmpl	= $req->getCmd('tmpl');
+		$layout	= $req->getCmd('layout');
+		$key	= $tmpl . '.php';
+		$file	= null;
+
+		if (isset($this->layouts[$key]))
+		{
+			$file = $this->layouts[$key];
+			$key  = $tmpl .'-'. $layout .'.php';
+			if (isset($this->layouts[$key]))
+			{
+				$file = $this->layouts[$key];
+			}
+		}
+
+		if ( is_array($file) && JFile::exists($file['path']))
+		{
+			return $file;
+		}
+
+		foreach ($this->layouts as $file)
+		{
 			// return first file that exists
-			if (JFile::exists($layout['path'])) {
-				return $layout;
+			if (JFile::exists($file['path'])) {
+				return $file;
 			}
 		}
 	}

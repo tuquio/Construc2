@@ -1,6 +1,7 @@
-<!DOCTYPE html>
 <?php defined('_JEXEC') or die;
 /**
+ * Modal Window Template entry script.
+ *
  * @package     Templates
  * @subpackage  Construc2
  * @author      WebMechanic http://webmechanic.biz
@@ -9,16 +10,21 @@
  */
 // Load template logic
 require JPATH_THEMES.'/'.$this->template.'/elements/logic.php';
-$this->addStyleSheet($tmpl_url.'/css/core/modal.css');
 
-?><html lang="<?php echo $this->language; ?>" dir="<?php echo $this->direction; ?>" >
-<head>
-<jdoc:include type="head" />
-</head>
-<body>
-<?php if ($this->getBuffer('message')) : ?>
-<div class="line"><jdoc:include type="message" /></div>
-<?php endif; ?>
-<div class="line"><jdoc:include type="component" /></div>
-</body>
-</html>
+// Add custom layout overrides for components or section here
+/* eg:
+ * $templateHelper->addLayout(42, 'article');
+ */
+
+// Check for alternate index file, load it if it exists, and leave
+if ($alternateIndexFile = $templateHelper->getLayout()) {
+	if ($alternateIndexFile['scope'] == 'html') {
+		require_once JPATH_THEMES.'/'.$this->template.'/layouts/static_html.php';
+	} else {
+		require_once $alternateIndexFile['path'];
+	}
+	return;
+}
+
+// fallback: load standard modal.php
+require_once JPATH_THEMES.'/'.$this->template.'/layouts/modal.php';
