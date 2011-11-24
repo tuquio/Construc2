@@ -1,32 +1,7 @@
 /*!
  * padawan.css (Frontend Template)
-
-HEADER.above
-#header
-  #logo
-.body-container
-  HEADER.below
-  #breadcrumbs
-  NAV#nav
-  .content-container
-    #nav-below
-      .below .count-1 - .count-6			[#nav-below-1 - #nav-below-6]
-    #content .load-first
-      .content-main
-        .content-above
-           .above .count-1 - .count-6		[#content-above-1 - #content-above-6]
-        [message] [component]
-        .content-below
-          .below .count-1 - .count-6		[#content-below-1 - #content-below-6]
-        .column-group .group-alpha
-    .column-group .group-beta
-    .footer-above
-      .above .count-1 - .count-6			[#footer-above-1 - #footer-above-6]
-
-FOOTER#footer
-  .syndicate
-
  */
+@import url(http://fonts.googleapis.com/css?family=Ubuntu+Condensed);
 @import url(http://fonts.googleapis.com/css?family=Kristi);
 
 body {min-width:960px}
@@ -40,7 +15,7 @@ body {min-width:960px}
 #nav	{margin-top:1em }
 .content-container { margin-top:1em }
 
-#logo   {font-size:60px;height:100px;font-family:'Unna',Georgia,serif;}
+#logo   {font-size:60px;height:100px}
 #logo   ,
 #logo a {float:left;margin:10px;text-align:left;line-height:1;text-rendering: optimizelegibility;}
 #logo a {height:auto;font-size:1em;width:auto;text-decoration:none;}
@@ -49,7 +24,10 @@ body {min-width:960px}
 #diagnostics	{position:absolute;right:10px;top:20px;max-width:90px}
 #diagnostics li	{padding:0;margin:0;line-height: 1}
 
-h1,h2,h3,h4,h5,h6 {line-height:normal;text-rendering: optimizelegibility;}
+h1,h2,h3,h4,h5,h6 {line-height:normal;margin-bottom:1.6ex}
+
+h1,h2,h3,h4,h5,h6,
+menu.categories	{font-family:'Ubuntu Condensed','Trebuchet MS',Arial,sans-serif;text-rendering: optimizelegibility}
 
 ol:first-child,
 ul:first-child {margin-top:0}
@@ -82,7 +60,6 @@ header.below	{margin:0 auto;}
 	-webkit-column-gap: 10px;
 	column-gap: 10px;
 }
-.foot-inner	fieldset {border:none; outline:none}
 
 /*
  * =columns context
@@ -163,12 +140,12 @@ summary::-webkit-details-marker { color: #444; font-size:1.2em}
  * =modules
  */
 .mod-login ul		{margin-left:10px;padding-left:.7em}
+.mod-login fieldset {border:none; outline:none}
+
 .mod-banner			{}
 .banneritem img 	{display:block;margin-left:auto;margin-right:auto;text-align:center;}
 .mod-search 		{margin-right:10px;float:right}
 .mod-search label	{padding-right:1em}
-
-.mod .je-header 	{font:1.4em 'Unna',Georgia,serif;}
 
 .mod-articles-categories .inner {padding:5px;}
 
@@ -198,7 +175,7 @@ menu.categories .H2,
 menu.categories .H3,
 menu.categories .H4,
 menu.categories .H5,
-menu.categories .H6			{font-weight:bold;font-size:110%}
+menu.categories .H6			{font-size:110%}
 menu.categories > li.current {background-color:rgba(200,200,200, 0.2);}
 menu.categories span.active {text-transform:uppercase;}
 
