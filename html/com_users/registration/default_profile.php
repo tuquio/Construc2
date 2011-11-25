@@ -1,6 +1,6 @@
 <?php
 /**
- * Custom Override for com_users.profile.edit
+ * Custom Override for com_users.registration
  *
  * @package		Templates
  * @subpackage  Construc2
@@ -13,22 +13,21 @@ defined('_JEXEC') or die;
 JHtml::_('behavior.keepalive');
 JHtml::_('behavior.formvalidation');
 ?>
-<div class="line account profile-edit">
+<div class="line account registration">
 <?php if ($this->params->get('show_page_heading')) : ?>
 	<h1><?php echo $this->escape($this->params->get('page_heading')); ?></h1>
 <?php endif; ?>
 
-<form class="form-validate" action="<?php echo JRoute::_('index.php?option=com_users&task=profile.save'); ?>" method="post" enctype="multipart/form-data">
-
-	<fieldset class="profile-edit account">
-	<legend><?php echo JText::sprintf('COM_USERS_PROFILE_EDIT_LABEL', $this->form->getValue('username')) ?></legend>
+<form class="form-validate" action="<?php echo JRoute::_('index.php?option=com_users&task=registration.register'); ?>" method="post">
+	<fieldset class="registration account" >
+	<legend><?php echo JText::_('COM_USERS_REGISTRATION_DEFAULT_LABEL') ?></legend>
 
 	<!-- registration - preparation -->
 	<dl class="account">
 		<dt class="name"><?php echo $this->form->getLabel('name'); ?></dt>
 		<dd class="name"><?php echo $this->form->getInput('name'); ?></dd>
-		<dt class="username hidden"><?php echo $this->form->getLabel('username'); ?></dt>
-		<dd class="username hidden"><?php echo $this->form->getInput('username'); ?></dd>
+		<dt class="username"><?php echo $this->form->getLabel('username'); ?></dt>
+		<dd class="username"><?php echo $this->form->getInput('username'); ?></dd>
 
 		<dt class="email"><?php echo $this->form->getLabel('email1'); ?></dt>
 		<dd class="email"><?php echo $this->form->getInput('email1'); ?></dd>
@@ -56,7 +55,7 @@ JHtml::_('behavior.formvalidation');
 	<!-- registration - address  -->
 	<fieldset class="registration address">
 	<legend><?php echo JText::_('COM_USERS_PROFILE_ADDRESS'); ?></legend>
-<?php /* @todo: address field ordering.
+<? /* @todo: address field ordering.
 	For ultimate and accurate l10n the order of these fields should match the user's postal rules.
 	Needs a "super-smart template helper" to be asked then, and to take care of this US-centric crap.
 */ ?>
@@ -78,28 +77,26 @@ JHtml::_('behavior.formvalidation');
 
 	</dl>
 	</fieldset>
-        <fieldset class="profile-edit tos" >
-        	<dl class="about-me">
-<? /* @todo: User Profilfelder
-	"Lieblingsbuch" ist erstmal weg.
-	Hier kommen dann ggf. weitere Profilfelder hinein, wenn geklärt ist
-	wie man diese "anlegt" und "welche" überhaupt Sinn ergeben ...
-*/ ?>
+	<fieldset class="registration tos" >
+	<legend><?php echo JText::_('COM_USERS_PROFILE_REGISTRATION_AGREEMENT'); ?></legend>
+	<!-- I agree -->
+	<dl class="tos">
+		<dt class="tos"><?php echo $this->form->getLabel('tos','profile'); ?></dt>
+		<dd class="tos"><?php echo $this->form->getInput('tos','profile'); ?></dd>
 		<dt class="dob"><?php echo $this->form->getLabel('dob','profile'); ?></dt>
 		<dd class="dob"><?php echo $this->form->getInput('dob','profile'); ?></dd>
-		<dt class="aboutme"><?php echo $this->form->getLabel('aboutme', 'profile') ?></dt>
-		<dd class="aboutme"><?php echo $this->form->getInput('aboutme', 'profile');; ?></dd>
 	</dl>
 	</fieldset>
 
 	<div class="line button">
-		<button type="submit" class="validate"><span><?php echo JText::_('JSUBMIT'); ?></span></button>
-		<?php echo JText::_('COM_USERS_OR'); ?>
-		<a href="<?php echo JRoute::_('index.php?option=com_users&view=profile'); ?>" title="<?php echo JText::_('JCANCEL'); ?>"><?php echo JText::_('JCANCEL'); ?></a>
-
-		<input type="hidden" name="option" value="com_users" />
-		<input type="hidden" name="task" value="profile.save" />
-	<?php echo JHtml::_('form.token');?>
+	<button type="submit" class="validate"><span><?php echo JText::_('JREGISTER');?></span></button>
+	<?php echo JText::_('COM_USERS_OR');?>
+	<!-- cancel registration - go back to the homepage -->
+	<a class="button" href="<?php echo JRoute::_(JUri::base(false)) ?>" title="<?php echo JText::_('JCANCEL');?>"><?php echo JText::_('JCANCEL');?></a>
 	</div>
+
+	<input type="hidden" name="option" value="com_users" />
+	<input type="hidden" name="task" value="registration.register" />
+	<?php echo JHtml::_('form.token');?>
 </form>
 </div>
