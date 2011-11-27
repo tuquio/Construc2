@@ -17,19 +17,14 @@ $params = $this->item->params;
 
 ?>
 <article class="line item-page">
-<?php if ($this->params->get('show_page_heading', 1)) : ?>
-	<?php if ($this->params->get('show_page_heading', 1) && $params->get('show_title')) :?>
-	<hgroup>
-	<?php endif; ?>
-
+<?php if ($this->params->get('show_page_heading')) : ?>
+	<?php if ($params->get('show_title')) :?><hgroup><?php endif; ?>
 	<h1><?php echo $this->escape($this->params->get('page_heading')); ?></h1>
 <?php endif; ?>
 <?php if ($params->get('show_title')) : ?>
 	<h2><?php echo $this->escape($this->item->title); ?></h2>
 <?php endif; ?>
-<?php if ($this->params->get('show_page_heading', 1) && $params->get('show_title')) :?>
-</hgroup>
-<?php endif; ?>
+<?php if ($params->get('show_title')) :?></hgroup><?php endif; ?>
 
 <?php if ($params->get('access-edit') ||  $params->get('show_print_icon') || $params->get('show_email_icon')) : ?>
 	<ul class="menu actions">
