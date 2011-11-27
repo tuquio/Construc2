@@ -22,22 +22,22 @@ $fields = array(
 	'email1'    => $this->form->getField('email1'),
 	'password1' => $this->form->getField('password1'),
 	'password2' => $this->form->getField('password2'),
-//	'tos'       => $this->form->getField('tos', 'profile')
 );
 
-// Menüitem ID des "AGB" Artikels wie er in der Komponente hinterlegt ist
-// @todo sollte besser in den Params des Plugins gesetzt werden, ist aber trickier
-$tosid   = (int) JComponenthelper::getParams('com_deal')->get('tos_link', 0);
-$mitem   = JFactory::getApplication('site')->getMenu()->getItem($tosid);
-$tosLink = $mitem ? $mitem->link . '&tmpl=modal' : null;
+// Menüitem ID des "AGB" Artikels wie er im Plugin hinterlegt ist
+// und freundlicherweise vom TOS feld durchgereicht wird ;)
+$tosLink = $this->form->getField('tos', 'profile')->link;
 
-$cp = JComponenthelper::getParams('com_deal');
-
+//#FIXME die fixe Größe des IFrame ist ärgerlich und kann leider
+//	nicht in % angegeben werden, wodurch es das Popup auf Small-Screens
+//	aus dem Bildschirm haut. Angeblich kann die SqueezeBox auch mit
+//	Event-Handler erweitert werden, über den die finale Größe ggf.
+//	relativ zum verfügbaren Fensterbereich justiert werden kann.
 $tosLink = ($tosLink)
-		? '<a class="tos-link modal" href="'. JRoute::_($tosLink) .'" rel="{handler: \'iframe\'}">'
+		? '<a class="tos-link modal" href="'. JRoute::_($tosLink . '&tmpl=modal', false) .'" rel="{handler:\'iframe\'}">'
 			. JText::_('Read our terms of service')
 			. '</a>'
-		: JText::_('Please set up a page that points to your TOS');
+		: JText::_('TOS Link unavailable');
 ?>
 <div class="line account registration">
 	<?php if ($this->params->get('show_page_heading')) : ?>
