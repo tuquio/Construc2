@@ -16,9 +16,8 @@ JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');
 JHtml::_('behavior.modal');
 
-$this->form->addFieldPath('components/com_deal/models/forms/fields');
-
 $fields = array(
+	'name'      => $this->form->getField('name'),
 	'email1'    => $this->form->getField('email1'),
 	'password1' => $this->form->getField('password1'),
 	'password2' => $this->form->getField('password2'),
@@ -53,6 +52,7 @@ $tosLink = ($tosLink)
 			<dd class="<?php echo $field->name ?>"><?php echo $field->input ?></dd>
 		<?php endforeach; ?>
 		</dl>
+		<p><?php echo JText::_('Marked fields are required') ?></p>
 		<p class="tos-link"><?php echo $tosLink; ?></p>
 		<p class="tos"><?php echo $this->form->getField('tos', 'profile')->input ?></p>
 		</fieldset>
