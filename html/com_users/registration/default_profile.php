@@ -1,6 +1,6 @@
 <?php
 /**
- * Custom Override for com_users.registration
+ * Custom Override for com_users.registration if used with the user profile plugin.
  *
  * @package		Templates
  * @subpackage  Construc2
