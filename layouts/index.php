@@ -59,16 +59,13 @@ defined('_JEXEC') or die;
 <?php if ($navBelowCount) : include JPATH_THEMES .'/'. $this->template . '/layouts/mod_nav_below.php'; endif; ?>
 
 				<div id="content" class="load-first">
+
+<?php if ($this->getBuffer('message')) : ?><jdoc:include type="message" /><?php endif; ?>
+
 					<div class="content-main">
 <?php if ($contentAboveCount) :	include JPATH_THEMES .'/'. $this->template . '/layouts/mod_content_above.php'; endif; ?>
 
-<?php if ($this->getBuffer('message')) : ?>
-<jdoc:include type="message" />
-<?php endif; ?>
-
-<section class="line component">
-<jdoc:include type="component" />
-</section>
+<section class="line component"><jdoc:include type="component" /></section>
 
 <?php if ($contentBelowCount) : include JPATH_THEMES .'/'. $this->template . '/layouts/mod_content_below.php'; endif; ?>
 					</div><!-- .content-main -->
