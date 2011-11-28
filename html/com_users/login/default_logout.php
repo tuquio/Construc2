@@ -9,22 +9,21 @@
  * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
 defined('_JEXEC') or die;
+
+// understanding booleans helps...
+$_desc  = ($this->params->get('logoutdescription_show') && trim($this->params->get('logout_description')));
+$_image = (bool)$this->params->get('logout_image');
+
 ?>
 <div class="line account logout">
 	<?php if ($this->params->get('show_page_heading')) : ?>
 	<h1><?php echo $this->escape($this->params->get('page_heading')); ?></h1>
 	<?php endif; ?>
 
-	<?php if (($this->params->get('logoutdescription_show') == 1 && str_replace(' ', '', $this->params->get('logout_description')) != '')|| $this->params->get('logout_image') != '') : ?>
-	<div class="logout-description">
-	<?php endif ; ?>
-	<?php if ($this->params->get('logoutdescription_show') == 1) : ?>
-		<?php echo $this->params->get('logout_description'); ?>
-	<?php endif; ?>
-	<?php if (($this->params->get('logout_image')!='')) :?>
-		<img src="<?php echo $this->escape($this->params->get('logout_image')); ?>" class="logout-image" alt="<?php echo JTEXT::_('COM_USER_LOGOUT_IMAGE_ALT')?>"/>
-	<?php endif; ?>
-	<?php if (($this->params->get('logoutdescription_show') == 1 && str_replace(' ', '', $this->params->get('logout_description')) != '')|| $this->params->get('logout_image') != '') : ?>
+	<?php if ($_desc || $_image) : ?>
+	<div class="line description">
+	<?php if ($_desc) : echo $this->params->get('logout_description'); endif; ?>
+	<?php if ($_image) :?><img src="<?php echo $this->escape($this->params->get('logout_image')); ?>" class="logout-image" alt="<?php echo JTEXT::_('COM_USER_LOGOUT_IMAGE_ALT')?>"/><?php endif; ?>
 	</div>
 	<?php endif ; ?>
 
