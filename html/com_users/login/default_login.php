@@ -13,8 +13,9 @@ defined('_JEXEC') or die;
 JHtml::_('behavior.keepalive');
 $usersConfig = JComponentHelper::getParams('com_users');
 
-$_desc  = ($this->params->get('logindescription_show') == 1 && str_replace(' ', '', $this->params->get('login_description')) != '');
-$_image = ($this->params->get('login_image') != '');
+// understanding booleans helps...
+$_desc  = ($this->params->get('logindescription_show') && trim($this->params->get('login_description')));
+$_image = (bool)$this->params->get('login_image');
 
 ?>
 <div class="line account login">
@@ -24,7 +25,7 @@ $_image = ($this->params->get('login_image') != '');
 
 	<?php if ($_desc || $_image) : ?>
 	<div class="line description">
-	<?php if ($_desc) : echo $this->params->get('login_description'); endif; ?>
+	<?php if ($_desc) : echo '<p>', $this->params->get('login_description'), '</p>'; endif; ?>
 	<?php if ($_image) :?><img class="login-image" src="<?php echo $this->escape($this->params->get('login_image')) ?>" alt="<?php echo JTEXT::_('COM_USER_LOGIN_IMAGE_ALT') ?>"/><?php endif; ?>
 	</div>
 	<?php endif ; ?>
