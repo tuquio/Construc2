@@ -1,7 +1,7 @@
 /**!
  * oocss.css (c) 2009 Nicole Sullivan. All rights reserved. BSD License. http://oocss.org/
  * feat. custom "menu.css" (c)2011 WebMechanic.biz. All rights reserved. BSD License.
- * @version 2011-09-10 (grids.css, grids_rtl.css, mods.css)
+ * @version 2011-11-29 (grids.css, grids_rtl.css, mods.css)
  */
 /* grids.css */
 line,.lastUnit{overflow:hidden; *overflow:visible;*zoom:1;}
@@ -81,6 +81,7 @@ b.top, b.top b, b.bottom, b.bottom b{display:block;background-repeat:no-repeat;f
 /* menus ( [ul|ol] .menu[.hmenu] > li.mi ) */
 menu, .menu, .hmenu {list-style:none;margin:0;padding:0}
 .menu li.mi {display:block;padding:.25ex .6em;margin:auto 0}
+menu a, a.mi {text-decoration:none}
 /* nested */
 menu .submenu, .menu .submenu {position:relative;z-index:277}
 /* horizontal (.menu .hmenu) */
