@@ -43,13 +43,15 @@ $tosLink = ($tosLink)
 	<h1><?php echo $this->escape($this->params->get('page_heading')) ?></h1>
 	<?php endif; ?>
 	<form class="form-validate" action="<?php echo JRoute::_('index.php?option=com_users&task=registration.register') ?>" method="post">
+
+		<!-- account details -->
 		<fieldset class="registration account" >
 		<legend><?php echo JText::_('COM_USERS_REGISTRATION_DEFAULT_LABEL') ?></legend>
-		<!-- registration - preparation -->
 		<dl class="account">
-		<?php foreach ($fields as $field) : ?>
-			<dt class="<?php echo $field->name ?>"><?php echo $field->label ?></dt>
-			<dd class="<?php echo $field->name ?>"><?php echo $field->input ?></dd>
+		<?php foreach ($fields as $field) :
+			$class = str_replace(array('jform_','1','2'), '', $field->id); ?>
+			<dt class="<?php echo $class ?>"><?php echo $field->label ?></dt>
+			<dd class="<?php echo $class ?>"><?php echo $field->input ?></dd>
 		<?php endforeach; ?>
 		</dl>
 		<p><?php echo JText::_('Marked fields are required') ?></p>
