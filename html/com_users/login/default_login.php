@@ -11,6 +11,7 @@
 defined('_JEXEC') or die;
 
 JHtml::_('behavior.keepalive');
+JHtml::_('behavior.formvalidation');
 $usersConfig = JComponentHelper::getParams('com_users');
 
 // understanding booleans helps...
@@ -30,7 +31,7 @@ $_image = (bool)$this->params->get('login_image');
 	</div>
 	<?php endif ; ?>
 
-	<form action="<?php echo JRoute::_('index.php?option=com_users&task=user.login'); ?>" method="post">
+	<form class="form-validate" action="<?php echo JRoute::_('index.php?option=com_users&task=user.login'); ?>" method="post">
 	<fieldset class="login credentials">
 		<dl class="credentials">
 	<?php foreach ($this->form->getFieldset('credentials') as $field): ?>
