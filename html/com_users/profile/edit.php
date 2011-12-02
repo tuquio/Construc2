@@ -29,9 +29,11 @@ JHtml::_('behavior.formvalidation');
 		<dd class="name"><?php echo $this->form->getInput('name'); ?></dd>
 		<dt class="username"><?php echo $this->form->getLabel('username'); ?></dt>
 		<dd class="username"><?php echo $this->form->getInput('username'); ?></dd>
-
+<?php
+/* sooo hackish...  REQUIRES "PLG_SYSTEM_CUPONDO"
 		<dt class="email"><?php echo $this->form->getLabel('email1'); ?></dt>
 		<dd class="email"><?php echo $this->form->getInput('email1'); ?></dd>
+*/ ?>
 		<dt class="email"><?php echo $this->form->getLabel('email2'); ?></dt>
 		<dd class="email"><?php echo $this->form->getInput('email2'); ?></dd>
 

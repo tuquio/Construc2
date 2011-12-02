@@ -31,10 +31,17 @@ $canEdit = (JFactory::getUser()->id == $this->data->id);
 	<legend><?php echo JText::_('COM_USERS_PROFILE_ACCOUNT') ?></legend>
 	<!-- names -->
 	<dl class="account">
-		<dt class="name"><?php echo JText::_('COM_USERS_PROFILE_name_LABEL') ?></dt>
+		<dt class="name"><?php echo JText::_('COM_USERS_PROFILE_NAME_LABEL') ?></dt>
 		<dd class="name"><?php echo $this->form->getValue('name'); ?></dd>
-		<dt class="username"><?php echo JText::_('COM_USERS_PROFILE_username_LABEL') ?></dt>
+<?php
+/* sooo hackish...
+		<dt class="username"><?php echo JText::_('COM_USERS_PROFILE_USERNAME_LABEL') ?></dt>
 		<dd class="username"><?php echo $this->form->getValue('username'); ?></dd>
+		<dt class="email1"><?php echo JText::_('COM_USERS_PROFILE_EMAIL1_LABEL') ?></dt>
+		<dd class="email1"><?php echo $this->form->getValue('email1'); ?></dd>
+*/ ?>
+		<dt class="username"><?php echo JText::_('COM_USERS_PROFILE_USERNAME_LABEL') ?></dt>
+		<dd class="username"><?php echo $this->form->getValue('email1'); ?></dd>
 	</dl>
 	<!-- dates -->
 	<dl class="register">
@@ -51,61 +58,9 @@ $canEdit = (JFactory::getUser()->id == $this->data->id);
 ?>		</dd>
 	</dl>
 	</fieldset>
-
-	<fieldset class="profile comm">
-	<legend><?php echo JText::_('COM_USERS_PROFILE_COMM') ?></legend>
-	<dl class="comm">
-		<dt class="email1"><?php echo JText::_('COM_USERS_PROFILE_EMAIL1_LABEL') ?></dt>
-		<dd class="email1"><?php echo $this->form->getValue('email1'); ?></dd>
-		<dt class="phone"><?php echo JText::_('PLG_USER_PROFILE_FIELD_PHONE_LABEL') ?></dt>
-		<dd class="phone"><?php echo $this->form->getValue('phone', 'profile'); ?></dd>
-		<dt class="website"><?php echo JText::_('PLG_USER_PROFILE_FIELD_WEB_SITE_LABEL') ?></dt>
-		<dd class="website"><?php echo $this->form->getValue('website', 'profile'); ?></dd>
-	</dl>
-	</fieldset>
-
-	<fieldset class="profile address">
-	<legend><?php echo JText::_('COM_USERS_PROFILE_ADDRESS') ?></legend>
-<? /* @todo: address field ordering.
-	For ultimate and accurate l10n the order of these fields should match the user's postal rules.
-	Needs a "super-smart template helper" to be asked then, and to take care of this US-centric crap.
-*/ ?>
-	<dl class="address">
-		<dt class="addr1"><?php echo JText::_('PLG_USER_PROFILE_FIELD_ADDRESS1_LABEL') ?></dt>
-		<dd class="addr1"><?php echo $this->form->getValue('address1', 'profile'); ?></dd>
-		<dt class="addr2"><?php echo JText::_('PLG_USER_PROFILE_FIELD_ADDRESS2_LABEL')  ?></dt>
-		<dd class="addr2"><?php echo $this->form->getValue('address2', 'profile'); ?></dd>
-<? /*
-		<dt class="pcode"><?php echo JText::_('PLG_USER_PROFILE_FIELD_POSTAL_CODE_LABEL') ?></dt>
-		<dd class="pcode"><?php echo $this->form->getValue('postal_code', 'profile'); ?></dd>
-		<dt class="city"><?php echo JText::_('PLG_USER_PROFILE_FIELD_CITY_LABEL') ?></dt>
-		<dd class="city"><?php echo $this->form->getValue('city', 'profile'); ?></dd>
-*/ ?>
-		<dt class="city"><?php echo JText::_('PLG_USER_PROFILE_FIELD_CITY_ZIP_DESC') ?></dt>
-		<dd class="city"><?php echo $this->form->getValue('postal_code', 'profile') ,' ', $this->form->getValue('city', 'profile'); ?></dd>
-
-		<dt class="region"><?php echo JText::_('PLG_USER_PROFILE_FIELD_REGION_LABEL') ?></dt>
-		<dd class="region"><?php echo $this->form->getValue('region', 'profile'); ?></dd>
-		<dt class="country"><?php echo JText::_('PLG_USER_PROFILE_FIELD_COUNTRY_LABEL') ?></dt>
-		<dd class="country"><?php echo $this->form->getValue('country', 'profile'); ?></dd>
-	</dl>
-	</fieldset>
-
-	<fieldset class="profile about-me">
-	<legend><?php echo JText::_('COM_USERS_PROFILE_ABOUT_ME') ?></legend>
-	<dl class="about-me">
-<? /* @todo: User Profilfelder
-	"Lieblingsbuch" ist erstmal weg.
-	Hier kommen dann ggf. weitere Profilfelder hinein, wenn geklärt ist
-	wie man diese "anlegt" und "welche" überhaupt Sinn ergeben ...
-*/ ?>
-		<dt class="dob"><?php echo JText::_('PLG_USER_PROFILE_FIELD_DOB_LABEL') ?></dt>
-		<dd class="dob"><?php echo JHtml::_('date', $this->form->getValue('dob', 'profile')) ?></dd>
-		<dt class="me"><?php echo JText::_('PLG_USER_PROFILE_FIELD_ABOUT_ME_LABEL') ?></dt>
-		<dd class="me"><?php echo $this->form->getValue('aboutme', 'profile'); ?></dd>
-	</dl>
-	</fieldset>
-
+<?php
+	/* here's a good place to load the subtemplates based on profile fields */
+?>
 <?php if ($canEdit) { ?>
 	<p class="line"><a class="edit-profile" href="<?php echo JRoute::_('index.php?option=com_users&task=profile.edit&user_id='.(int) $this->data->id);?>">
 	<?php echo JText::_('COM_USERS_EDIT_PROFILE') ?></a></p>
