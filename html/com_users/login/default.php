@@ -14,6 +14,9 @@ if ($this->user->get('guest')):
 	// The user is not logged in.
 	echo $this->loadTemplate('login');
 else:
-	// The user is already logged in.
-	echo $this->loadTemplate('logout');
+	// The user is already logged in: log her out
+	$app = JFactory::getApplication();
+	$app->logout();
+	$app->redirect('/');
+
 endif;
