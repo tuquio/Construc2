@@ -123,6 +123,8 @@ summary::-webkit-details-marker { color: #444; font-size:1.2em}
 .article-info	{margin:0}
 	/* 'shadow' DOM */
 	summary::-webkit-details-marker { color:lime; }
+.introtext	{}
+.fulltext	{}
 
 /*
  * =bilder in artikeln
