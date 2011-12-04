@@ -354,7 +354,7 @@ if ($app->get('input')->getBool('tp') && JComponentHelper::getParams('com_templa
 #right2 .mod-preview-wrapper{height:940px}';
 }
 
-$scriptDeclarations[] = "if (typeof window.JSON === 'undefined') {document.write('<script src=\"".$tmpl_url."/js/json2.js\"><\/script>');}";
+$scriptDeclarations[] = "if (typeof window.JSON === 'undefined') {document.write('<script src=\"".$tmpl_url."/js/json2.min.js\"><\/script>');}";
 
 // add collected custom style declarations
 if ( count($styleDeclarations) ) {
