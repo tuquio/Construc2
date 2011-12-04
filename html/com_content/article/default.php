@@ -50,11 +50,28 @@ endif;
 
 echo $this->item->event->beforeDisplayContent;
 
+// splitting introtext and fulltext also allows us to build our own pagenavigation
+?><div id="introtext" class="introtext"><?php
+
 if (isset ($this->item->toc)) :
 	echo $this->item->toc;
 endif;
 
-echo $this->item->text;
+echo $this->item->introtext;
+
+?></div>
+<?php if (!empty($this->item->fulltext)) : ?>
+<div id="fulltext" class="fulltext"><?php echo $this->item->fulltext; ?></div>
+<?php endif; ?>
+
+<?php
+
+if ( $this->item->prev || $this->item->next ) { ?>
+<ul class="hmenu pagenav">
+<?php if ($this->item->prev): ?><li class="mi prev"><a class="mi" href="<?= $this->item->prev ?>"><span class="mi"><?= JText::_('Previous Article')?></span></a></li><?php endif; ?>
+<?php if ($this->item->next): ?><li class="mi next"><a class="mi" href="<?= $this->item->next ?>"><span class="mi"><?= JText::_('Next Article')?></span></a></li><?php endif; ?>
+</ul><?php
+}
 
 $useDefList  = ($params->get('show_author') || $params->get('show_category' ) || ($params->get('show_parent_category'))
 			|| ($params->get('show_create_date')) || ($params->get('show_modify_date')) || ($params->get('show_publish_date'))
