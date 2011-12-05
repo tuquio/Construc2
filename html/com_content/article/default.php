@@ -51,24 +51,20 @@ endif;
 echo $this->item->event->beforeDisplayContent;
 
 // splitting introtext and fulltext also allows us to build our own pagenavigation
-if (!$params->get('show_intro')) {
-	if (isset ($this->item->toc)) :
-		echo $this->item->toc;
-	endif;
-} else {
-	echo '<div id="introtext" class="introtext">';
-	if (isset ($this->item->toc)) :
-		echo $this->item->toc;
-	endif;
+?><div id="introtext" class="introtext"><?php
 
-	echo $this->item->introtext;
+if (isset ($this->item->toc)) :
+	echo $this->item->toc;
+endif;
 
-	echo '</div>';
-}
+echo $this->item->introtext;
 
-if (!empty($this->item->fulltext)) : ?>
+?></div>
+<?php if (!empty($this->item->fulltext)) : ?>
 <div id="fulltext" class="fulltext"><?php echo $this->item->fulltext; ?></div>
-<?php endif;
+<?php endif; ?>
+
+<?php
 
 if ( isset($this->item->prev) && ($this->item->prev || $this->item->next) ) { ?>
 <ul class="hmenu pagenav">

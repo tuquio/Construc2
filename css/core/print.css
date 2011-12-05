@@ -1,41 +1,10 @@
 @media print {
-	/* hidden from dead trees */
-	.menu, .hmenu, .pagination, #breadcrumbs, nav, menu,
-	.buttonheading,
-	.mod-login, .mod-banners,
-	#dummy
-	{display:none;}
-
-	* { background: transparent !important; color: #444 !important; text-shadow: none !important; filter:none !important; -ms-filter:none !important; } /* black prints faster */
-	a, a:visited { color: #444 !important; text-decoration: underline; }
-	pre,blockquote { border: 1px solid #999; }
-	table[border] {box-decoration-break:clone;}
-	thead { display: table-header-group; } /* css-discuss.incutio.com/wiki/Printing_Tables */
-	p,h2,h3 { orphans: 3; widows: 3; }
-	pre, blockquote,tr,img,h2,h3 { page-break-after: avoid; }
-	#logo {width:auto;max-width:100%;overflow:hidden;text-align:left}
-	#logo a {display:inline;margin:0;padding:1ex;}
-	p,address,
-	dl, ol, ul { line-height: 1.36; font-size:100%;}
-	p, dd, address { margin-bottom:.62em;}
-	h1+p, h2+p { margin-top:.62em; }
-	h1 { font-size: 2.00em; }
-	h2 { font-size: 1.62em; }
-	h3 { font-size: 1.17em; }
-	h4 { font-size: 1.00em; }
-	b,strong,dt {font-weight:bold;}
-		
 	/* generated content */
-	a:after { content: " (" attr(href) ")"; }
-	abbr:after { content: " (" attr(title) ")"; }
-	blockquote:before, blockquote:after	,
-	#logo a:after,
-	#footer a:after,
-	#dummy
-	{ content:""; display:none; }
-	
+	#logo a:after, #footer a:after, #dummy { content:""; display:none; }
+
 	/* defloat */
 	.content-container .load-first,
+	.content-container .content-main,
 	.content-container .column-group,
 	#dummy
 	{float:none;clear:both;width:auto;}
