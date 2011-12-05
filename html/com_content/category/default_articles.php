@@ -5,7 +5,7 @@ JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 
 $menu		= JSite::getMenu();
 $active		= $menu->getActive();
-$itemId		= $active->id;
+$itemId		= $active ? $active->id : $menu->getDefault()->id;
 $link 		= JRoute::_('index.php?option=com_users&view=login&Itemid='.$itemId);
 
 $n 			= count($this->items);
