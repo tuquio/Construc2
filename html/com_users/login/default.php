@@ -1,6 +1,7 @@
 <?php
 /**
- * Custom Override for com_users login and logout
+ * Custom Override for com_users login and logout.
+ * Featuring ILLL™ "Instant Logout Login Layout" - by courtesy of Hannes Papenberg.
  *
  * @package		Templates
  * @subpackage  Construc2
@@ -18,5 +19,4 @@ else:
 	$app = JFactory::getApplication();
 	$app->logout();
 	$app->redirect('/');
-
 endif;
