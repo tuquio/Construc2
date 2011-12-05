@@ -66,7 +66,7 @@ echo $this->item->introtext;
 
 <?php
 
-if ( $this->item->prev || $this->item->next ) { ?>
+if ( isset($this->item->prev) && ($this->item->prev || $this->item->next) ) { ?>
 <ul class="hmenu pagenav">
 <?php if ($this->item->prev): ?><li class="mi prev"><a class="mi" href="<?= $this->item->prev ?>"><span class="mi"><?= JText::_('Previous Article')?></span></a></li><?php endif; ?>
 <?php if ($this->item->next): ?><li class="mi next"><a class="mi" href="<?= $this->item->next ?>"><span class="mi"><?= JText::_('Next Article')?></span></a></li><?php endif; ?>
