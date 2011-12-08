@@ -8,7 +8,7 @@
 	<authorUrl>http://joomla.webmechanic.biz</authorUrl>
 	<copyright>Copyright (C)2011 WebMechanic. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
-	<version>1.8.3</version>
+	<version>1.9.0</version>
 	<description>TPL_CONSTRUC2_DESCRIPTION</description>
 	<credits><![CDATA[
 	Inspired by "Construct Community", (C) 2010, 2011 Matt Thomas | Joomla Engineering. All rights reserved.
@@ -87,10 +87,10 @@
 					<option value="1">JShow</option>
 					<option value="0">JHide</option>
 				</field>
-				<field name="html5manifest" type="radio" default="0" label="TPL_CONSTRUC2_ENABLE_HTML5MANIFEST_LABEL" description="TPL_CONSTRUC2_ENABLE_HTML5MANIFEST_DESC">
-					<option value="1">JYes</option>
-					<option value="0">JNo</option>
-				</field>
+				<field name="modOocss" type="radio" default="0" label="TPL_CONSTRUC2_USE_MODOOCSS_LABEL" description="TPL_CONSTRUC2_USE_MODOOCSS_DESC">
+        			<option value="1">On</option>
+        			<option value="0">Off</option>
+		    	</field>
 				<field name="setGeneratorTag" type="text" default="" label="TPL_CONSTRUC2_CUSTOM_GENERATOR_TAG" description="TPL_CONSTRUC2_CUSTOM_GENERATOR_TAG_DESC" size="56" />
 			</fieldset>
 
@@ -108,36 +108,6 @@
 					<option value="1">JYes</option>
 					<option value="0">JNo</option>
 				</field>
-			</fieldset>
-
-			<fieldset name="Layout">
-				<field name="siteWidth" type="text" default="" label="TPL_CONSTRUC2_SITE_WIDTH_LABEL" description="TPL_CONSTRUC2_SITE_WIDTH_DESC" size="10" />
-				<field name="siteWidthType" type="radio" default="max-width" label="TPL_CONSTRUC2_SITE_WIDTH_TYPE_LABEL" description="TPL_CONSTRUC2_SITE_WIDTH_TYPE_DESC">
-					<option value="max-width">Fluid Max Width</option>
-					<option value="width">Fixed Width</option>
-				</field>
-				<field name="siteWidthUnit" type="radio" default="em" label="TPL_CONSTRUC2_SITE_WIDTH_UNIT_LABEL" description="TPL_CONSTRUC2_SITE_WIDTH_UNIT_DESC">
-					<option value="em">em</option>
-					<option value="px">px</option>
-					<option value="%">%</option>
-				</field>
-				<field name="fluidMedia" type="radio" default="0" label="TPL_CONSTRUC2_FLUID_MEDIA_LABEL" description="TPL_CONSTRUC2_FLUID_MEDIA_DESC">
-				  <option value="1">JYes</option>
-				  <option value="0">JNo</option>
-				</field>
-				<field name="fullWidth" type="radio" default="0" label="TPL_CONSTRUC2_FULL_WIDTH_LABEL" description="TPL_CONSTRUC2_FULL_WIDTH_DESC">
-				  <option value="1">JYes</option>
-				  <option value="0">JNo</option>
-				</field>
-				<field name="modOocss" type="radio" default="0" label="TPL_CONSTRUC2_USE_MODOOCSS_LABEL" description="TPL_CONSTRUC2_USE_MODOOCSS_DESC">
-        			<option value="1">On</option>
-        			<option value="0">Off</option>
-		    	</field>
-				<field name="useStickyFooter" type="radio" default="0" label="TPL_CONSTRUC2_USE_STICKY_FOOTER_LABEL" description="TPL_CONSTRUC2_USE_STICKY_FOOTER_DESC">
-        			<option value="1">On</option>
-        			<option value="0">Off</option>
-		    	</field>
-				<field name="stickyFooterHeight" type="text" default="" label="TPL_CONSTRUC2_STICKY_FOOTER_HEIGHT_LABEL" description="TPL_CONSTRUC2_STICKY_FOOTER_HEIGHT_DESC" size="5" />
 			</fieldset>
 
 <!-- EXPERI-MENTAL NOTE (high impact probability on logic.php and index.php)
@@ -174,21 +144,23 @@
 				<field name="googleWebFontSize3" type="text" default="" label="TPL_CONSTRUC2_GOOGLE_WEB_FONT_SIZE_LABEL" description="TPL_CONSTRUC2_GOOGLE_WEB_FONT_SIZE_DESC" size="5" />
 			</fieldset>
 
-			<fieldset name="IE" description="TPL_CONSTRUC2_IE_DESC">
+			<fieldset name="compat" description="TPL_CONSTRUC2_COMPAT_DESC">
+				<field name="html5manifest" type="radio" default="0" label="TPL_CONSTRUC2_ENABLE_HTML5MANIFEST_LABEL" description="TPL_CONSTRUC2_ENABLE_HTML5MANIFEST_DESC">
+					<option value="1">JYes</option>
+					<option value="0">JNo</option>
+				</field>
 				<field name="loadGcf" type="radio" default="0" label="TPL_CONSTRUC2_CHROME_FRAME_LABEL" description="TPL_CONSTRUC2_CHROME_FRAME_DESC">
 		        	<option value="1.0.2">JYes</option><!-- field value = version number-->
 		        	<option value="0">JNo</option>
 		    	</field>
-				<field name="IECSS3" type="radio" default="1" label="TPL_CONSTRUC2_IE_CSS3_LABEL" description="TPL_CONSTRUC2_IE_CSS3_DESC">
+				<field name="prefixfree" type="radio" default="1" label="TPL_CONSTRUC2_PREFIXFREE_LABEL" description="TPL_CONSTRUC2_PREFIXFREE_DESC">
 		        	<option value="1">JYes</option>
 		        	<option value="0">JNo</option>
 		    	</field>
-				<field name="IECSS3Targets" type="textarea" default=".drop-shadow, .outline, .rounded, ul.menu li" label="TPL_CONSTRUC2_IE_CSS3_TARGETS_LABEL" description="TPL_CONSTRUC2_IE_CSS3_TARGETS_DESC" rows="5" cols="50" />
-				<field name="IE6TransFix" type="radio" default="1" label="TPL_CONSTRUC2_IE6_TRANS_FIX_LABEL" description="TPL_CONSTRUC2_IE6_TRANS_FIX_DESC">
+				<field name="html5shim" type="radio" default="1" label="TPL_CONSTRUC2_HTML5_LABEL" description="TPL_CONSTRUC2_HTML5_DESC">
 		        	<option value="1">JYes</option>
 		        	<option value="0">JNo</option>
 		    	</field>
-				<field name="IE6TransFixTargets" type="textarea" default="h1 a" label="TPL_CONSTRUC2_IE6_TRANS_FIX_TARGETS_LABEL" description="TPL_CONSTRUC2_IE6_TRANS_FIX_TARGETS_DESC" rows="5" cols="50" />
 			</fieldset>
 		</fields>
 	</config>
