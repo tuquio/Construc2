@@ -64,10 +64,10 @@ defined('_JEXEC') or die;
 
 					<div class="content-main">
 <?php if ($contentAboveCount) :	include JPATH_THEMES .'/'. $this->template . '/layouts/mod_content_above.php'; endif; ?>
-
-<section class="line component"><jdoc:include type="component" /></section>
-
+	<section class="line component">
+	<jdoc:include type="component" />
 <?php if ($contentBelowCount) : include JPATH_THEMES .'/'. $this->template . '/layouts/mod_content_below.php'; endif; ?>
+	</section>
 					</div><!-- .content-main -->
 
 <?php if ($columnGroupAlphaCount) : include JPATH_THEMES .'/'. $this->template . '/layouts/mod_column_group_alpha.php'; endif; ?>
