@@ -31,20 +31,10 @@ $enableSwitcher 		= (bool) $this->params->get('enableSwitcher');
 $showDiagnostics 		= (bool) $this->params->get('showDiagnostics');
 $showDateContainer 		= (bool) $this->params->get('showDateContainer');
 
-$html5manifest 			= (bool) $this->params->get('html5manifest');
-
-$useStickyFooter 		= (bool) $this->params->get('useStickyFooter');
-$stickyFooterHeight		= (int)	 $this->params->get('stickyFooterHeight');
-$IECSS3					= (bool) $this->params->get('IECSS3');
-$IECSS3Targets			=		 $this->params->get('IECSS3Targets');
-$IE6TransFix			= (bool) $this->params->get('IE6TransFix');
-$IE6TransFixTargets		=		 $this->params->get('IE6TransFixTargets');
-
 $fluidMedia				= (bool) $this->params->get('fluidMedia') ? 'fluid-media' : '';
 $fullWidth				=		 $this->params->get('fullWidth');
 $siteWidth				= (int)	 $this->params->get('siteWidth');
-$siteWidthType			=		 $this->params->get('siteWidthType');
-$siteWidthUnit			=		 $this->params->get('siteWidthUnit');
+$siteWidthUnit 			= 		 $this->params->get('siteWidthUnit');
 
 $mod_oocss				= (bool) $this->params->get('modOocss', 1);
 
@@ -52,6 +42,7 @@ $loadModal				= (bool) $this->params->get('loadModal');
 $loadMoo 				= (bool) $this->params->get('loadMoo', $loadModal);
 $loadJQuery 			=		 $this->params->get('loadjQuery');
 $loadChromeFrame		=		 $this->params->get('loadGcf'); // if set, contains the version number, i.e '1.0.2'
+$html5manifest 			= (bool) $this->params->get('html5manifest');
 
 // "old-school" concatenating of files and free server based compression
 $ssiIncludes			= (bool) $this->params->get('ssiIncludes', 0);
@@ -100,7 +91,7 @@ if ($loadJQuery) {
 }
 
 // Load the MooTools JavaScript Library
-if ($loadMoo) {
+if ($loadMoo == true) {
 	JHtml::_('behavior.framework', $loadModal);
 	if ($loadModal) {
 		// Enable modal pop-ups
@@ -194,7 +185,7 @@ if ($app->getCfg('debug') && JRequest::getInt('tpos'))
 // Custom tags
 // tell mobile devices to treat the viewport as being the same width as the
 // physical width of the device to make width work in media-queries as expected
-$this->setMetaData('viewport', 'width=device-width, initial-scale=1');
+$this->setMetaData('viewport', 'width=device-width,initial-scale=1.0');
 
 // Transparent favicon
 if (is_file(JPATH_THEMES .'/'. $this->template .'/favicon.png')) {
@@ -247,7 +238,7 @@ if ($customStyleSheet) {
 }
 
 // Style sheet switcher
-if ($enableSwitcher) {
+if ($this->params->get('enableSwitcher')) {
 	$this->addHeadLink($tmpl_url.'/css/core/diagnostic.css', 'alternate stylesheet', 'rel', $attribs = array('title'=>'diagnostic'));
 	$this->addHeadLink($tmpl_url.'/css/core/wireframe.css', 'alternate stylesheet', 'rel', $attribs = array('title'=>'wireframe'));
 	$this->addScript($tmpl_url.'/js/styleswitch.js');
@@ -255,7 +246,7 @@ if ($enableSwitcher) {
 
 // HTML5 cache manifest (not rendered by default in the <html> element)
 // triggers "This website (xxx) is asking to store data on your computer for offline use" in browsers
-if ($html5manifest) {
+if ((bool) $this->params->get('html5manifest')) {
 	if ($this->direction == 'rtl') {
 		$cache_manifest = ' manifest="'.$tmpl_url.'/'.$this->template.'_rtl.manifest"';
 	} else {
@@ -268,13 +259,6 @@ if ($html5manifest) {
 // Layout Declarations
 $columnLayout[] = ConstructTemplateHelper::getPageAlias(true);
 
-if ($siteWidth) {
-	$styleDeclarations[] = '#body-container, header.above {'.$siteWidthType.':'.$siteWidth.$siteWidthUnit.'}';
-}
-if (!$fullWidth) {
-	$styleDeclarations[] = '.page-head, .page-foot {'.$siteWidthType.':'.$siteWidth.$siteWidthUnit.'; margin:0 auto}';
-}
-
 // JavaScript
 if ($loadMoo == true) {
 	$scriptDeclarations[] = 'if (window.addEvent && window.SmoothScroll){window.addEvent("domready",function(){new SmoothScroll({duration:1200},window);});}';
@@ -282,8 +266,10 @@ if ($loadMoo == true) {
 
 #----------------------- Internet Explorer Fixes ---------------------------#
 // html5 shim
-$this->addCustomTag('<!--[if lt IE 9]><script src="'.$tmpl_url.'/js/html5.js" type="text/javascript"></script><![endif]-->');
-$templateHelper->addScript($tmpl_url.'/js/html5.js', 'lt IE 9');
+if ($this->params->get('html5shim')) {
+	$this->addCustomTag('<!--[if lt IE 9]><script src="'.$tmpl_url.'/js/html5.js" type="text/javascript"></script><![endif]-->');
+	$templateHelper->addScript($tmpl_url.'/js/html5.js', 'lt IE 9');
+}
 
 // offer Chrome Frame for IE lt 9
 $templateHelper->addMetaData('X-UA-Compatible', 'IE=Edge,chrome=1', 'lt IE 9', true);
@@ -297,47 +283,6 @@ if ($loadChromeFrame) {
 			'e.style.zIndex="9999";'.
 			'CFInstall.check({ node: "gcf_placeholder" });'.
 		'}' ));
-}
-
-if ($IECSS3 && !empty($IECSS3Targets)) {
-	$IECSS3Targets .= ' {behavior:url("'.$tmpl_url.'/js/PIE.htc")}';
-	$this->addCustomTag(PHP_EOL.'<!--[if lt IE 9]><style type="text/css">'.$IECSS3Targets.'</style><![endif]-->');
-	$templateHelper->addStyleDeclaration($IECSS3Targets, 'lt IE 9');
-}
-
-if ($useStickyFooter && $stickyFooterHeight > 1) {
-	$columnLayout[] = 'sticky-footer';
-
-	$styleDeclarations[] = '.sticky-footer #body-container {padding-bottom:'.$stickyFooterHeight.'px;}';
-	$styleDeclarations[] = '.sticky-footer .page-foot {margin-top:-'.$stickyFooterHeight.'px;height:'.$stickyFooterHeight.'px;}';
-	$this->addCustomTag(PHP_EOL.'<!--[if lt IE 7]><style type="text/css">.sticky-footer #page-top {display:table;height:100%}</style><![endif]-->');
-	$templateHelper->addStyleDeclaration('.sticky-footer #page-top {display:table;height:100%}', 'lt IE 7');
-}
-
-$css   = array();
-$css[] = 'body {text-align:center}';
-$css[] = '#body-container {text-align:left}';
-if ($fullWidth) {
-	$css[] = '#body-container, header.above {width: expression( document.body.clientWidth >'.($siteWidth -1).' ? "'.$siteWidth.$siteWidthUnit.'" : "auto");margin:0 auto;}';
-} else {
-	$css[] = '#body-container, header.above, .page-head, .page-foot {width: expression( document.body.clientWidth >'.($siteWidth -1).' ? "'.$siteWidth.$siteWidthUnit.'" : "auto" );margin:0 auto}';
-}
-
-$this->addCustomTag(
-PHP_EOL . '<!--[if lt IE 7]>'
-.PHP_EOL . '<link rel="stylesheet" href="'.$tmpl_url.'/css/core/ie6.css" type="text/css" media="screen" />'
-.PHP_EOL . '<style type="text/css">'.implode(PHP_EOL,$css).'</style>'
-.PHP_EOL . '<![endif]-->'
-);
-$templateHelper->addHeadLink($tmpl_url.'/css/core/ie6.css', 'lt IE 7', array('media'=>'screen'));
-$templateHelper->addStyleDeclaration($css, 'lt IE 7');
-unset($css);
-
-if ($IE6TransFix) {
-	$this->addScript($tmpl_url.'/js/DD_belatedPNG_0.0.8a-min.js');
-	$scriptDeclarations[] = "\t/* IE6TransFix */ if (DD_belatedPNG) {DD_belatedPNG.fix('". $IE6TransFixTargets ."')}";
-	$templateHelper->addScript($tmpl_url.'/js/DD_belatedPNG_0.0.8a-min.js', 'lt IE 7');
-	$templateHelper->addScriptDeclaration("/* IE6TransFix */ if (DD_belatedPNG) {DD_belatedPNG.fix('". $IE6TransFixTargets ."')}", 'lt IE 7');
 }
 
 /* Preview Module Styles for use with index.php?tp=1 */
