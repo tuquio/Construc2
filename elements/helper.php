@@ -267,7 +267,7 @@ class ConstructTemplateHelper
 	/**
 	 * Determine if a layout file is available and return path or false condition
 	 *
-	 * Layout files in COnstruc2 are "overrides" for "overrides" based on the
+	 * Layout files in Construc2 are "overrides" for "overrides" based on the
 	 * current menu item or request and allow for granular HTML markup specific
 	 * for a given page.
 	 *
@@ -492,7 +492,7 @@ class ConstructTemplateHelper
 		$attribs['name'] = $position;
 		($style) ? $attribs['style'] = $style : true;
 
-		$css = array();
+		$css = array('mod');
 		$prefixes = array(
 				'before' => array('before'),
 				'after'  => array('after')
@@ -517,6 +517,7 @@ class ConstructTemplateHelper
 			}
 			unset($attribs['autocols']);
 		}
+		$css = array_unique($css);
 
 		foreach (JModuleHelper::getModules($position) as $_module)
 		{
