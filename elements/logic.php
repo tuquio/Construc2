@@ -42,7 +42,6 @@ $loadModal				= (bool) $this->params->get('loadModal');
 $loadMoo 				= (bool) $this->params->get('loadMoo', $loadModal);
 $loadJQuery 			=		 $this->params->get('loadjQuery');
 $loadChromeFrame		=		 $this->params->get('loadGcf'); // if set, contains the version number, i.e '1.0.2'
-$html5manifest 			= (bool) $this->params->get('html5manifest');
 
 // "old-school" concatenating of files and free server based compression
 $ssiIncludes			= (bool) $this->params->get('ssiIncludes', 0);
@@ -242,6 +241,12 @@ if ($this->params->get('enableSwitcher')) {
 	$this->addHeadLink($tmpl_url.'/css/core/diagnostic.css', 'alternate stylesheet', 'rel', $attribs = array('title'=>'diagnostic'));
 	$this->addHeadLink($tmpl_url.'/css/core/wireframe.css', 'alternate stylesheet', 'rel', $attribs = array('title'=>'wireframe'));
 	$this->addScript($tmpl_url.'/js/styleswitch.js');
+}
+
+// Lea Verou's -prefix-free
+if ($this->params->get('prefixfree')) {
+	$this->addScript($tmpl_url.'/js/prefixfree.min.js');
+	$templateHelper->addScript($tmpl_url.'/js/prefixfree.min.js');
 }
 
 // HTML5 cache manifest (not rendered by default in the <html> element)
