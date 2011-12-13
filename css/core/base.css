@@ -1,7 +1,7 @@
 /* äöü - UTF-8 required! */
 /*!
  * base.css "HTML5ish edition" featuring 'normalise.css'
- * @version 1.6.2 29.11.2011
+ * @version 1.6.3 13.12.2011
  * personal likings + defaults for THIS WEBSITE ONLY mixed with inspirational input from
  * @credits E. Meyer, Yahoo!, N. Sullivan, D. Edwards, CSS-WG, W3C, and the Interwebs,
  * feat. normalize.css - http://github.com/necolas/normalize.css
@@ -84,12 +84,14 @@ b,strong,dt{font-weight:bold}
 i,em{font-style:italic}
 form,fieldset,legend,th,td,pre,xmp,listing,mark{line-height:1}
 /* =once for all and anything */
-/* for those who can handle it = !MSIE6,7 !WebKit */
+/* for those who can handle it */
 q:before,q:after{font-family:"Adobe Caslon Pro",Georgia,"Times New Roman",Times,serif;font-size:1.1em}
-q{quotes: '„' '“' '‚' '‘' }
-[lang|=de] q,q[lang|=de]{quotes: '„' '“' '‚' '‘'; }
-[lang|=en] q,q[lang|=en]{quotes: '“' '”' '‘' '’'; }
-[lang|=fr] q,q[lang|=fr]{quotes: '«' '»' '<' '>'; }
+q{quotes:'„' '“' '‚' '‘'}
+q:before{content:open-quote}
+q:after{content:close-quote}
+[lang|=de] q,q[lang|=de]{quotes:'„' '“' '‚' '‘'}
+[lang|=en] q,q[lang|=en]{quotes:'“' '”' '‘' '’'}
+[lang|=fr] q,q[lang|=fr]{quotes:'«' '»' '<' '>'}
 
 /* =lists */
 ul,ol,dl{margin:1ex auto .625em 1ex;padding-left:1ex}
