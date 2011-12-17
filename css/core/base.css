@@ -1,7 +1,7 @@
 /* äöü - UTF-8 required! */
 /*!
  * base.css "HTML5ish edition" featuring 'normalise.css'
- * @version 1.6.2 29.11.2011
+ * @version 1.6.3 18.12.2011
  * personal likings + defaults for THIS WEBSITE ONLY mixed with inspirational input from
  * @credits E. Meyer, Yahoo!, N. Sullivan, D. Edwards, CSS-WG, W3C, and the Interwebs,
  * feat. normalize.css - http://github.com/necolas/normalize.css
@@ -28,6 +28,7 @@ blockquote{margin:1em 40px}
 dfn{font-style:italic}
 mark{background:#ff0;color:#000}
 pre{white-space:pre;white-space:pre-wrap;word-wrap:break-word}
+pre,xmp{-webkit-tab-size:4;-moz-tab-size:4;-o-tab-size:4;-ms-tab-size:4;tab-size:4;}
 q{quotes:none}
 q:before,q:after{content:'';content:none}
 small,sub,sup{font-size:75%}
@@ -45,7 +46,7 @@ button,input{line-height:normal;*overflow:visible}
 button,input,select,textarea{font-family:sans-serif;vertical-align:baseline;*vertical-align:middle}
 table button,table input{*overflow:auto}
 button,input[type="button"],input[type="reset"],input[type="submit"]{cursor:pointer;-webkit-appearance:button;*overflow:visible}
-input[type="checkbox"],input[type="radio"]{padding:0;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}
+input[type="checkbox"],input[type="radio"]{padding:0;-webkit-box-sizing:border-box;/*SF3*/-moz-box-sizing:border-box;box-sizing:border-box}
 input[type="search"]{-webkit-appearance:textfield;-moz-box-sizing:content-box;-webkit-box-sizing:content-box;box-sizing:content-box}
 input[type="search"]::-webkit-search-decoration{-webkit-appearance:none}
 button::-moz-focus-inner,input::-moz-focus-inner{border:0;padding:0}
