@@ -2,9 +2,6 @@
 // no direct access
 defined('_JEXEC') or die;
 
-JHtml::addIncludePath(JPATH_COMPONENT_SITE . '/helpers');
-$cparams = JComponentHelper::getParams('com_media');
-
 ?>
 <section class="blog">
 	<header><?php
@@ -17,7 +14,7 @@ if ($this->params->get('show_category_title')) {
 }
 ?>	</header>
 <?php
-if (!empty($this->category->description) && ($this->params->get('show_description', 1) || $this->params->def('show_description_image', 1)) ) : ?>
+if (!empty($this->category->description) && ($this->params->get('show_description') || $this->params->def('show_description_image')) ) : ?>
 	<div class="line category-desc">
 	<?php if ($this->params->get('show_description_image') && $this->category->getParams()->get('image')) : ?>
 		<img src="<?php echo $this->category->getParams()->get('image'); ?>"/>
@@ -29,67 +26,72 @@ if (!empty($this->category->description) && ($this->params->get('show_descriptio
 <?php
 endif;
 
-$leadingcount = 0;
+$leadingcount = $rowcount = $row = 0;
 
-if (!empty($this->lead_items)) : ?>
+if (!empty($this->lead_items)) { ?>
 <div class="line items-leading">
-<?php foreach ($this->lead_items as &$item) : ?>
-	<article class="item-<?php echo $leadingcount . ($item->state == 0 ? 'system-unpublished' : '') ?>">
+<?php foreach ($this->lead_items as $item) : ?>
+	<div class="leading item-<?php echo $leadingcount, ($item->state == 0 ? ' system-unpublished' : '') ?>">
 <?php
 	$this->item = &$item;
 	echo $this->loadTemplate('item');
 ?>
-	</article>
-<?php $leadingcount++; ?>
+	</div>
+<?php $leadingcount += 1; ?>
 <?php endforeach; ?>
-</div><!-- .items-leading -->
+</div>
 <?php
-endif;
+}
 
 $introcount = (count($this->intro_items));
 $counter    = 0;
 
-if (!empty($this->intro_items)) :
+if (!empty($this->intro_items))
+{
 	settype($this->columns, 'int');
-
-	foreach ($this->intro_items as $key => $item) :
-		$key      = (int)($key - $leadingcount) + 1;
-		$rowcount = ($key - 1) % ($this->columns + 1);
-		$row      = $counter / $this->columns ;
-
-	if ($rowcount == 1) : ?><div class="line items-row cols-<?php echo (int) $this->columns;?> <?php echo 'row-'.$row ; ?>"><?php endif; ?>
-	<article class="item-<?php echo $rowcount . ($item->state == 0 ? ' system-unpublished' : '') ?>">
-		<?php
-			$this->item = &$item;
-			echo $this->loadTemplate('item');
-		?>
-	</article>
+	?>
+	<div class="line items-row cols-<?php echo (int) $this->columns ?>">
 	<?php
-	$counter++;
+	foreach ($this->intro_items as $key => $item)
+	{
+		$key		= (int)($key - $leadingcount) + 1;
+		$rowcount	= ($key - 1) % ($this->columns + 1);
+		$row		= 1 + ceil($counter / $this->columns);
+?>
+	<div class="<?php echo 'row-', $row, (($rowcount & 1) ? ' even' : ' odd'), ($item->state == 0 ? ' system-unpublished':'') ?>">
+<?php
+	$this->item = &$item;
+	echo $this->loadTemplate('item');
+?>
+	</div>
+<?php
+	$counter += 1;
+	}
+?>
+	</div>
+<?php
+}
 
-	endforeach;
-
-endif;
-
-if (!empty($this->link_items)) :
+if (!empty($this->link_items)) {
+	echo '<div class="line items-more">';
 	echo $this->loadTemplate('links');
-endif;
+	echo '</div>';
+}
 
-if (is_array($this->children[$this->category->id]) && count($this->children[$this->category->id]) > 0 && $this->params->get('maxLevel') !=0) : ?>
+if (is_array($this->children[$this->category->id]) && count($this->children[$this->category->id]) > 0 && $this->params->get('maxLevel') !=0) { ?>
 	<div class="line cat-children">
-	<h3><?php echo JTEXT::_('JGLOBAL_SUBCATEGORIES'); ?></h3>
+	<h3><?php echo JText::_('JGLOBAL_SUBCATEGORIES'); ?></h3>
 	<?php echo $this->loadTemplate('children'); ?>
 	</div><?php
+}
 
-endif;
-
-if (($this->params->def('show_pagination', 1) == 1  || ($this->params->get('show_pagination') == 2)) && ($this->pagination->get('pages.total') > 1)) { ?>
+if ($this->params->def('show_pagination', 2) == 1 || ($this->params->get('show_pagination') == 2 && $this->pagination->get('pages.total') > 1)) { ?>
 	<div class="line pagination">
 	<?php if ($this->params->def('show_pagination_results', 1)) { ?>
 	<p class="counter"><?php echo $this->pagination->getPagesCounter(); ?></p>
 	<?php } ?>
 	<?php echo $this->pagination->getPagesLinks(); ?>
-	</div>
-<?php } ?>
-
-</section><!-- .blog -->
+	</div> <?php
+}
+?>
+</section>
