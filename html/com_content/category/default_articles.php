@@ -73,7 +73,7 @@ foreach ($this->items as $i => &$article) : ?>
 <?php 	if ($this->params->get('list_show_date'))
 		{ ?>
 		<td class="list-date"><?php
-			echo JHtml::_('date', $article->displayDate, $this->escape($this->params->get('date_format', JText::_('DATE_FORMAT_LC3')))); ?>
+			echo JHtml::_('date', $article->displayDate, 'DATE_FORMAT_LC1') ?>
 		</td>
 <?php 	}
 
