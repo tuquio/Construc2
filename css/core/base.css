@@ -1,7 +1,7 @@
 /* äöü - UTF-8 required! */
 /*!
  * base.css "HTML5ish edition" featuring 'normalise.css'
- * @version 1.6.3 18.12.2011
+ * @version 1.6.4 27.12.2011
  * personal likings + defaults for THIS WEBSITE ONLY mixed with inspirational input from
  * @credits E. Meyer, Yahoo!, N. Sullivan, D. Edwards, CSS-WG, W3C, and the Interwebs,
  * feat. normalize.css - http://github.com/necolas/normalize.css
@@ -59,7 +59,8 @@ hgroup,summary{display:block;_zoom:1}
 /*details{padding-left:2ex;margin:1em 0}*/
 /*meter,progress{vertical-align:-0.2em;width:5em;height:1em;display:inline-block}*/
 h1,h2,h3,h4,h5,h6,.H1,.H2,.H3,.H4,.H5,.H6{margin-top:0;margin-bottom:.6ex}
-p,pre,xmp,listing{margin-top:0;margin-bottom:.6ex}
+p,addpress{margin-top:0;margin-bottom:1ex}
+pre,xmp,listing{margin-top:0;margin-bottom:.6ex}
 blockquote{margin:0 2em;padding:1ex .5em}
 fieldset{border:1px solid}
 dfn[title]{border-bottom:1px dotted}
