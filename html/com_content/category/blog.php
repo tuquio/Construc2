@@ -2,6 +2,9 @@
 // no direct access
 defined('_JEXEC') or die;
 
+// used to sanitize item aliases in links and menus
+JLoader::register('SearchHelper', JPATH_ADMINISTRATOR .'/components/com_search/helpers/search.php');
+
 ?>
 <section class="blog">
 	<header><?php
@@ -73,9 +76,7 @@ if (!empty($this->intro_items))
 }
 
 if (!empty($this->link_items)) {
-	echo '<div class="line items-more">';
 	echo $this->loadTemplate('links');
-	echo '</div>';
 }
 
 if (is_array($this->children[$this->category->id]) && count($this->children[$this->category->id]) > 0 && $this->params->get('maxLevel') !=0) { ?>
@@ -86,12 +87,12 @@ if (is_array($this->children[$this->category->id]) && count($this->children[$thi
 }
 
 if ($this->params->def('show_pagination', 2) == 1 || ($this->params->get('show_pagination') == 2 && $this->pagination->get('pages.total') > 1)) { ?>
-	<div class="line pagination">
+	<nav id="pagination" class="line pagination">
 	<?php if ($this->params->def('show_pagination_results', 1)) { ?>
 	<p class="counter"><?php echo $this->pagination->getPagesCounter(); ?></p>
 	<?php } ?>
 	<?php echo $this->pagination->getPagesLinks(); ?>
-	</div> <?php
+	</nav> <?php
 }
 ?>
 </section>
