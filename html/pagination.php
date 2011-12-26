@@ -1,96 +1,110 @@
 <?php defined('_JEXEC') or die;
 /**
- * @package		Templates
- * @subpackage	HTML
- * @copyright	Copyright (C) 2010, 2011 Matt Thomas | Joomla Engineering. All rights reserved.
- * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
+ * Template specific chrome to pagination rendering.
+ *
+ * @package     Templates
+ * @subpackage  Construc2
+ * @author      WebMechanic http://webmechanic.biz
+ * @copyright   (C) 2011 WebMechanic
+ * @license     GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
+
+// used to sanitize item aliases in links and menus
+JLoader::register('SearchHelper', JPATH_ADMINISTRATOR .'/components/com_search/helpers/search.php');
 
 /**
- * This is a file to add template specific chrome to pagination rendering.
+ * Input variable $list is an array with offsets and the following keys:
+ *	 $list[limit]		: int
+ *	 $list[limitstart]	: int
+ *	 $list[total]		: int
+ *	 $list[limitfield]	: string
+ *	 $list[pagescounter]: string
+ *	 $list[pageslinks]	: string
  *
- * pagination_list_footer
- *	 Input variable $list is an array with offsets:
- *		 $list[limit]		: int
- *		 $list[limitstart]	: int
- *		 $list[total]		: int
- *		 $list[limitfield]	: string
- *		 $list[pagescounter]	: string
- *		 $list[pageslinks]	: string
- *
- * pagination_list_render
- *	 Input variable $list is an array with offsets:
- *		 $list[all]
- *			 [data]		: string
- *			 [active]	: boolean
- *		 $list[start]
- *			 [data]		: string
- *			 [active]	: boolean
- *		 $list[previous]
- *			 [data]		: string
- *			 [active]	: boolean
- *		 $list[next]
- *			 [data]		: string
- *			 [active]	: boolean
- *		 $list[end]
- *			 [data]		: string
- *			 [active]	: boolean
- *		 $list[pages]
- *			 [{PAGE}][data]		: string
- *			 [{PAGE}][active]	: boolean
- *
- * pagination_item_active
- *	 Input variable $item is an object with fields:
- *		 $item->base	: integer
- *		 $item->link	: string
- *		 $item->text	: string
- *
- * pagination_item_inactive
- *	 Input variable $item is an object with fields:
- *		 $item->base	: integer
- *		 $item->link	: string
- *		 $item->text	: string
- *
- * This gives template designers ultimate control over how pagination is rendered.
- *
- * NOTE: If you override pagination_item_active OR pagination_item_inactive you MUST override them both
+ * @param  array  $list
+ * @return string
  */
+function pagination_list_footer($list)
+{
+	return '<xmp>pagination_list_footer</xmp>';
+}
 
+/**
+ * Input variable $list is an array with offsets and the following keys:
+ *	 $list[all]
+ *		 [data]		: string
+ *		 [active]	: boolean
+ *	 $list[start]
+ *		 [data]		: string
+ *		 [active]	: boolean
+ *	 $list[previous]
+ *		 [data]		: string
+ *		 [active]	: boolean
+ *	 $list[next]
+ *		 [data]		: string
+ *		 [active]	: boolean
+ *	 $list[end]
+ *		 [data]		: string
+ *		 [active]	: boolean
+ *	 $list[pages]
+ *		 [{PAGE}][data]		: string
+ *		 [{PAGE}][active]	: boolean
+ *
+ * @param  array  $list
+ * @return string
+ */
 function pagination_list_render($list)
 {
 	// Initialize variables
-	$html = '<ul class="menu pagination">';
+	$html = '<menu class="pagination">';
 
-	$html .= '<li class="first">'. $list['start']['data'] .'</li>';
-	$html .= '<li class="prev">'. $list['previous']['data'] .'</li>';
+	$html .= '<li class="li first">'. $list['start']['data']    .'</li>';
+	$html .= '<li class="li prev">' . $list['previous']['data'] .'</li>';
 
-	foreach( $list['pages'] as $page )
+	foreach ($list['pages'] as $page)
 	{
 		if ($page['data']['active']) {
-			$html .= '<li class="active">';
+			$html .= '<li class="li">';
 		} else {
-			$html .= '<li>';
+			$html .= '<li class="li active">';
 		}
-
 		$html .= $page['data'];
-
-#		if($page['data']['active']) {
-#		}
-
 		$html .= '</li>';
 	}
 
-	$html .= '<li class="next">'. $list['next']['data'] .'</li>';
-	$html .= '<li class="last">'. $list['end']['data'] .'</li>';
+	$html .= '<li class="li next">'. $list['next']['data'] .'</li>';
+	$html .= '<li class="li last">'. $list['end']['data'] .'</li>';
 
-	$html .= '</ul>';
+	$html .= '</menu>';
 	return $html;
 }
 
-function pagination_item_active(&$item) {
-	return '<a href="'. $item->link .'" title="'. $item->text .'">'. $item->text .'</a>';
+/**
+ * Input variable $item is an object with the following properties:
+ *	 $item->base	: integer
+ *	 $item->link	: string
+ *	 $item->text	: string
+ *
+ * @param  object  $list
+ * @return string
+ * @see pagination_item_inactive()
+ */
+function pagination_item_active($item)
+{
+	return '<a class="li" href="'. $item->link .'"><span class="li">'. $item->text .'</span></a>';
 }
 
-function pagination_item_inactive(&$item) {
-	return '<span>'. $item->text .'</span>';
+/**
+ * Input variable $item is an object with the following properties:
+ *	 $item->base	: integer
+ *	 $item->link	: string
+ *	 $item->text	: string
+ *
+ * @param  object  $list
+ * @return string
+ * @see pagination_item_active()
+ */
+function pagination_item_inactive($item)
+{
+	return '<span class="li">'. $item->text .'</span>';
 }
