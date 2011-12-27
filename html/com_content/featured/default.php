@@ -19,7 +19,7 @@ $leadingcount = $rowcount = $row = 0;
 if (!empty($this->lead_items)) { ?>
 <div class="line items-leading">
 <?php foreach ($this->lead_items as $item) : ?>
-	<div class="leading item-<?php echo $leadingcount, ' ', $item->category_alias, ($item->state == 0 ? ' system-unpublished' : '') ?>">
+	<div class="leading item-<?php echo $leadingcount, ($item->state == 0 ? ' system-unpublished' : '') ?>">
 <?php
 	$this->item = &$item;
 	echo $this->loadTemplate('item');
@@ -31,7 +31,7 @@ if (!empty($this->lead_items)) { ?>
 <?php
 }
 
-$introcount = (count($this->intro_items));
+$introcount = count($this->intro_items);
 $counter    = 0;
 
 if (!empty($this->intro_items))
@@ -46,7 +46,7 @@ if (!empty($this->intro_items))
 		$rowcount	= ($key - 1) % ($this->columns + 1);
 		$row 		= 1 + ceil($counter / $this->columns);
 ?>
-	<div class="<?php echo 'row-', $row, (($rowcount & 1) ? ' even' : ' odd'), ' ', $item->category_alias, ($item->state == 0 ? ' system-unpublished':'') ?>">
+	<div class="<?php echo 'row-', $row, (($rowcount & 1) ? ' even' : ' odd'), ($item->state == 0 ? ' system-unpublished':'') ?>">
 <?php
 	$this->item = &$item;
 	echo $this->loadTemplate('item');
@@ -65,7 +65,7 @@ if (!empty($this->link_items)) {
 }
 
 if ($this->params->def('show_pagination', 2) == 1 || ($this->params->get('show_pagination') == 2 && $this->pagination->get('pages.total') > 1)) { ?>
-	<nav id="pagination" class="line pagination">
+	<nav id="nav-pages" class="line pages">
 	<?php if ($this->params->def('show_pagination_results', 1)) { ?>
 	<p class="counter"><?php echo $this->pagination->getPagesCounter(); ?></p>
 	<?php  } ?>
