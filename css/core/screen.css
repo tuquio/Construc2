@@ -69,11 +69,16 @@ label.invalid {color:#ff0000;font-weight:bold;text-decoration:underline}
 .login-fields label {cursor:pointer;display:block;float:left;margin:0 10px 0 0;min-width:90px}
 
 .outline {border:1px solid #ccc;-moz-border-radius:10px;-webkit-border-radius:10px;border-radius:10px;padding:5px;margin:5px}
-.pagination {margin:10px 0 0;padding:10px 0}
-.pagination {list-style-type:none;margin:0;padding:0}
-.pagination li {display:inline;margin:0;padding:2px 5px 0 0}
+.pagination {display:inline-block}
+.pagination {list-style-type:none}
+.pagination .mi {display:inline-block}
+.pagination li.mi {text-align:center}
+.pagination span.mi {min-width:1.5em;cursor:default}
+.pagination a.mi span.mi {cursor:pointer}
+.txt span.mi {padding:0 1ex}
+.num span.mi {padding:0 2px}
+
 .pagenav li {margin:0}
-.pagenav-next {text-align:right}
 
 /* -- generic classes and effects -- */
 .left {float:left}
