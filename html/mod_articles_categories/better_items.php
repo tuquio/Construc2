@@ -13,7 +13,7 @@ foreach ($list as $item) :
 
 	$active  = 0;
 	$current = 0;
-	$route   = ContentHelperRoute::getCategoryRoute($item);
+	$route   = ContentHelperRoute::getCategoryRoute($item->id);
 
 	if ($_SERVER['REQUEST_URI'] == JRoute::_($route)) {
 		parse_str(parse_url($route, PHP_URL_QUERY), $query);

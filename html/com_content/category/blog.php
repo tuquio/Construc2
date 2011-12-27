@@ -46,7 +46,7 @@ if (!empty($this->lead_items)) { ?>
 <?php
 }
 
-$introcount = (count($this->intro_items));
+$introcount = count($this->intro_items);
 $counter    = 0;
 
 if (!empty($this->intro_items))
@@ -87,7 +87,7 @@ if (is_array($this->children[$this->category->id]) && count($this->children[$thi
 }
 
 if ($this->params->def('show_pagination', 2) == 1 || ($this->params->get('show_pagination') == 2 && $this->pagination->get('pages.total') > 1)) { ?>
-	<nav id="pagination" class="line pagination">
+	<nav id="nav-pages" class="line pages">
 	<?php if ($this->params->def('show_pagination_results', 1)) { ?>
 	<p class="counter"><?php echo $this->pagination->getPagesCounter(); ?></p>
 	<?php } ?>

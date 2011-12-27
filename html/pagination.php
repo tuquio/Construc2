@@ -58,24 +58,25 @@ function pagination_list_render($list)
 	// Initialize variables
 	$html = '<menu class="pagination">';
 
-	$html .= '<li class="mi first">'. $list['start']['data']    .'</li>';
-	$html .= '<li class="mi prev">' . $list['previous']['data'] .'</li>';
+	$html .= '<li class="mi first txt">'. $list['start']['data']    .'</li>';
+	$html .= '<li class="mi prev txt">' . $list['previous']['data'] .'</li>';
 
 	foreach ($list['pages'] as $page)
 	{
 		if ($page['data']['active']) {
-			$html .= '<li class="mi">';
+			$html .= '<li class="mi num">';
 		} else {
-			$html .= '<li class="mi active">';
+			$html .= '<li class="mi num active">';
 		}
 		$html .= $page['data'];
 		$html .= '</li>';
 	}
 
-	$html .= '<li class="mi next">'. $list['next']['data'] .'</li>';
-	$html .= '<li class="mi last">'. $list['end']['data'] .'</li>';
+	$html .= '<li class="mi next txt">'. $list['next']['data'] .'</li>';
+	$html .= '<li class="mi last txt">'. $list['end']['data'] .'</li>';
 
 	$html .= '</menu>';
+
 	return $html;
 }
 
@@ -106,5 +107,5 @@ function pagination_item_active($item)
  */
 function pagination_item_inactive($item)
 {
-	return '<span class="mi">'. $item->text .'</span>';
+	return '<span class="mi active">'. $item->text .'</span>';
 }
