@@ -14,9 +14,9 @@
 	SearchHelper::santiseSearchWord($alias2, $item->alias);
 	$alias2 = str_replace(' ', '-', $alias2);
 ?>
-	<li class="li <?php echo $alias1, ' ', $alias2 ?>"><a href="<?php
+	<li class="mi <?php echo $alias1, ' ', $alias2 ?>"><a href="<?php
 	echo JRoute::_(ContentHelperRoute::getArticleRoute($item->id, $item->catid))
-	?>" class="li"><span class="li"><?php echo $item->title ?></span></a></li>
+	?>" class="mi"><span class="mi"><?php echo $item->title ?></span></a></li>
 <?php endforeach; ?>
 </ol>
 </div>
