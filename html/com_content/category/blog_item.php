@@ -12,7 +12,7 @@ $useDefList = ($params->get('show_author') || $params->get('show_category' ) || 
 			|| ($params->get('show_create_date')) || ($params->get('show_modify_date')) || ($params->get('show_publish_date'))
 			|| ($params->get('show_hits')));
 ?>
-<article class="article">
+<article class="article <?php echo $this->item->parent_alias, ' ', $this->item->category_alias, ' cid-', $this->item->catid  ?>">
 <?php
 if ($params->get('show_title'))
 { ?>
