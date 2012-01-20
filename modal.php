@@ -8,6 +8,11 @@
  * @copyright   (C) 2011 WebMechanic
  * @license     GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
+// we don't want them in modal windows
+$this->params->set('loadModal', 0);
+$this->params->set('loadMoo', 0);
+$this->params->set('loadGcf', 0);
+
 // Load template logic
 require JPATH_THEMES.'/'.$this->template.'/elements/logic.php';
 
