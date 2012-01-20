@@ -76,10 +76,9 @@ label.invalid {color:#ff0000;font-weight:bold;text-decoration:underline}
 .pagenav-next {text-align:right}
 
 /* -- generic classes and effects -- */
-.left {float:left}
-.right {float:right}
+.lft {float:left}
+.rgt {float:right}
 .rounded {-moz-border-radius:10px;-webkit-border-radius:10px;border-radius:10px;padding:5px;margin:5px}
-.invisible {position:absolute;display:inline;width:0;height:0;left:-1000px;top:-1000px;overflow:hidden}
 
 /* Font colors should be as abstract as possible.
  * This allows us using any skins we like without modifying classes
@@ -95,6 +94,28 @@ label.invalid {color:#ff0000;font-weight:bold;text-decoration:underline}
 .firm		{color:#fc6c06}
 .positive	{color:#73ab00}
 .negative	{color:#c20000}
+
+/* background colors, ought to be combined with a (generic) font color class */
+.bare-bg		{background-color:#bbb}
+.pale-bg		{background-color:#999}
+.neutral-bg		{background-color:#666}
+.opaque-bg		{background-color:#333}
+.sharp-bg		{background-color:#000}
+.contrast-bg	{background-color:#fff}
+.firm-bg		{background-color:#fc6c06}
+.positive-bg	{background-color:#73ab00}
+.negative-bg	{background-color:#c20000}
+
+/* border colors, inherit active font color */
+.bare-bd		{border-color:#bbb}
+.pale-bd		{border-color:#999}
+.neutral-bd		{border-color:#666}
+.opaque-bd		{border-color:#333}
+.sharp-bd		{border-color:#000}
+.contrast-bd	{border-color:#fff}
+.firm-bd		{border-color:#fc6c06}
+.positive-bd	{border-color:#73ab00}
+.negative-bd	{border-color:#c20000}
 
 .search {float:left}
 .search .only {border:solid 1px #ccc;margin:10px 0 10px 10px;padding:5px 10px 13px;line-height:1.3em}

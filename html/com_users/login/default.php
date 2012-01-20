@@ -11,12 +11,19 @@
  */
 defined('_JEXEC') or die;
 
+$app = JFactory::getApplication();
+
 if ($this->user->get('guest')):
-	// The user is not logged in.
-	echo $this->loadTemplate('login');
+	// The user is not logged in
+	if ($app->get('input')->get('tmpl') == 'modal') {
+		// login as a modal box
+		echo $this->loadTemplate('loginmodal');
+	} else {
+		// standard login layout
+		echo $this->loadTemplate('login');
+	}
 else:
 	// The user is already logged in: log her out
-	$app = JFactory::getApplication();
 	$app->logout();
 	$app->redirect('/');
 endif;
