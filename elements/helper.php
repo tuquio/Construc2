@@ -764,6 +764,9 @@ class ConstructTemplateHelper
 					'mootools'	=> '#/(mootools\.)#',
 		);
 
+		$loadMoo 	= (bool) $this->tmpl->params->get('loadMoo');
+		$loadJQuery	= (bool) $this->tmpl->params->get('loadjQuery');
+
 		// jQuery CDNs: http://docs.jquery.com/Downloading_jQuery#CDN_Hosted_jQuery
 		static $CDN = array(
 				'ajax.googleapis.com'	=> array('jquery'=>'/jquery/(\d\.\d\.\d)/', 'mootools'=>'/mootools/(\d\.\d\.\d)/'),
@@ -806,7 +809,7 @@ class ConstructTemplateHelper
 
 		// jQuery compat
 		if (count($jquery) > 0) {
-			$noconflict = 'if (window.jQuery){jQuery.noConflict();}';
+			$noconflict = 'if(window.jQuery){jQuery.noConflict(); window.addEvent=function(n,f){if(n=="domready"){jQuery(document).ready(f);}};}'.PHP_EOL;
 			if ( isset($head['script']['text/javascript']) )
 			{
 				if ( false === strpos($head['script']['text/javascript'], 'jQuery.noConflict') ) {

@@ -1,57 +1,76 @@
 <?php
 /**
- * @version		$Id: default.php 21543 2011-06-15 22:48:00Z chdemko $
- * @package		Joomla.Site
- * @subpackage	com_users
- * @copyright	Copyright (C) 2005 - 2011 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
- * @since		1.6
+ * Custom Override for com_users.registration
+ *
+ * @package		Templates
+ * @subpackage  Construc2
+ * @author		WebMechanic http://webmechanic.biz
+ * @copyright	(C) 2011 WebMechanic. All rights reserved.
+ * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
 
 defined('_JEXEC') or die;
 
+JHtml::_('behavior.framework');
 JHtml::_('behavior.keepalive');
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');
-?>
-<div class="registration<?php echo $this->pageclass_sfx?>">
-<?php if ($this->params->get('show_page_heading')) : ?>
-	<h1><?php echo $this->escape($this->params->get('page_heading')); ?></h1>
-<?php endif; ?>
+JHtml::_('behavior.modal');
 
-	<form id="member-registration" action="<?php echo JRoute::_('index.php?option=com_users&task=registration.register'); ?>" method="post" class="form-validate">
-<?php foreach ($this->form->getFieldsets() as $fieldset): // Iterate through the form fieldsets and display each one.?>
-	<?php $fields = $this->form->getFieldset($fieldset->name);?>
-	<?php if (count($fields)):?>
-		<fieldset>
-		<?php if (isset($fieldset->label)):// If the fieldset has a label set, display it as the legend.?>
-			<legend><?php echo JText::_($fieldset->label);?></legend>
-		<?php endif;?>
-			<dl>
-		<?php foreach($fields as $field):// Iterate through the fields in the set and display them.?>
-			<?php if ($field->hidden):// If the field is hidden, just display the input.?>
-				<?php echo $field->input;?>
-			<?php else:?>
-				<dt>
-				<?php echo $field->label; ?>
-				<?php if (!$field->required && $field->type != 'Spacer'): ?>
-					<span class="optional"><?php echo JText::_('COM_USERS_OPTIONAL');?></span>
-				<?php endif; ?>
-				</dt>
-				<dd><?php echo $field->input;?></dd>
-			<?php endif;?>
-		<?php endforeach;?>
-			</dl>
+$fields = array(
+	'name'      => $this->form->getField('name'),
+	'email1'    => $this->form->getField('email1'),
+	'password1' => $this->form->getField('password1'),
+	'password2' => $this->form->getField('password2'),
+);
+
+// Menüitem ID des "AGB" Artikels wie er im Plugin hinterlegt ist
+// und freundlicherweise vom TOS feld durchgereicht wird ;)
+$tosLink = $this->form->getField('tos', 'profile')->link;
+
+//#FIXME die fixe Größe des IFrame ist ärgerlich und kann leider
+//	nicht in % angegeben werden, wodurch es das Popup auf Small-Screens
+//	aus dem Bildschirm haut. Angeblich kann die SqueezeBox auch mit
+//	Event-Handler erweitert werden, über den die finale Größe ggf.
+//	relativ zum verfügbaren Fensterbereich justiert werden kann.
+$tosLink = ($tosLink)
+		? '<a class="tos-link modal" href="'. JRoute::_($tosLink . '&tmpl=modal', false) .'" rel="{handler:\'iframe\'}">'
+			. JText::_('Read our terms of service')
+			. '</a>'
+		: JText::_('TOS Link unavailable');
+?>
+<div class="line account registration">
+	<?php if ($this->params->get('show_page_heading')) : ?>
+	<h1><?php echo $this->escape($this->params->get('page_heading')) ?></h1>
+	<?php endif; ?>
+	<form class="form-validate" action="<?php echo JRoute::_('index.php?option=com_users&task=registration.register') ?>" method="post">
+
+		<!-- account details -->
+		<fieldset class="registration account" >
+		<legend><?php echo JText::_('COM_USERS_REGISTRATION_DEFAULT_LABEL') ?></legend>
+		<dl class="account">
+		<?php foreach ($fields as $field) :
+			$class = str_replace(array('jform_','1','2'), '', $field->id); ?>
+			<dt class="<?php echo $class ?>"><?php echo $field->label ?></dt>
+			<dd class="<?php echo $class ?>"><?php echo $field->input ?></dd>
+		<?php endforeach; ?>
+		</dl>
+		<p><?php echo JText::_('Marked fields are required') ?></p>
+		<p class="tos-link"><?php echo $tosLink; ?></p>
+		<p class="tos"><?php echo $this->form->getField('tos', 'profile')->input ?></p>
 		</fieldset>
-	<?php endif;?>
-<?php endforeach;?>
 		<div>
-			<button type="submit" class="validate"><?php echo JText::_('JREGISTER');?></button>
-			<?php echo JText::_('COM_USERS_OR');?>
-			<a href="<?php echo JRoute::_('');?>" title="<?php echo JText::_('JCANCEL');?>"><?php echo JText::_('JCANCEL');?></a>
-			<input type="hidden" name="option" value="com_users" />
-			<input type="hidden" name="task" value="registration.register" />
-			<?php echo JHtml::_('form.token');?>
+
+		<div class="line button">
+		<button type="submit" class="validate"><?php echo JText::_('JREGISTER') ?></button>
+		<?php echo JText::_('COM_USERS_OR'); ?>
+		<!-- cancel registration - go back to the homepage -->
+		<a class="button" href="<?php echo JRoute::_(JUri::base(false)) ?>" title="<?php echo JText::_('JCANCEL') ?>"><?php echo JText::_('JCANCEL') ?></a>
+		</div>
+
+		<input type="hidden" name="option" value="com_users" />
+		<input type="hidden" name="task" value="registration.register" />
+		<?php echo JHtml::_('form.token'); ?>
 		</div>
 	</form>
 </div>
