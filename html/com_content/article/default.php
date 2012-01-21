@@ -15,6 +15,24 @@ JHtml::addIncludePath(JPATH_COMPONENT_SITE .DS. 'helpers');
 // Create shortcut to parameters.
 $params = $this->item->params;
 
+// this layout splits introtext from fulltext but content plugins only work
+// for the combined text property, hence we need to reconstuct the parts.
+if ($this->item->fulltext)
+{
+	$fpos  = strpos($this->item->text, $this->item->fulltext);
+	$itext = substr($this->item->text, 0, $fpos);
+	$ftext = substr($this->item->text, $fpos);
+} else {
+	#FIXME page navigation is still part of $this->item->text. find splitpoint
+	# of introtext and fulltext taking plugin changes into account if possible
+	$itext = $this->item->text;
+	$ftext = null;
+}
+
+// override introtext and fulltext
+$this->item->introtext = $itext;
+$this->item->fulltext  = $ftext;
+
 ?>
 <article class="line item-page">
 <?php if ($this->params->get('show_page_heading')) : ?>

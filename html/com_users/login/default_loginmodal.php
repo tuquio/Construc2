@@ -1,6 +1,6 @@
 <?php
 /**
- * Custom Override for com_users.login
+ * Custom Override for com_users.login in modal window.
  *
  * @package		Templates
  * @subpackage  Construc2
@@ -13,14 +13,18 @@ defined('_JEXEC') or die;
 JHtml::_('behavior.framework');
 JHtml::_('behavior.keepalive');
 JHtml::_('behavior.formvalidation');
+
 $usersConfig = JComponentHelper::getParams('com_users');
+
+// use redirect url from session or form?
+$redirect_url = JFactory::getApplication()->getUserState('redirect', $this->form->getValue('return'));
 
 // understanding booleans helps...
 $_desc  = ($this->params->get('logindescription_show') && trim($this->params->get('login_description')));
 $_image = (bool)$this->params->get('login_image');
 
 ?>
-<div class="line account login">
+<div class="line account login modal">
 	<?php if ($this->params->get('show_page_heading')) : ?>
 	<h1><?php echo $this->escape($this->params->get('page_heading')) ?></h1>
 	<?php endif; ?>
@@ -32,7 +36,7 @@ $_image = (bool)$this->params->get('login_image');
 	</div>
 	<?php endif ; ?>
 
-	<form class="form-validate" action="<?php echo JRoute::_('index.php?option=com_users&task=user.login'); ?>" method="post">
+	<form class="form-validate" action="<?php echo JRoute::_('index.php?option=com_users&task=user.login&tmpl=modal'); ?>" method="post">
 	<fieldset class="login credentials">
 		<dl class="credentials">
 	<?php foreach ($this->form->getFieldset('credentials') as $field): ?>
@@ -46,15 +50,8 @@ $_image = (bool)$this->params->get('login_image');
 		<button type="submit" class="button"><?php echo JText::_('JLOGIN'); ?></button>
 		</div>
 	</fieldset>
-	<input type="hidden" name="return" value="<?php echo base64_encode($this->params->get('login_redirect_url',$this->form->getValue('return'))); ?>" />
+	<input type="hidden" name="return" value="<?php echo base64_encode($this->params->get('login_redirect_url', $redirect_url)); ?>" />
 	<?php echo JHtml::_('form.token') ?>
 	</form>
-
-	<menu class="menu accountmenu">
-	<li class="mi reset"><a class="mi" href="<?php echo JRoute::_('index.php?option=com_users&view=reset'); ?>"><span class="mi"><?php echo JText::_('COM_USERS_LOGIN_RESET'); ?></span></a></li>
-	<li class="mi remind"><a class="mi" href="<?php echo JRoute::_('index.php?option=com_users&view=remind'); ?>"><span class="mi"><?php echo JText::_('COM_USERS_LOGIN_REMIND'); ?></span></a></li>
-	<?php if ($usersConfig->get('allowUserRegistration')) :
-	?><li class="mi register"><a class="mi" href="<?php echo JRoute::_('index.php?option=com_users&view=registration'); ?>"><span class="mi"><?php echo JText::_('COM_USERS_LOGIN_REGISTER'); ?></span></a></li>
-	<?php endif; ?></menu>
 
 </div>

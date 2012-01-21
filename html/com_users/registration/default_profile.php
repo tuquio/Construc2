@@ -1,6 +1,6 @@
 <?php
 /**
- * Custom Override for com_users.registration
+ * Custom Override for com_users.registration if used with the user profile plugin.
  *
  * @package		Templates
  * @subpackage  Construc2
@@ -91,8 +91,8 @@ JHtml::_('behavior.formvalidation');
 	<div class="line button">
 	<button type="submit" class="validate"><span><?php echo JText::_('JREGISTER');?></span></button>
 	<?php echo JText::_('COM_USERS_OR');?>
-	<!-- canel registration - go back to the homepage -->
-	<a href="<?php echo JRoute::_('');?>" title="<?php echo JText::_('JCANCEL');?>"><?php echo JText::_('JCANCEL');?></a>
+	<!-- cancel registration - go back to the homepage -->
+	<a class="button" href="<?php echo JRoute::_(JUri::base(false)) ?>" title="<?php echo JText::_('JCANCEL');?>"><?php echo JText::_('JCANCEL');?></a>
 	</div>
 
 	<input type="hidden" name="option" value="com_users" />
