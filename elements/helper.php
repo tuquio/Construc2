@@ -185,7 +185,7 @@ class ConstructTemplateHelper
 		return $alias[$parent];
 	}
 
-	protected function _catSlug()
+	static protected function _catSlug()
 	{
 		$route = JRoute::_(ContentHelperRoute::getCategoryRoute( JRequest::getInt('id') ));
 		preg_match('#/(?:\d+)\-(\w+)#', $route, $m);

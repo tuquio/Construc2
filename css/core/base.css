@@ -143,11 +143,11 @@ br.clear, hr.clear{float:none;clear:both;display:block;border:none;height:0;marg
 	a, a:visited{color:#000 !important;text-decoration:underline}
 	a:after{content:" (" attr(href) ")";font-size:smaller}
 	acronym:after,abbr:after{content:" (" attr(title) ")";font-size:smaller}
-	pre,blockquote{border:1px solid rgb(128,128,128)}
+	pre,blockquote,fieldset{border:1px solid rgb(128,128,128)}
 	table[border]{box-decoration-break:clone}
 	thead{display:table-header-group} /* css-discuss.incutio.com/wiki/Printing_Tables */
 	p,h2,h3{orphans:3;widows:3}
-	pre, blockquote,tr,img,h2,h3{page-break-after:avoid}
+	pre,blockquote,tr,img,h2,h3{page-break-after:avoid}
 
 	#logo,.logo {width:auto;max-width:100%;overflow:hidden;text-align:left}
 	#logo a {display:inline;margin:0;padding:1ex;}
