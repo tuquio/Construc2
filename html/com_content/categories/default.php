@@ -4,14 +4,14 @@ defined('_JEXEC') or die;
 JHtml::addIncludePath(JPATH_COMPONENT_SITE .'/helpers');
 
 ?>
-<div class="categories-list">
-<?php if ($this->params->get('show_page_heading', 1)) { ?>
+<section class="categories-list">
+<?php if ($this->params->get('show_page_heading')) { ?>
 <h1 class="H2"><?php echo $this->escape($this->params->get('page_heading')); ?></h1>
 <?php }
 
 	if ($this->params->get('show_base_description')) {
 		//If there is a description in the menu parameters use that;
-		if($this->params->get('categories_description')) {
+		if ($this->params->get('categories_description')) {
 			echo  JHtml::_('content.prepare',$this->params->get('categories_description'));
 		} else {
 		//Otherwise get one from the database if it exists.
@@ -21,5 +21,6 @@ JHtml::addIncludePath(JPATH_COMPONENT_SITE .'/helpers');
 		}
 	}
 
-echo $this->loadTemplate('items');?>
-</div>
+echo $this->loadTemplate('items');
+?>
+</section>
