@@ -8,7 +8,7 @@
 	<authorUrl>http://joomla.webmechanic.biz</authorUrl>
 	<copyright>Copyright (C)2011 WebMechanic. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
-	<version>1.9.1</version>
+	<version>1.9.2</version>
 	<description>TPL_CONSTRUC2_DESCRIPTION</description>
 	<credits><![CDATA[
 	Inspired by "Construct Community", (C) 2010, 2011 Matt Thomas | Joomla Engineering. All rights reserved.
@@ -128,6 +128,24 @@
 		</field>
 	</fieldset>
  -->
+			<fieldset name="compat" description="TPL_CONSTRUC2_COMPAT_DESC">
+				<field name="html5manifest" type="radio" default="0" label="TPL_CONSTRUC2_ENABLE_HTML5MANIFEST_LABEL" description="TPL_CONSTRUC2_ENABLE_HTML5MANIFEST_DESC">
+					<option value="1">JYes</option>
+					<option value="0">JNo</option>
+				</field>
+				<field name="loadGcf" type="radio" default="0" label="TPL_CONSTRUC2_CHROME_FRAME_LABEL" description="TPL_CONSTRUC2_CHROME_FRAME_DESC">
+		        	<option value="1.0.2">JYes</option><!-- field value = version number-->
+		        	<option value="0">JNo</option>
+		    	</field>
+				<field name="prefixfree" type="radio" default="0" label="TPL_CONSTRUC2_PREFIXFREE_LABEL" description="TPL_CONSTRUC2_PREFIXFREE_DESC">
+		        	<option value="1">JYes</option>
+		        	<option value="0">JNo</option>
+		    	</field>
+				<field name="html5shim" type="radio" default="1" label="TPL_CONSTRUC2_HTML5_LABEL" description="TPL_CONSTRUC2_HTML5_DESC">
+		        	<option value="1">JYes</option>
+		        	<option value="0">JNo</option>
+		    	</field>
+			</fieldset>
 
 			<fieldset name="typography" description="TPL_CONSTRUC2_GOOGLE_WEB_FONT">
 				<field name="googleWebFontApi" type="text" default="" label="Web Fonts API Key" description="To retrieve the dynamic list of web fonts offered by the Google Web Fonts service enter your Web Fonts API key: http://code.google.com/intl/de-DE/apis/webfonts/docs/developer_api.html" size="50" />
@@ -144,24 +162,6 @@
 				<field name="googleWebFontSize3" type="text" default="" label="TPL_CONSTRUC2_GOOGLE_WEB_FONT_SIZE_LABEL" description="TPL_CONSTRUC2_GOOGLE_WEB_FONT_SIZE_DESC" size="5" />
 			</fieldset>
 
-			<fieldset name="compat" description="TPL_CONSTRUC2_COMPAT_DESC">
-				<field name="html5manifest" type="radio" default="0" label="TPL_CONSTRUC2_ENABLE_HTML5MANIFEST_LABEL" description="TPL_CONSTRUC2_ENABLE_HTML5MANIFEST_DESC">
-					<option value="1">JYes</option>
-					<option value="0">JNo</option>
-				</field>
-				<field name="loadGcf" type="radio" default="0" label="TPL_CONSTRUC2_CHROME_FRAME_LABEL" description="TPL_CONSTRUC2_CHROME_FRAME_DESC">
-		        	<option value="1.0.2">JYes</option><!-- field value = version number-->
-		        	<option value="0">JNo</option>
-		    	</field>
-				<field name="prefixfree" type="radio" default="1" label="TPL_CONSTRUC2_PREFIXFREE_LABEL" description="TPL_CONSTRUC2_PREFIXFREE_DESC">
-		        	<option value="1">JYes</option>
-		        	<option value="0">JNo</option>
-		    	</field>
-				<field name="html5shim" type="radio" default="1" label="TPL_CONSTRUC2_HTML5_LABEL" description="TPL_CONSTRUC2_HTML5_DESC">
-		        	<option value="1">JYes</option>
-		        	<option value="0">JNo</option>
-		    	</field>
-			</fieldset>
 		</fields>
 	</config>
 

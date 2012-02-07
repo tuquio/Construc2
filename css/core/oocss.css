@@ -9,7 +9,7 @@ line,.lastUnit{overflow:hidden;*overflow:visible;*zoom:1;}
 .unitRight{float:right}
 .lastUnit{float:none;width:auto;_position:relative;_left:-3px;_margin-right:-3px;}
 aside .unit, aside .unitRight{float:none !important;width:auto !important}
-@media print, screen and (max-width:481px) {.unit,.unitRight{float:none !important;width:auto !important}}
+@media print, screen and (max-width:481px) {.unit,.unitRight{float:none !important;/*width:auto !important*/}}
 
 .size1of1 {float:none}
 .size1of2,

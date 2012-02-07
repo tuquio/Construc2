@@ -1,6 +1,6 @@
 /*!
  * screen.css
- * @version 1.8.4 13.12.2011
+ * @version 1.9.2
  */
 
 /* -- Layout -- */
@@ -17,8 +17,6 @@ h5,.H5 {font-size:1.0em}
 h6,.H6 {font-size:0.8em}
 h3+ul, h3+ol {margin-top:-.3em}
 
-input.button {padding:0 10px}
-
 table.category {border:1px solid #000}
 .category thead {background:#333}
 .category thead a {color:#fff}
@@ -26,65 +24,21 @@ table.category {border:1px solid #000}
 .category td {padding:5px}
 .cat-list-row0 {background:#eeeeee}
 .cat-list-row1 {}
-.category th img {padding-left:5px}
-.contact {margin:10px 0}
-.contact label {float:left;width:12em;margin:10px 0 0}
-.contact form {padding:20px;margin:10px 0}
-.contact input {padding:2px 2px 0;margin:10px 0 0}
-.contact #contact-email-copy {position:relative;top:4px}
-.content_vote {margin:0 0 10px;display:block}
-.content_vote input {margin:0 5px}
-.content_vote .button {border:0;font-weight:bold;margin:20px 10px 0 0;padding:0 0 0 30px;cursor:pointer}
 
 .date-container {float:right}
 .date-weekday, .date-month, .date-day, .date-year {/* intentionally left blank */}
 
-.edit legend {font-size:1.2em;font-weight:bold;padding:2px}
-.edit fieldset {border-color:#ccc;padding:20px;margin:10px 0}
-.edit .formelm label {display:inline-block;vertical-align:top;width:12em}
-.edit .formelm #jform_description-lbl {float:none;display:block}
-.edit .formelm .radio label {float:none;width:14em}
-.edit .formelm .radio label span {float:left;width:14em}
-.edit .formelm-area label {float:none !important;display:block;font-weight:bold}
-
-ol.form {float:left;list-style:none;width:100%}
-ol.form li {clear:both;float:left;margin:0 0 10px;width:100%;position:relative}
-ol.form label {cursor:pointer;display:block;font-weight:bold;margin:0 10px 0 0}
-ol.form input,
-ol.form textarea {font:inherit;padding:2px}
-ol.form textarea {height:250px}
-ol.form li.group label {margin:0;width:auto}
-ol.form li.group {margin-bottom:0}
-ol.form li.group ul {list-style:none;margin-left:100px}
-ol.form li.group ul label {display:inline;float:none;font-weight:normal;margin:0 0 0 10px;width:auto}
-ol.form li.group ul input {width:auto}
-ol.form li.button button {margin:0 auto;display:block}
-ol.form li.checkbox {float:left;width:10px}
-ol.form span.error {position:absolute;top:0;right:0}
-input.invalid,
-textarea.invalid {border:solid 2px #ff0000}
-label.invalid {color:#ff0000;font-weight:bold;text-decoration:underline}
-
-.login-fields {padding:0 0 5px 0}
-.login-fields label {cursor:pointer;display:block;float:left;margin:0 10px 0 0;min-width:90px}
-
 .outline {border:1px solid #ccc;-moz-border-radius:10px;-webkit-border-radius:10px;border-radius:10px;padding:5px;margin:5px}
-.pagination {display:inline-block}
-.pagination {list-style-type:none}
-.pagination .mi {display:inline-block}
-.pagination li.mi {text-align:center}
-.pagination span.mi {min-width:1.5em;cursor:default}
-.pagination a.mi span.mi {cursor:pointer}
-.txt span.mi {padding:0 1ex}
-.num span.mi {padding:0 2px}
-
+.pagination {margin:10px 0 0;padding:10px 0}
+.pagination {list-style-type:none;margin:0;padding:0}
+.pagination li {display:inline;margin:0;padding:2px 5px 0 0}
 .pagenav li {margin:0}
+.pagenav-next {text-align:right}
 
 /* -- generic classes and effects -- */
-.left {float:left}
-.right {float:right}
+.lft {float:left}
+.rgt {float:right}
 .rounded {-moz-border-radius:10px;-webkit-border-radius:10px;border-radius:10px;padding:5px;margin:5px}
-.invisible {position:absolute;display:inline;width:0;height:0;left:-1000px;top:-1000px;overflow:hidden}
 
 /* Font colors should be as abstract as possible.
  * This allows us using any skins we like without modifying classes
@@ -101,14 +55,28 @@ label.invalid {color:#ff0000;font-weight:bold;text-decoration:underline}
 .positive	{color:#73ab00}
 .negative	{color:#c20000}
 
-.search {float:left}
-.search .only {border:solid 1px #ccc;margin:10px 0 10px 10px;padding:5px 10px 13px;line-height:1.3em}
-.search .phrases .inputbox {display:block;height:1.5em;margin-top:10px;width:12em}
-.search .phrases option {border-bottom:solid 1px #333;padding:2px}
-.search .phrases a:hover {background:#C00;border-color:#CFD0D6;color:#fff}
-.search input {padding:3px 5px}
-.search .word {padding:10px 10px 10px 0;border:solid 0 !important}
-.search .word input {border:1px solid #ccc;margin:0 0 0 10px;padding:2px}
+/* background colors, ought to be combined with a (generic) font color class */
+.bare-bg		{background-color:#bbb}
+.pale-bg		{background-color:#999}
+.neutral-bg		{background-color:#666}
+.opaque-bg		{background-color:#333}
+.sharp-bg		{background-color:#000}
+.contrast-bg	{background-color:#fff}
+.firm-bg		{background-color:#fc6c06}
+.positive-bg	{background-color:#73ab00}
+.negative-bg	{background-color:#c20000}
+
+/* border colors, inherit active font color */
+.bare-bd		{border-color:#bbb}
+.pale-bd		{border-color:#999}
+.neutral-bd		{border-color:#666}
+.opaque-bd		{border-color:#333}
+.sharp-bd		{border-color:#000}
+.contrast-bd	{border-color:#fff}
+.firm-bd		{border-color:#fc6c06}
+.positive-bd	{border-color:#73ab00}
+.negative-bd	{border-color:#c20000}
+
 /*
 .tip {float:left;background:#ffc;border:1px solid #D4D5AA;padding:5px;max-width:400px;z-index:50;-webkit-box-shadow:5px 5px 10px rgba(0,0,0,0.6);-moz-box-shadow:5px 5px 10px rgba(0,0,0,0.6);box-shadow:5px 5px 10px rgba(0,0,0,0.6)}
 .tip-title {padding:0;margin:0;font-size:1em;font-weight:bold;margin-top:-15px;padding-top:15px;padding-bottom:5px;background:url(../images/selector-arrow.png) no-repeat}
@@ -116,10 +84,6 @@ label.invalid {color:#ff0000;font-weight:bold;text-decoration:underline}
 */
 .footer .menu, .footer .menu li {display:inline-block;list-style:none;margin:0;padding:0}
 .footer .menu li a, .footer .menu a:visited {font-weight:normal;padding:1px 3px;text-decoration:none}
-
-#form-login label {cursor:pointer;display:block;margin:0 10px 0 0;width:120px}
-#form-login-remember label {float:left}
-#form-login ul li {margin-left:0}
 
 .page-head {margin:0;text-align:left}
 

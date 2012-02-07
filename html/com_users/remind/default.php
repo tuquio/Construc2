@@ -1,6 +1,6 @@
 <?php
 /**
- * Custom Override for com_users.remind
+ * Custom Override for com_users.remind.default
  *
  * @package		Templates
  * @subpackage  Construc2
@@ -19,21 +19,21 @@ JHtml::_('behavior.formvalidation');
     <?php endif; ?>
 
     <form class="form-validate" id="user-registration" action="<?php echo JRoute::_('index.php?option=com_users&task=remind.remind'); ?>" method="post">
-        <?php foreach ($this->form->getFieldsets() as $fieldset): ?>
-            <p><?php echo JText::_($fieldset->label); ?></p>
-            <fieldset class="remind">
-            <dl>
-            <?php foreach ($this->form->getFieldset($fieldset->name) as $name => $field): ?>
-                <dt><?php echo $field->label; ?></dt>
-                <dd><?php echo $field->input; ?></dd>
-            <?php endforeach; ?>
-            </dl>
-            </fieldset>
-        <?php endforeach; ?>
+<?php foreach ($this->form->getFieldsets() as $fieldset): ?>
+		<p><?php echo JText::_($fieldset->label); ?></p>
+		<fieldset class="remind">
+		<dl class="remind">
+<?php foreach ($this->form->getFieldset($fieldset->name) as $name => $field): ?>
+			<dt class="<?php echo $field->name; ?>"><?php echo $field->label; ?></dt>
+			<dd class="<?php echo $field->name; ?>"><?php echo $field->input; ?></dd>
+<?php endforeach; ?>
+		</dl>
+		</fieldset>
+<?php endforeach; ?>
 
-        <div class="line">
-        <button type="submit" class="validate"><?php echo JText::_('JSUBMIT'); ?></button>
+        <div class="line button">
+        <button type="submit" class="validate"><span><?php echo JText::_('JSUBMIT'); ?></span></button>
         </div>
-        <?php echo JHtml::_('form.token'); ?>
+	<?php echo JHtml::_('form.token'); ?>
     </form>
 </div>

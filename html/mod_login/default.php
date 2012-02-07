@@ -1,72 +1,84 @@
-<?php defined('_JEXEC') or die;
+<?php
 /**
-* @package		Template Framework for Joomla! 1.6
-* @author		Joomla Engineering http://joomlaengineering.com
-* @copyright	Copyright (C) 2010, 2011 Matt Thomas | Joomla Engineering. All rights reserved.
-* @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
-*/
-
-// JHtml::_('behavior.keepalive');
+ * Custom Override for mod_login form and support menu links.
+ *
+ * Local variables:
+ * $type	: 'login|logout'
+ * $return	: redirect URL (or empty = stay on same page after login)
+ * $user	: JUser object
+ *
+ * @package		Templates
+ * @subpackage  Construc2
+ * @author		WebMechanic http://webmechanic.biz
+ * @copyright	(C) 2011 WebMechanic. All rights reserved.
+ * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
+ */
+defined('_JEXEC') or die;
 
 ?>
-<?php if ($type == 'logout') : ?>
-<form action="index.php" method="post" name="form-login" id="form-login">
-<?php if ($params->get('greeting')) : ?>
-	<div>
-	<?php if($params->get('name') == 0) : {
-		echo JText::sprintf('MOD_LOGIN_HINAME', $user->get('name'));
-	} else : {
-		echo JText::sprintf('MOD_LOGIN_HINAME', $user->get('username'));
-	} endif; ?>
+<?php if ($type == 'logout') { ?>
+<form class="form-validate form-login" id="form-login" action="<?php echo JRoute::_('index.php', true, $params->get('usesecure')) ?>" method="post">
+<?php if ($params->get('greeting')) { ?>
+	<div class="line description pre-text"><?php
+	if ($params->get('name') == 0) {
+		JText::printf('MOD_LOGIN_HINAME', $user->get('name'));
+	} else {
+		JText::printf('MOD_LOGIN_HINAME', $user->get('username'));
+	} ?></div>
+<?php } ?>
+
+	<div class="line button">
+	<button type="submit" class="button"><span><?php echo JText::_('JLOGOUT'); ?></span></button>
 	</div>
-<?php endif; ?>
-	<div class="logout-button">
-		<input type="submit" name="Submit" class="button" value="<?php echo JText::_('JLOGOUT'); ?>" />
-	</div>
+
 	<input type="hidden" name="option" value="com_users" />
 	<input type="hidden" name="task" value="user.logout" />
 	<input type="hidden" name="return" value="<?php echo $return; ?>" />
 	<?php echo JHtml::_('form.token'); ?>
 </form>
-<?php else : ?>
-<form action="<?php echo JRoute::_('index.php', true, $params->get('usesecure')); ?>" method="post" name="form-login" id="form-login" >
-	<?php echo $params->get('pretext'); ?>
-	<fieldset class="input">
-		<label id="form-login-username" for="modlgn_username"><?php echo JText::_('MOD_LOGIN_VALUE_USERNAME') ?>
-			<input id="modlgn_username" type="text" name="username" class="inputbox"  size="18" />
-		</label>
-		<label id="form-login-password" for="modlgn_passwd"><?php echo JText::_('JGLOBAL_PASSWORD') ?>
-			<input id="modlgn_passwd" type="password" name="password" class="inputbox" size="18"  />
-		</label>
+<?php
+} else {
+	$cuparams = JComponentHelper::getParams('com_users');
+?>
+<form class="form-validate form-login" id="form-login" action="<?php echo JRoute::_('index.php', true, $params->get('usesecure')) ?>" method="post">
+<?php if ( ($ptext = $params->get('pretext')) ) : ?><div class="line description pre-text"><?php echo $ptext ?></div><? endif; ?>
+	<fieldset class="login credentials">
+		<dl class="credentials">
+			<dt class="username"><label for="mod-username" class="required"><?php echo JText::_('MOD_LOGIN_VALUE_USERNAME') ?></label></dt>
+			<dd class="username"><input id="mod-username" type="text" name="username" class="validate-username required" required="required" aria-required="true" /></dd>
+			<dt class="password"><label for="mod-password" class="required"><?php echo JText::_('JGLOBAL_PASSWORD') ?></label></dt>
+			<dd class="password"><input id="mod-password" type="password" name="password" class="validate-password required" required="required" aria-required="true" /></dd>
 	<?php if (JPluginHelper::isEnabled('system', 'remember')) : ?>
-		<label id="form-login-remember" for="modlgn_remember"><?php echo JText::_('MOD_LOGIN_REMEMBER_ME') ?>
-			<input id="modlgn_remember" type="checkbox" name="remember" class="inputbox" value="yes"/>
-		</label>
+			<dt></dt><dd class="remember">
+				<label for="mod-remember">
+				<input id="mod-remember" type="checkbox" name="remember" value="yes" />
+				<span class="lbl"><?php echo JText::_('MOD_LOGIN_REMEMBER_ME') ?></span>
+				</label>
+			</dd>
 	<?php endif; ?>
-	<input type="submit" name="Submit" class="button" value="<?php echo JText::_('JLOGIN') ?>" />
+		</dl>
+	</fieldset>
+
+	<div class="line button">
+	<button type="submit" class="validate"><span><?php echo JText::_('JLOGIN'); ?></span></button>
+	</div>
+
+	<menu class="menu loginmenu">
+	<li class="mi reset"><a class="mi" href="<?php echo JRoute::_('index.php?option=com_users&view=reset'); ?>"><span class="mi"><?php echo JText::_('MOD_LOGIN_FORGOT_YOUR_PASSWORD'); ?></span></a></li>
+	<li class="mi remind"><a class="mi" href="<?php echo JRoute::_('index.php?option=com_users&view=remind'); ?>"><span class="mi"><?php echo JText::_('MOD_LOGIN_FORGOT_YOUR_USERNAME'); ?></span></a></li>
+	<?php if ($cuparams->get('allowUserRegistration')) :
+	?><li class="mi register"><a class="mi" href="<?php echo JRoute::_('index.php?option=com_users&view=registration'); ?>"><span class="mi"><?php echo JText::_('MOD_LOGIN_REGISTER'); ?></span></a></li>
+	<?php endif; ?>
+	</menu>
+
+<?php if ( ($ptext = $params->get('posttext')) ) : ?><div class="line description post-text"><?php echo $ptext ?></div><? endif; ?>
+
 	<input type="hidden" name="option" value="com_users" />
 	<input type="hidden" name="task" value="user.login" />
 	<input type="hidden" name="return" value="<?php echo $return; ?>" />
 	<?php echo JHtml::_('form.token'); ?>
-	</fieldset>
-	<ul>
-		<li>
-			<a href="<?php echo JRoute::_('index.php?option=com_users&view=reset'); ?>">
-			<?php echo JText::_('MOD_LOGIN_FORGOT_YOUR_PASSWORD'); ?></a>
-		</li>
-		<li>
-			<a href="<?php echo JRoute::_('index.php?option=com_users&view=remind'); ?>">
-			<?php echo JText::_('MOD_LOGIN_FORGOT_YOUR_USERNAME'); ?></a>
-		</li>
-		<?php
-		$usersConfig = JComponentHelper::getParams('com_users');
-		if ($usersConfig->get('allowUserRegistration')) : ?>
-		<li>
-			<a href="<?php echo JRoute::_('index.php?option=com_users&view=registration'); ?>">
-				<?php echo JText::_('MOD_LOGIN_REGISTER'); ?></a>
-		</li>
-		<?php endif; ?>
-	</ul>
-	<?php echo $params->get('posttext'); ?>
+
 </form>
-<?php endif; ?>
+<?php
+}
+unset($ptext);
