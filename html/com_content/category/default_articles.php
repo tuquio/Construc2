@@ -25,15 +25,14 @@ if (empty($this->items)) {
 		<legend class="element-invisible"><?php echo JText::_('JGLOBAL_FILTER_LABEL'); ?></legend>
 		<div class="filter-search">
 			<label class="filter-search-lbl" for="filter-search"><?php echo JText::_('COM_CONTENT_'.$this->params->get('filter_field').'_FILTER_LABEL').'&#160;'; ?></label>
-			<input type="text" name="filter-search" id="filter-search" value="<?php echo $this->escape($this->state->get('list.filter')); ?>" class="inputbox" onchange="document.adminForm.submit();" title="<?php echo JText::_('COM_CONTENT_FILTER_SEARCH_DESC'); ?>" />
+			<input type="text" name="filter-search" id="filter-search" value="<?php echo $this->escape($this->state->get('list.filter')); ?>" class="inputbox" onchange="document.adminForm.submit();" title="<?php echo JText::_('COM_CONTENT_FILTER_SEARCH_DESC') ?>" />
 		</div>
 <?php }
 
 if ($this->params->get('show_pagination_limit')) { ?>
-		<div class="display-limit">
-			<?php echo JText::_('JGLOBAL_DISPLAY_NUM'); ?>&#160;
-			<?php echo $this->pagination->getLimitBox(); ?>
-		</div><?php
+		<div class="display-limit"><?php
+			echo JText::_('JGLOBAL_DISPLAY_NUM'), '&#160;', $this->pagination->getLimitBox();
+		?></div><?php
 }
 
 if ($this->params->get('filter_field') != 'hide') : ?></fieldset><?php endif; ?>
@@ -58,10 +57,10 @@ if ($this->params->get('filter_field') != 'hide') : ?></fieldset><?php endif; ?>
 </thead><?php
 }
 ?>
-<tbody>
+<tbody class="category-list">
 <?php
 foreach ($this->items as $i => &$article) : ?>
-<tr class="cat-list-row<?php echo $i % 2; ?>">
+<tr class="row-<?php echo $i % 2; ?>">
 <?php
 	if (in_array($article->access, $this->user->getAuthorisedViewLevels())) { ?>
 	<td class="list-title"><a href="<?php

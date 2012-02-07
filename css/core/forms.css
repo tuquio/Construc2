@@ -1,7 +1,7 @@
 /* äöü - just checking */
 /*!
  * forms.css
- * @version 2011-11-16
+ * @version 1.9.2
  * @license DWTF
  */
 
@@ -23,3 +23,8 @@ input[type=image] {width:auto;border:none;outline:none}
 
 input[readonly]	{border:none; cursor:default}
 
+input:required, textarea:required {} /* ~ .firm */
+input:valid, textarea:valid {} /* ~ .positive */
+input:focus:invalid, textarea:focus:invalid {border-color:#c20000} /* ~ .negative */
+input.invalid, textarea.invalid {border-color:#c20000} /* ~ .negative */
+label.invalid {color:#c20000;font-weight:bold} /* ~ .negative */

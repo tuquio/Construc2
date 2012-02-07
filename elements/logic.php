@@ -261,13 +261,10 @@ if ((bool) $this->params->get('html5manifest')) {
 	$cache_manifest = '';
 }
 
-// Layout Declarations
-$columnLayout[] = ConstructTemplateHelper::getPageAlias(true);
-
-// JavaScript
-if ($loadMoo == true) {
-	$scriptDeclarations[] = 'if (window.addEvent && window.SmoothScroll){window.addEvent("domready",function(){new SmoothScroll({duration:1200},window);});}';
-}
+// JavaScript crap
+//	if ($loadMoo == true) {
+//		$scriptDeclarations[] = 'if (window.addEvent && window.SmoothScroll){window.addEvent("domready",function(){new SmoothScroll({duration:1200},window);});}';
+//	}
 
 #----------------------- Internet Explorer Fixes ---------------------------#
 // html5 shim

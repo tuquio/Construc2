@@ -1,6 +1,7 @@
 <?php
 /**
  * Custom Override for com_users.logout
+ Not used if "Instant Logout Login Layout" is active in default.php
  *
  * @package		Templates
  * @subpackage  Construc2
