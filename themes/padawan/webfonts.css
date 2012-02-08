@@ -1,4 +1,4 @@
-@charset "UTF-8";
+/* äöü just checking */
 /*!
  * Style sheet "Padawan" (HTML5 edition)
  * CSS3 Webfonts module.
@@ -34,7 +34,7 @@ Sprachspezifisch = kleiner:
 @font-face {
 	font-family: 'Padawan';
 	src: url('padawan.eot');
-	src: local('�'),
+	src: local('�'),
 		url('padawan.woff') format('woff'),
 		url('padawan.ttf') format('truetype');
 

@@ -7,158 +7,163 @@
 body {min-width:900px}
 
 /* template param override (#body-container,#header-above 100%) */
-@media screen and (max-width:1039px) { body #body-container, body #header-above, .page-foot {max-width:94%} }
-@media screen and (min-width:1040px) { body #body-container, body #header-above, .page-foot {max-width:978px} }
+@media screen and (max-width:1039px) {body #body-container, body #header-above, .page-foot {max-width:94%}}
+@media screen and (min-width:1040px) {body #body-container, body #header-above, .page-foot {max-width:90%}}
 
-#nav	{margin-top:1em }
-.content-container { margin-top:1em }
+#nav	{margin-top:1em}
+.content-container {margin-top:1em}
 
 #logo   {font-size:60px;height:100px}
 #logo   ,
-#logo a {float:left;margin:10px;text-align:left;line-height:1;text-rendering: optimizelegibility;}
-#logo a {height:auto;font-size:1em;width:auto;text-decoration:none;}
+#logo a {float:left;margin:10px;text-align:left;line-height:1;text-rendering:optimizelegibility}
+#logo a {height:auto;font-size:1em;width:auto;text-decoration:none}
 
-#to-page-top	{position:absolute;right:10px;text-align:right;}
+#to-page-top	{position:absolute;right:10px;text-align:right}
 #diagnostics	{position:absolute;right:10px;top:20px;max-width:90px}
-#diagnostics li	{padding:0;margin:0;line-height: 1}
+#diagnostics li	{padding:0;margin:0;line-height:1}
 
-h1,h2,h3,h4,h5,h6 {line-height:normal;margin-bottom:1.6ex}
+h1,h2,h3,h4,h5,h6 {line-height:normal}
 
 h1,h2,h3,h4,h5,h6,
-menu.categories	{font-family:'Ubuntu Condensed','Trebuchet MS',Arial,sans-serif;text-rendering: optimizelegibility}
+menu.categories	{font-family:'Ubuntu Condensed','Trebuchet MS',Arial,sans-serif;text-rendering:optimizelegibility}
 
 ol:first-child,
 ul:first-child {margin-top:0}
 
-p {-webkit-hyphens:auto; -moz-hyphens:auto; hyphens:auto;}
+p {-webkit-hyphens:auto;-moz-hyphens:auto;hyphens:auto}
+
+p:only-child {margin-bottom:0}
 
 /* =column layout [[20|60]20] */
 #body-container	,
 header.above	,
-header.below	{margin:0 auto;}
+header.below	{margin:0 auto}
 
-.content-main	{width:auto; float:none}
-.load-first 	{width:auto; float:none}
-.column-group 	{width:25%;}
+.content-main	{width:auto;float:none}
+.load-first 	{width:auto;float:none}
+.column-group 	{width:25%}
 .group-alpha	{float:left}
 .group-beta		{float:left}
 
-.main-beta .load-first	  {width:75%;float:left;}
-.alpha-main .content-main ,
-
-.alpha-main-beta .load-first	{width:75%;float:left;}
-.alpha-main-beta .content-main	{width:75%;float:right;}
+.main-beta .load-first	  		{width:75%;float:left}
+.alpha-main .content-main 		,
+.alpha-main-beta .load-first	{width:75%;float:left}
+.alpha-main-beta .content-main	{width:75%;float:right}
 
 .page-foot	{margin:0 auto}
 .foot-inner	{
-	-moz-column-count: 2;
-	-webkit-column-count: 2;
-	column-count: 2;
-	-moz-column-gap: 10px;
-	-webkit-column-gap: 10px;
-	column-gap: 10px;
+	-moz-column-count:2;-webkit-column-count:2;column-count:2;
+	-moz-column-gap:10px;-webkit-column-gap:10px;column-gap:10px;
 }
 
 /*
  * =columns context
  */
-.column-group .mod		{margin-top:0}
-.column-group .moduletable {margin-bottom:10px}
-.column-group fieldset	{padding:5px;}
-.column-group .inner	{}
-.column-group h3		{margin:0; padding:0;}
+.column-group .mod			{margin-top:0}
+.column-group .moduletable	{margin-bottom:10px}
+.column-group fieldset		{padding:5px;margin:0}
+.column-group .inner {}
+.column-group h3			{padding:0}
 
 .column-group .notice .inner {padding:1ex 1em}
 
 /*
  * =contents
  */
-.blog .category-desc	,
-.blog article			{padding:10px;margin-bottom:10px}
+.item-page		,
+.blog article	, 
+.blog .category-desc	{padding:10px;margin-bottom:10px}
 
-.blog .items-leading	,
-.blog .items-row		,
-.blog .items-more		{padding-bottom:3ex}
+.items-leading,
+.items-row,
+.items-more {}
 
-.items-leading h2		{margin-top:0}
-.items-leading article	{min-height:11em}
+.blog h2		{margin-top:0}
+.item-page,
+.blog article	{background-color:#fff}
+.blog .introtext {min-height:18em}
 
-.leading,
-.items-row > div 		{background-color:#fff}
+.blog .unit     .article {margin-right:10px}
+.blog .lastUnit .article {margin-right:0}
 
-.category-desc p:only-child { margin-bottom:0 }
+.item-page		{min-height:30em}
 
-.item-page		{ min-height:30em; }
+.component h1, .component .H1 {}
+.component h2, .component .H2 {}
+.component h3, .component .H3 {}
+.component h4, .component .H4 {}
+.component h3:target {}
 
-.item-page h1, .item-page .H1 {}
-.item-page h2, .item-page .H2 {}
-.item-page h3, .item-page .H3 {margin-top:1.5em;}
-.item-page h4, .item-page .H4 {margin-top:1.2em;}
-.item-page h3:target {}
+.introtext p[class],
+.fulltext  p[class],
+.introtext p:first-of-type ,
+.fulltext  p:first-of-type {text-indent:0}
+.introtext p ,
+.fulltext  p {text-indent:1.6ex}
 
-.page-toc	{float:right; width:40%;}
+.page-toc	{float:right;width:40%}
 #aii		{margin-top:0}
 
-article > p[class],
-article > p:first-of-type {text-indent:0}
-article > p {text-indent:1.6ex}
-
-.readmore	{margin-top:1ex;margin-bottom:0;text-align:right}
+.readmore	{margin-top:1ex;margin-bottom:0}
 
 /*@todo make <details> see padawan.css */
 /* call-outs and asides flush right within their containing box
  * in-context position using negative margins somewhere else below.
  * the disclosure widget will still be displayed if you don't provide a summary element
  */
-details.meta	{clear:both;padding:1ex .8em;margin-top:20px}
- .meta dt		{display:inline;}
- .meta dd		{display:inline;}
+details.meta	{clear:both;padding:1ex .8em;margin-top:10px}
+ .meta dt		{display:inline}
+ .meta dd		{display:inline}
  .meta dd:after	{display:block;content:' '}
 
-.meta summary	{cursor:help;}
-summary::-webkit-details-marker { color: #444; font-size:1.2em}
+.meta summary	{cursor:help}
+summary::-webkit-details-marker {color:#444;font-size:1.2em}
 
 /*
-.items-leading details.meta	{margin-top:-2em; right:0}
-.items-leading details.meta	{position:absolute; top:auto; z-index:27}
+.items-leading details.meta	{margin-top:-2em;right:0}
+.items-leading details.meta	{position:absolute;top:auto;z-index:27}
 */
 .article-info	{margin:0}
 	/* 'shadow' DOM */
-	summary::-webkit-details-marker { color:lime; }
-.introtext	{}
-.fulltext	{}
+	summary::-webkit-details-marker {color:lime}
+.introtext {}
+.fulltext {}
+
+.introtext :not(p:first-child) {}
+.fulltext :not(p:first-child)  {}
 
 /*
  * =bilder in artikeln
  */
-.item-page img	,
-.items-leading img	,
-.portrait img 		{height:auto;border:8px solid #FFF}
-.portrait img		{outline:1px solid #CDCDCD}
+.article img	,
+.portrait img 	{height:auto;border:8px solid #FFF}
+.portrait img	{outline:1px solid #CDCDCD}
 
-.items-leading img	,
-.items-row img		{max-width:80%}
+.blog .article img	{max-width:80%}
 .item-page img		{max-width:96%}
 
 /*
  * =modules
  */
 .mod-login ul		{margin-left:10px;padding-left:.7em}
-.mod-login fieldset {border:none; outline:none}
 
-.mod-banner			{}
-.banneritem img 	{display:block;margin-left:auto;margin-right:auto;text-align:center;}
+.column-group fieldset		{border:none;outline:none}
+.column-group dl			{margin:0}
+.column-group div.button	{text-align:center}
+
+.mod-banner {}
+.banneritem img 	{display:block;margin-left:auto;margin-right:auto;text-align:center}
 .mod-search 		{margin-right:10px;float:right}
 .mod-search label	{padding-right:1em}
 
-.mod-articles-categories .inner {padding:5px;}
+.column-group .inner {padding:5px}
 
-.portrait			{text-align:center}
+.portrait {text-align:center}
 
 /*
  * =module groups
  */
-header.above div.above	{}
+header.above div.above {}
 
 /*
  * =menus
@@ -166,69 +171,69 @@ header.above div.above	{}
 .hmenu 			{padding:.5ex 0}
 li.active		{font-weight:bold}
 .sep 			{padding:0.25ex}
+li.mi img		{border:none}
 
 /* align with menu items */
 .breadcrumbs	{margin-top:1em}
 .breadcrumbs a.mi	,
 .breadcrumbs .active {padding:0.25ex 0.6em}
 
-.pagenav		{}
-.pagenav li.mi	{}
-.pagenav .prev	{}
-.pagenav .next	{}
+.pagenav 		{list-style:none;margin:0 auto;width:60%;font-weight:bold}
+.pagenav li.mi	{width:50%;text-align:center}
+.pagenav a.mi	{display:block}
+.pagenav a.mi:hover {box-shadow:0 0 3px 1px #CCC}
 
 nav.pages		{text-align:center}
-p.counter		{}
-menu.pagination	{}
+p.counter {}
+.pagination {}
 
-.pages .counter	{display:inline-block;margin:1ex}
-menu.pagination li.mi	{outline:1px solid #ddd}
+.pages .counter			{display:inline-block;margin:1ex}
+.pagination li.mi		{outline:1px solid #ddd}
 .pagination li.mi:hover	{background-color:#efefef}
-.pagination .mi a.mi	{font-weight:bold}
+.pagination span.mi		{font-weight:bold}
 .pagination .active		{background-color:#ddd}
 
 /* .mod-articles-categories .moduletable .<moduleclass_sfx> */
-h3.mod-articles-categories	{}
+h3.mod-articles-categories {}
 menu.categories .H2,
 menu.categories .H3,
 menu.categories .H4,
 menu.categories .H5,
 menu.categories .H6			{font-size:110%}
-menu.categories > li.current {background-color:rgba(200,200,200, 0.2);}
-menu.categories span.active {text-transform:uppercase;}
+menu.categories > li.current {background-color:rgba(200,200,200, 0.2)}
+menu.categories span.active {text-transform:uppercase}
 
 /* =misc */
-.contact-item	{}
+.contact-item {}
 
 /*
- * =color scheme, borders, eye-candy; and not
+ * =color scheme, borders, eye-candy;and not
  */
 html, body		{background:#F0F0F0;color:#444}
 
 h2,h3,h4,
 .H2,.H3,.H4		{text-shadow:0 1px 0 #FFF}
-.category-desc	{text-shadow:0 1px 0 #FFF; text-shadow:0px 0px 1px #888;}
+.category-desc	{text-shadow:0 1px 0 #FFF;text-shadow:0px 0px 1px #888}
 
-.page-head		{}
-#logo, #logo a	{}
+.page-head {}
+#logo, #logo a {}
 
-.mainmenu					{}
-.mainmenu .active			{}
-.mainmenu .active a:hover	{}
+.mainmenu {}
+.mainmenu .active {}
+.mainmenu .active a:hover {}
 
 nav,
 .breadcrumbs	{background:#FFF}
 .meta			{background:#FFF}
 
 .column-group .inner	{background:#FFF}
-.column-group fieldset	{}
-.group-alpha .mod		{}
-.group-beta .mod		{}
+.group-alpha .mod {}
+.group-beta .mod {}
 
-.mod-custom div.inner	{background:none;}
+.mod-custom div.inner	{background:none}
 
 /* Tips, Error, Message, Hightlight */
-.error, .warning, .notice, .message, .tips {border:1px solid; background:#FFF no-repeat 5px 5px}
+.error, .warning, .notice, .message, .tips {border:1px solid;background:#FFF no-repeat 5px 5px}
 .error, .warning	{color:#BF0000}
 .notice, .message	{color:#069}
 .tips				{color:#EE9600}
@@ -241,41 +246,42 @@ nav,
 .lft {float:left} .rgt {float:right}
 
 /* =text shadows CSS3 */
-.ts { text-shadow:0 0 2px #888; }
-.mainmenu li.mi:hover, 
-.breadcrumbs li.mi:hover, 
-.tslt { text-shadow:0 0 2px #AAA; }
+.ts							{text-shadow:0 0 2px #888}
+.mainmenu li.mi:hover		, 
+.breadcrumbs li.mi:hover	, 
+.tslt						{text-shadow:0 0 2px #AAA}
 
 .moduletable h3, .moduletable .H3,
 .moduletable h4, .moduletable .H4,
 .moduletable h5, .moduletable .H5 {text-shadow:none}
 
-h1,.H1, .hts { text-shadow:0 0 2px #666; }
+h1, .H1, .hts {text-shadow:0 0 2px #666}
 
 /*
  * =branding - category and page styles
  */
-.category-desc {font-size:100%;}
-.category-desc blockquote {padding:1ex; font:normal 2.15em/1 'Kristi',cursive; text-shadow:0px 0px 3px #888; text-align:center; text-rendering: optimizelegibility; font-size-adjust:0.455; font-stretch: expanded;}
+.category-desc {font-size:100%}
+.category-desc blockquote {padding:1ex;margin:0 3m;font:normal 2.25em/1 'Kristi',cursive;text-shadow:0px 0px 3px #888;text-align:center;text-rendering:optimizelegibility}
+.category-desc blockquote {font-size-adjust:0.5; font-stretch:expanded} /* FF */
+blockquote:after {content:attr(title);display:block;margin-top:1em;text-align:right;clear:both;font:normal 12px/1 "Trebuchet MS",Arial,Helvetica,sans-serif}
 
-.schriftstellerei article p:first-of-type img {float:right; margin-left:1em; max-width:40%; position:relative;z-index:10}
-.schriftstellerei .items-leading img:first-child {margin:-1em 0 1em 1em;}
+.schriftstellerei article p:first-of-type img {float:right;margin-left:1em;max-width:40%;position:relative;z-index:10}
+.schriftstellerei .items-leading img:first-child {margin:-1em 0 1em 1em}
 
-article.gedichte p {text-indent:0}
+.gedichte p {text-indent:0}
 
 /* =box drop shadows CSS3 */
-.meta {-webkit-box-shadow:inset 0 0 6px #AAA; -moz-box-shadow:inset 0 0 6px #AAA; box-shadow:inset 0 0 6px #AAA;}
-.ds   {-webkit-box-shadow:0 0 3px #888; -moz-box-shadow:0 0 3px #888; box-shadow:0 0 3px #888;}
+.meta {-webkit-box-shadow:inset 0 0 6px #AAA;-moz-box-shadow:inset 0 0 6px #AAA;box-shadow:inset 0 0 6px #AAA}
+.ds   {-webkit-box-shadow:0 0 3px #888;-moz-box-shadow:0 0 3px #888;box-shadow:0 0 3px #888}
 
-.category-desc blockquote {text-shadow:0px 0px 3px #888, 1px 1px 10px #fff; }
+.category-desc blockquote {text-shadow:0px 0px 3px #888, 1px 1px 10px #fff}
 
 nav.pages,
 .mainnavi, .breadcrumbs,
 .pagination li.mi:hover,
-.dslt {-webkit-box-shadow:0 0 3px #CCC; -moz-box-shadow:0 0 3px #CCC; box-shadow:0 0 3px #CCC; outline:none;}
+.dslt {-webkit-box-shadow:0 0 3px #CCC;-moz-box-shadow:0 0 3px #CCC;box-shadow:0 0 3px #CCC;outline:none}
 
-.blog img,
-.item-page img,
-.hbox-ds {margin-left: 3px; -webkit-box-shadow:-2px 3px 6px 2px #888; -moz-box-shadow:-2px 3px 6px 2px #888; box-shadow:-2px 3px 6px 2px #888;}
+.article p > img,
+.hbox-ds {margin-left:3px;-webkit-box-shadow:-2px 3px 6px 2px #888;-moz-box-shadow:-2px 3px 6px 2px #888;box-shadow:-2px 3px 6px 2px #888}
 
 /* .eof */
