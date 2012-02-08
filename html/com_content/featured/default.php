@@ -4,66 +4,73 @@ defined('_JEXEC') or die;
 
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');
 
-// If the page class is defined, add to class as suffix.
-// It will be a separate class if the user starts it with a space
 ?>
-<section class="blog featured">
-<?php if ( $this->params->get('show_page_heading') ) : ?>
-	<h1><?php echo $this->escape($this->params->get('page_heading')); ?></h1>
-<?php endif;
-
-$leadingcount = $rowcount = $row = 0;
-
-if (!empty($this->lead_items)) { ?>
-<div class="line items-leading"><?php
-	foreach ($this->lead_items as $item)
-	{
-		$leadingcount++;
-
-		$this->item = $item;
-?>
-<article class="leading-<?php echo $leadingcount .' '. $item->category_alias . ($item->state == 0 ? ' system-unpublished' : ''); ?>">
-<?php echo $this->loadTemplate('item'); ?>
-</article>
-<?php } ?>
-</div>
-<?php
+<section class="blog featured"><?php
+if ($this->params->get('show_page_heading')) {
+	echo '<header><h1 class="page_heading">', $this->escape($this->params->get('page_heading')), '</h1></header>';
 }
 
-$introcount = (count($this->intro_items));
-$counter    = 0;
+$leadingcount = 0;
+
+if (!empty($this->lead_items)) { ?>
+	<section class="line items-leading"><?php
+	foreach ($this->lead_items as $item)
+	{
+		$leadingcount += 1;
+		$this->item = $item;
+?>
+	<div class="leading-<?php echo $leadingcount ?>">
+	<?php echo $this->loadTemplate('item') ?>
+	</div>
+<?php } ?>
+	</section>
+<?php
+}
 
 if (!empty($this->intro_items))
 {
+	settype($this->columns, 'int');
+	?>
+	<?php
 	foreach ($this->intro_items as $key => $item)
 	{
-		$key		= ($key - $leadingcount) + 1;
-		$rowcount	= (($key - 1) % (int)$this->columns) + 1;
-		$row 		= $counter / $this->columns ;
-		if ($rowcount == 1) { ?> <div class="line items-row <?php echo 'row-'.$row ?>"><?php }
+		$key = (int)($key - $leadingcount) + 1;
+		$col = (($key - 1) % $this->columns) + 1;
+		$row = ceil($key / $this->columns);
 
 		$this->item = $item;
-?>
-<article class="unit size1of<?php echo (int) $this->columns .' column-' . $rowcount .' '. $item->category_alias . ($item->state == 0 ? ' system-unpublished"' :''); ?>">
-<?php echo $this->loadTemplate('item'); ?>
-</article>
+
+		if ($col == 1) { ?>
+		<section class="line items-row cols-<?php echo $this->columns ?>">
+<?php 	} ?>
+		<div class="unit size1of<?php echo $this->columns, ' row-', $row, ' column-', $col, ($col == $this->columns ? ' lastUnit' : '') ?>">
 <?php
-		$counter++;
-		if (($rowcount == $this->columns) or ($counter == $introcount)) { ?> </div><?php }
+		echo $this->loadTemplate('item');
+?>
+		</div>
+<?php
+		if ($col == $this->columns) { ?>
+		</section>
+<?php	}
 	}
 }
 
-if (!empty($this->link_items)) : ?>
-	<div class="line items-more"><?php echo $this->loadTemplate('links'); ?></div>
-<?php endif;
+if (!empty($this->link_items)) { ?>
+	<section class="line items-more"><?php echo $this->loadTemplate('links') ?></section>
+<?php
+}
 
-if ($this->params->def('show_pagination', 2) == 1  || ($this->params->get('show_pagination') == 2 && $this->pagination->get('pages.total') > 1)) :
-?>
-	<div class="pagination">
-<?php if ($this->params->def('show_pagination_results', 1)) : ?>
+if ($this->params->def('show_pagination', 2) == 1
+	|| ($this->params->get('show_pagination') == 2
+	&& $this->pagination->get('pages.total') > 1))
+{ ?>
+	<nav id="nav-pages" class="line pagination">
+<?php if ($this->params->def('show_pagination_results', 1)) { ?>
 	<p class="counter"><?php echo $this->pagination->getPagesCounter(); ?></p>
-<?php  endif; ?>
-<?php echo $this->pagination->getPagesLinks(); ?>
-	</div>
-<?php endif; ?>
+<?php }
+	echo $this->pagination->getPagesLinks();
+?>
+	</nav>
+<?php } ?>
+
 </section>

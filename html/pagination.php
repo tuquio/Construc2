@@ -92,7 +92,7 @@ function pagination_list_render($list)
  */
 function pagination_item_active($item)
 {
-	return '<a class="mi" href="'. $item->link .'"><span class="mi">'. $item->text .'</span></a>';
+	return '<a class="mi" href="'. $item->link .'#content"><span class="mi">'. $item->text .'</span></a>';
 }
 
 /**

@@ -22,14 +22,20 @@ if ($this->item->fulltext)
 	$fpos  = strpos($this->item->text, $this->item->fulltext);
 	$itext = substr($this->item->text, 0, $fpos);
 	$ftext = substr($this->item->text, $fpos);
+
 } else {
 	#FIXME page navigation is still part of $this->item->text. find splitpoint
 	# of introtext and fulltext taking plugin changes into account if possible
 	$itext = $this->item->text;
-	$ftext = null;
+	$ftext = '';
 }
 
+$p1 = strpos($ftext, '<ul class="pagenav">');
+if ($p1 > 0) {
+	$ftext = substr($ftext, 0, $p1);
+}
 // override introtext and fulltext
+unset($this->item->text);
 $this->item->introtext = $itext;
 $this->item->fulltext  = $ftext;
 
@@ -89,17 +95,17 @@ if (!empty($this->item->fulltext)) : ?>
 <?php endif;
 
 if ( isset($this->item->prev) && ($this->item->prev || $this->item->next) ) { ?>
-<ul class="hmenu pagenav">
-<?php if ($this->item->prev): ?><li class="mi prev"><a class="mi" href="<?= $this->item->prev ?>"><span class="mi"><?= JText::_('Previous Article')?></span></a></li><?php endif; ?>
-<?php if ($this->item->next): ?><li class="mi next"><a class="mi" href="<?= $this->item->next ?>"><span class="mi"><?= JText::_('Next Article')?></span></a></li><?php endif; ?>
+<ul class="menu hmenu pagenav">
+<?php if ($this->item->prev): ?><li class="mi pagenav-prev"><a class="mi" href="<?= $this->item->prev ?>#content"><span class="mi"><?= JText::_('Previous Article')?></span></a></li><?php endif; ?>
+<?php if ($this->item->next): ?><li class="mi pagenav-next"><a class="mi" rel="prefetch" href="<?= $this->item->next ?>#content"><span class="mi"><?= JText::_('Next Article')?></span></a></li><?php endif; ?>
 </ul><?php
 }
 
-$useDefList  = ($params->get('show_author') || $params->get('show_category' ) || ($params->get('show_parent_category'))
+$showStuff = ($params->get('show_author') || $params->get('show_category' ) || ($params->get('show_parent_category'))
 			|| ($params->get('show_create_date')) || ($params->get('show_modify_date')) || ($params->get('show_publish_date'))
 			|| ($params->get('show_hits'))); ?>
 
-<?php if ($useDefList) : ?>
+<?php if ($showStuff) : ?>
 <details class="meta">
 	<summary><?php echo JText::_('COM_CONTENT_ARTICLE_INFO'); ?></summary>
 	<dl class="article-info">
@@ -154,7 +160,7 @@ $useDefList  = ($params->get('show_author') || $params->get('show_category' ) ||
 <?php endif; ?>
 	</dl>
 </details>
-<?php endif; /* $useDefList */ ?>
+<?php endif; /* $showStuff */ ?>
 
 <?php echo $this->item->event->afterDisplayContent; ?>
 

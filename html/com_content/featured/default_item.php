@@ -12,14 +12,14 @@ $useDefList = ($params->get('show_author') || $params->get('show_category' ) || 
 			|| ($params->get('show_create_date')) || ($params->get('show_modify_date')) || ($params->get('show_publish_date'))
 			|| ($params->get('show_hits')));
 ?>
-<article class="article featured <?php echo $this->item->parent_alias, ' ', $this->item->category_alias, ' cid-', $this->item->catid  ?>">
+<article class="article <?php echo $this->item->parent_alias, ' ', $this->item->category_alias, ' cid-', $this->item->catid, ($this->item->state == 0 ? ' system-unpublished' : '') ?>">
 <?php
 if ($params->get('show_title'))
 { ?>
 	<h2 class="H2 title"><?php
 	if ($params->get('link_titles') && $params->get('access-view')) {
-	?><a href="<?php echo JRoute::_(ContentHelperRoute::getArticleRoute($this->item->slug, $this->item->catid)); ?>"><?php
-	echo $this->escape($this->item->title);
+	?><a href="<?php echo JRoute::_(ContentHelperRoute::getArticleRoute($this->item->slug, $this->item->catid)); ?>#content"><?php
+		echo $this->escape($this->item->title);
 	?></a><?php
 	} else {
 		echo $this->escape($this->item->title);
@@ -28,16 +28,18 @@ if ($params->get('show_title'))
 }
 
 if ($params->get('show_print_icon') || $params->get('show_email_icon') || $canEdit)
-{ ?>
-	<ul class="menu actions">
+{
+	$isep = JText::_('JGLOBAL_ICON_SEP');
+?>
+	<ul class="menu actionsmenu">
 		<?php if ($params->get('show_print_icon')) : ?>
-		<li class="mi print-icon"><?php echo JHtml::_('icon.print_popup', $this->item, $params); ?></li>
+		<li class="mi print-icon"><?php echo str_replace(array($isep.'&#160;', '&#160;'.$isep), array('<span class="mi">', '</span>'), JHtml::_('icon.print_popup', $this->item, $params)) ?></li>
 		<?php endif; ?>
 		<?php if ($params->get('show_email_icon')) : ?>
-		<li class="mi email-icon"><?php echo JHtml::_('icon.email', $this->item, $params); ?></li>
+		<li class="mi email-icon"><?php echo str_replace(array('&#160;', '</a>'), array('<span class="mi">', '</span></a>'), JHtml::_('icon.email', $this->item, $params)) ?></li>
 		<?php endif; ?>
 		<?php if ($canEdit) : ?>
-		<li class="mi edit-icon"><?php echo JHtml::_('icon.edit', $this->item, $params); ?></li>
+		<li class="mi edit-icon"><?php echo str_replace(array('<img', '</a>'), array('<span class="mi"><img', '</span></a>'), JHtml::_('icon.edit', $this->item, $params)) ?></li>
 		<?php endif; ?>
 	</ul>
 <?php
@@ -48,9 +50,11 @@ if (!$params->get('show_intro')) {
 }
 
 echo $this->item->event->beforeDisplayContent;
-
-echo $this->item->introtext;
-
+?>
+<div class="introtext">
+<?php echo $this->item->introtext ?>
+</div>
+<?php
 if ($useDefList) : ?>
 <details class="meta" title="<?php echo JText::_('COM_CONTENT_ARTICLE_INFO'); ?>">
 	<summary><?php echo $this->item->title ?></summary>
@@ -129,7 +133,7 @@ if ($params->get('show_readmore') && $this->item->readmore)
 		$link->setVar('return', base64_encode($returnURL));
 	}
 ?>
-<p class="line readmore"><a href="<?php echo $link; ?>"><?php
+<p class="line readmore"><a href="<?php echo $link; ?>#content"><?php
 	if (!$params->get('access-view')) :
 		echo JText::_('COM_CONTENT_REGISTER_TO_READ_MORE');
 	elseif ($readmore = $this->item->alternative_readmore) :
