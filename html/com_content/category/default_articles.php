@@ -116,26 +116,23 @@ endforeach; ?>
 </table>
 <?php
 
-	if (($this->params->def('show_pagination', 2) == 1
+if (($this->params->def('show_pagination', 2) == 1
 	|| ($this->params->get('show_pagination') == 2))
-		&& ($this->pagination->get('pages.total') > 1))
-	{ ?>
-	<div class="pagination"><?php
-		if ($this->params->def('show_pagination_results', 1))
-		{ ?>
-	<p class="counter"><?php echo $this->pagination->getPagesCounter(); ?></p><?php
-		}
-
-		echo $this->pagination->getPagesLinks(); ?>
+	&& ($this->pagination->get('pages.total') > 1))
+{ ?>
+	<div class="pagination">
+<?php if ($this->params->def('show_pagination_results', 1)) { ?>
+	<p class="counter"><?php echo $this->pagination->getPagesCounter(); ?></p>
+<?php }
+	echo $this->pagination->getPagesLinks();
+?>
 	</div><?php
-	}
-
+}
 ?>	<input type="hidden" name="filter_order" value="">
 	<input type="hidden" name="filter_order_Dir" value="">
 	<input type="hidden" name="limitstart" value="">
 </form>
 <?php
 
-	JHtml::_('behavior.tooltip');
-	JHtml::core();
-
+JHtml::_('behavior.tooltip');
+JHtml::core();
