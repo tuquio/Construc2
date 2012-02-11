@@ -722,7 +722,8 @@ class ConstructTemplateHelper
 		// cleanup non-standard stuff
 		if (!empty($head['metaTags']['standard']['rights']))
 		{
-			$head['metaTags']['standard']['copyright'] = $head['metaTags']['standard']['rights'];
+			unset($head['metaTags']['standard']['copyright']);
+			// $head['metaTags']['standard']['rights'];
 		}
 
 		unset($head['metaTags']['standard']['rights']);

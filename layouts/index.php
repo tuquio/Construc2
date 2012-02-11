@@ -58,20 +58,19 @@ defined('_JEXEC') or die;
 			<div class="line content-container">
 <?php if ($navBelowCount) : include JPATH_THEMES .'/'. $this->template . '/layouts/mod_nav_below.php'; endif; ?>
 
-				<div id="content" class="load-first">
+				<div id="content" class="content-main">
 
 <?php if ($this->getBuffer('message')) : ?><jdoc:include type="message" /><?php endif; ?>
 
-					<div class="content-main">
 <?php if ($contentAboveCount) :	include JPATH_THEMES .'/'. $this->template . '/layouts/mod_content_above.php'; endif; ?>
 	<section class="line component">
 	<jdoc:include type="component" />
 <?php if ($contentBelowCount) : include JPATH_THEMES .'/'. $this->template . '/layouts/mod_content_below.php'; endif; ?>
 	</section>
-					</div><!-- .content-main -->
 
 <?php if ($columnGroupAlphaCount) : include JPATH_THEMES .'/'. $this->template . '/layouts/mod_column_group_alpha.php'; endif; ?>
-				</div><!-- end load-first -->
+				</div><!-- end content-main -->
+
 <?php if ($columnGroupBetaCount) : include JPATH_THEMES .'/'. $this->template . '/layouts/mod_column_group_beta.php'; endif; ?>
 
 <?php if ($footerAboveCount) : include JPATH_THEMES .'/'. $this->template . '/layouts/mod_footer_above.php'; endif; ?>

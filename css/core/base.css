@@ -7,7 +7,9 @@
  * feat. normalize.css - http://github.com/necolas/normalize.css
  * @license DWTF
 */
-html{font-size:13px;overflow-y:scroll;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%}
+html{font-size:13px;overflow-y:scroll;-webkit-text-size-adjust:55%;-ms-text-size-adjust:55%;font-size-adjust:0.55}
+* {-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box}
+
 /* Gecko Hacks */
 @media screen,handheld,projection{html{margin-bottom:1px;height:100% !important}}
 /* iPhone 3=163 ppi (std. 112 x 1.455) */
@@ -35,7 +37,6 @@ small,sub,sup{font-size:75%}
 sub,sup{line-height:0;position:relative;vertical-align:baseline}
 sup{top:-0.5em}
 sub{bottom:-0.25em}
-ul,ol{margin:1em 0;padding:0 0 0 3ex} /* using ex */
 dd{margin:0 0 0 3ex} /* using ex */
 nav ul,nav ol{list-style:none;list-style-image:none}
 img{border:0;-ms-interpolation-mode:bicubic}
@@ -93,7 +94,7 @@ q{quotes: '„' '“' '‚' '‘' }
 [lang|=fr] q,q[lang|=fr]{quotes: '«' '»' '<' '>'; }
 
 /* =lists */
-ul,ol,dl{margin:1ex auto .625em 1ex;padding-left:1ex}
+ul,ol,dl{margin:1ex auto .625em 1ex;padding:0 0 0 1ex}
 ol{list-style:decimal}
 ul{list-style:disc}
 li{display:list-item;list-style-position:outside;text-indent:0;margin-left:1.2ex}

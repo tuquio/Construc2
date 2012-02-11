@@ -1,8 +1,28 @@
 <?php
+/* ContentViewFeature dproperties
+	item
+	items
+	state			JObject
+	pagination		JPagination
+	lead_items
+	intro_items
+	link_items
+	columns
+	baseurl
+	params
+	document
+	user			JUser
+	pageclass_sfx
+	_name _models _basePath _defaultModel _layout _layoutExt _layoutTemplate
+	_path _template _output _escape _charset _errors
+*/
 // no direct access
 defined('_JEXEC') or die;
 
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');
+
+// used to sanitize item aliases in blog_links and menus
+JLoader::register('SearchHelper', JPATH_ADMINISTRATOR .'/components/com_search/helpers/search.php');
 
 ?>
 <section class="blog featured"><?php
@@ -12,7 +32,8 @@ if ($this->params->get('show_page_heading')) {
 
 $leadingcount = 0;
 
-if (!empty($this->lead_items)) { ?>
+if (!empty($this->lead_items))
+{ ?>
 	<section class="line items-leading"><?php
 	foreach ($this->lead_items as $item)
 	{
@@ -23,15 +44,14 @@ if (!empty($this->lead_items)) { ?>
 	<?php echo $this->loadTemplate('item') ?>
 	</div>
 <?php } ?>
-	</section>
+	</section><!-- .items-leading -->
 <?php
 }
 
 if (!empty($this->intro_items))
 {
 	settype($this->columns, 'int');
-	?>
-	<?php
+
 	foreach ($this->intro_items as $key => $item)
 	{
 		$key = (int)($key - $leadingcount) + 1;
@@ -41,30 +61,26 @@ if (!empty($this->intro_items))
 		$this->item = $item;
 
 		if ($col == 1) { ?>
-		<section class="line items-row cols-<?php echo $this->columns ?>">
+	<section class="line items-row cols-<?php echo $this->columns ?>">
 <?php 	} ?>
 		<div class="unit size1of<?php echo $this->columns, ' row-', $row, ' column-', $col, ($col == $this->columns ? ' lastUnit' : '') ?>">
-<?php
-		echo $this->loadTemplate('item');
-?>
-		</div>
-<?php
-		if ($col == $this->columns) { ?>
-		</section>
+		<?php echo $this->loadTemplate('item') ?>
+		</div><!-- .unit -->
+<?php 	if ($col & $this->columns) { ?>
+	</section><!-- .items-row -->
 <?php	}
 	}
 }
 
-if (!empty($this->link_items)) { ?>
-	<section class="line items-more"><?php echo $this->loadTemplate('links') ?></section>
-<?php
+if (!empty($this->link_items))
+{
+	echo $this->loadTemplate('links');
 }
 
-if ($this->params->def('show_pagination', 2) == 1
-	|| ($this->params->get('show_pagination') == 2
+if ($this->params->get('show_pagination') == 1 || ($this->params->get('show_pagination') == 2
 	&& $this->pagination->get('pages.total') > 1))
 { ?>
-	<nav id="nav-pages" class="line pagination">
+	<nav id="pages" class="line pagination">
 <?php if ($this->params->def('show_pagination_results', 1)) { ?>
 	<p class="counter"><?php echo $this->pagination->getPagesCounter(); ?></p>
 <?php }
@@ -73,4 +89,4 @@ if ($this->params->def('show_pagination', 2) == 1
 	</nav>
 <?php } ?>
 
-</section>
+</section><!-- .blog.featured -->
