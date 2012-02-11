@@ -27,9 +27,6 @@ h1,h2,h3,h4,h5,h6 {line-height:normal}
 h1,h2,h3,h4,h5,h6,
 menu.categories	{font-family:'Ubuntu Condensed','Trebuchet MS',Arial,sans-serif;text-rendering:optimizelegibility}
 
-ol:first-child,
-ul:first-child {margin-top:0}
-
 p {-webkit-hyphens:auto;-moz-hyphens:auto;hyphens:auto}
 
 p:only-child {margin-bottom:0}
@@ -39,21 +36,18 @@ p:only-child {margin-bottom:0}
 header.above	,
 header.below	{margin:0 auto}
 
-.content-main	{width:auto;float:none}
-.load-first 	{width:auto;float:none}
+.content-main	{width:auto}
 .column-group 	{width:25%}
 .group-alpha	{float:left}
 .group-beta		{float:left}
 
-.main-beta .load-first	  		{width:75%;float:left}
-.alpha-main .content-main 		,
-.alpha-main-beta .load-first	{width:75%;float:left}
-.alpha-main-beta .content-main	{width:75%;float:right}
+.main-beta .content-main {width:75%;float:left}
 
 .page-foot	{margin:0 auto}
 .foot-inner	{
-	-moz-column-count:2;-webkit-column-count:2;column-count:2;
-	-moz-column-gap:10px;-webkit-column-gap:10px;column-gap:10px;
+ -webkit-column-count:2;-webkit-column-gap:10px;
+	-moz-column-count:2;   -moz-column-gap:10px;
+		 column-count:2;		column-gap:10px;
 }
 
 /*
@@ -63,7 +57,8 @@ header.below	{margin:0 auto}
 .column-group .moduletable	{margin-bottom:10px}
 .column-group fieldset		{padding:5px;margin:0}
 .column-group .inner {}
-.column-group h3			{padding:0}
+.column-group h3,
+.column-group .H3			{margin-bottom:0;padding:0}
 
 .column-group .notice .inner {padding:1ex 1em}
 
@@ -71,28 +66,23 @@ header.below	{margin:0 auto}
  * =contents
  */
 .item-page		,
-.blog article	, 
-.blog .category-desc	{padding:10px;margin-bottom:10px}
+.blog article	,
+.items-more		{padding:10px;margin-bottom:10px}
 
-.items-leading,
-.items-row,
-.items-more {}
+.items-leading	,
+.items-row		,
+.items-more		{}
 
-.blog h2		{margin-top:0}
-.item-page,
-.blog article	{background-color:#fff}
-.blog .introtext {min-height:18em}
+.unit .feature		,
+.unit .article		{margin-right:5px}
+.lastUnit .feature	,
+.lastUnit .article	{margin-left:5px;margin-right:0}
 
-.blog .unit     .article {margin-right:10px}
-.blog .lastUnit .article {margin-right:0}
+.blog h1, .blog .H1 {}
+.blog h2, .blog .H2 {margin-top:0}
 
-.item-page		{min-height:30em}
-
-.component h1, .component .H1 {}
-.component h2, .component .H2 {}
-.component h3, .component .H3 {}
-.component h4, .component .H4 {}
-.component h3:target {}
+header.article 		{}
+header.article aside{float:right;width:30%;max-width:200px}
 
 .introtext p[class],
 .fulltext  p[class],
@@ -119,28 +109,35 @@ details.meta	{clear:both;padding:1ex .8em;margin-top:10px}
 .meta summary	{cursor:help}
 summary::-webkit-details-marker {color:#444;font-size:1.2em}
 
-/*
-.items-leading details.meta	{margin-top:-2em;right:0}
-.items-leading details.meta	{position:absolute;top:auto;z-index:27}
-*/
 .article-info	{margin:0}
 	/* 'shadow' DOM */
 	summary::-webkit-details-marker {color:lime}
-.introtext {}
-.fulltext {}
 
 .introtext :not(p:first-child) {}
-.fulltext :not(p:first-child)  {}
+.fulltext  :not(p:first-child) {}
 
 /*
- * =bilder in artikeln
+ * =pictures
  */
-.article img	,
-.portrait img 	{height:auto;border:8px solid #FFF}
-.portrait img	{outline:1px solid #CDCDCD}
+.introtext img	{margin-left:3px;-webkit-box-shadow:-2px 3px 6px 2px #888;-moz-box-shadow:-2px 3px 6px 2px #888;box-shadow:-2px 3px 6px 2px #888}
+.introtext img	{height:auto;border:8px solid #FFF}
 
-.blog .article img	{max-width:80%}
-.item-page img		{max-width:96%}
+.blog .introtext img		{max-width:80%}
+.item-page .introtext img	{max-width:96%}
+
+figure img 	{height:auto;border:5px solid #FFF;outline:1px solid #CDCDCD}
+
+/*
+ * = widgets / plugins
+ */
+.unit .content_rating	{display:none}
+.content_rating		{display:block;text-align:right}
+.content_rating	img	{display:inline-block;margin:0 2px;vertical-align:middle}
+.content_vote		{display:block}
+.content_vote input {display:inline-block;margin:0 2px;vertical-align:middle}
+
+body.print .content_rating	,
+body.print .content_vote 	{display:none}
 
 /*
  * =modules
@@ -169,39 +166,41 @@ header.above div.above {}
  * =menus
  */
 .hmenu 			{padding:.5ex 0}
-li.active		{font-weight:bold}
+
+.mainmenu .active {font-weight:bold}
+
+.current > a.li	{} /* may have nested menu.submenu */
+.active > a.li	{font-weight:bold} /* single item */
 .sep 			{padding:0.25ex}
 li.mi img		{border:none}
 
 /* align with menu items */
-.breadcrumbs	{margin-top:1em}
+.breadcrumbs		{margin-top:1em}
 .breadcrumbs a.mi	,
-.breadcrumbs .active {padding:0.25ex 0.6em}
+.breadcrumbs .active{padding:0.25ex 0.6em}
 
-.pagenav 		{list-style:none;margin:0 auto;width:60%;font-weight:bold}
-.pagenav li.mi	{width:50%;text-align:center}
-.pagenav a.mi	{display:block}
+.actionsmenu 		{position:absolute;right:0;top:0}
+.actionsmenu li.mi	{padding:0.2ex}
+
+.pagenav			{}
+.pagenav li.mi		{}
+.pagenav a.mi		{}
 .pagenav a.mi:hover {box-shadow:0 0 3px 1px #CCC}
 
-nav.pages		{text-align:center}
-p.counter {}
-.pagination {}
+nav.pagination			{}
+p.counter				{display:inline-block;margin:0.6ex 1em}
+menu.pagination			{display:inline-block}
 
-.pages .counter			{display:inline-block;margin:1ex}
 .pagination li.mi		{outline:1px solid #ddd}
 .pagination li.mi:hover	{background-color:#efefef}
 .pagination span.mi		{font-weight:bold}
 .pagination .active		{background-color:#ddd}
 
 /* .mod-articles-categories .moduletable .<moduleclass_sfx> */
-h3.mod-articles-categories {}
-menu.categories .H2,
-menu.categories .H3,
-menu.categories .H4,
-menu.categories .H5,
-menu.categories .H6			{font-size:110%}
-menu.categories > li.current {background-color:rgba(200,200,200, 0.2)}
-menu.categories span.active {text-transform:uppercase}
+.mod-articles-categories .hd	{font-size:110%}
+menu.categories > li.current	{background-color:rgba(200,200,200, 0.2)}
+menu.categories span.active		{text-transform:uppercase}
+menu.categories .submenu		{padding-left:.6em}
 
 /* =misc */
 .contact-item {}
@@ -218,42 +217,28 @@ h2,h3,h4,
 .page-head {}
 #logo, #logo a {}
 
-.mainmenu {}
-.mainmenu .active {}
-.mainmenu .active a:hover {}
+nav, .breadcrumbs, .meta,
+ .blog article			, 
+ .items-more			, 
+ .item-page				,
+ .column-group .inner	{background-color:#FFF}
 
-nav,
-.breadcrumbs	{background:#FFF}
-.meta			{background:#FFF}
-
-.column-group .inner	{background:#FFF}
 .group-alpha .mod {}
 .group-beta .mod {}
 
 .mod-custom div.inner	{background:none}
 
 /* Tips, Error, Message, Hightlight */
-.error, .warning, .notice, .message, .tips {border:1px solid;background:#FFF no-repeat 5px 5px}
+.error, .warning, .notice, .message, .tips {border:1px solid;background:#FFF}
 .error, .warning	{color:#BF0000}
 .notice, .message	{color:#069}
 .tips				{color:#EE9600}
-
-/* =supplemental property classes */
-.prel {position:relative} .pabs {position:absolute}
-.mt0 {margin-top:0}  .mr0 {margin-right:0}  .mb0 {margin-bottom:0}  .ml0 {margin-left:0}
-.pt0 {padding-top:0} .pr0 {padding-right:0} .pb0 {padding-bottom:0} .pl0 {padding-left:0}
-.bt0 {border-top:0}  .br0 {border-right:0}  .bb0 {border-bottom:0}  .bl0 {border-left:0}
-.lft {float:left} .rgt {float:right}
 
 /* =text shadows CSS3 */
 .ts							{text-shadow:0 0 2px #888}
 .mainmenu li.mi:hover		, 
 .breadcrumbs li.mi:hover	, 
 .tslt						{text-shadow:0 0 2px #AAA}
-
-.moduletable h3, .moduletable .H3,
-.moduletable h4, .moduletable .H4,
-.moduletable h5, .moduletable .H5 {text-shadow:none}
 
 h1, .H1, .hts {text-shadow:0 0 2px #666}
 
@@ -265,10 +250,13 @@ h1, .H1, .hts {text-shadow:0 0 2px #666}
 .category-desc blockquote {font-size-adjust:0.5; font-stretch:expanded} /* FF */
 blockquote:after {content:attr(title);display:block;margin-top:1em;text-align:right;clear:both;font:normal 12px/1 "Trebuchet MS",Arial,Helvetica,sans-serif}
 
-.schriftstellerei article p:first-of-type img {float:right;margin-left:1em;max-width:40%;position:relative;z-index:10}
-.schriftstellerei .items-leading img:first-child {margin:-1em 0 1em 1em}
+.schriftstellerei article p:first-of-type img	{float:right;margin-left:1em;max-width:40%;position:relative;z-index:10}
+.schriftstellerei .introtext img:first-child	{margin:-1em 0 1em 1em}
 
-.gedichte p {text-indent:0}
+.gedichte p ,
+.pures-gefuehl p {text-indent:0}
+
+.blog .fotokunst .introtext img {max-height:200px;border-width:5px}
 
 /* =box drop shadows CSS3 */
 .meta {-webkit-box-shadow:inset 0 0 6px #AAA;-moz-box-shadow:inset 0 0 6px #AAA;box-shadow:inset 0 0 6px #AAA}
@@ -277,11 +265,19 @@ blockquote:after {content:attr(title);display:block;margin-top:1em;text-align:ri
 .category-desc blockquote {text-shadow:0px 0px 3px #888, 1px 1px 10px #fff}
 
 nav.pages,
-.mainnavi, .breadcrumbs,
-.pagination li.mi:hover,
-.dslt {-webkit-box-shadow:0 0 3px #CCC;-moz-box-shadow:0 0 3px #CCC;box-shadow:0 0 3px #CCC;outline:none}
+ .mainnavi, 
+ .breadcrumbs,
+ .pagination li.mi:hover,
+ .dslt		{-webkit-box-shadow:0 0 3px #CCC;-moz-box-shadow:0 0 3px #CCC;box-shadow:0 0 3px #CCC;outline:none}
 
-.article p > img,
-.hbox-ds {margin-left:3px;-webkit-box-shadow:-2px 3px 6px 2px #888;-moz-box-shadow:-2px 3px 6px 2px #888;box-shadow:-2px 3px 6px 2px #888}
+.hbox-ds	{margin-left:3px;-webkit-box-shadow:-2px 3px 6px 2px #888;-moz-box-shadow:-2px 3px 6px 2px #888;box-shadow:-2px 3px 6px 2px #888}
+
+
+/* =supplemental property classes */
+.prel {position:relative} .pabs {position:absolute}
+.mt0 {margin-top:0}  .mr0 {margin-right:0}  .mb0 {margin-bottom:0}  .ml0 {margin-left:0}
+.pt0 {padding-top:0} .pr0 {padding-right:0} .pb0 {padding-bottom:0} .pl0 {padding-left:0}
+.bt0 {border-top:0}  .br0 {border-right:0}  .bb0 {border-bottom:0}  .bl0 {border-left:0}
+.lft {float:left} .rgt {float:right}
 
 /* .eof */
