@@ -80,7 +80,7 @@ b.top, b.top b, b.bottom, b.bottom b{display:block;background-repeat:no-repeat;f
 
 /* menus ( [ul|ol] .menu[.hmenu] > li.mi ) */
 menu, .menu, .hmenu {list-style:none;margin:0;padding:0}
-.menu li.mi {display:block;padding:.25ex .6em;margin:auto 0}
+.menu li.mi {display:block;padding:.2ex .4em;margin:auto 0}
 menu a, a.mi {text-decoration:none}
 /* nested */
 menu .submenu, .menu .submenu {position:relative;z-index:277}

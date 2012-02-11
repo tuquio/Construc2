@@ -1,9 +1,9 @@
 @media print {
 	/* generated content */
 	#logo a:after, #footer a:after, #dummy { content:""; display:none; }
+	.content_rating, .content_vote {display:none}
 
 	/* defloat */
-	.content-container .load-first,
 	.content-container .content-main,
 	.content-container .column-group,
 	#dummy

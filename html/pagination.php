@@ -56,9 +56,9 @@ function pagination_list_footer($list)
 function pagination_list_render($list)
 {
 	// Initialize variables
-	$html = '<menu class="pagination">';
+	$html = '<menu class="pagination" title="'. JText::_('More Pages') .'">';
 
-	$html .= '<li class="mi first txt">'. $list['start']['data']    .'</li>';
+	$html .= '<li class="mi first txt" title="'. JText::_('First page') .'">'. $list['start']['data']    .'</li>';
 	$html .= '<li class="mi prev txt">' . $list['previous']['data'] .'</li>';
 
 	foreach ($list['pages'] as $page)
@@ -73,7 +73,7 @@ function pagination_list_render($list)
 	}
 
 	$html .= '<li class="mi next txt">'. $list['next']['data'] .'</li>';
-	$html .= '<li class="mi last txt">'. $list['end']['data'] .'</li>';
+	$html .= '<li class="mi last txt" title="'. JText::_('Last page') .'">'. $list['end']['data'] .'</li>';
 
 	$html .= '</menu>';
 
@@ -92,7 +92,8 @@ function pagination_list_render($list)
  */
 function pagination_item_active($item)
 {
-	return '<a class="mi" href="'. $item->link .'#content"><span class="mi">'. $item->text .'</span></a>';
+	$title = ($item->text > 0) ? ' title="'.JText::sprintf('Page N', $item->text) .'"' : '';
+	return '<a class="mi" href="'. $item->link .'#content"'. $title .'><span class="mi">'. $item->text .'</span></a>';
 }
 
 /**
@@ -107,5 +108,6 @@ function pagination_item_active($item)
  */
 function pagination_item_inactive($item)
 {
-	return '<span class="mi active">'. $item->text .'</span>';
+	$title = ($item->text > 0) ? ' title="'.JText::sprintf('Page N', $item->text) .'"' : '';
+	return '<span class="mi active"'. $title .'>'. $item->text .'</span>';
 }

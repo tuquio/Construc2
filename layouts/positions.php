@@ -57,16 +57,13 @@ available template position, which is the whole idea of using them in the first 
 <?php include JPATH_THEMES .'/'. $this->template . '/layouts/mod_nav_below.php' ?>
 </div>
 
-<div id="content" class="names load-first">
-	<div class="names content-main">
-		<div class="names line content-above">
+<div id="content" class="names content-main">
+	<div class="names line content-above">
 <?php include JPATH_THEMES .'/'. $this->template . '/layouts/mod_content_above.php' ?>
-		</div>
-		<div class="names line content-below">
-<?php include JPATH_THEMES .'/'. $this->template . '/layouts/mod_content_below.php' ?>
-		</div>
 	</div>
-
+	<div class="names line content-below">
+<?php include JPATH_THEMES .'/'. $this->template . '/layouts/mod_content_below.php' ?>
+	</div>
 	<div class="names column-group group-alpha">
 <?php include JPATH_THEMES .'/'. $this->template . '/layouts/mod_column_group_alpha.php' ?>
 	</div>

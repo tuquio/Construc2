@@ -64,7 +64,7 @@ for ($i=1; $i <= ConstructTemplateHelper::MAX_WEBFONTS; $i++) {
 }
 
 // Change generator tag
-$this->setGenerator( trim($this->params->get('setGeneratorTag')) );
+$this->setGenerator( trim($this->params->get('setGeneratorTag', 'Construc2')) );
 
 if ($showDiagnostics) {
 	$jmenu = $app->getMenu();

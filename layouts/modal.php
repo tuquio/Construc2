@@ -20,16 +20,14 @@ defined('_JEXEC') or die;
 	<div id="page-top">
 		<div id="body-container" class="<?= ConstructTemplateHelper::getPageAlias(true)?>">
 			<div class="line content-container">
-				<div id="content" class="load-first">
-					<div class="content-main">
+				<div id="content" class="content-main">
 <?php if ($this->getBuffer('message')) : ?>
 <jdoc:include type="message" />
 <?php endif; ?>
 <section class="line component">
 <jdoc:include type="component" />
 </section>
-					</div><!-- .content-main -->
-				</div><!-- end load-first -->
+				</div><!-- .content-main -->
 <?php if ($footerAboveCount) : include JPATH_THEMES .'/'. $this->template . '/layouts/mod_footer_above.php'; endif; ?>
 			</div><!-- .content-container -->
 		</div><!-- #body-container -->
