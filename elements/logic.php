@@ -233,7 +233,7 @@ if ( in_array($app->get('input')->getCmd('layout'), array('edit','form'))
 }
 
 if ($customStyleSheet) {
-	$this->addStyleSheet($tmpl_url.'/themes/'.$customStyleSheet, 'text/css','screen,projection');
+	$this->addStyleSheet($tmpl_url.'/themes/'.$customStyleSheet, 'text/css','all');
 }
 
 // Style sheet switcher

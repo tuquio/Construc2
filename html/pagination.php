@@ -9,9 +9,6 @@
  * @license     GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
 
-// used to sanitize item aliases in links and menus
-JLoader::register('SearchHelper', JPATH_ADMINISTRATOR .'/components/com_search/helpers/search.php');
-
 /**
  * Input variable $list is an array with offsets and the following keys:
  *	 $list[limit]		: int
@@ -26,7 +23,7 @@ JLoader::register('SearchHelper', JPATH_ADMINISTRATOR .'/components/com_search/h
  */
 function pagination_list_footer($list)
 {
-	return '<xmp>pagination_list_footer</xmp>';
+	return '<h1>pagination_list_footer</h1>';
 }
 
 /**
