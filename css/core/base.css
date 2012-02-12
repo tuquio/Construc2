@@ -26,7 +26,6 @@ a:focus{outline:thin dotted}
 a:hover,a:active{outline:0}
 abbr[title]{border-bottom:1px dotted}
 b,strong{font-weight:bold}
-blockquote{margin:1em 40px}
 dfn{font-style:italic}
 mark{background:#ff0;color:#000}
 pre{white-space:pre;white-space:pre-wrap;word-wrap:break-word}
@@ -134,14 +133,14 @@ br.clear, hr.clear{float:none;clear:both;display:block;border:none;height:0;marg
  */
 @media print{
 	/* hidden from dead trees */
-	menu, .menu, .hmenu, .pagination, .crumbs, #breadcrumbs, .back, #back2top{display:none}
+	menu, nav, .menu, .hmenu, .pagination, .crumbs, #breadcrumbs, .back, #back2top{display:none}
 
 	/* generated content */
 	blockquote:before, blockquote:after{content:"";display:none}
 
 	*{background:transparent !important;color:#000 !important;text-shadow:none !important;filter:none !important;-ms-filter:none !important} /* black prints faster */
 	a, a:visited{color:#000 !important;text-decoration:underline}
-	a:after{content:" (" attr(href) ")";font-size:smaller}
+	p a:after{content:" (" attr(href) ")";font-size:smaller}
 	acronym:after,abbr:after{content:" (" attr(title) ")";font-size:smaller}
 	pre,blockquote,fieldset{border:1px solid rgb(128,128,128)}
 	table[border]{box-decoration-break:clone}
