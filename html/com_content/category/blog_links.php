@@ -2,7 +2,7 @@
 defined('_JEXEC') or die;
 /* REQUIRES the 'SearchHelper' class to be registered in the main blog.php Layout */
 ?>
-	<aside class="line items-more">
+	<aside class="items-more">
 		<header><h3><?php echo JText::_('COM_CONTENT_MORE_ARTICLES'); ?></h3></header>
 		<ol class="menu links"><?php
 foreach ($this->link_items as $item)

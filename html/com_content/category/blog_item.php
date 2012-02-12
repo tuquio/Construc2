@@ -1,5 +1,4 @@
 <?php
-// no direct access
 defined('_JEXEC') or die;
 
 $params		= $this->item->params;
@@ -41,7 +40,7 @@ if ($this->item->event->beforeDisplayContent)
 	if (strpos($this->item->event->beforeDisplayContent, 'content_rating')) {
 		$this->item->event->beforeDisplayContent = str_replace('<br />', '', $this->item->event->beforeDisplayContent);
 	}
-	echo '<aside>', $this->item->event->beforeDisplayContent, '</aside>';
+	echo '<aside class="article">', $this->item->event->beforeDisplayContent, '</aside>';
 }
 ?>
 	</header>
@@ -51,34 +50,8 @@ if ($this->item->event->beforeDisplayContent)
 	</div>
 
 <?php
-if ($params->get('show_readmore') && $this->item->readmore)
-{
-	if ($params->get('access-view')) {
-		$link = JRoute::_(ContentHelperRoute::getArticleRoute($this->item->slug, $this->item->catid));
-	} else {
-		$menu   = JSite::getMenu();
-		$active = $menu->getActive();
-		$itemId = $active->id;
-		$returnURL = JRoute::_(ContentHelperRoute::getArticleRoute($this->item->slug));
-		$link = new JURI(JRoute::_('index.php?option=com_users&view=login&Itemid=' . $itemId));
-		$link->setVar('return', base64_encode($returnURL));
-	}
-?>
-	<p class="line readmore"><a href="<?php echo $link; ?>#content"><?php
-	if (!$params->get('access-view')) {
-		echo JText::_('COM_CONTENT_REGISTER_TO_READ_MORE');
-	} elseif ($readmore = $this->item->alternative_readmore) {
-		echo $readmore;
-		if ($params->get('show_readmore_title', 0) != 0) {
-			echo JHtml::_('string.truncate', ($this->item->title), $params->get('readmore_limit'));
-		}
-	} elseif ($params->get('show_readmore_title', 0) == 0) {
-		echo JText::sprintf('COM_CONTENT_READ_MORE_TITLE');
-	} else {
-		echo JText::_('COM_CONTENT_READ_MORE');
-		echo JHtml::_('string.truncate', ($this->item->title), $params->get('readmore_limit'));
-	} ?></a></p>
-<?php
+if ($params->get('show_readmore') && $this->item->readmore) {
+	echo ContentLayoutHelper::showReadmore($this->item, $params);
 }
 
 if ($showStuff) {

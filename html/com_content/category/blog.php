@@ -1,11 +1,11 @@
 <?php
-// no direct access
 defined('_JEXEC') or die;
 
 JHtml::addIncludePath(JPATH_COMPONENT_SITE .'/helpers');
 
 // used to sanitize item aliases in blog_links and menus
 JLoader::register('SearchHelper', JPATH_ADMINISTRATOR .'/components/com_search/helpers/search.php');
+JLoader::register('ContentLayoutHelper', JPATH_THEMES . '/construc2/html/com_content/_shared/helper.php');
 
 $show_page_heading   = $this->params->get('show_page_heading');
 $show_category_title = $this->params->get('show_category_title');
@@ -16,16 +16,16 @@ $desc     = ($this->category->description && $this->params->get('show_descriptio
 $desc_img = $this->params->def('show_description_image');
 
 ?>
-<section class="blog">
+	<section class="blog">
+<?php if ($show_page_heading) { ?>
+	<header class="category">
 <?php
-if ($show_page_heading)
-{
-	if ($show_page_heading && $toggle_headings) { ?><hgroup><?php } ?>
-	<h1><?php echo $this->escape($this->params->get('page_heading')); ?></h1>
+	if ($toggle_headings) { ?><hgroup><?php } ?>
+	<h1 class="H1 page-title"><?php echo $this->escape($this->params->get('page_heading')); ?></h1>
 <?php
 
 	if ($show_category_title || $page_subheading) { ?>
-	<h2><?php
+	<h2 class="H2 title"><?php
 		echo $this->escape($page_subheading);
 		if ($show_category_title) {
 			echo '<span class="subheading-category">'.$this->category->title.'</span>';
@@ -33,18 +33,23 @@ if ($show_page_heading)
 		?></h2><?php
 	}
 
-	if ($show_page_heading && $toggle_headings) { ?></hgroup><?php }
+	if ($toggle_headings) { ?></hgroup><?php } ?>
+	</header>
+<?php
 }
 
 if ($desc) { ?>
-	<div class="line category-desc">
-	<?php if ($desc_img && $this->category->getParams()->get('image')) { ?>
-		<img src="<?php echo $this->category->getParams()->get('image') ?>"/>
-	<?php }
-		if ($desc) { ?>
-		<?php echo JHtml::_('content.prepare', $this->category->description) ?>
-	<?php } ?>
-	</div>
+	<article class="line category-desc">
+		<div class="introtext"><?php
+		if ($desc_img && $this->category->getParams()->get('image')) {
+		?><p><img class="catimg" src="<?php echo $this->category->getParams()->get('image') ?>" /></p><?php
+		}
+		if ($desc) {
+			echo JHtml::_('content.prepare', $this->category->description);
+		}
+?>
+		</div>
+	</article>
 <?php
 }
 
@@ -70,6 +75,8 @@ if (!empty($this->intro_items))
 {
 	settype($this->columns, 'int');
 
+	$unitCss = (count($this->intro_items) > 1) ? 'unit size1of'.$this->columns : '';
+
 	foreach ($this->intro_items as $key => $item)
 	{
 		$key = (int)($key - $leadingcount) + 1;
@@ -79,13 +86,13 @@ if (!empty($this->intro_items))
 		$this->item = $item;
 
 		if ($col == 1) { ?>
-		<section class="line items-row cols-<?php echo $this->columns ?>">
+	<section class="line items-row cols-<?php echo $this->columns ?>">
 <?php 	} ?>
-		<div class="unit size1of<?php echo $this->columns, ' row-', $row, ' column-', $col, ($col == $this->columns ? ' lastUnit' : '') ?>">
+		<div class="<?php echo $unitCss, ' row-', $row, ' column-', $col, ($unitCss && $col == $this->columns ? ' lastUnit' : '') ?>">
 		<?php echo $this->loadTemplate('item') ?>
 		</div>
 <?php 	if ($col & $this->columns) { ?>
-		</section>
+	</section><!-- .items-row -->
 <?php	}
 	}
 }
@@ -99,21 +106,19 @@ if (is_array($this->children[$this->category->id])
 	&& count($this->children[$this->category->id]) > 0
 	&& $this->params->get('maxLevel') !=0
 ) { ?>
-<section class="line cat-children">
+	<section class="cat-children">
 <?php
-if (count($this->children[$this->category->id]) > 0) {
-	echo ($toggle_headings) ? '<h3>' : '<h2>' ;
-	echo JTEXT::_('JGLOBAL_SUBCATEGORIES');
-	echo ($toggle_headings) ? '</h3>' : '</h2>' ;
-	echo $this->loadTemplate('children');
-}
-
+	if (count($this->children[$this->category->id]) > 0) {
+		echo ($toggle_headings) ? '<h3>' : '<h2>' ;
+		echo JTEXT::_('JGLOBAL_SUBCATEGORIES');
+		echo ($toggle_headings) ? '</h3>' : '</h2>' ;
+		echo $this->loadTemplate('children');
+	}
 ?>
-</section>
+	</section>
 <?php }
 
-if ($this->params->def('show_pagination', 2) == 1
-	|| ($this->params->get('show_pagination') == 2
+if ($this->params->get('show_pagination') == 1 || ($this->params->get('show_pagination') == 2
 	&& $this->pagination->get('pages.total') > 1))
 { ?>
 	<nav id="pages" class="line pagination">

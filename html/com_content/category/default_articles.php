@@ -1,5 +1,4 @@
 <?php
-// no direct access
 defined('_JEXEC') or die;
 
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
@@ -20,25 +19,30 @@ if (empty($this->items)) {
 
 	return;
 }
-?><form action="<?php echo htmlspecialchars(JFactory::getURI()->toString()); ?>" method="post" name="adminForm" id="adminForm">
+?>
+<form name="adminForm" id="adminForm" action="<?php echo htmlspecialchars(JFactory::getURI()->toString()); ?>" method="post">
 <?php if ($this->params->get('filter_field') != 'hide') { ?>
 	<fieldset class="filters">
-		<legend class="element-invisible"><?php echo JText::_('JGLOBAL_FILTER_LABEL'); ?></legend>
-		<div class="filter-search">
-			<label class="filter-search-lbl" for="filter-search"><?php echo JText::_('COM_CONTENT_'.$this->params->get('filter_field').'_FILTER_LABEL').'&#160;'; ?></label>
-			<input type="text" name="filter-search" id="filter-search" value="<?php echo $this->escape($this->state->get('list.filter')); ?>" class="inputbox" onchange="document.adminForm.submit();" title="<?php echo JText::_('COM_CONTENT_FILTER_SEARCH_DESC') ?>" />
-		</div>
+	<legend class="element-invisible"><?php echo JText::_('JGLOBAL_FILTER_LABEL'); ?></legend>
+	<p class="filter-search">
+		<label class="filter-search-lbl" for="filter-search"><?php echo JText::_('COM_CONTENT_'.$this->params->get('filter_field').'_FILTER_LABEL').'&#160;'; ?></label>
+		<input type="text" name="filter-search" id="filter-search" value="<?php echo $this->escape($this->state->get('list.filter')); ?>" class="inputbox" onchange="document.adminForm.submit();" title="<?php echo JText::_('COM_CONTENT_FILTER_SEARCH_DESC') ?>" />
+	</p>
 <?php }
 
 if ($this->params->get('show_pagination_limit')) { ?>
-		<div class="display-limit"><?php
-			echo JText::_('JGLOBAL_DISPLAY_NUM'), '&#160;', $this->pagination->getLimitBox();
-		?></div><?php
+	<p class="display-limit">
+	<?php echo JText::_('JGLOBAL_DISPLAY_NUM'), '&#160;', $this->pagination->getLimitBox(); ?>
+	</p>
+	<?php
 }
 
-if ($this->params->get('filter_field') != 'hide') : ?></fieldset><?php endif; ?>
+if ($this->params->get('filter_field') != 'hide') { ?>
+	</fieldset>
+<?php }
+?>
 
-<table class="category">
+<table class="data category">
 <?php if ($this->params->get('show_headings')) { ?>
 <thead>
 <tr>
@@ -55,30 +59,23 @@ if ($this->params->get('filter_field') != 'hide') : ?></fieldset><?php endif; ?>
 	<th class="list-hits" id="tableOrdering4"><?php echo JHtml::_('grid.sort', 'JGLOBAL_HITS', 'a.hits', $listDirn, $listOrder); ?>	</th>
 	<?php } ?>
 </tr>
-</thead><?php
-}
-?>
-<tbody class="category-list">
-<?php
-foreach ($this->items as $i => &$article) : ?>
+</thead>
+<?php } ?>
+
+<tbody class="data category-list">
+<?php foreach ($this->items as $i => &$article) { ?>
 <tr class="row-<?php echo $i % 2; ?>">
 <?php
 	if (in_array($article->access, $this->user->getAuthorisedViewLevels())) { ?>
 	<td class="list-title"><a href="<?php
 		echo JRoute::_(ContentHelperRoute::getArticleRoute($article->slug, $article->catid));
-		?>"><?php
-		echo $this->escape($article->title);
-		?></a></td>
+		?>"><?php echo $this->escape($article->title); ?></a></td>
 
-<?php 	if ($this->params->get('list_show_date'))
-		{ ?>
-		<td class="list-date"><?php
-			echo JHtml::_('date', $article->displayDate, 'DATE_FORMAT_LC1') ?>
-		</td>
+<?php 	if ($this->params->get('list_show_date')) { ?>
+		<td class="list-date"><?php echo JHtml::_('date', $article->displayDate, 'DATE_FORMAT_LC1') ?> </td>
 <?php 	}
 
-		if ($this->params->get('list_show_author',1) && !empty($article->author ))
-		{ ?>
+		if ($this->params->get('list_show_author',1) && !empty($article->author )) { ?>
 		<td class="list-author"><?php
 			$author = $article->author;
 			$author = ($article->created_by_alias ? $article->created_by_alias : $author);
@@ -91,14 +88,11 @@ foreach ($this->items as $i => &$article) : ?>
 		</td>
 <?php 	}
 
-		if ($this->params->get('list_show_hits',1))
-		{ ?>
-		<td class="list-hits"><?php echo $article->hits; ?></td>
+		if ($this->params->get('list_show_hits', 1)) { ?>
+		<td class="list-hits"><?php echo $article->hits ?></td>
 <?php 	}
 
-	}
-	else
-	{
+	} else {
 ?>
 	<td><?php
 		$returnURL	= JRoute::_(ContentHelperRoute::getArticleRoute($article->slug));
@@ -111,27 +105,25 @@ foreach ($this->items as $i => &$article) : ?>
 
 	} ?>
 </tr>
-<?php
-endforeach; ?>
-	</tbody>
+<?php } ?>
+</tbody>
 </table>
 <?php
 
-if (($this->params->def('show_pagination', 2) == 1
-	|| ($this->params->get('show_pagination') == 2))
-	&& ($this->pagination->get('pages.total') > 1))
+if ($this->params->get('show_pagination') == 1 || ($this->params->get('show_pagination') == 2
+	&& $this->pagination->get('pages.total') > 1))
 { ?>
-	<div class="pagination">
+	<nav id="pages" class="line pagination">
 <?php if ($this->params->def('show_pagination_results', 1)) { ?>
 	<p class="counter"><?php echo $this->pagination->getPagesCounter(); ?></p>
 <?php }
 	echo $this->pagination->getPagesLinks();
 ?>
-	</div><?php
-}
-?>	<input type="hidden" name="filter_order" value="">
-	<input type="hidden" name="filter_order_Dir" value="">
-	<input type="hidden" name="limitstart" value="">
+	</nav>
+<?php } ?>
+<input type="hidden" name="filter_order" value="">
+<input type="hidden" name="filter_order_Dir" value="">
+<input type="hidden" name="limitstart" value="">
 </form>
 <?php
 
