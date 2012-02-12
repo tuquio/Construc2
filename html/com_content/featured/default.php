@@ -1,30 +1,38 @@
 <?php
-/* ContentViewFeature dproperties
-	item
-	items
-	state			JObject
-	pagination		JPagination
-	lead_items
-	intro_items
-	link_items
-	columns
-	baseurl
-	params
-	document
-	user			JUser
-	pageclass_sfx
-	_name _models _basePath _defaultModel _layout _layoutExt _layoutTemplate
-	_path _template _output _escape _charset _errors
-*/
-// no direct access
 defined('_JEXEC') or die;
 
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');
 
 // used to sanitize item aliases in blog_links and menus
 JLoader::register('SearchHelper', JPATH_ADMINISTRATOR .'/components/com_search/helpers/search.php');
+JLoader::register('ContentLayoutHelper', JPATH_THEMES . '/construc2/html/com_content/_shared/helper.php');
 
 ?>
+<header id="skiplinks">
+	<h1 class="H3 title">Skiplinks</h3>
+	<ol class="skiplinks">
+<?php
+if (!empty($this->lead_items)) {
+	foreach ($this->lead_items as $item) { ?>
+	<li><?php echo $item->category_title ?>: <a href="#<?php echo $item->alias ?>"><?php echo $this->escape($item->title) ?></a></li>
+<?php
+	}
+}
+
+if (!empty($this->intro_items)) {
+	foreach ($this->intro_items as $key => $item) { ?>
+	<li><?php echo $item->category_title ?>: <a href="#<?php echo $item->alias ?>"><?php echo $this->escape($item->title) ?></a></li>
+<?php
+	}
+}
+if (!empty($this->link_items)) { ?>
+	<li><a href="#more"><?php echo JText::_('COM_CONTENT_MORE_ARTICLES') ?></a></li>
+<?php
+}
+?>
+	</ol>
+</header>
+
 <section class="blog featured"><?php
 if ($this->params->get('show_page_heading')) {
 	echo '<header><h1 class="page_heading">', $this->escape($this->params->get('page_heading')), '</h1></header>';
@@ -52,6 +60,8 @@ if (!empty($this->intro_items))
 {
 	settype($this->columns, 'int');
 
+	$unitCss = (count($this->intro_items) > 1) ? 'unit size1of'.$this->columns : '';
+
 	foreach ($this->intro_items as $key => $item)
 	{
 		$key = (int)($key - $leadingcount) + 1;
@@ -63,9 +73,9 @@ if (!empty($this->intro_items))
 		if ($col == 1) { ?>
 	<section class="line items-row cols-<?php echo $this->columns ?>">
 <?php 	} ?>
-		<div class="unit size1of<?php echo $this->columns, ' row-', $row, ' column-', $col, ($col == $this->columns ? ' lastUnit' : '') ?>">
+		<div class="<?php echo $unitCss, ' row-', $row, ' column-', $col, ($unitCss && $col == $this->columns ? ' lastUnit' : '') ?>">
 		<?php echo $this->loadTemplate('item') ?>
-		</div><!-- .unit -->
+		</div>
 <?php 	if ($col & $this->columns) { ?>
 	</section><!-- .items-row -->
 <?php	}

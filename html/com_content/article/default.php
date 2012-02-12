@@ -24,6 +24,7 @@ $showStuff	= ($params->get('show_author') || $params->get('show_category' ) || $
 $canEdit	= $params->get('access-edit');
 $actions	= ($canEdit || $params->get('show_print_icon') || $params->get('show_email_icon'));
 $noPrint	= !(JFactory::getApplication()->input->get('print'));
+$showall	= (1 == (int)JFactory::getApplication()->input->get('showall')) ? 'showall ' : '';
 
 /* this layout separates $introtext and $fulltext but content plugins only work
    for the combined $text property, hence we need to reconstuct these parts. */
@@ -42,13 +43,26 @@ $p1 = strpos($ftext, '<ul class="pagenav">');
 if ($p1 > 0) {
 	$ftext = substr($ftext, 0, $p1);
 }
+
+// pagetoc <nav>
+if (isset($this->item->toc)) {
+	if (empty($showall)) {
+		$this->item->toc = str_replace(array('<div', '/div>'), array('<nav class="unit size2of5 rgt"', '/nav>'), $this->item->toc);
+	} else {
+		// no toc on "all pages" view
+		$this->item->toc = null;
+		// <hr page-break>s become a <br />
+		$ftext = str_replace('<br />'.PHP_EOL, '', $ftext);
+	}
+}
+
 // override introtext and fulltext
 unset($this->item->text);
 $this->item->introtext = $itext;
 $this->item->fulltext  = $ftext;
 
 ?>
-	<article class="line item-page <?php echo $this->item->parent_alias, ' ', $this->item->category_alias, ' cid-', $this->item->catid, ($this->item->state == 0 ? ' system-unpublished' : '') ?>">
+	<article class="line item-page <?php echo $showall, $this->item->parent_alias, ' ', $this->item->category_alias, ' cid-', $this->item->catid, ($this->item->state == 0 ? ' system-unpublished' : '') ?>">
 	<header class="article">
 <?php
 if ($params->get('show_page_heading')) {
@@ -76,19 +90,19 @@ if ($this->item->event->beforeDisplayContent)
 	if (strpos($this->item->event->beforeDisplayContent, 'content_rating')) {
 		$this->item->event->beforeDisplayContent = str_replace('<br />', '', $this->item->event->beforeDisplayContent);
 	}
-	echo '<aside>', $this->item->event->beforeDisplayContent, '</aside>';
+	echo '<aside class="article">', $this->item->event->beforeDisplayContent, '</aside>';
 }
 ?>
 	</header>
 <?php
 // splitting introtext and fulltext also allows us to build our own pagenavigation
 if (!$params->get('show_intro')) {
-	if (isset ($this->item->toc)) {
+	if (isset($this->item->toc)) {
 		echo $this->item->toc;
 	}
 } else {
 	echo '<div id="introtext" class="introtext">';
-	if (isset ($this->item->toc)) {
+	if (isset($this->item->toc)) {
 		echo $this->item->toc;
 	}
 
