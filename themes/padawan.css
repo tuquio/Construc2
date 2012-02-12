@@ -5,6 +5,7 @@
 @import url(http://fonts.googleapis.com/css?family=Kristi);
 
 body {min-width:900px}
+body.print {min-width:auto}
 
 /* template param override (#body-container,#header-above 100%) */
 @media screen and (max-width:1039px) {body #body-container, body #header-above, .page-foot {max-width:94%}}
@@ -22,13 +23,18 @@ body {min-width:900px}
 #diagnostics	{position:absolute;right:10px;top:20px;max-width:90px}
 #diagnostics li	{padding:0;margin:0;line-height:1}
 
-h1,h2,h3,h4,h5,h6 {line-height:normal}
+h1,h2,h3,h4,h5,h6	{line-height:normal}
 
-h1,h2,h3,h4,h5,h6,
-menu.categories	{font-family:'Ubuntu Condensed','Trebuchet MS',Arial,sans-serif;text-rendering:optimizelegibility}
+h1,h2,h3,h4,h5,h6	,
+.mainmenu			,
+.breadcrumbs		,		
+menu.categories		{font-family:'Ubuntu Condensed','Trebuchet MS',Arial,sans-serif;text-rendering:optimizelegibility}
+
+.mainmenu			,
+.breadcrumbs		{-webkit-text-size-adjust:60%;-ms-text-size-adjust:60%;text-size-adjust:60%;font-size-adjust:.6}
+menu.categories		{-webkit-text-size-adjust:52%;-ms-text-size-adjust:52%;text-size-adjust:52%;font-size-adjust:.52}
 
 p {-webkit-hyphens:auto;-moz-hyphens:auto;hyphens:auto}
-
 p:only-child {margin-bottom:0}
 
 /* =column layout [[20|60]20] */
@@ -36,12 +42,13 @@ p:only-child {margin-bottom:0}
 header.above	,
 header.below	{margin:0 auto}
 
-.content-main	{width:auto}
-.column-group 	{width:25%}
-.group-alpha	{float:left}
-.group-beta		{float:left}
-
-.main-beta .content-main {width:75%;float:left}
+@media screen {	
+	.content-main	{width:auto}
+	.column-group 	{width:25%}
+	.group-alpha	{float:left}
+	.group-beta		{float:left}
+	.main-beta .content-main {width:75%;float:left}
+}
 
 .page-foot	{margin:0 auto}
 .foot-inner	{
@@ -69,80 +76,96 @@ header.below	{margin:0 auto}
 .blog article	,
 .items-more		{padding:10px;margin-bottom:10px}
 
+.blog h1, .blog .H1 {}
+.blog h2, .blog .H2 {margin-top:0}
+
 .items-leading	,
 .items-row		,
 .items-more		{}
 
-.unit .feature		,
-.unit .article		{margin-right:5px}
-.lastUnit .feature	,
-.lastUnit .article	{margin-left:5px;margin-right:0}
+.introtext,.fulltext {margin-right:20px}
 
-.blog h1, .blog .H1 {}
-.blog h2, .blog .H2 {margin-top:0}
+.unit > article {margin-right:5px}
+.lastUnit > article {margin-left:5px;margin-right:0}
 
-header.article 		{}
-header.article aside{float:right;width:30%;max-width:200px}
+/* make room for .actionsmenu */
+header.actions .title {margin-right:36px}
 
-.introtext p[class],
-.fulltext  p[class],
-.introtext p:first-of-type ,
-.fulltext  p:first-of-type {text-indent:0}
-.introtext p ,
-.fulltext  p {text-indent:1.6ex}
+.readmore	{text-align:right;margin-top:1ex;margin-bottom:0}
+.readmore:after {content:'\2026\A0';display:inline}
 
 .page-toc	{float:right;width:40%}
 #aii		{margin-top:0}
+#article-index li:last-child {border-top:1px solid #CCC}
 
-.readmore	{margin-top:1ex;margin-bottom:0}
+/*
+ * call-outs and <aside>s flush right within their containing box + reveal content on :hover 
+ */
+aside.article     {float:right;width:auto;height:2em;margin-right:-10px;border:1px solid #888;border-width:0 10px 0 0}
+aside.article > * {display:none;position:absolute;width:220px;padding:.2em;min-height:1.6em;right:0;z-index:2707}
 
-/*@todo make <details> see padawan.css */
-/* call-outs and asides flush right within their containing box
- * in-context position using negative margins somewhere else below.
+aside.article:hover		{}
+aside.article:hover > * {display:block;border:1px solid #CCC;background:#FEFEFE}
+	.content_rating		,
+	.content_vote		{cursor:default}
+	.content_rating	img	,
+	.content_vote input	{display:inline-block;margin:0 2px;vertical-align:middle}
+	aside.article > form {top:2em}
+
+/* @todo make <details> see padawan/padawan-dark.css
  * the disclosure widget will still be displayed if you don't provide a summary element
  */
 details.meta	{clear:both;padding:1ex .8em;margin-top:10px}
- .meta dt		{display:inline}
- .meta dd		{display:inline}
- .meta dd:after	{display:block;content:' '}
 
-.meta summary	{cursor:help}
-summary::-webkit-details-marker {color:#444;font-size:1.2em}
+.meta summary	{display:inline;cursor:help}
+summary::-webkit-details-marker {color:#888;font-size:1.2em}
+
+/* toggle article details on hover */
+.article-info			{padding-left:0}
+.meta summary:focus		{text-decoration:underline}
 
 .article-info	{margin:0}
-	/* 'shadow' DOM */
-	summary::-webkit-details-marker {color:lime}
 
-.introtext :not(p:first-child) {}
-.fulltext  :not(p:first-child) {}
+.article-info dd {margin-right:1ex}
+.article-info .parent-category ,
+ .article-info .category	,
+ .article-info .createdby	,
+ .article-info .hits		,
+ .article-info .create		,
+ .article-info .published	,
+ .article-info .modified	{display:inline-block}
+ .article-info dt.create	{display:inline}
+ 
+.article-info .create:before {content:' ';display:block;}
+
+/* =category page contents */
+.category-desc {font-size:100%}
+.category-desc blockquote {padding:1ex;margin:0 3m;font:normal 2.25em/1 'Kristi',cursive;text-shadow:0px 0px 3px #888;text-align:center;text-rendering:optimizelegibility}
+.category-desc blockquote {font-size-adjust:0.5; font-stretch:expanded} /* FF */
+blockquote:after {content:attr(title);display:block;margin-top:1em;text-align:right;clear:both;font:normal 12px/1 "Trebuchet MS",Arial,Helvetica,sans-serif}
 
 /*
- * =pictures
+ * =pictures - single page, blog page, columns list
  */
-.introtext img	{margin-left:3px;-webkit-box-shadow:-2px 3px 6px 2px #888;-moz-box-shadow:-2px 3px 6px 2px #888;box-shadow:-2px 3px 6px 2px #888}
-.introtext img	{height:auto;border:8px solid #FFF}
+.introtext img	,
+.fulltext img	{height:auto;border:8px solid #FFF}
+
+.item-page .introtext img	,
+.item-page .fulltext img	{max-width:96%}
 
 .blog .introtext img		{max-width:80%}
-.item-page .introtext img	{max-width:96%}
+.unit .introtext img 		{max-height:200px;border-width:5px}
+.blog .unit .introtext		{min-height:250px}
+.category-desc img.catimg	{}
 
 figure img 	{height:auto;border:5px solid #FFF;outline:1px solid #CDCDCD}
-
-/*
- * = widgets / plugins
- */
-.unit .content_rating	{display:none}
-.content_rating		{display:block;text-align:right}
-.content_rating	img	{display:inline-block;margin:0 2px;vertical-align:middle}
-.content_vote		{display:block}
-.content_vote input {display:inline-block;margin:0 2px;vertical-align:middle}
-
-body.print .content_rating	,
-body.print .content_vote 	{display:none}
 
 /*
  * =modules
  */
 .mod-login ul		{margin-left:10px;padding-left:.7em}
+
+.column-group .inner 		{padding:5px}
 
 .column-group fieldset		{border:none;outline:none}
 .column-group dl			{margin:0}
@@ -152,8 +175,6 @@ body.print .content_vote 	{display:none}
 .banneritem img 	{display:block;margin-left:auto;margin-right:auto;text-align:center}
 .mod-search 		{margin-right:10px;float:right}
 .mod-search label	{padding-right:1em}
-
-.column-group .inner {padding:5px}
 
 .portrait {text-align:center}
 
@@ -165,7 +186,9 @@ header.above div.above {}
 /*
  * =menus
  */
-.hmenu 			{padding:.5ex 0}
+.menu li.mi		{padding:0 0.4em}
+
+.hmenu			{padding:.5ex 0}
 
 .mainmenu .active {font-weight:bold}
 
@@ -181,6 +204,7 @@ li.mi img		{border:none}
 
 .actionsmenu 		{position:absolute;right:0;top:0}
 .actionsmenu li.mi	{padding:0.2ex}
+.actionsmenu .mi .mi img {padding:2px;margin:0}
 
 .pagenav			{}
 .pagenav li.mi		{}
@@ -222,11 +246,12 @@ nav, .breadcrumbs, .meta,
  .items-more			, 
  .item-page				,
  .column-group .inner	{background-color:#FFF}
+ .column-group .inner	{outline:1px solid #CDCDCD}
 
 .group-alpha .mod {}
 .group-beta .mod {}
 
-.mod-custom div.inner	{background:none}
+.mod-custom div.inner	{background:none;outline:none}
 
 /* Tips, Error, Message, Hightlight */
 .error, .warning, .notice, .message, .tips {border:1px solid;background:#FFF}
@@ -245,20 +270,20 @@ h1, .H1, .hts {text-shadow:0 0 2px #666}
 /*
  * =branding - category and page styles
  */
-.category-desc {font-size:100%}
-.category-desc blockquote {padding:1ex;margin:0 3m;font:normal 2.25em/1 'Kristi',cursive;text-shadow:0px 0px 3px #888;text-align:center;text-rendering:optimizelegibility}
-.category-desc blockquote {font-size-adjust:0.5; font-stretch:expanded} /* FF */
-blockquote:after {content:attr(title);display:block;margin-top:1em;text-align:right;clear:both;font:normal 12px/1 "Trebuchet MS",Arial,Helvetica,sans-serif}
 
-.schriftstellerei article p:first-of-type img	{float:right;margin-left:1em;max-width:40%;position:relative;z-index:10}
-.schriftstellerei .introtext img:first-child	{margin:-1em 0 1em 1em}
+article .introtext p[class],
+article .introtext blockquote p {text-indent:0}
+article .introtext p:first-of-type {text-indent:0}
+article .introtext :not(p:first-child) {}
 
-.gedichte p ,
-.pures-gefuehl p {text-indent:0}
-
-.blog .fotokunst .introtext img {max-height:200px;border-width:5px}
+.schriftstellerei article p:first-of-type img {float:right;margin-left:10px;max-width:40%;position:relative;z-index:10}
+.schriftstellerei article ~ img:first-child {margin:0 0 5px 1em}
+.schriftstellerei article p {text-indent:1.6ex}
+.gedichte article p,
+.pures-gefuehl article p {text-indent:0}
 
 /* =box drop shadows CSS3 */
+#article-index,
 .meta {-webkit-box-shadow:inset 0 0 6px #AAA;-moz-box-shadow:inset 0 0 6px #AAA;box-shadow:inset 0 0 6px #AAA}
 .ds   {-webkit-box-shadow:0 0 3px #888;-moz-box-shadow:0 0 3px #888;box-shadow:0 0 3px #888}
 
@@ -270,8 +295,8 @@ nav.pages,
  .pagination li.mi:hover,
  .dslt		{-webkit-box-shadow:0 0 3px #CCC;-moz-box-shadow:0 0 3px #CCC;box-shadow:0 0 3px #CCC;outline:none}
 
-.hbox-ds	{margin-left:3px;-webkit-box-shadow:-2px 3px 6px 2px #888;-moz-box-shadow:-2px 3px 6px 2px #888;box-shadow:-2px 3px 6px 2px #888}
-
+.introtext img	,
+.hbox-ds		{margin-left:3px;-webkit-box-shadow:-2px 3px 5px 1px #888;-moz-box-shadow:-2px 3px 5px 1px #888;box-shadow:-2px 3px 5px 1px #888}
 
 /* =supplemental property classes */
 .prel {position:relative} .pabs {position:absolute}
@@ -279,5 +304,14 @@ nav.pages,
 .pt0 {padding-top:0} .pr0 {padding-right:0} .pb0 {padding-bottom:0} .pl0 {padding-left:0}
 .bt0 {border-top:0}  .br0 {border-right:0}  .bb0 {border-bottom:0}  .bl0 {border-left:0}
 .lft {float:left} .rgt {float:right}
+
+/*= print (popups) */
+body.print .content_rating	,
+body.print .content_vote 	{display:none}
+
+@media print {
+	.blog .introtext img,
+	.item-page .introtext img	{height:10cm;max-width:10cm}
+}
 
 /* .eof */
