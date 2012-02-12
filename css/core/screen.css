@@ -30,6 +30,7 @@ table.category {border:1px solid #000}
 
 .outline {border:1px solid #ccc;-moz-border-radius:10px;-webkit-border-radius:10px;border-radius:10px;padding:5px;margin:5px}
 
+a.pathway {text-decoration:underline}
 .pagination {text-align:center;margin-left:auto;margin-right:auto}
 .pagination li.mi {display:inline;margin:.4ex;padding:0}
 p.counter b, .pagination span.mi {padding:.2ex .4em}
