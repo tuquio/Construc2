@@ -14,7 +14,7 @@ require JPATH_THEMES.'/'.$this->template.'/elements/logic.php';
 // Add custom layout overrides for components or section here
 /* eg:
  * $templateHelper->addLayout('contact');
- * $templateHelper->addLayout(42, 'section');
+ * $templateHelper->addLayout(42, 'category');
  */
 
 // Check for alternate index file, load it if it exists, and leave
