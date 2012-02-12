@@ -54,10 +54,10 @@ class ConstructTemplateHelper
 	static $html;
 
 	/**
-	 * @staticvar array with optional html chunks to be used in "static_html.php"
+	 * @staticvar array with optional html{5} chunks to be used in "static_html.php"
 	 * @see setChunks()
 	 */
-	static $chunks = array('header','footer','aside','nav','section','article');
+	static $chunks = array('header', 'footer', 'aside', 'nav', 'section', 'article');
 
 	/**@#+
 	 * Protected head and meta elemente for custom browser ressources
@@ -85,8 +85,7 @@ class ConstructTemplateHelper
 
 		$this->addLayout('index');
 		$_request = new JInput();
-		$this->addLayout( $_request->getCmd('tmpl') );
-		$this->addLayout( $_request->getCmd('layout') );
+		$this->addLayout( $_request->getCmd('view') );
 
 		// @see renderModules()
 		$chunks = array(
@@ -194,16 +193,16 @@ class ConstructTemplateHelper
 
 	/**
 	 * Registers a layout file for use with a specific component name,
-	 * section id or article id.
+	 * category id or article id.
 	 *
 	 * Use the second parameter $scope for fine grained overrides
 	 * - 'index'     in  /layouts/            using  {$customStyle}-index.php
 	 * - 'component' in  /layouts/component/  using  {$currentComponent}.php
-	 * - 'section'   in  /layouts/section/    using  section-{$sectionId}.php
+	 * - 'category'  in  /layouts/category/   using  category-{$categoryId}.php
 	 * - 'article'   in  /layouts/article/    using  article-{$articleId}.php
 	 *
 	 * @param string $basename required basename of the layout file (no suffix)
-	 * @param string $scope    optional scope, 'component' oder 'section'
+	 * @param string $scope    optional scope, 'component', 'category', or 'article'
 	 * @return ConstructTemplateHelper for fluid interface
 	 */
 	public function addLayout($basename, $scope=null)
@@ -213,11 +212,11 @@ class ConstructTemplateHelper
 			$scope = strtolower($scope);
 		}
 
-		// could be either a section or article id
+		// could be either a category or article id
 		if (is_numeric($basename)) {
-			// default to section
+			// default to category
 			if (empty($scope)) {
-				$scope = 'section';
+				$scope = 'category';
 			}
 		}
 		else {
@@ -242,8 +241,8 @@ class ConstructTemplateHelper
 			case 'component':
 				// just to validate $scope
 				break;
-			case 'section':
-				$basename = 'section-' . $basename;
+			case 'category':
+				$basename = 'category-' . $basename;
 				break;
 			case 'article':
 				$basename = 'article-' . $basename;
@@ -278,7 +277,7 @@ class ConstructTemplateHelper
 	 * $helper->addLayout('index')
 	 *     ->addLayout($themeName, 'index')
 	 *     ->addLayout($currentComponent, 'component')
-	 *     ->addLayout($sectionId, 'section');
+	 *     ->addLayout($categoryId, 'category');
 	 * </code>
 	 * See {@link addLayout()} for more details on conditions and rules.
 	 *
@@ -305,7 +304,7 @@ class ConstructTemplateHelper
 		$jmenu	= JFactory::getApplication()->getMenu()->getActive();
 
 		$req	= new JInput();
-		$tmpl	= $req->getCmd('tmpl');
+		$tmpl	= $req->getCmd('view');
 		$layout	= $req->getCmd('layout');
 		$key	= $tmpl . '.php';
 		$file	= null;
@@ -320,7 +319,7 @@ class ConstructTemplateHelper
 			}
 		}
 
-		if ( is_array($file) && JFile::exists($file['path']))
+		if (is_array($file) && JFile::exists($file['path']))
 		{
 			return $file;
 		}
@@ -576,6 +575,7 @@ class ConstructTemplateHelper
 		if ( strpos($rel, 'stylesheet') !== false ) {
 			$attribs['rel'] = $rel;
 		}
+
 		// make room
 		if (!isset(self::$head["{$uagent}"])) self::$head["{$uagent}"] = array();
 		settype(self::$head["{$uagent}"]['links'], 'array');

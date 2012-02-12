@@ -1,6 +1,6 @@
 <?php defined('_JEXEC') or die;
 /**
- * Component only index template.
+ * Frontpage sample template.
  *
  * @package		Templates
  * @subpackage  Construc2
@@ -8,7 +8,6 @@
  * @copyright	Copyright (C) 2011 WebMechanic http://webmechanic.biz. All rights reserved.
  * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
-defined('_JEXEC') or die;
 
 ?><!DOCTYPE html>
 <html lang="<?php echo $this->language; ?>" dir="<?php echo $this->direction; ?>" >
