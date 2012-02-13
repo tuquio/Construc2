@@ -16,7 +16,7 @@ defined('_JEXEC') or die;
 <jdoc:include type="head" />
 </head>
 <body class="main modal">
-<?= ConstructTemplateHelper::msieSwatter() ?>
+<?php ConstructTemplateHelper::msieSwatter() ?>
 	<div id="page-top">
 		<div id="body-container" class="<?= ConstructTemplateHelper::getPageAlias(true)?>">
 			<div class="line content-container">
@@ -35,7 +35,8 @@ defined('_JEXEC') or die;
 <?php
 if ($this->countModules('debug')) : $templateHelper->renderModules('debug', 'raw'); endif;
 if ($this->countModules('analytics')) : $templateHelper->renderModules('analytics', 'raw'); endif;
-ConstructTemplateHelper::msieSwatter()
+ConstructTemplateHelper::msieSwatter();
+ConstructTemplateHelper::afterCompileBody();
 ?>
 	</body>
 </html>

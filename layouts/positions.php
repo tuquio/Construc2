@@ -33,7 +33,7 @@ body.debug .names:after  {text-align:right; content:'Classes: ' attr(class);}
 </style>
 </head>
 <body class="<?php echo $columnLayout ?>">
-<?= ConstructTemplateHelper::msieSwatter() ?>
+<?php ConstructTemplateHelper::msieSwatter() ?>
 <header class="line above">
 <?php include JPATH_THEMES .'/'. $this->template . '/layouts/mod_header_above.php' ?>
 </header>
@@ -78,6 +78,9 @@ available template position, which is the whole idea of using them in the first 
 </div>
 
 </div><!-- end body-container -->
-<?= ConstructTemplateHelper::msieSwatter() ?>
+<?php
+ConstructTemplateHelper::msieSwatter();
+ConstructTemplateHelper::afterCompileBody();
+?>
 </body>
 </html>
