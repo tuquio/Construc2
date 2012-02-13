@@ -1,3 +1,8 @@
+/*!
+ * Construc2 "Exceptionally Broken"(tm) right-to-left scripts support
+ * @version 0.0.0
+ * @license DWTF
+ */
 #access li{float:right;direction:rtl;}
 #branding {float:right;text-align:right;direction:rtl;}
 #header {text-align:right;direction:rtl;}
