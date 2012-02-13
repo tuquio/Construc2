@@ -16,11 +16,14 @@
 </head>
 
 <body class="<?php echo $columnLayout ?>">
-<?= ConstructTemplateHelper::msieSwatter() ?>
+<?php ConstructTemplateHelper::msieSwatter() ?>
 <?php if ($this->getBuffer('message')) : ?>
 <div class="line"><jdoc:include type="message" /></div>
 <?php endif; ?>
 <div class="line"><jdoc:include type="component" /></div>
-<?= ConstructTemplateHelper::msieSwatter() ?>
+<?php
+ConstructTemplateHelper::msieSwatter();
+ConstructTemplateHelper::afterCompileBody();
+?>
 </body>
 </html>
