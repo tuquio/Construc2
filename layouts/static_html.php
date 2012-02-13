@@ -18,28 +18,30 @@ $chunks = $templateHelper->getStaticHtml($alternateIndexFile);
 <jdoc:include type="head" />
 </head>
 <body class="<?php echo $columnLayout ?>">
-<?= ConstructTemplateHelper::msieSwatter() ?>
+<?php ConstructTemplateHelper::msieSwatter() ?>
 	<div id="footer-push">
 	<a id="page-top"></a>
 
 		<div id="header" class="clear clearfix">
 			<div class="mod clearfix">
 				<h1 id="logo"><a href="<?php echo $this->baseurl ?>/" title="<?php echo $app->getCfg('sitename');?>"><?php echo $app->getCfg('sitename');?></a></h1>
-				<?php if ($this->countModules('header')) : ?>
+				<?php if ($this->countModules('header')) { ?>
 					<jdoc:include type="modules" name="header" style="mod" />
-				<?php endif; ?>
-<?php if (isset($chunks['header'])) : ?>
-<?php echo $templateHelper->loadStaticHtml('header') ?>
-<?php endif; ?>
+				<?php } ?>
+<?php
+if (isset($chunks['header'])) {
+	echo $templateHelper->loadStaticHtml('header');
+}
+?>
 			</div>
 		</div>
 
 		<div id="body-container">
-<?php if ($this->countModules('nav')) : ?>
+<?php if ($this->countModules('nav')) { ?>
 			<div id="nav" class="clear clearfix">
 				<jdoc:include type="modules" name="nav" style="raw" />
 			</div><!-- end nav-->
-<?php endif; ?>
+<?php } ?>
 			<div id="content-container" class="clear clearfix">
 				<div id="load-first" class="clearfix">
 					<a id="content"></a>
@@ -56,16 +58,20 @@ $chunks = $templateHelper->getStaticHtml($alternateIndexFile);
 	<div id="footer" class="clear clearfix">
 		<div class="mod clearfix">
 		<jdoc:include type="modules" name="footer" style="mod" />
-
-<?php if (isset($chunks['header'])) : ?>
-<?php echo $templateHelper->loadStaticHtml('footer') ?>
-<?php endif; ?>
+<?php
+if (isset($chunks['header'])) {
+	echo $templateHelper->loadStaticHtml('footer');
+}
+?>
 		</div>
 	</div>
 
-<?php if ($this->countModules('debug')) : ?>
+<?php if ($this->countModules('debug')) { ?>
 <jdoc:include type="modules" name="debug" style="raw" />
-<?php endif; ?>
-<?= ConstructTemplateHelper::msieSwatter() ?>
+<?php }
+
+ConstructTemplateHelper::msieSwatter();
+ConstructTemplateHelper::afterCompileBody();
+?>
 </body>
 </html>
