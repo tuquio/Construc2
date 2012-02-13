@@ -26,7 +26,7 @@ $base_url 	= JURI::base(true) . '/';
 $tmpl_url 	= $base_url. 'templates/'. $this->template;
 
 /* Define shortcuts for often used template parameters */
-$customStyleSheet 	=		 $this->params->get('customStyleSheet');
+$customStyleSheet 	= 		 $this->params->get('customStyleSheet');
 $enableSwitcher 	= (bool) $this->params->get('enableSwitcher');
 $showDiagnostics 	= (bool) $this->params->get('showDiagnostics');
 $showDateContainer 	= (bool) $this->params->get('showDateContainer');
@@ -45,7 +45,16 @@ $loadChromeFrame	=		 $this->params->get('loadGcf'); // if set, contains the vers
 
 // "old-school" concatenating of files and free server based compression
 $ssiIncludes		= (bool) $this->params->get('ssiIncludes', 0);
-$ssiTheme			= 		 $this->params->get('ssiTheme');
+$ssiTheme			=		 $this->params->get('ssiTheme');
+
+// some editor form requested
+$editMode			= in_array($app->input->get('layout'), array('edit','form'));
+
+// all things different in edit mode
+if ($editMode) {
+	$fullWidth  = $loadMoo = true;
+	$loadJQuery = $loadChromeFrame = $enableSwitcher = $showDiagnostics = $showDateContainer = false;
+}
 
 // 'filelist' params return -1 for none. make FALSE
 if (($customStyleSheet + 1) == 0) $customStyleSheet = false;
@@ -54,14 +63,6 @@ if (($ssiTheme + 1) == 0) $ssiTheme = false;
 // will contain custom <script> code depending on selected params
 $scriptDeclarations	= array();
 $styleDeclarations	= array();
-
-/** @var $googleWebFont array Web-Fonts (for BC the 1. param is read using the "old" field name) */
-$googleWebFont = $googleWebFontSize = $googleWebFontTargets = array();
-for ($i=1; $i <= ConstructTemplateHelper::MAX_WEBFONTS; $i++) {
-	$googleWebFont[$i]			= $this->params->def('googleWebFont'.$i);
-	$googleWebFontSize[$i]		= $this->params->def('googleWebFontSize'.$i);
-	$googleWebFontTargets[$i]	= $this->params->def('googleWebFontTargets'.$i);
-}
 
 // Change generator tag
 $this->setGenerator( trim($this->params->get('setGeneratorTag', 'Construc2')) );
@@ -80,18 +81,12 @@ if ($showDiagnostics) {
 
 // Load the jQuery JavaScript Library
 if ($loadJQuery) {
-	// <script onload="if (jQuery) {jQuery.noConflict();}" type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
-	$this->addScript('//ajax.googleapis.com/ajax/libs/jquery/'. $loadJQuery .'/jquery.min.js');
-
-	// without MooTools we must drop all but core.js
-	if ($loadMoo == true) {
-		$scriptDeclarations[] = 'if (window.jQuery){jQuery.noConflict();}';
-	}
+	$templateHelper->addScript('//ajax.googleapis.com/ajax/libs/jquery/'. $loadJQuery .'/jquery.min.js', null, 'if (window.jQuery){jQuery.noConflict();}');
 }
 
 // Load the MooTools JavaScript Library
 if ($loadMoo == true) {
-	JHtml::_('behavior.framework', $loadModal);
+	JHtml::_('behavior.framework');
 	if ($loadModal) {
 		// Enable modal pop-ups
 		JHtml::_('behavior.modal');
@@ -160,6 +155,11 @@ if ($columnGroupAlphaCount > 0) {
 	$columnLayout = array('main-beta');
 }
 
+// merge $columnLayout into a string
+$columnLayout[] = $fluidMedia;
+$columnLayout = array_unique($columnLayout);
+$columnLayout = trim(implode(' ', $columnLayout));
+
 /* --------------------------- Debug Positions ------------------------------- */
 // #TODO get positions from xml and transform names into variable counterparts
 if ($app->getCfg('debug') && $app->input->get('tpos', 0, 'int')) {
@@ -182,65 +182,41 @@ if (is_file(JPATH_THEMES .'/'. $this->template .'/favicon.png')) {
 }
 
 // Typography (protocol relative URLs)
-for ($i = 1; $i <= ConstructTemplateHelper::MAX_WEBFONTS; $i++) {
-	if ($googleWebFont[$i]) {
-		// Fix Google Web Font name for CSS
-		$googleWebFontFamily = str_replace(array('+',':bold',':italic'), ' ', $googleWebFont[$i]);
-		$this->addStyleSheet('//fonts.googleapis.com/css?family='.$googleWebFont[$i]);
-		$styleDeclarations[] = $googleWebFontTargets[$i]
-							. ' {font-family:'.$googleWebFontFamily.', serif;'
-							. (($googleWebFontSize[$i]>0) ? 'font-size:'.$googleWebFontSize[$i].';' : '')
-							. '}';
-	}
-}
+$templateHelper->webFonts();
 
 // Style sheets
 if ($ssiIncludes) {
-	if ($this->direction == 'rtl') {
-		$this->addStyleSheet($tmpl_url.'/css/construc2_rtl.styles', 'text/css');
-	} else {
-		$this->addStyleSheet($tmpl_url.'/css/construc2.styles', 'text/css');
-	}
+	$templateHelper->addLink($tmpl_url.'/css/construc2.styles?rtl=' . (int)($this->direction == 'rtl') . '&em=' .(int)$editMode );
 	if ($ssiTheme) {
-		$this->addStyleSheet($tmpl_url.'/themes/'.$ssiTheme, 'text/css');
+		$templateHelper->addLink($tmpl_url.'/themes/'.$ssiTheme .'?rtl=' . (int)($this->direction == 'rtl') . '&em=' .(int)$editMode);
 	}
 } else {
-	$this->addStyleSheet($tmpl_url.'/css/core/base.css', 'text/css');
-	$this->addStyleSheet($tmpl_url.'/css/core/oocss.css', 'text/css');
-	$this->addStyleSheet($tmpl_url.'/css/core/screen.css', 'text/css', 'screen');
+	$templateHelper->addLink($tmpl_url.'/css/core/base.css');
+	$templateHelper->addLink($tmpl_url.'/css/core/oocss.css');
+	$templateHelper->addLink($tmpl_url.'/css/core/screen.css');
 	if ($this->direction == 'rtl') {
-		$this->addStyleSheet($tmpl_url.'/css/core/rtl.css', 'text/css', 'screen');
+		$templateHelper->addLink($tmpl_url.'/css/core/rtl.css');
+	}
+	// cheap and all but smart -- do we need more ACL checks?
+	if (!$ssiIncludes && $editMode && JFactory::getUser()->authorise('core.edit')) {
+		$templateHelper->addLink($tmpl_url.'/css/core/edit-form.css', null, array('media'=>'screen'));
+	} else {
+		$templateHelper->addLink($tmpl_url.'/css/core/print.css', null, array('media'=>'print'));
+	}
+	if ($customStyleSheet) {
+		$templateHelper->addLink($tmpl_url.'/themes/'.$customStyleSheet);
 	}
 }
 
-// cheap and all but smart
-if ( in_array($app->get('input')->getCmd('layout'), array('edit','form'))
-	|| JFactory::getUser()->authorise('core.edit') /* do we need more ACL checks */
-	) {
-	$this->addStyleSheet($tmpl_url.'/css/core/edit-form.css', 'text/css', 'screen');
-} else {
-	$this->addStyleSheet($tmpl_url.'/css/core/print.css', 'text/css', 'print');
-}
-
-if ($customStyleSheet) {
-	$this->addStyleSheet($tmpl_url.'/themes/'.$customStyleSheet, 'text/css','all');
-}
 
 // Style sheet switcher
-if ($this->params->get('enableSwitcher')) {
-	$this->addHeadLink($tmpl_url.'/css/core/diagnostic.css', 'alternate stylesheet', 'rel', array('title'=>'diagnostic'));
-	$templateHelper->addHeadLink($tmpl_url.'/css/core/diagnostic.css', null, array('title'=>'diagnostic'), 'alternate stylesheet');
-
-	$this->addHeadLink($tmpl_url.'/css/core/wireframe.css', 'alternate stylesheet', 'rel', array('title'=>'wireframe'));
-	$templateHelper->addHeadLink($tmpl_url.'/css/core/wireframe.css', null, array('title'=>'wireframe'), 'alternate stylesheet');
-
-	$this->addScript($tmpl_url.'/js/styleswitch.js');
-	$templateHelper->addScript($tmpl_url.'/js/styleswitch.js');
+if ($enableSwitcher) {
+	$templateHelper->addLink($tmpl_url.'/css/core/diagnostic.css', null, array('title'=>'diagnostic'), 'alternate stylesheet');
+	$templateHelper->addScript($tmpl_url.'/js/styleswitch.min.js');
 }
 
 // Lea Verou's -prefix-free
 if ($this->params->get('prefixfree')) {
-	$this->addScript($tmpl_url.'/js/prefixfree.min.js');
 	$templateHelper->addScript($tmpl_url.'/js/prefixfree.min.js');
 }
 
@@ -256,26 +232,24 @@ if ((bool) $this->params->get('html5manifest')) {
 	$cache_manifest = '';
 }
 
-// JavaScript crap
-//	if ($loadMoo == true) {
-//		$scriptDeclarations[] = 'if (window.addEvent && window.SmoothScroll){window.addEvent("domready",function(){new SmoothScroll({duration:1200},window);});}';
-//	}
-
 /* ----------------------- Internet Explorer Fixes --------------------------- */
-// html5 shim
-if ($this->params->get('html5shim')) {
-	$this->addCustomTag('<!--[if lt IE 9]><script src="'.$tmpl_url.'/js/html5.js" type="text/javascript"></script><![endif]-->');
-	$templateHelper->addScript($tmpl_url.'/js/html5.js', 'lt IE 9');
-}
 
 // offer Chrome Frame for IE lt 9
 $templateHelper->addMetaData('X-UA-Compatible', 'IE=Edge,chrome=1', 'lt IE 9', true);
 if ($loadChromeFrame) {
-	$templateHelper->addScript('//ajax.googleapis.com/ajax/libs/chrome-frame/' . $loadChromeFrame . '/CFInstall.min.js',
+	$templateHelper->addScript('//ajax.googleapis.com/ajax/libs/chrome-frame/'. $loadChromeFrame .'/CFInstall.min.js',
 		'lt IE 9',
-		array('defer'=>true,'onload'=>'var e=document.createElement("DIV");if (e && CFInstall) {e.id="gcf_placeholder";e.style.zIndex="9999";CFInstall.check({ node: "gcf_placeholder" });}')
+		array('defer'=>true,'onload'=>'var e=document.createElement("DIV");if(e && CFInstall){e.id="gcf_placeholder";e.style.zIndex="9999";CFInstall.check({node:"gcf_placeholder"});}')
 		);
 }
+
+// html5 shim
+if ($this->params->get('html5shim')) {
+	$templateHelper->addScript($tmpl_url.'/js/html5.js', 'lt IE 9');
+}
+
+// JSON shim
+$scriptDeclarations[] = '(function(W,D,src) {if (W.JSON) return;var a=D.createElement("script");var b=D.getElementsByTagName("script")[0];a.src=src;a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b);})(window,document,"'. $tmpl_url .'/js/json2.min.js");';
 
 /* Preview Module Styles for use with index.php?tp=1 */
 if ($app->get('input')->getBool('tp') && JComponentHelper::getParams('com_templates')->get('template_positions_display') ) {
@@ -286,22 +260,12 @@ if ($app->get('input')->getBool('tp') && JComponentHelper::getParams('com_templa
 #left .mod-preview-wrapper, #left2 .mod-preview-wrapper, #right .mod-preview-wrapper, #right2 .mod-preview-wrapper{height:940px}';
 }
 
-$scriptDeclarations[] = "if (typeof window.JSON === 'undefined') {document.write('<script src=\"".$tmpl_url."/js/json2.min.js\"><\/script>');}";
-
 // add collected custom style declarations
 if ( count($styleDeclarations) ) {
-	$this->addStyleDeclaration(implode(PHP_EOL,$styleDeclarations));
 	$templateHelper->addStyleDeclaration($styleDeclarations);
 }
 
 // add collected custom script declarations
 if ( count($scriptDeclarations) ) {
-	$this->addScriptDeclaration(implode(PHP_EOL,$scriptDeclarations));
 	$templateHelper->addScriptDeclaration($scriptDeclarations);
 }
-
-// merge $columnLayout into a string
-$columnLayout[] = $fluidMedia;
-$columnLayout = array_unique($columnLayout);
-$columnLayout = implode(' ', $columnLayout);
-

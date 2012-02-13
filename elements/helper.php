@@ -21,6 +21,11 @@ function ConstructTemplateHelperCompileHead()
 	ConstructTemplateHelper::$helper->beforeCompileHead();
 }
 
+function ConstructTemplateHelperCompileBody()
+{
+	ConstructTemplateHelper::$helper->afterCompileBody();
+}
+
 /**
  * ConstructTemplateHelper
  *
@@ -38,10 +43,10 @@ class ConstructTemplateHelper
 
 	protected $layoutpath;
 
-	/** @var JDocumentHTML $tmpl template instance */
+	/** @var $tmpl JDocumentHTML template instance */
 	protected $tmpl;
 
-	/** @var ConstructTemplateHelper instance of self
+	/** @var $helper ConstructTemplateHelper instance of self
 	 * @see getInstance() */
 	public static $helper;
 
@@ -69,14 +74,19 @@ class ConstructTemplateHelper
 	/**
 	 * Template Helper constructor expects the template object as its argument.
 	 *
-	 * @param JDocument $template
+	 * @param JDocument $template an instance of JDocumentHtml for the most part
 	 */
 	public function __construct(JDocument $template)
 	{
 		$this->tmpl =& $template;
 		$this->layoutpath = JPATH_THEMES .'/'. $this->tmpl->template .'/layouts';
 
-		// Get the name of the extended template override group
+		// if the helper is instatiated within a template layout,
+		// JDocument params are not yet available and most of this will break
+		if (!$template->params) {
+			return $this;
+		}
+
 		$override = $template->params->get('customStyleSheet');
 		if ($override != '-1') {
 			$override = str_replace('.css', '', $override);
@@ -96,8 +106,14 @@ class ConstructTemplateHelper
 
 		// register event handler
 		JDispatcher::getInstance()->register('onBeforeCompileHead', 'ConstructTemplateHelperCompileHead');
+		JDispatcher::getInstance()->register('onAfterCompileBody', 'ConstructTemplateHelperCompileBody');
 	}
 
+	/**
+	 *
+	 * @param  JDocument $template an instance of JDocumentHtml for the most part
+	 * @return ConstructTemplateHelper
+	 */
 	public static function getInstance(JDocument $template)
 	{
 		if (!self::$helper) {
@@ -210,6 +226,10 @@ class ConstructTemplateHelper
 		if ($scope) {
 			$scope = trim($scope);
 			$scope = strtolower($scope);
+		}
+
+		if ($basename == 'form') {
+			return $this;
 		}
 
 		// could be either a category or article id
@@ -569,16 +589,22 @@ class ConstructTemplateHelper
 	 * @return ConstructTemplateHelper for fluid interface
 	 * @see renderHeadElements(), $links
 	 */
-	public function addHeadLink($href, $uagent=null, $attribs=array(), $rel='stylesheet')
+	public function addLink($href, $uagent=null, $attribs=array(), $rel='stylesheet')
 	{
+		$this->tmpl->addHeadLink($href, $rel, 'rel', $attribs);
+
 		$rel = strtolower($rel);
 		if ( strpos($rel, 'stylesheet') !== false ) {
 			$attribs['rel'] = $rel;
 		}
 
 		// make room
-		if (!isset(self::$head["{$uagent}"])) self::$head["{$uagent}"] = array();
-		settype(self::$head["{$uagent}"]['links'], 'array');
+		if (!isset(self::$head["{$uagent}"])) {
+			self::$head["{$uagent}"] = array();
+		}
+		else if (!isset(self::$head["{$uagent}"]['links'])) {
+			self::$head["{$uagent}"]['links'] = array();
+		}
 
 		// store
 		self::$head["{$uagent}"]['links'][$href] = JArrayHelper::toString($attribs);
@@ -595,9 +621,15 @@ class ConstructTemplateHelper
 	 */
 	public function addCustomTag($html, $uagent=null)
 	{
+		$this->tmpl->addCustomTag($html);
+
 		// make room
-		if (!isset(self::$head["{$uagent}"])) self::$head["{$uagent}"] = array();
-		settype(self::$head["{$uagent}"]['custom'], 'array');
+		if (!isset(self::$head["{$uagent}"])) {
+			self::$head["{$uagent}"] = array();
+		}
+		else if (!isset(self::$head["{$uagent}"]['custom'])) {
+			self::$head["{$uagent}"]['custom'] = array();
+		}
 
 		// store
 		self::$head["{$uagent}"]['custom'][] = $html;
@@ -616,9 +648,15 @@ class ConstructTemplateHelper
 	 */
 	public function addMetaData($name, $content, $uagent=null, $http_equiv=false)
 	{
+		$this->tmpl->setMetaData($name, $content, $http_equiv);
+
 		// make room
-		if (!isset(self::$head["{$uagent}"])) self::$head["{$uagent}"] = array();
-		settype(self::$head["{$uagent}"]['meta'], 'array');
+		if (!isset(self::$head["{$uagent}"])) {
+			self::$head["{$uagent}"] = array();
+		}
+		else if (!isset(self::$head["{$uagent}"]['meta'])) {
+			self::$head["{$uagent}"]['meta'] = array();
+		}
 
 		// store
 		$type = $http_equiv ? 'http_equiv' : 'name';
@@ -638,9 +676,15 @@ class ConstructTemplateHelper
 	 */
 	public function addScript($url, $uagent=null, $attribs=array())
 	{
+		$this->tmpl->addScript($url, 'text/javascript', isset($attribs['defer']), isset($attribs['async']));
+
 		// make room
-		if (!isset(self::$head["{$uagent}"])) self::$head["{$uagent}"] = array();
-		settype(self::$head["{$uagent}"]['scripts'], 'array');
+		if (!isset(self::$head["{$uagent}"])) {
+			self::$head["{$uagent}"] = array();
+		}
+		else if (!isset(self::$head["{$uagent}"]['scripts'])) {
+			self::$head["{$uagent}"]['scripts'] = array();
+		}
 
 		// store
 		self::$head["{$uagent}"]['scripts'][$url] = JArrayHelper::toString($attribs);
@@ -657,12 +701,18 @@ class ConstructTemplateHelper
 	 */
 	public function addScriptDeclaration($content, $uagent=null)
 	{
+		$this->tmpl->addScriptDeclaration( PHP_EOL.is_array($content) ? implode(PHP_EOL, $content) : $content );
+
 		// make room
-		if (!isset(self::$head["{$uagent}"])) self::$head["{$uagent}"] = array();
-		settype(self::$head["{$uagent}"]['script'], 'array');
+		if (!isset(self::$head["{$uagent}"])) {
+			self::$head["{$uagent}"] = array();
+		}
+		else if (!isset(self::$head["{$uagent}"]['script'])) {
+			self::$head["{$uagent}"]['script'] = array();
+		}
 
 		// store
-		self::$head["{$uagent}"]['script'][] = is_array($content) ? implode(PHP_EOL,$content) : $content;
+		self::$head["{$uagent}"]['script'][] = PHP_EOL.is_array($content) ? implode(PHP_EOL, $content) : $content;
 
 		return $this;
 	}
@@ -676,12 +726,18 @@ class ConstructTemplateHelper
 	 */
 	public function addStyleDeclaration($content, $uagent=null)
 	{
+		$this->tmpl->addStyleDeclaration( PHP_EOL.is_array($content) ? implode(PHP_EOL, $content) : $content );
+
 		// make room
-		if (!isset(self::$head["{$uagent}"])) self::$head["{$uagent}"] = array();
-		settype(self::$head["{$uagent}"]['style'], 'array');
+		if (!isset(self::$head["{$uagent}"])) {
+			self::$head["{$uagent}"] = array();
+		}
+		else if(!isset(self::$head["{$uagent}"]['style'])) {
+			self::$head["{$uagent}"]['style'] = array();
+		}
 
 		// store
-		self::$head["{$uagent}"]['style'][] = str_replace(PHP_EOL, ' ', (is_array($content) ? implode(PHP_EOL,$content) : $content) );
+		self::$head["{$uagent}"]['style'][] = PHP_EOL.str_replace(PHP_EOL, ' ', (is_array($content) ? implode(PHP_EOL, $content) : $content) );
 
 		return $this;
 	}
@@ -691,9 +747,9 @@ class ConstructTemplateHelper
 	 * Applies all supplemental, browser-specific head elements to the document.
 	 *
 	 * @return ConstructTemplateHelper for fluid interface
-	 * @see renderHeadElements(), sortScripts()
+	 * @see renderHead(), sortScripts()
 	 */
-	public function buildHeadElements()
+	public function buildHead()
 	{
 		$groups = array('meta'=>'', 'links'=>'', 'style'=>'', 'scripts'=>'', 'script'=>'', 'custom'=>'');
 
@@ -713,25 +769,23 @@ class ConstructTemplateHelper
 	}
 
 	/**
-	 * @see buildHeadElements(), sortScripts()
+	 * @return ConstructTemplateHelper for fluid interface
+	 * @see buildHead(), sortScripts()
 	 */
-	public function renderHeadElements()
+	public function renderHead()
 	{
-		$head   = $this->tmpl->getHeadData();
+		$head = $this->tmpl->getHeadData();
 
 		// cleanup non-standard stuff
-		if (!empty($head['metaTags']['standard']['rights']))
-		{
-			unset($head['metaTags']['standard']['copyright']);
-			// $head['metaTags']['standard']['rights'];
-		}
-
+		unset($head['metaTags']['standard']['copyright']);
 		unset($head['metaTags']['standard']['rights']);
 		unset($head['metaTags']['standard']['language']);
 		unset($head['metaTags']['standard']['title']);
 
 		// put everything back
 		$this->tmpl->setHeadData($head);
+
+		return $this;
 	}
 
 	/**
@@ -834,10 +888,15 @@ class ConstructTemplateHelper
 	public static function beforeCompileHead()
 	{
 		self::$helper
-			->buildHeadElements()
+			->buildHead()
 			->sortScripts()
-			->renderHeadElements()
+			->renderHead()
 			;
+	}
+
+	public static function afterCompileBody()
+	{
+
 	}
 
 	/**
@@ -871,6 +930,23 @@ class ConstructTemplateHelper
 		return str_replace('@X@', $elt, $html);
 	}
 
+	/**
+	 * Renders a bunch of IE wrapper divs within conditional comments covering
+	 * MSIE6 ($min) to MSIE9 ($max); IE10 dropped support for CC's.
+	 * This method should be called TWICE: after the opening <body> and before
+	 * the closing </body> tag respectively.
+	 *
+	 * The full blown opening output (1st call) looks like this:
+	 * <xmp>
+	 * <!--[if IE 6]><div class="msie ie6 ltie7 ltie8 ltie9 ltie10"><![endif]-->
+	 * <!--[if IE 7]><div class="msie ie7 ltie8 ltie9 ltie10"><![endif]-->
+	 * <!--[if IE 8]><div class="msie ie8 ltie9 ltie10"><![endif]-->
+	 * <!--[if IE 9]><div class="msie ie9 ltie10"><![endif]-->';
+	 * </xmp>
+	 *
+	 * @param int $min default 6, CC's start with MSIE 6
+	 * @param int $max default 6, CC's end with MSIE 9
+	 */
 	static function msieSwatter($min=6, $max=9)
 	{
 		static $flap = 0;
@@ -890,14 +966,48 @@ class ConstructTemplateHelper
 				$cc[] = '<!--[if IE '.$i.']><div class="msie ie'. $i . $ltie .'"><![endif]-->';
 			}
 			echo implode(PHP_EOL, $cc), PHP_EOL;
-/*
-echo '<!--[if IE 6]><div class="msie ie6 ltie7 ltie8 ltie9 ltie10"><![endif]-->
-<!--[if IE 7]><div class="msie ie7 ltie8 ltie9 ltie10"><![endif]-->
-<!--[if IE 8]><div class="msie ie8 ltie9 ltie10"><![endif]-->
-<!--[if IE 9]><div class="msie ie9 ltie10"><![endif]-->';
-*/
 		}
 		if ($flap % 2 == 0) echo '<!--[if IE]></div><![endif]-->', PHP_EOL;
+	}
+
+	/**
+	 * Generates CSS links for Google Webfonts and adds optional style selectors
+	 * to the document head -- which IMHO is actually a pretty bad idea unless you
+	 * toggle fonts like crazy on every single page. You'd better add those names
+	 * to your theme stylesheet which is why the default is false.
+	 *
+	 * @param  ool $addSelectors Adds selectors to the document head
+	 * @return ConstructTemplateHelper for fluid interface
+	 */
+	public function webFonts($addSelectors = false)
+	{
+		$params = $this->tmpl->params;
+
+		$googleWebFont = $googleWebFontSize = $googleWebFontTargets = array();
+		for ($i=1; $i <= self::MAX_WEBFONTS; $i++)
+		{
+			$font = $params->def('googleWebFont'.$i);
+			if ($font)
+			{
+				$fontSize    = trim($params->def('googleWebFontSize'.$i));
+				$fontTargets = trim($params->def('googleWebFontTargets'.$i));
+				if (empty($fontSize) || empty($fontTargets)) {
+					continue;
+				}
+
+				$this->addStyleSheet('//fonts.googleapis.com/css?family='.$font);
+				if ($addSelectors) {
+					// Fix Google Web Font name for CSS
+					$this->addStyleDeclarations(
+								$fontTargets
+								. '{font-family:'. str_replace(array('+',':bold',':italic'), ' ', $font) .', serif;'
+								. (($fontSize>0) ? 'font-size:'.$fontSize.';' : '')
+								. '}');
+				}
+			}
+		}
+
+		return $this;
 	}
 
 }
