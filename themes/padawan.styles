@@ -1,2 +1,8 @@
-/**! Theme styles */
+/**! Padawan Theme styles */
 <!--#include virtual="/templates/construc2/themes/padawan.css" -->
+<!--#if expr='${QUERY_STRING_UNESCAPED}=/em=1/' -->
+	/* no edit styles yet */
+<!--#endif-->
+<!--#if expr='${QUERY_STRING_UNESCAPED}=/rtl=1/' -->
+	/* no rtf styles yet */
+<!--#endif-->

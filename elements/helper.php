@@ -87,15 +87,21 @@ class ConstructTemplateHelper
 			return $this;
 		}
 
-		$override = $template->params->get('customStyleSheet');
-		if ($override != '-1') {
-			$override = str_replace('.css', '', $override);
-			$this->addLayout($override);
-		}
-
 		$this->addLayout('index');
-		$_request = new JInput();
-		$this->addLayout( $_request->getCmd('view') );
+
+		$theme = $template->params->get('customStyleSheet');
+		if ($theme != '-1') {
+			$theme = str_replace('.css', '', $theme);
+			if (is_file(JPATH_THEMES .'/'. $this->tmpl->template .'/themes/'. $theme . '.ini')) {
+				$overrides = @parse_ini_file(JPATH_THEMES .'/'. $this->tmpl->template .'/themes/'. $theme . '.ini', true);
+				if ($overrides && isset($overrides['layouts'])) {
+					foreach ($overrides['layouts'] as $override) {
+						list($basename, $scope) = explode(',', $override . ',');
+						$this->addLayout($basename, $scope);
+					}
+				}
+			}
+		}
 
 		// @see renderModules()
 		$chunks = array(
