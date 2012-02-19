@@ -32,15 +32,15 @@ $canEdit = (JFactory::getUser()->id == $this->data->id);
 	<!-- names -->
 	<dl class="account">
 		<dt class="name"><?php echo JText::_('COM_USERS_PROFILE_name_LABEL') ?></dt>
-		<dd class="name"><?php echo $this->form->getValue('name'); ?></dd>
+		<dd class="name"><?php echo $this->form->getValue('name') ?></dd>
 		<dt class="username"><?php echo JText::_('COM_USERS_PROFILE_username_LABEL') ?></dt>
-		<dd class="username"><?php echo $this->form->getValue('username'); ?></dd>
+		<dd class="username"><?php echo $this->form->getValue('username') ?></dd>
 	</dl>
 	<!-- dates -->
 	<dl class="register">
-		<dt class="regdate"><?php echo JText::_('COM_USERS_PROFILE_REGISTERED_DATE_LABEL'); ?></dt>
+		<dt class="regdate"><?php echo JText::_('COM_USERS_PROFILE_REGISTERED_DATE_LABEL') ?></dt>
 		<dd class="regdate"><?php echo JHtml::_('date', $this->data->registerDate) ?></dd>
-		<dt class="accdate"><?php echo JText::_('COM_USERS_PROFILE_LAST_VISITED_DATE_LABEL'); ?></dt>
+		<dt class="accdate"><?php echo JText::_('COM_USERS_PROFILE_LAST_VISITED_DATE_LABEL') ?></dt>
 		<dd class="accdate"><?php
 	// simple check for "empty" SQL date '0000-00-00 ...'
 	if ( (int) $this->data->lastvisitDate == 0) {
@@ -56,11 +56,11 @@ $canEdit = (JFactory::getUser()->id == $this->data->id);
 	<legend><?php echo JText::_('COM_USERS_PROFILE_COMM') ?></legend>
 	<dl class="comm">
 		<dt class="email1"><?php echo JText::_('COM_USERS_PROFILE_EMAIL1_LABEL') ?></dt>
-		<dd class="email1"><?php echo $this->form->getValue('email1'); ?></dd>
+		<dd class="email1"><?php echo $this->form->getValue('email1') ?></dd>
 		<dt class="phone"><?php echo JText::_('PLG_USER_PROFILE_FIELD_PHONE_LABEL') ?></dt>
-		<dd class="phone"><?php echo $this->form->getValue('phone', 'profile'); ?></dd>
+		<dd class="phone"><?php echo $this->form->getValue('phone', 'profile') ?></dd>
 		<dt class="website"><?php echo JText::_('PLG_USER_PROFILE_FIELD_WEB_SITE_LABEL') ?></dt>
-		<dd class="website"><?php echo $this->form->getValue('website', 'profile'); ?></dd>
+		<dd class="website"><?php echo $this->form->getValue('website', 'profile') ?></dd>
 	</dl>
 	</fieldset>
 
@@ -72,22 +72,22 @@ $canEdit = (JFactory::getUser()->id == $this->data->id);
 */ ?>
 	<dl class="address">
 		<dt class="addr1"><?php echo JText::_('PLG_USER_PROFILE_FIELD_ADDRESS1_LABEL') ?></dt>
-		<dd class="addr1"><?php echo $this->form->getValue('address1', 'profile'); ?></dd>
+		<dd class="addr1"><?php echo $this->form->getValue('address1', 'profile') ?></dd>
 		<dt class="addr2"><?php echo JText::_('PLG_USER_PROFILE_FIELD_ADDRESS2_LABEL')  ?></dt>
-		<dd class="addr2"><?php echo $this->form->getValue('address2', 'profile'); ?></dd>
+		<dd class="addr2"><?php echo $this->form->getValue('address2', 'profile') ?></dd>
 <? /*
 		<dt class="pcode"><?php echo JText::_('PLG_USER_PROFILE_FIELD_POSTAL_CODE_LABEL') ?></dt>
-		<dd class="pcode"><?php echo $this->form->getValue('postal_code', 'profile'); ?></dd>
+		<dd class="pcode"><?php echo $this->form->getValue('postal_code', 'profile') ?></dd>
 		<dt class="city"><?php echo JText::_('PLG_USER_PROFILE_FIELD_CITY_LABEL') ?></dt>
-		<dd class="city"><?php echo $this->form->getValue('city', 'profile'); ?></dd>
+		<dd class="city"><?php echo $this->form->getValue('city', 'profile') ?></dd>
 */ ?>
 		<dt class="city"><?php echo JText::_('PLG_USER_PROFILE_FIELD_CITY_ZIP_DESC') ?></dt>
-		<dd class="city"><?php echo $this->form->getValue('postal_code', 'profile') ,' ', $this->form->getValue('city', 'profile'); ?></dd>
+		<dd class="city"><?php echo $this->form->getValue('postal_code', 'profile') ,' ', $this->form->getValue('city', 'profile') ?></dd>
 
 		<dt class="region"><?php echo JText::_('PLG_USER_PROFILE_FIELD_REGION_LABEL') ?></dt>
-		<dd class="region"><?php echo $this->form->getValue('region', 'profile'); ?></dd>
+		<dd class="region"><?php echo $this->form->getValue('region', 'profile') ?></dd>
 		<dt class="country"><?php echo JText::_('PLG_USER_PROFILE_FIELD_COUNTRY_LABEL') ?></dt>
-		<dd class="country"><?php echo $this->form->getValue('country', 'profile'); ?></dd>
+		<dd class="country"><?php echo $this->form->getValue('country', 'profile') ?></dd>
 	</dl>
 	</fieldset>
 
@@ -102,7 +102,7 @@ $canEdit = (JFactory::getUser()->id == $this->data->id);
 		<dt class="dob"><?php echo JText::_('PLG_USER_PROFILE_FIELD_DOB_LABEL') ?></dt>
 		<dd class="dob"><?php echo JHtml::_('date', $this->form->getValue('dob', 'profile')) ?></dd>
 		<dt class="me"><?php echo JText::_('PLG_USER_PROFILE_FIELD_ABOUT_ME_LABEL') ?></dt>
-		<dd class="me"><?php echo $this->form->getValue('aboutme', 'profile'); ?></dd>
+		<dd class="me"><?php echo $this->form->getValue('aboutme', 'profile') ?></dd>
 	</dl>
 	</fieldset>
 

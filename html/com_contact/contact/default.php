@@ -31,7 +31,7 @@ if ($this->params->get('show_contact_category') == 'show_no_link') { ?>
 
 if ($this->params->get('show_contact_category') == 'show_with_link') {
 	$contactLink = ContactHelperRoute::getCategoryRoute($this->contact->catid); ?>
-	<h3><span class="contact-category"><a href="<?php echo $contactLink; ?>"><?php
+	<h3><span class="contact-category"><a href="<?php echo $contactLink ?>"><?php
 	echo $this->escape($this->contact->category_title);
 	?></a></span></h3>
 <?php
@@ -57,20 +57,20 @@ else {
 }
 
 if ($this->contact->image && $this->params->get('show_image')) { ?>
-	<figure class="contact-image"><?php echo JHtml::_('image',$this->contact->image, JText::_('COM_CONTACT_IMAGE_DETAILS'), array('align' => 'middle')); ?></figure>
+	<figure class="contact-image"><?php echo JHtml::_('image',$this->contact->image, JText::_('COM_CONTACT_IMAGE_DETAILS'), array('align' => 'middle')) ?></figure>
 <?php
 }
 
 if ($this->contact->con_position && $this->params->get('show_position')) { ?>
-	<p class="contact-position"><?php echo $this->contact->con_position; ?></p>
+	<p class="contact-position"><?php echo $this->contact->con_position ?></p>
 <?php
 }
 
 echo $this->loadTemplate('address');
 
 if ($this->params->get('allow_vcard')) { ?>
-	<p class="contact-vcard"><?php echo JText::_('COM_CONTACT_DOWNLOAD_INFORMATION_AS'); ?>
-	<a href="<?php echo JRoute::_('index.php?option=com_contact&amp;view=contact&amp;id='.$this->contact->id . '&amp;format=vcf'); ?>"><?php
+	<p class="contact-vcard"><?php echo JText::_('COM_CONTACT_DOWNLOAD_INFORMATION_AS') ?>
+	<a href="<?php echo JRoute::_('index.php?option=com_contact&amp;view=contact&amp;id='.$this->contact->id . '&amp;format=vcf') ?>"><?php
 		echo JText::_('COM_CONTACT_VCARD');?></a></p>
 <?php
 }
@@ -125,7 +125,7 @@ if ($this->contact->misc && $this->params->get('show_misc'))
 		echo '<h3>'. JText::_('COM_CONTACT_OTHER_INFORMATION').'</h3>';
 	}
 ?>
-	<div class="contact-miscinfo"><div class="<?php echo $this->params->get('marker_class') ?>"><?php echo $this->params->get('marker_misc') ?></div>
+	<div class="contact-miscinfo"><div class="<?php echo $this->params->get('marker_class') ?>"><?php echo $this->params->get('marker_misc') ?></div></div>
 	<div class="contact-misc"><?php echo $this->contact->misc ?></div>
 
 </article><?php
@@ -133,7 +133,3 @@ if ($this->contact->misc && $this->params->get('show_misc'))
 
 // close presentation style elements
 if ($pstyle != 'plain') { echo JHtml::_($pstyle.'.end'); } ?>
-
-</div>
-<xmp><? print_r($this->contact) ?></xmp>
-<xmp><? print_r($this->params) ?></xmp>
