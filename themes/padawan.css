@@ -6,7 +6,6 @@
 @import url(padawan_light.css);
 
 body {min-width:900px}
-body.print {min-width:auto}
 
 /* template param override (#body-container,#header-above 100%) */
 @media screen and (max-width:1039px) {body #body-container, body #header-above, .page-foot {max-width:94%}}
@@ -28,7 +27,7 @@ h1,h2,h3,h4,h5,h6	{line-height:normal}
 
 h1,h2,h3,h4,h5,h6	,
 .mainmenu			,
-.breadcrumbs		,		
+.breadcrumbs		,
 menu.categories		{font-family:'Ubuntu Condensed','Trebuchet MS',Arial,sans-serif;text-rendering:optimizelegibility}
 
 .mainmenu			,
@@ -36,14 +35,14 @@ menu.categories		{font-family:'Ubuntu Condensed','Trebuchet MS',Arial,sans-serif
 menu.categories		{font-size-adjust:.52}
 
 p {-webkit-hyphens:auto;-moz-hyphens:auto;hyphens:auto}
-p:only-child {margin-bottom:0}
+p:only-child {margin-bottom:0;text-indent:0}
 
 /* =column layout [[20|60]20] */
 #body-container	,
 header.above	,
 header.below	{margin:0 auto}
 
-@media screen {	
+@media screen {
 	.content-main	{width:auto}
 	.column-group 	{width:25%}
 	.group-alpha	{float:left}
@@ -84,7 +83,17 @@ header.below	{margin:0 auto}
 .items-row		,
 .items-more		{}
 
-.introtext,.fulltext {margin-right:20px}
+.introtext, .fulltext {margin-right:20px}
+
+#content:target .fulltext p:first-of-type {
+	-moz-animation: moz-readmore 3s;
+	-webkit-animation: webkit-readmore 3s;
+}
+
+@-moz-keyframes moz-readmore {
+	from, 100% { background-color:#fff; }
+	50% { background-color: floralwhite; }
+}
 
 .unit > article {margin-right:5px}
 .lastUnit > article {margin-left:5px;margin-right:0}
@@ -100,13 +109,12 @@ header.actions .title {margin-right:36px}
 #article-index li:last-child {border-top:1px solid #CCC}
 
 /*
- * call-outs and <aside>s flush right within their containing box + reveal content on :hover 
+ * call-outs and <aside>s flush right within their containing box + reveal content on :hover
  */
-aside.article     {float:right;width:auto;height:2em;margin-right:-10px;border:1px solid #888;border-width:0 10px 0 0}
-aside.article > * {display:none;position:absolute;width:220px;padding:.2em;min-height:1.6em;right:0;z-index:2707}
+aside.article     {position:absolute;right:-10px;top:-10px;width:auto;height:2em;border-right:10px solid #888;}
+aside.article > * {display:none;position:absolute;width:15em;padding:.2em;min-height:1.6em;right:0;z-index:2707}
 
-aside.article:hover		{}
-aside.article:hover > * {display:block;border:1px solid #CCC;background:#FEFEFE}
+aside.article:hover > * {display:block;outline:1px solid #CCC;background:#FEFEFE}
 	.content_rating		,
 	.content_vote		{cursor:default}
 	.content_rating	img	,
@@ -136,12 +144,12 @@ summary::-webkit-details-marker {font-size:1.2em}
  .article-info .published	,
  .article-info .modified	{display:inline-block}
  .article-info dt.create	{display:inline}
- 
+
 .article-info .create:before {content:' ';display:block;}
 
 /* =category page contents */
 .category-desc {font-size:100%}
-.category-desc blockquote {padding:1ex;margin:0 3m;font:normal 2.25em/1 'Kristi',cursive;text-shadow:0px 0px 3px #888;text-align:center;text-rendering:optimizelegibility}
+.category-desc blockquote {padding:1ex;margin:0 3em;font:normal 2.25em/1 'Kristi',cursive;text-shadow:0px 0px 3px #888;text-align:center;text-rendering:optimizelegibility}
 .category-desc blockquote {font-size-adjust:0.5; font-stretch:expanded} /* FF */
 blockquote:after {content:attr(title);display:block;margin-top:1em;text-align:right;clear:both;font:normal 12px/1 "Trebuchet MS",Arial,Helvetica,sans-serif}
 
@@ -203,9 +211,14 @@ li.mi img		{border:none}
 .breadcrumbs a.mi	,
 .breadcrumbs .active{padding:0.25ex 0.6em}
 
-.actionsmenu 		{position:absolute;right:0;top:0}
-.actionsmenu li.mi	{padding:0.2ex}
+.actionsmenu 		{position:absolute;padding-top:0;right:-11px;top:2em;width:24px;opacity:.4}
+.actionsmenu:hover	{box-shadow: -4px 0 4px #DDDDDD; border:1px solid #fff;border-radius: 5px 0 0 5px;opacity:1}
+.actionsmenu li.mi	{padding:0.2ex;display:inline-block}
 .actionsmenu .mi .mi img {padding:2px;margin:0}
+
+.skiplinks a.mi		{text-decoration: underline}
+.skiplinks .cat-title:before {content:'\A0('}
+.skiplinks .cat-title:after  {content:')'}
 
 .pagenav			{}
 .pagenav li.mi		{}
@@ -232,25 +245,26 @@ menu.categories .submenu		{padding-left:.6em}
 
 .mod-custom div.inner	{background:none;outline:none}
 
-
 /*
  * =branding - category and page styles
  */
 
-article .introtext p[class],
-article .introtext blockquote p {text-indent:0}
-article .introtext p:first-of-type {text-indent:0}
-article .introtext :not(p:first-child) {}
+.introtext p:not(:first-of-type),
+.fulltext > p {text-indent:1.6ex}
+
+.gedichte .introtext p,
+.bestellungen .introtext p,
+article .introtext blockquote p,
+article .introtext p:first-of-type,
+article .introtext p[class] {text-indent:0}
 
 .schriftstellerei article p:first-of-type img {float:right;margin-left:10px;max-width:40%;position:relative;z-index:10}
 .schriftstellerei article ~ img:first-child {margin:0 0 5px 1em}
-.schriftstellerei article p {text-indent:1.6ex}
-.schriftstellerei .gedichte p {text-indent:0}
 
 /* =box drop shadows CSS3 */
 
 nav.pages,
- .mainnavi, 
+ .mainnavi,
  .breadcrumbs,
  .pagination li.mi:hover,
  .dslt		{-webkit-box-shadow:0 0 3px #CCC;-moz-box-shadow:0 0 3px #CCC;box-shadow:0 0 3px #CCC;outline:none}
