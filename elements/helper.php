@@ -3,13 +3,11 @@
  * @package		Templates
  * @subpackage  Construc2
  * @author		WebMechanic http://webmechanic.biz
- * @copyright	(C) 2011 WebMechanic. All rights reserved.
+ * @copyright	(C) 2011-2012 WebMechanic. All rights reserved.
  * @copyright	Copyright (C) 2010, 2011 Matt Thomas | Joomla Engineering. All rights reserved.
  * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
 defined('_JEXEC') or die;
-
-jimport('joomla.filesystem.file');
 
 /**
  * Proxy for the onBeforeCompileHead event because the Dispatcher only
@@ -90,11 +88,14 @@ class ConstructTemplateHelper
 		$this->addLayout('index');
 
 		$theme = $template->params->get('customStyleSheet');
-		if ($theme != '-1') {
+		if ($theme != '-1')
+		{
 			$theme = str_replace('.css', '', $theme);
-			if (is_file(JPATH_THEMES .'/'. $this->tmpl->template .'/themes/'. $theme . '.ini')) {
+			if (is_file(JPATH_THEMES .'/'. $this->tmpl->template .'/themes/'. $theme . '.ini'))
+			{
 				$overrides = @parse_ini_file(JPATH_THEMES .'/'. $this->tmpl->template .'/themes/'. $theme . '.ini', true);
-				if ($overrides && isset($overrides['layouts'])) {
+				if ($overrides && isset($overrides['layouts']))
+				{
 					foreach ($overrides['layouts'] as $override) {
 						list($basename, $scope) = explode(',', $override . ',');
 						$this->addLayout($basename, $scope);
@@ -125,6 +126,7 @@ class ConstructTemplateHelper
 		if (!self::$helper) {
 			self::$helper = new ConstructTemplateHelper($template);
 		}
+
 		return self::$helper;
 	}
 
@@ -296,8 +298,8 @@ class ConstructTemplateHelper
 	 * current menu item or request and allow for granular HTML markup specific
 	 * for a given page.
 	 *
-	 * To introduce a new layout populate you apply the conditions into a
-	 * main template bootstrap, like index.php, component,php etc.
+	 * To introduce a new page layout populate you apply the conditions into
+	 * a main template bootstrap, like index.php, component,php etc.
 	 * (the .php suffix is added automatically).
 	 * <code>
 	 * $helper->addLayout('index')
@@ -902,7 +904,6 @@ class ConstructTemplateHelper
 
 	public static function afterCompileBody()
 	{
-
 	}
 
 	/**

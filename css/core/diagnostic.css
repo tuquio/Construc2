@@ -1,23 +1,8 @@
-body {background:#999}
-#body-container {background:#CCC}
-.content-main {background:#990}
-.group-alpha, .group-beta {background:#9F0}
-.group-alpha .moduletable, 
-.group-beta .moduletable,
-.page-foot .moduletable{background:#9C3}
-#content-above-1 {background:#C00}
-#content-above-2 {background:#C60}
-#content-above-3 {background:#C90}
-#content-above-4 {background:#CC0}
-.gutter {background:#FF0}
-#access,#diagnostics,#style-switch {background:#69F}
-#breadcrumbs {background:#963}
-.content-container {background:#060}
-#bottom-user-modules {background:#090}
-#top-user-modules {background:#0C0}
-#branding {background:#066}
-#header h1 a:link, #header h1 a:visited, #header h1 a:hover{background:#063}
-.page-foot {background:#096}
-.page-head {background:#F90}
-#nav {background:#690}
-#top-module {background:#63C}
+/* äöü - just checking */
+/*!
+ * diagnostic.css
+ * @version 0.1.0
+ * @license DWTF
+ */
+#styleswitcher li.switcher {display:inline-block;cursor:pointer}
+/* .eof */
