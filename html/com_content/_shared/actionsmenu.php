@@ -1,4 +1,4 @@
-<?php
+<?php defined('_JEXEC') or die;
 /**
  * Print, Mail, and Edit icons for com_content.
  *
@@ -8,10 +8,12 @@
  * @copyright   (C) 2011 WebMechanic
  * @license     GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
+JHtml::addIncludePath(JPATH_COMPONENT_SITE .'/helpers');
+
 $isep    = JText::_('JGLOBAL_ICON_SEP');
 $actions = array(
 		array('<a ', '<img', '</a>'),
-		array('<a tabindex="-1"', '<span class="mi"><img', '</span></a>')
+		array('<a tabindex="-1" ', '<span class="mi"><img ', '</span></a>')
 	);
 ?>
 	<ul class="menu hmenu actionsmenu">
