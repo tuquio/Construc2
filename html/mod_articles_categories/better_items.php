@@ -4,50 +4,52 @@
 defined('_JEXEC') or die;
 
 $temp = $list;
-foreach ($list as $item) :
-
+foreach ($list as $item)
+{
 	$levelup = $item->level - $startLevel - 1;
 
 	$css     = array('mi');
 	$css[]   = $item->level < 1 ? 'parent' : 'level-'. ($item->level - 1);
 
-	$active  = 0;
-	$current = 0;
 	$route   = ContentHelperRoute::getCategoryRoute($item->id);
-
-	if ($_SERVER['REQUEST_URI'] == JRoute::_($route)) {
+	$href    = JRoute::_($route);
+	if ($_SERVER['REQUEST_URI'] == $href) {
 		parse_str(parse_url($route, PHP_URL_QUERY), $query);
-		$css[]  = 'active';
-		$active = $query['id'];
+		$css[] = 'active';
 	}
 
 	// is this node a prent of the active category?
 	if ( isset($tree['pids'][$item->id][$acid]) ) {
-		$css[]   = 'current';
-		$current = $item->id;
+		$css[] = 'current';
 	}
+
+	// can we use extended aliases?
+	if ($xtdalias) {
+		$css[] = $xtdalias = ContentLayoutHelper::getCssAlias($item);
+	}
+
 	// all classes for the list item
 	$licss = implode(' ', $css);
 
 ?><li id="catid-<?php echo $item->id ?>" class="<?php echo $licss ?>">
-<a href="<?php echo JRoute::_($route) ?>" class="li"><span class="li <?php echo 'H'. ($item_heading + $levelup) ?>"><?php echo $item->title ?></span></a>
+<a href="<?php echo $href ?>" class="li"><span class="li <?php echo 'H'. ($item_heading + $levelup) ?>"><?php echo $item->title ?></span></a>
 <?php
 if ($params->get('show_description', 0)) {
 	echo JHtml::_('content.prepare', $item->description, $item->getParams());
 }
 
-if ($params->get('show_children', 0) && (($params->get('maxlevel', 0) == 0) || ($params->get('maxlevel') >= ($item->level - $startLevel))) && count($item->getChildren()))
+if ($show_children && ($max_level == 0 || $max_level >= ($item->level - $startLevel)) && count($item->getChildren()))
 {
 	$list = $item->getChildren();
-
 	// submenu classes
-	$css   = array('submenu');
+	$css   = array('submenu', $xtdalias);
 	$css[] = $item->level < 1 ? 'leaf' : 'level-'. ($item->level - 1);
-	echo '<menu class="', implode(' ', $css) ,'">';
+	echo '<menu class="', trim(implode(' ', $css)) ,'">';
 	require __FILE__;
 	echo '</menu>';
 }?>
 </li>
 <?php
-endforeach;
+}
+
 $list = $temp;
