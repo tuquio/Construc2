@@ -52,8 +52,8 @@ $editMode			= in_array($app->input->get('layout'), array('edit','form'));
 
 // all things different in edit mode
 if ($editMode) {
-	$fullWidth  = $loadMoo = true;
-	$loadJQuery = $loadChromeFrame = $enableSwitcher = $showDiagnostics = $showDateContainer = false;
+	$fullWidth = $loadMoo = true;
+	$loadChromeFrame = $enableSwitcher = $showDiagnostics = $showDateContainer = false;
 }
 
 // 'filelist' params return -1 for none. make FALSE
@@ -212,7 +212,8 @@ if ($ssiIncludes) {
 // Style sheet switcher
 if ($enableSwitcher) {
 	$templateHelper->addLink($tmpl_url.'/css/core/diagnostic.css', null, array('title'=>'diagnostic'), 'alternate stylesheet');
-	$templateHelper->addScript($tmpl_url.'/js/styleswitch.min.js');
+	// $templateHelper->addScript($tmpl_url.'/js/styleswitch.min.js');
+	$templateHelper->addScript($tmpl_url.'/js/src/styleswitch.js');
 }
 
 // Lea Verou's -prefix-free

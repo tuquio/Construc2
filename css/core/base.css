@@ -6,7 +6,7 @@
  * @credits E. Meyer, Yahoo!, N. Sullivan, D. Edwards, CSS-WG, W3C, and the Interwebs,
  * feat. normalize.css - http://github.com/necolas/normalize.css
  * @license DWTF
-*/
+ */
 html{font-size:13px;overflow-y:scroll;-webkit-text-size-adjust:55%;-ms-text-size-adjust:55%;font-size-adjust:0.55}
 * {-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box}
 

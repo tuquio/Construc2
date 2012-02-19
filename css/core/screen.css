@@ -18,8 +18,8 @@ h6,.H6 {font-size:0.8em}
 h3+ul, h3+ol {margin-top:-.3em}
 
 table.category {border:1px solid #000}
-.category thead {background:#333}
-.category thead a {color:#fff}
+.category thead {background:#333;color:#fff}
+.category thead a {color:inherit}
 .category tbody tr:hover {background:#dddddd}
 .category td {padding:5px}
 .cat-list-row0 {background:#eeeeee}

@@ -107,24 +107,6 @@
 				</field>
 			</fieldset>
 
-<!-- EXPERI-MENTAL NOTE (high impact probability on logic.php and index.php)
-	<fieldset name="modulegroups" description="TPL_CONSTRUC2_MODULEGROUPS">
-		<field name="mod_header_above"  type="text" default="6" label="TPL_CONSTRUC2_MODULES_HEADER_ABOVE"  description="TPL_CONSTRUC2_MODULES_GROUPS_DESC" size="5" />
-		<field name="mod_header_below"  type="text" default="6" label="TPL_CONSTRUC2_MODULES_HEADER_BELOW"  description="TPL_CONSTRUC2_MODULES_GROUPS_DESC" size="5" />
-		<field name="mod_nav_below"     type="text" default="6" label="TPL_CONSTRUC2_MODULES_HEADER_ABOVE"  description="TPL_CONSTRUC2_MODULES_GROUPS_DESC" size="5" />
-		<field name="mod_content_above" type="text" default="6" label="TPL_CONSTRUC2_MODULES_NAV_BELOW"     description="TPL_CONSTRUC2_MODULES_GROUPS_DESC" size="5" />
-		<field name="mod_content_below" type="text" default="6" label="TPL_CONSTRUC2_MODULES_CONTENT_ABOVE" description="TPL_CONSTRUC2_MODULES_GROUPS_DESC" size="5" />
-		<field name="mod_footer_above"  type="text" default="6" label="TPL_CONSTRUC2_MODULES_CONTENT_BELOW" description="TPL_CONSTRUC2_MODULES_GROUPS_DESC" size="5" />
-		<field name="mod_alpha_column" type="checkboxes" default="1" label="TPL_CONSTRUC2_MODULES_ALPHA_COLUMN" description="TPL_CONSTRUC2_MODULES_GROUPS_DESC">
-			<option value="1">1</option>
-			<option value="2">2</option>
-		</field>
-		<field name="mod_beta_column" type="checkboxes" default="1" label="TPL_CONSTRUC2_MODULES_BETA_COLUMN" description="TPL_CONSTRUC2_MODULES_GROUPS_DESC">
-			<option value="1">1</option>
-			<option value="2">2</option>
-		</field>
-	</fieldset>
- -->
 			<fieldset name="compat" description="TPL_CONSTRUC2_COMPAT_DESC">
 				<field name="html5manifest" type="radio" default="0" label="TPL_CONSTRUC2_ENABLE_HTML5MANIFEST_LABEL" description="TPL_CONSTRUC2_ENABLE_HTML5MANIFEST_DESC">
 					<option value="1">JYes</option>
@@ -159,6 +141,24 @@
 				<field name="googleWebFontSize3" type="text" default="" label="TPL_CONSTRUC2_GOOGLE_WEB_FONT_SIZE_LABEL" description="TPL_CONSTRUC2_GOOGLE_WEB_FONT_SIZE_DESC" size="5" />
 			</fieldset>
 
+<!-- EXPERI-MENTAL NOTE (high impact probability on logic.php and index.php)
+			<fieldset name="modulegroups" description="TPL_CONSTRUC2_MODULEGROUPS">
+				<field name="mod_header_above"  type="text" default="6" label="TPL_CONSTRUC2_MODULES_HEADER_ABOVE"  description="TPL_CONSTRUC2_MODULES_GROUPS_DESC" size="5" />
+				<field name="mod_header_below"  type="text" default="6" label="TPL_CONSTRUC2_MODULES_HEADER_BELOW"  description="TPL_CONSTRUC2_MODULES_GROUPS_DESC" size="5" />
+				<field name="mod_nav_below"     type="text" default="6" label="TPL_CONSTRUC2_MODULES_HEADER_ABOVE"  description="TPL_CONSTRUC2_MODULES_GROUPS_DESC" size="5" />
+				<field name="mod_content_above" type="text" default="6" label="TPL_CONSTRUC2_MODULES_NAV_BELOW"     description="TPL_CONSTRUC2_MODULES_GROUPS_DESC" size="5" />
+				<field name="mod_content_below" type="text" default="6" label="TPL_CONSTRUC2_MODULES_CONTENT_ABOVE" description="TPL_CONSTRUC2_MODULES_GROUPS_DESC" size="5" />
+				<field name="mod_footer_above"  type="text" default="6" label="TPL_CONSTRUC2_MODULES_CONTENT_BELOW" description="TPL_CONSTRUC2_MODULES_GROUPS_DESC" size="5" />
+				<field name="mod_alpha_column" type="checkboxes" default="1" label="TPL_CONSTRUC2_MODULES_ALPHA_COLUMN" description="TPL_CONSTRUC2_MODULES_GROUPS_DESC">
+					<option value="1">1</option>
+					<option value="2">2</option>
+				</field>
+				<field name="mod_beta_column" type="checkboxes" default="1" label="TPL_CONSTRUC2_MODULES_BETA_COLUMN" description="TPL_CONSTRUC2_MODULES_GROUPS_DESC">
+					<option value="1">1</option>
+					<option value="2">2</option>
+				</field>
+			</fieldset>
+ -->
 		</fields>
 	</config>
 
