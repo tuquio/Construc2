@@ -55,7 +55,7 @@ $tosLink = ($tosLink)
 		<?php endforeach; ?>
 		</dl>
 		<p><?php echo JText::_('Marked fields are required') ?></p>
-		<p class="tos-link"><?php echo $tosLink; ?></p>
+		<p class="tos-link"><?php echo $tosLink ?></p>
 		<p class="tos"><?php echo $this->form->getField('tos', 'profile')->input ?></p>
 		</fieldset>
 		<div>
