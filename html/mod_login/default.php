@@ -28,12 +28,12 @@ defined('_JEXEC') or die;
 <?php } ?>
 
 	<div class="line button">
-	<button type="submit" class="button"><span><?php echo JText::_('JLOGOUT'); ?></span></button>
+	<button type="submit" class="button"><span><?php echo JText::_('JLOGOUT') ?></span></button>
 	</div>
 
 	<input type="hidden" name="option" value="com_users" />
 	<input type="hidden" name="task" value="user.logout" />
-	<input type="hidden" name="return" value="<?php echo $return; ?>" />
+	<input type="hidden" name="return" value="<?php echo $return ?>" />
 	<?php echo JHtml::_('form.token'); ?>
 </form>
 <?php
@@ -41,42 +41,42 @@ defined('_JEXEC') or die;
 	$cuparams = JComponentHelper::getParams('com_users');
 ?>
 <form class="form-validate form-login" id="form-login" action="<?php echo JRoute::_('index.php', true, $params->get('usesecure')) ?>" method="post">
-<?php if ( ($ptext = $params->get('pretext')) ) : ?><div class="line description pre-text"><?php echo $ptext ?></div><? endif; ?>
+<?php if ( ($ptext = $params->get('pretext')) ) { ?><div class="line description pre-text"><?php echo $ptext ?></div><?php } ?>
 	<fieldset class="login credentials">
 		<dl class="credentials">
 			<dt class="username"><label for="mod-username" class="required"><?php echo JText::_('MOD_LOGIN_VALUE_USERNAME') ?></label></dt>
 			<dd class="username"><input id="mod-username" type="text" name="username" class="validate-username required" required="required" aria-required="true" /></dd>
 			<dt class="password"><label for="mod-password" class="required"><?php echo JText::_('JGLOBAL_PASSWORD') ?></label></dt>
 			<dd class="password"><input id="mod-password" type="password" name="password" class="validate-password required" required="required" aria-required="true" /></dd>
-	<?php if (JPluginHelper::isEnabled('system', 'remember')) : ?>
+	<?php if (JPluginHelper::isEnabled('system', 'remember')) { ?>
 			<dt></dt><dd class="remember">
 				<label for="mod-remember">
 				<input id="mod-remember" type="checkbox" name="remember" value="yes" />
 				<span class="lbl"><?php echo JText::_('MOD_LOGIN_REMEMBER_ME') ?></span>
 				</label>
 			</dd>
-	<?php endif; ?>
+	<?php } ?>
 		</dl>
 	</fieldset>
 
 	<div class="line button">
-	<button type="submit" class="validate"><span><?php echo JText::_('JLOGIN'); ?></span></button>
+	<button type="submit" class="validate"><span><?php echo JText::_('JLOGIN') ?></span></button>
 	</div>
 
 	<menu class="menu loginmenu">
-	<li class="mi reset"><a class="mi" href="<?php echo JRoute::_('index.php?option=com_users&view=reset'); ?>"><span class="mi"><?php echo JText::_('MOD_LOGIN_FORGOT_YOUR_PASSWORD'); ?></span></a></li>
-	<li class="mi remind"><a class="mi" href="<?php echo JRoute::_('index.php?option=com_users&view=remind'); ?>"><span class="mi"><?php echo JText::_('MOD_LOGIN_FORGOT_YOUR_USERNAME'); ?></span></a></li>
-	<?php if ($cuparams->get('allowUserRegistration')) :
-	?><li class="mi register"><a class="mi" href="<?php echo JRoute::_('index.php?option=com_users&view=registration'); ?>"><span class="mi"><?php echo JText::_('MOD_LOGIN_REGISTER'); ?></span></a></li>
-	<?php endif; ?>
+	<li class="mi reset"><a class="mi" href="<?php echo JRoute::_('index.php?option=com_users&view=reset') ?>"><span class="mi"><?php echo JText::_('MOD_LOGIN_FORGOT_YOUR_PASSWORD') ?></span></a></li>
+	<li class="mi remind"><a class="mi" href="<?php echo JRoute::_('index.php?option=com_users&view=remind') ?>"><span class="mi"><?php echo JText::_('MOD_LOGIN_FORGOT_YOUR_USERNAME') ?></span></a></li>
+	<?php if ($cuparams->get('allowUserRegistration')) {
+	?><li class="mi register"><a class="mi" href="<?php echo JRoute::_('index.php?option=com_users&view=registration') ?>"><span class="mi"><?php echo JText::_('MOD_LOGIN_REGISTER') ?></span></a></li>
+	<?php } ?>
 	</menu>
 
-<?php if ( ($ptext = $params->get('posttext')) ) : ?><div class="line description post-text"><?php echo $ptext ?></div><? endif; ?>
+<?php if ( ($ptext = $params->get('posttext')) ) { ?><div class="line description post-text"><?php echo $ptext ?></div><? } ?>
 
 	<input type="hidden" name="option" value="com_users" />
 	<input type="hidden" name="task" value="user.login" />
-	<input type="hidden" name="return" value="<?php echo $return; ?>" />
-	<?php echo JHtml::_('form.token'); ?>
+	<input type="hidden" name="return" value="<?php echo $return ?>" />
+	<?php echo JHtml::_('form.token') ?>
 
 </form>
 <?php

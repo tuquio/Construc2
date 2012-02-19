@@ -19,7 +19,7 @@ if ($count == 0) {
 }
 
 ?>
-<div id="breadcrumbs" class="line breadcrumbs <?php echo $moduleclass_sfx; ?>">
+<div id="breadcrumbs" class="line breadcrumbs <?php echo $moduleclass_sfx ?>">
 <?php
 if ($count > 1 && $params->get('showHere', 1)) {
 	echo '<span class="mi first showHere">' .JText::_('MOD_BREADCRUMBS_HERE').'</span>';
