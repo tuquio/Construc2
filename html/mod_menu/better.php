@@ -45,7 +45,7 @@
  * @package     Template
  * @subpackage  HTML
  * @author      WebMechanic http://webmechanic.biz
- * @copyright   (C)2011 WebMechanic.
+ * @copyright   (C)2011-2012 WebMechanic.
  * @copyright   (C)2005 - 2011 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
@@ -62,10 +62,36 @@ if ( preg_match('#(?:[_|-](chapters|book_chapters))#iu', ($msfx = $params->get('
 	unset($msfx);
 }
 
-/* SearchHelper knows about the (enhanced) stop words list in xx_XXLocalise
- * and is misused to clean the alias for use as a class name of list items
- */
-JLoader::register('SearchHelper', JPATH_ADMINISTRATOR .'/components/com_search/helpers/search.php');
+if (!function_exists('betterCssAlias'))
+{
+	function betterCssAlias($item)
+	{
+		static $helper = 0;
+
+		// check if "Construc2" or "JustLayouts" have already loaded the alias helper code
+		if (!class_exists('ContentLayoutHelper', false)) {
+			JLoader::register('BetterMenuHelper', dirname(__FILE__) . '/helper.php');
+			$helper = (int) JLoader::load('BetterMenuHelper');
+			if ($helper) {
+				$helper += 1;
+			}
+		}
+		else {
+			$helper = 1;
+		}
+
+		switch ($helper) {
+			case 1:
+				return ContentLayoutHelper::getCssAlias($item);
+				break;
+			case 2:
+				return BetterMenuHelper::getCssAlias($item);
+				break;
+			default:
+				return '';
+		}
+	}
+}
 
 // menu got "lost" in XHTML for no reason, but
 // has always been supported by any browser on earth
@@ -155,38 +181,9 @@ if ( preg_match('#(?:[_|-](ordered|ol))#iu', $class_sfx, $settings) )
 	echo ' class="'.$ol_class.'"';
 
 ?>><?php
-foreach ($list as $i => &$item) :
-
-	$alias = str_replace('-', ' ', $item->alias);
-	SearchHelper::santiseSearchWord($alias, $item->alias);
-
-	// need this to find the default language
-	$locale = JFactory::getLanguage()->get('tag');
-
-	// @todo test if JLanguage was patched to contain getSingular()
-	// @todo test if Localise::INFLECTION is true
-	// even if it proxies, singularization is fine for this
-	if ($item->language == 'de-DE' || ($item->language == '*' && $locale == 'de-DE') ) {
-		if ( method_exists('de_DELocalise', 'singularise') ) {
-			$alias = de_DELocalise::singularise($alias);
-		}
-	}
-	// fall back for english
-	elseif ($item->language == 'en-GB' || ($item->language == '*' && $locale == 'en-GB') ) {
-		if ( method_exists('en_GBLocalise', 'singularise') ) {
-			$alias = en_GBLocalise::singularise($alias);
-		}
-	}
-	else {
-		// @todo do some smart check for other xx-XXLocalise classes
-		if ( method_exists('en_GBLocalise', 'singularise') ) {
-			$alias = en_GBLocalise::singularise($alias);
-		}
-	}
-
-	// we use '_' instead of '-' 'cos there's lesse potential for
-	// name-slahes with module names and common classes
-	$alias = str_replace(' ', '_', trim($alias));
+foreach ($list as $i => &$item)
+{
+	$alias = betterCssAlias($item);
 
 	$class = array('mi', $alias);
 
@@ -237,5 +234,6 @@ foreach ($list as $i => &$item) :
 	else {
 		echo '</li>';
 	}
-endforeach;
+}
+
 ?></<?php echo $elt;?>>

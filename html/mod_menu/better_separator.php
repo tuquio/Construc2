@@ -5,7 +5,7 @@
  * @package     Template
  * @subpackage  HTML
  * @author      WebMechanic http://webmechanic.biz
- * @copyright   Copyright (C)2011 WebMechanic. All rights reserved.
+ * @copyright   Copyright (C)2011-2012 WebMechanic. All rights reserved.
  * @copyright   Copyright (C) 2005 - 2011 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
@@ -22,4 +22,4 @@ else {
 }
 	// no additional "mi" class  mi here.
 	// separator should be fine in the context of .menu and .submenu
-?><span class="sep"><?php echo $title; ?><?php echo $linktype; ?></span>
+?><span class="sep"><?php echo $title ?><?php echo $linktype ?></span>
