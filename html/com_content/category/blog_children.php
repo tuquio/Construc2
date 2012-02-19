@@ -28,7 +28,7 @@ foreach($this->children[$this->category->id] as $id => $child)
 
 		if ($child->getNumItems()) { ?>
 	<p class="article-info">
-	<strong><?php echo JText::_('COM_CONTENT_NUM_ITEMS') ; ?></strong>
+	<strong><?php echo JText::_('COM_CONTENT_NUM_ITEMS') ?></strong>
 	<span><?php echo $child->getNumItems(true) ?></span>
 	</p>
 	</article>

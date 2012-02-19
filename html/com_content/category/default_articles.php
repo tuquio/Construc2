@@ -14,19 +14,19 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 
 if (empty($this->items)) {
 	if ($this->params->get('show_no_articles',1)) {
-	?><p><?php echo JText::_('COM_CONTENT_NO_ARTICLES'); ?></p><?php
+	?><p><?php echo JText::_('COM_CONTENT_NO_ARTICLES') ?></p><?php
 	}
 
 	return;
 }
 ?>
-<form name="adminForm" id="adminForm" action="<?php echo htmlspecialchars(JFactory::getURI()->toString()); ?>" method="post">
+<form name="adminForm" id="adminForm" action="<?php echo htmlspecialchars(JFactory::getURI()->toString()) ?>" method="post">
 <?php if ($this->params->get('filter_field') != 'hide') { ?>
 	<fieldset class="filters">
-	<legend class="element-invisible"><?php echo JText::_('JGLOBAL_FILTER_LABEL'); ?></legend>
+	<legend class="element-invisible"><?php echo JText::_('JGLOBAL_FILTER_LABEL') ?></legend>
 	<p class="filter-search">
-		<label class="filter-search-lbl" for="filter-search"><?php echo JText::_('COM_CONTENT_'.$this->params->get('filter_field').'_FILTER_LABEL').'&#160;'; ?></label>
-		<input type="text" name="filter-search" id="filter-search" value="<?php echo $this->escape($this->state->get('list.filter')); ?>" class="inputbox" onchange="document.adminForm.submit();" title="<?php echo JText::_('COM_CONTENT_FILTER_SEARCH_DESC') ?>" />
+		<label class="filter-search-lbl" for="filter-search"><?php echo JText::_('COM_CONTENT_'.$this->params->get('filter_field').'_FILTER_LABEL').'&#160;' ?></label>
+		<input type="text" name="filter-search" id="filter-search" value="<?php echo $this->escape($this->state->get('list.filter')) ?>" class="inputbox" onchange="document.adminForm.submit();" title="<?php echo JText::_('COM_CONTENT_FILTER_SEARCH_DESC') ?>" />
 	</p>
 <?php }
 
@@ -39,37 +39,40 @@ if ($this->params->get('show_pagination_limit')) { ?>
 
 if ($this->params->get('filter_field') != 'hide') { ?>
 	</fieldset>
-<?php }
+<?php
+}
 ?>
 
 <table class="data category">
 <?php if ($this->params->get('show_headings')) { ?>
 <thead>
 <tr>
-	<th class="list-title" id="tableOrdering"><?php  echo JHtml::_('grid.sort', 'COM_CONTENT_HEADING_TITLE', 'a.title', $listDirn, $listOrder) ; ?></th>
+	<th class="list-title" id="tableOrdering"><?php  echo JHtml::_('grid.sort', 'COM_CONTENT_HEADING_TITLE', 'a.title', $listDirn, $listOrder) ?></th>
 	<?php if ($date = $this->params->get('list_show_date')) { ?>
-	<th class="list-date" id="tableOrdering2"><?php echo JHtml::_('grid.sort', 'COM_CONTENT_'.$date.'_DATE', 'a.created', $listDirn, $listOrder); ?>	</th>
+	<th class="list-date" id="tableOrdering2"><?php echo JHtml::_('grid.sort', 'COM_CONTENT_'.$date.'_DATE', 'a.created', $listDirn, $listOrder) ?></th>
 	<?php } ?>
 
 	<?php if ($this->params->get('list_show_author',1)) { ?>
-	<th class="list-author" id="tableOrdering3"><?php echo JHtml::_('grid.sort', 'JAUTHOR', 'author', $listDirn, $listOrder); ?>	</th>
+	<th class="list-author" id="tableOrdering3"><?php echo JHtml::_('grid.sort', 'JAUTHOR', 'author', $listDirn, $listOrder) ?></th>
 	<?php } ?>
 
 	<?php if ($this->params->get('list_show_hits',1)) { ?>
-	<th class="list-hits" id="tableOrdering4"><?php echo JHtml::_('grid.sort', 'JGLOBAL_HITS', 'a.hits', $listDirn, $listOrder); ?>	</th>
+	<th class="list-hits" id="tableOrdering4"><?php echo JHtml::_('grid.sort', 'JGLOBAL_HITS', 'a.hits', $listDirn, $listOrder) ?></th>
 	<?php } ?>
 </tr>
 </thead>
-<?php } ?>
+<?php
+}
+?>
 
 <tbody class="data category-list">
 <?php foreach ($this->items as $i => &$article) { ?>
-<tr class="row-<?php echo $i % 2; ?>">
+<tr class="row-<?php echo $i % 2 ?>">
 <?php
 	if (in_array($article->access, $this->user->getAuthorisedViewLevels())) { ?>
 	<td class="list-title"><a href="<?php
 		echo JRoute::_(ContentHelperRoute::getArticleRoute($article->slug, $article->catid));
-		?>"><?php echo $this->escape($article->title); ?></a></td>
+		?>"><?php echo $this->escape($article->title) ?></a></td>
 
 <?php 	if ($this->params->get('list_show_date')) { ?>
 		<td class="list-date"><?php echo JHtml::_('date', $article->displayDate, 'DATE_FORMAT_LC1') ?> </td>
@@ -100,7 +103,7 @@ if ($this->params->get('filter_field') != 'hide') { ?>
 		$fullURL->setVar('return', base64_encode($returnURL));
 
 		echo $this->escape($article->title).' : '; ?>
-	<a href="<?php echo $fullURL; ?>" class="register"><?php echo JText::_( 'COM_CONTENT_REGISTER_TO_READ_MORE' ); ?></a>
+	<a href="<?php echo $fullURL ?>" class="register"><?php echo JText::_('COM_CONTENT_REGISTER_TO_READ_MORE') ?></a>
 	</td><?php
 
 	} ?>
@@ -115,7 +118,7 @@ if ($this->params->get('show_pagination') == 1 || ($this->params->get('show_pagi
 { ?>
 	<nav id="pages" class="line pagination">
 <?php if ($this->params->def('show_pagination_results', 1)) { ?>
-	<p class="counter"><?php echo $this->pagination->getPagesCounter(); ?></p>
+	<p class="counter"><?php echo $this->pagination->getPagesCounter() ?></p>
 <?php }
 	echo $this->pagination->getPagesLinks();
 ?>
