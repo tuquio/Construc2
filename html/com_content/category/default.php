@@ -1,10 +1,6 @@
 <?php
 defined('_JEXEC') or die;
 
-JHtml::addIncludePath(JPATH_COMPONENT_SITE .'/helpers');
-
-// used to sanitize item aliases in blog_links and menus
-JLoader::register('SearchHelper', JPATH_ADMINISTRATOR .'/components/com_search/helpers/search.php');
 JLoader::register('ContentLayoutHelper', JPATH_THEMES . '/construc2/html/com_content/_shared/helper.php');
 
 $show_page_heading   = $this->params->get('show_page_heading');
@@ -21,7 +17,7 @@ $desc_img = $this->params->def('show_description_image');
 	<header class="category">
 <?php
 	if ($toggle_headings) { ?><hgroup><?php } ?>
-	<h1 class="H1 page-title"><?php echo $this->escape($this->params->get('page_heading')); ?></h1>
+	<h1 class="H1 page-title"><?php echo $this->escape($this->params->get('page_heading')) ?></h1>
 <?php
 
 	if ($show_category_title || $page_subheading) { ?>
@@ -56,19 +52,20 @@ if ($desc) { ?>
 if (is_array($this->children[$this->category->id])
 	&& count($this->children[$this->category->id]) > 0
 	&& $this->params->get('maxLevel') !=0
-) { ?>
+) {
+	if (count($this->children[$this->category->id]) > 0) {
+?>
 	<section class="cat-children">
 <?php
-	if (count($this->children[$this->category->id]) > 0) {
 		echo ($toggle_headings) ? '<h3>' : '<h2>' ;
 		echo JTEXT::_('JGLOBAL_SUBCATEGORIES');
 		echo ($toggle_headings) ? '</h3>' : '</h2>' ;
 
 		echo $this->loadTemplate('children');
-	}
 ?>
 	</section>
 <?php
+	}
 }
 ?>
 

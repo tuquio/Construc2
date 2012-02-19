@@ -1,10 +1,6 @@
 <?php
 defined('_JEXEC') or die;
 
-JHtml::addIncludePath(JPATH_COMPONENT_SITE .'/helpers');
-
-// used to sanitize item aliases in blog_links and menus
-JLoader::register('SearchHelper', JPATH_ADMINISTRATOR .'/components/com_search/helpers/search.php');
 JLoader::register('ContentLayoutHelper', JPATH_THEMES . '/construc2/html/com_content/_shared/helper.php');
 
 $show_page_heading   = $this->params->get('show_page_heading');
@@ -21,7 +17,7 @@ $desc_img = $this->params->def('show_description_image');
 	<header class="category">
 <?php
 	if ($toggle_headings) { ?><hgroup><?php } ?>
-	<h1 class="H1 page-title"><?php echo $this->escape($this->params->get('page_heading')); ?></h1>
+	<h1 class="H1 page-title"><?php echo $this->escape($this->params->get('page_heading')) ?></h1>
 <?php
 
 	if ($show_category_title || $page_subheading) { ?>
@@ -123,7 +119,7 @@ if ($this->params->get('show_pagination') == 1 || ($this->params->get('show_pagi
 { ?>
 	<nav id="pages" class="line pagination">
 <?php if ($this->params->def('show_pagination_results', 1)) { ?>
-	<p class="counter"><?php echo $this->pagination->getPagesCounter(); ?></p>
+	<p class="counter"><?php echo $this->pagination->getPagesCounter() ?></p>
 <?php }
 	echo $this->pagination->getPagesLinks();
 ?>

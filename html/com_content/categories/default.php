@@ -3,10 +3,12 @@ defined('_JEXEC') or die;
 
 JHtml::addIncludePath(JPATH_COMPONENT_SITE .'/helpers');
 
+JLoader::register('ContentLayoutHelper', JPATH_THEMES . '/construc2/html/com_content/_shared/helper.php');
+
 ?>
 	<section class="categories-list">
 <?php if ($this->params->get('show_page_heading')) { ?>
-	<h1 class="H1 page-title"><?php echo $this->escape($this->params->get('page_heading')); ?></h1>
+	<h1 class="H1 page-title"><?php echo $this->escape($this->params->get('page_heading')) ?></h1>
 <?php }
 
 	if ($this->params->get('show_base_description')) { ?>
@@ -24,7 +26,9 @@ JHtml::addIncludePath(JPATH_COMPONENT_SITE .'/helpers');
 <?php
 	}
 
-echo $this->loadTemplate('items');
-
+	if (count($this->items[$this->parent->id]) > 0 && $this->maxLevelcat != 0)
+	{
+		echo $this->loadTemplate('items');
+	}
 ?>
 	</section>

@@ -15,12 +15,12 @@
 // No direct access
 defined('_JEXEC') or die;
 
-JHtml::addIncludePath(JPATH_COMPONENT_SITE .'/helpers');
-
 $params		= $this->item->params;
-$showStuff	= ($params->get('show_author') || $params->get('show_category' ) || $params->get('show_parent_category')
-			|| $params->get('show_create_date') || $params->get('show_modify_date') || $params->get('show_publish_date')
-			|| $params->get('show_hits'));
+$showLabels	= ($params->get('show_author') || $params->get('show_category' ) || $params->get('show_parent_category'));
+$showDates	= ($params->get('show_create_date') || $params->get('show_modify_date') || $params->get('show_publish_date'));
+$showMeta	= ($params->get('show_hits'));
+$showStuff	= $showLabels || $showDates || $showMeta;
+
 $canEdit	= $params->get('access-edit');
 $actions	= ($canEdit || $params->get('show_print_icon') || $params->get('show_email_icon'));
 $noPrint	= !(JFactory::getApplication()->input->get('print'));

@@ -1,38 +1,9 @@
 <?php
 defined('_JEXEC') or die;
 
-JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');
-
-// used to sanitize item aliases in blog_links and menus
-JLoader::register('SearchHelper', JPATH_ADMINISTRATOR .'/components/com_search/helpers/search.php');
 JLoader::register('ContentLayoutHelper', JPATH_THEMES . '/construc2/html/com_content/_shared/helper.php');
 
 ?>
-<header id="skiplinks">
-	<h1 class="H3 title">Skiplinks</h3>
-	<ol class="skiplinks">
-<?php
-if (!empty($this->lead_items)) {
-	foreach ($this->lead_items as $item) { ?>
-	<li><?php echo $item->category_title ?>: <a href="#<?php echo $item->alias ?>"><?php echo $this->escape($item->title) ?></a></li>
-<?php
-	}
-}
-
-if (!empty($this->intro_items)) {
-	foreach ($this->intro_items as $key => $item) { ?>
-	<li><?php echo $item->category_title ?>: <a href="#<?php echo $item->alias ?>"><?php echo $this->escape($item->title) ?></a></li>
-<?php
-	}
-}
-if (!empty($this->link_items)) { ?>
-	<li><a href="#more"><?php echo JText::_('COM_CONTENT_MORE_ARTICLES') ?></a></li>
-<?php
-}
-?>
-	</ol>
-</header>
-
 <section class="blog featured"><?php
 if ($this->params->get('show_page_heading')) {
 	echo '<header><h1 class="page_heading">', $this->escape($this->params->get('page_heading')), '</h1></header>';
@@ -92,7 +63,7 @@ if ($this->params->get('show_pagination') == 1 || ($this->params->get('show_pagi
 { ?>
 	<nav id="pages" class="line pagination">
 <?php if ($this->params->def('show_pagination_results', 1)) { ?>
-	<p class="counter"><?php echo $this->pagination->getPagesCounter(); ?></p>
+	<p class="counter"><?php echo $this->pagination->getPagesCounter() ?></p>
 <?php }
 	echo $this->pagination->getPagesLinks();
 ?>
