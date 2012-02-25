@@ -79,6 +79,12 @@ class ConstructTemplateHelper
 		$this->tmpl =& $template;
 		$this->layoutpath = JPATH_THEMES .'/'. $this->tmpl->template .'/layouts';
 
+		// fake ini file
+		if (is_file(dirname(__FILE__) .'/settings.php'))
+		{
+			$this->config = @parse_ini_file(dirname(__FILE__) .'/settings.php', true);
+		}
+
 		// if the helper is instatiated within a template layout,
 		// JDocument params are not yet available and most of this will break
 		if (!$template->params) {
@@ -731,20 +737,12 @@ class ConstructTemplateHelper
 	 * @return ConstructTemplateHelper for fluid interface
 	 * @see renderHeadElements(), $style
 	 */
-	public function addStyleDeclaration($content, $uagent=null)
+	public function addStyle($content, $uagent='all')
 	{
-		$this->tmpl->addStyleDeclaration( PHP_EOL.is_array($content) ? implode(PHP_EOL, $content) : $content );
-
-		// make room
-		if (!isset(self::$head["{$uagent}"])) {
-			self::$head["{$uagent}"] = array();
-		}
-		else if(!isset(self::$head["{$uagent}"]['style'])) {
-			self::$head["{$uagent}"]['style'] = array();
-		}
+		$this->_makeRoom('style', $uagent);
 
 		// store
-		self::$head["{$uagent}"]['style'][] = PHP_EOL.str_replace(PHP_EOL, ' ', (is_array($content) ? implode(PHP_EOL, $content) : $content) );
+		self::$head["{$uagent}"]['style'][] = str_replace(PHP_EOL, ' ', (is_array($content) ? implode(PHP_EOL, $content) : $content) );
 
 		return $this;
 	}
@@ -1010,7 +1008,7 @@ class ConstructTemplateHelper
 				$this->addStyleSheet('//fonts.googleapis.com/css?family='.$font);
 				if ($addSelectors) {
 					// Fix Google Web Font name for CSS
-					$this->addStyleDeclarations(
+					$this->addStyle(
 								$fontTargets
 								. '{font-family:'. str_replace(array('+',':bold',':italic'), ' ', $font) .', serif;'
 								. (($fontSize>0) ? 'font-size:'.$fontSize.';' : '')
