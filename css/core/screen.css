@@ -1,6 +1,6 @@
 /*!
  * screen.css
- * @version 1.9.2
+ * @version 1.9.3
  */
 
 /* -- Layout -- */
@@ -15,28 +15,23 @@ h3,.H3 {font-size:1.4em}
 h4,.H4 {font-size:1.2em}
 h5,.H5 {font-size:1.0em}
 h6,.H6 {font-size:0.8em}
+
 h3+ul, h3+ol {margin-top:-.3em}
 
-table.category {border:1px solid #000}
-.category thead {background:#333;color:#fff}
-.category thead a {color:inherit}
-.category tbody tr:hover {background:#dddddd}
-.category td {padding:5px}
-.cat-list-row0 {background:#eeeeee}
-.cat-list-row1 {}
+table.data {border:1px solid #000}
+.data thead {background:#333;color:#fff}
+.data thead a {color:inherit}
+.data tbody tr:hover {background:#dddddd}
+.data td {padding:5px}
 
-.date-container {float:right}
-.date-weekday, .date-month, .date-day, .date-year {/* intentionally left blank */}
+/* prevent ugly line-breaks, apply scope using [thead|tbody|tfoot|tr] tr.compact */
+.data .compact th {overflow:hidden;text-overflow:ellipsis}
 
-.outline {border:1px solid #ccc;-moz-border-radius:10px;-webkit-border-radius:10px;border-radius:10px;padding:5px;margin:5px}
-
-a.pathway {text-decoration:underline}
-.pagination {text-align:center;margin-left:auto;margin-right:auto}
+.pagination {margin-left:auto;margin-right:auto}
 .pagination li.mi {display:inline;margin:.4ex;padding:0}
 p.counter b, .pagination span.mi {padding:.2ex .4em}
 
 .pagenav li {display:inline;margin:3px;padding:0}
-.pagenav-next {text-align:right}
 
 .actionsmenu {}
 .actionsmenu li.mi {}
@@ -44,6 +39,11 @@ p.counter b, .pagination span.mi {padding:.2ex .4em}
 
 /* generic classes and effects */
 .rounded {-moz-border-radius:10px;-webkit-border-radius:10px;border-radius:10px;padding:5px;margin:5px}
+.outline {border:1px solid #ccc;-moz-border-radius:10px;-webkit-border-radius:10px;border-radius:10px;padding:5px;margin:5px}
+
+/* supplementals */
+.date-container {float:right}
+.date-weekday, .date-month, .date-day, .date-year {/* intentionally left blank */}
 
 /* Font colors should be as abstract as possible.
  * This allows us using any skins we like without modifying classes
