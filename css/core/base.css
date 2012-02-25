@@ -28,8 +28,6 @@ abbr[title]{border-bottom:1px dotted}
 b,strong{font-weight:bold}
 dfn{font-style:italic}
 mark{background:#ff0;color:#000}
-pre{white-space:pre;white-space:pre-wrap;word-wrap:break-word}
-pre,xmp{-webkit-tab-size:4;-moz-tab-size:4;-o-tab-size:4;-ms-tab-size:4;tab-size:4;}
 q{quotes:none}
 q:before,q:after{content:'';content:none}
 small,sub,sup{font-size:75%}
@@ -72,12 +70,13 @@ p,address,blockquote,li,dt,dd{line-height: 1.6}
 caption,th{text-align:center;font-weight:bold}
 tbody th{text-align:left;vertical-align:top}
 address,caption,cite,dfn,ins,del,figcaption,details{font:inherit}
-pre,xmp,samp,code,tt,kbd,listing{font-size:94%;font-family:'Lucida Console','Andale Mono','Courier New',monospace,sans-serif}
+pre,xmp,samp,code,tt,kbd,listing{font:normal 95% 'Lucida Console','Andale Mono','Courier New',monospace,sans-serif}
+pre,xmp{-webkit-tab-size:4;-moz-tab-size:4;-o-tab-size:4;-ms-tab-size:4;tab-size:4;}
 pre{overflow-x:auto; /* Firefox 2 */
 	word-wrap:break-word; /* Internet Explorer 5.5+ */
 	white-space:-moz-pre-wrap !important; /* Mozilla, since 1999 */
 	white-space:-pre-wrap; /* Opera 4-6 */
-	white-space:-o-pre-wrap; /* Opera 7 */
+	white-space:-o-pre-wrap; /* Opera 7+ */
 	white-space:pre-wrap; /* css-3 */
 }
 button,input,select,textarea{font-size:99%}
