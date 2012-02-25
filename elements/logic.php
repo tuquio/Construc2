@@ -81,29 +81,16 @@ if ($showDiagnostics) {
 
 // Load the jQuery JavaScript Library
 if ($loadJQuery) {
-	$templateHelper->addScript('//ajax.googleapis.com/ajax/libs/jquery/'. $loadJQuery .'/jquery.min.js', null, 'if (window.jQuery){jQuery.noConflict();}');
+	$templateHelper->addScript('//ajax.googleapis.com/ajax/libs/jquery/'. $loadJQuery .'/jquery.min.js');
 }
 
-// Load the MooTools JavaScript Library
+// Load the MooTools JavaScript Library, else @see ConstructTemplateHelper::sortScripts()
 if ($loadMoo == true) {
 	JHtml::_('behavior.framework');
 	if ($loadModal) {
 		// Enable modal pop-ups
 		JHtml::_('behavior.modal');
 	}
-} else {
-	// Remove MooTools if set to no.
-	$head = $this->getHeadData();
-	// without MooTools we must drop all but core.js
-	$moos = preg_grep('#/media/system/js(\/(?!core))#', array_keys($head['scripts']));
-	if (count($moos) > 0) {
-		foreach ($moos as $src) {
-			unset($head['scripts'][$src]);
-		}
-		$this->setHeadData($head);
-		unset($src, $moos);
-	}
-	unset($head);
 }
 
 /* ----------------------------- Module Counts ----------------------------- */
@@ -199,9 +186,9 @@ if ($ssiIncludes) {
 	}
 	// cheap and all but smart -- do we need more ACL checks?
 	if (!$ssiIncludes && $editMode && JFactory::getUser()->authorise('core.edit')) {
-		$templateHelper->addLink($tmpl_url.'/css/core/edit-form.css', null, array('media'=>'screen'));
+		$templateHelper->addLink($tmpl_url.'/css/core/edit-form.css', 'all', array('media'=>'screen'));
 	} else {
-		$templateHelper->addLink($tmpl_url.'/css/core/print.css', null, array('media'=>'print'));
+		$templateHelper->addLink($tmpl_url.'/css/core/print.css', 'all', array('media'=>'print'));
 	}
 	if ($customStyleSheet) {
 		$templateHelper->addLink($tmpl_url.'/themes/'.$customStyleSheet);
@@ -211,7 +198,7 @@ if ($ssiIncludes) {
 
 // Style sheet switcher
 if ($enableSwitcher) {
-	$templateHelper->addLink($tmpl_url.'/css/core/diagnostic.css', null, array('title'=>'diagnostic'), 'alternate stylesheet');
+	$templateHelper->addLink($tmpl_url.'/css/core/diagnostic.css', 'all', array('title'=>'diagnostic'), 'alternate stylesheet');
 	// $templateHelper->addScript($tmpl_url.'/js/styleswitch.min.js');
 	$templateHelper->addScript($tmpl_url.'/js/src/styleswitch.js');
 }
@@ -263,7 +250,7 @@ if ($app->get('input')->getBool('tp') && JComponentHelper::getParams('com_templa
 
 // add collected custom style declarations
 if ( count($styleDeclarations) ) {
-	$templateHelper->addStyleDeclaration($styleDeclarations);
+	$templateHelper->addStyle($styleDeclarations);
 }
 
 // add collected custom script declarations

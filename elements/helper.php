@@ -48,7 +48,7 @@ class ConstructTemplateHelper
 	 * @see getInstance() */
 	public static $helper;
 
-	protected $groupcount = array();
+	protected $config = array('cdn'=>array());
 
 	/**
 	 * @staticvar array chunks from the static html file(s) *
@@ -88,7 +88,7 @@ class ConstructTemplateHelper
 		$this->addLayout('index');
 
 		$theme = $template->params->get('customStyleSheet');
-		if ($theme != '-1')
+		if ((int) $theme != -1)
 		{
 			$theme = str_replace('.css', '', $theme);
 			if (is_file(JPATH_THEMES .'/'. $this->tmpl->template .'/themes/'. $theme . '.ini'))
@@ -597,24 +597,25 @@ class ConstructTemplateHelper
 	 * @return ConstructTemplateHelper for fluid interface
 	 * @see renderHeadElements(), $links
 	 */
-	public function addLink($href, $uagent=null, $attribs=array(), $rel='stylesheet')
+	public function addLink($href, $uagent='all', $attribs=array(), $rel='stylesheet')
 	{
-		$this->tmpl->addHeadLink($href, $rel, 'rel', $attribs);
+		//	$this->tmpl->addHeadLink($href, $rel, 'rel', $attribs);
+		if (!$uagent) $uagent = 'all';
 
 		$rel = strtolower($rel);
-		if ( strpos($rel, 'stylesheet') !== false ) {
-			$attribs['rel'] = $rel;
-		}
+		$attribs['rel'] = $rel;
 
-		// make room
-		if (!isset(self::$head["{$uagent}"])) {
-			self::$head["{$uagent}"] = array();
+		if (!isset($attribs['type'])) {
+			if (strpos($rel, 'stylesheet') >= 0) {
+				$attribs['type'] = 'text/css';
+			}
 		}
-		else if (!isset(self::$head["{$uagent}"]['links'])) {
-			self::$head["{$uagent}"]['links'] = array();
-		}
+		krsort($attribs);
 
-		// store
+		$this->_makeRoom('links', $uagent);
+
+		// store w/o that XML nonsense
+		$href = str_replace('&amp;', '&', $href);
 		self::$head["{$uagent}"]['links'][$href] = JArrayHelper::toString($attribs);
 
 		return $this;
@@ -627,17 +628,12 @@ class ConstructTemplateHelper
 	 * @return ConstructTemplateHelper for fluid interface
 	 * @see renderHeadElements(), $custom
 	 */
-	public function addCustomTag($html, $uagent=null)
+	public function addCustomTag($html, $uagent='all')
 	{
-		$this->tmpl->addCustomTag($html);
+		//	$this->tmpl->addCustomTag($html);
+		if (!$uagent) $uagent = 'all';
 
-		// make room
-		if (!isset(self::$head["{$uagent}"])) {
-			self::$head["{$uagent}"] = array();
-		}
-		else if (!isset(self::$head["{$uagent}"]['custom'])) {
-			self::$head["{$uagent}"]['custom'] = array();
-		}
+		$this->_makeRoom('custom', $uagent);
 
 		// store
 		self::$head["{$uagent}"]['custom'][] = $html;
@@ -654,17 +650,12 @@ class ConstructTemplateHelper
 	 * @return ConstructTemplateHelper for fluid interface
 	 * @see renderHeadElements(), $metaTags
 	 */
-	public function addMetaData($name, $content, $uagent=null, $http_equiv=false)
+	public function addMetaData($name, $content, $uagent='all', $http_equiv=false)
 	{
-		$this->tmpl->setMetaData($name, $content, $http_equiv);
+		//	$this->tmpl->setMetaData($name, $content, $http_equiv);
+		if (!$uagent) $uagent = 'all';
 
-		// make room
-		if (!isset(self::$head["{$uagent}"])) {
-			self::$head["{$uagent}"] = array();
-		}
-		else if (!isset(self::$head["{$uagent}"]['meta'])) {
-			self::$head["{$uagent}"]['meta'] = array();
-		}
+		$this->_makeRoom('meta', $uagent);
 
 		// store
 		$type = $http_equiv ? 'http_equiv' : 'name';
@@ -682,20 +673,36 @@ class ConstructTemplateHelper
 	 * @return ConstructTemplateHelper for fluid interface
 	 * @see renderHeadElements(), $script
 	 */
-	public function addScript($url, $uagent=null, $attribs=array())
+	public function addScript($url, $uagent='all', $attribs=array())
 	{
-		$this->tmpl->addScript($url, 'text/javascript', isset($attribs['defer']), isset($attribs['async']));
+		static $home;
 
-		// make room
-		if (!isset(self::$head["{$uagent}"])) {
-			self::$head["{$uagent}"] = array();
+		if (!isset($home)) {
+			$home = JURI::root(false);
 		}
-		else if (!isset(self::$head["{$uagent}"]['scripts'])) {
-			self::$head["{$uagent}"]['scripts'] = array();
+
+		$this->_makeRoom('scripts', $uagent, array('cdn'=>array(), 'media'=>array(), 'templates'=>array(), 'scripts'=>array()));
+
+		$url = str_replace(array($home, '&amp;'), array('/', '&'), $url);
+		$location = 'scripts';
+
+		if (strpos(" {$url}", 'http') >= 1 || strpos(" {$url}", '//') >= 1) {
+			$location = 'cdn';
+		}
+
+		if (preg_match('#(media|templates)/system/#', $url, $match)) {
+			$location = $match[1];
+		}
+
+		if (isset($attribs['defer']) && $attribs['defer'] == false) {
+			unset($attribs['defer']);
+		}
+		if (isset($attribs['async']) && $attribs['async'] == false) {
+			unset($attribs['async']);
 		}
 
 		// store
-		self::$head["{$uagent}"]['scripts'][$url] = JArrayHelper::toString($attribs);
+		self::$head["{$uagent}"]['scripts'][$location][$url] = JArrayHelper::toString($attribs);
 
 		return $this;
 	}
@@ -707,20 +714,12 @@ class ConstructTemplateHelper
 	 * @return ConstructTemplateHelper for fluid interface
 	 * @see renderHeadElements(), $scripts
 	 */
-	public function addScriptDeclaration($content, $uagent=null)
+	public function addScriptDeclaration($content, $uagent='all')
 	{
-		$this->tmpl->addScriptDeclaration( PHP_EOL.is_array($content) ? implode(PHP_EOL, $content) : $content );
-
-		// make room
-		if (!isset(self::$head["{$uagent}"])) {
-			self::$head["{$uagent}"] = array();
-		}
-		else if (!isset(self::$head["{$uagent}"]['script'])) {
-			self::$head["{$uagent}"]['script'] = array();
-		}
+		$this->_makeRoom('script', $uagent);
 
 		// store
-		self::$head["{$uagent}"]['script'][] = PHP_EOL.is_array($content) ? implode(PHP_EOL, $content) : $content;
+		self::$head["{$uagent}"]['script'][] = (is_array($content) ? implode(PHP_EOL, $content) : $content);
 
 		return $this;
 	}
@@ -752,7 +751,8 @@ class ConstructTemplateHelper
 	/**@#- */
 
 	/**
-	 * Applies all supplemental, browser-specific head elements to the document.
+	 * Applies all supplemental, browser-specific head elements to the document,
+	 * taking other items added else into Joomla's document into account.
 	 *
 	 * @return ConstructTemplateHelper for fluid interface
 	 * @see renderHead(), sortScripts()
@@ -784,13 +784,16 @@ class ConstructTemplateHelper
 	{
 		$head = $this->tmpl->getHeadData();
 
+		// scripts safe
+		$head['script']['text/javascript'] = 'try {' . $head['script']['text/javascript'] . '} catch(e) { if (console) {console.log(e);} };';
+
 		// cleanup non-standard stuff
 		unset($head['metaTags']['standard']['copyright']);
 		unset($head['metaTags']['standard']['rights']);
 		unset($head['metaTags']['standard']['language']);
 		unset($head['metaTags']['standard']['title']);
 
-		// put everything back
+		// put back what's left
 		$this->tmpl->setHeadData($head);
 
 		return $this;
@@ -824,11 +827,23 @@ class ConstructTemplateHelper
 		// matter of concerns
 		static $libs = array(
 					'jquery'	=> '#/(jquery\.)#',
-					'mootools'	=> '#/(mootools\.)#',
-		);
+					'mootools'	=> '#/(moo\w+[\.\-])#',
+				);
 
-		$loadMoo 	= (bool) $this->tmpl->params->get('loadMoo');
+		$head = $this->tmpl->getHeadData();
+
+		// Remove MooTools if set to do so.
+		// without MooTools we must drop all but core.js
+		$loadModal	= (bool) $this->tmpl->params->get('loadModal');
+		$loadMoo	= (bool) $this->tmpl->params->get('loadMoo', $loadModal);
 		$loadJQuery	= (bool) $this->tmpl->params->get('loadjQuery');
+
+		$moos = preg_grep('#/media/system/js(\/(?!core))#', array_keys($head['scripts']));
+		if (count($moos) > 0) {
+			foreach ($moos as $src) {
+				unset($head['scripts'][$src]);
+			}
+		}
 
 		// jQuery CDNs: http://docs.jquery.com/Downloading_jQuery#CDN_Hosted_jQuery
 		static $CDN = array(
@@ -838,11 +853,6 @@ class ConstructTemplateHelper
 				'cdnjs.cloudflare.com'	=> array('jquery'=>'/jquery/(\d\.\d\.\d)/', 'mootools'=>'/mootools/(\d\.\d\.\d)/'),
 		);
 
-		$head = $this->tmpl->getHeadData();
-
-		// CDNs take precendence
-		$scripts = array('cdn'=>array(), 'media'=>array(), 'templates'=>array());
-
 		// @todo bother with others than jquery as well, like... mootools
 		$jquery  = preg_grep($libs['jquery'], array_keys($head['scripts']));
 		foreach ((array) $jquery as $src)
@@ -850,7 +860,7 @@ class ConstructTemplateHelper
 			foreach ($CDN as $host => $lib)
 			{
 				if (strpos($src, $host)) {
-					$scripts['cdn'][$src] = $head['scripts'][$src];
+					$this->addScript($src, 'all', $head['scripts'][$src]);
 					// nuke old entry
 					unset($head['scripts'][$src]);
 				}
@@ -858,30 +868,25 @@ class ConstructTemplateHelper
 		}
 
 		// followed by media/system, templates/system
-		foreach (preg_grep('#(media|templates)/system/#', array_keys($head['scripts'])) as $key)
+		foreach (preg_grep('#(media|templates)/system/#', array_keys($head['scripts'])) as $src)
 		{
-			$parts    = explode('/', trim($key, '/'));
-			$location = array_shift($parts);
-			$scripts[$location][$key] = $head['scripts'][$key];
+			$this->addScript($src, 'all', $head['scripts'][$src]);
 			// nuke old entry
-			unset($head['scripts'][$key]);
+			unset($head['scripts'][$src]);
 		}
-
-		// rebuild
-		$head['scripts'] = $scripts['cdn'] + $scripts['media'] + $scripts['templates'] + $head['scripts'];
 
 		// jQuery compat
 		if (count($jquery) > 0) {
-			$noconflict = 'if(window.jQuery){jQuery.noConflict(); window.addEvent=function(n,f){if(n=="domready"){jQuery(document).ready(f);}};}'.PHP_EOL;
+			$noconflict = array('if(window.jQuery){jQuery.noConflict(); window.addEvent=function(n,f){$$=jQuery;if(n=="domready"||n=="load"){jQuery(document).ready(f);}};}');
 			if ( isset($head['script']['text/javascript']) )
 			{
-				if ( false === strpos($head['script']['text/javascript'], 'jQuery.noConflict') ) {
-					$head['script']['text/javascript'] = $noconflict . trim($head['script']['text/javascript']);
+				// replace present calls with empty functions
+				if ( false !== strpos($head['script']['text/javascript'], 'jQuery.noConflict') ) {
+					$head['script']['text/javascript'] = str_replace('jQuery.noConflict', 'new Function', $head['script']['text/javascript']);
 				}
+				$noconflict[] = trim($head['script']['text/javascript']);
 			}
-			else {
-				$this->tmpl->addScriptDeclaration($noconflict);
-			}
+			$this->addScriptDeclaration($noconflict);
 		}
 
 		// put everything back
@@ -1012,6 +1017,33 @@ class ConstructTemplateHelper
 								. '}');
 				}
 			}
+		}
+
+		return $this;
+	}
+
+	/**
+	 * Initializes the given $group array in the $head section for the $uagent
+	 * (default = 'all') using the $filler data.
+	 *
+	 * @param  string $group
+	 * @param  string $uagent
+	 * @param  array  $filler
+	 *
+	 * @return ConstructTemplateHelper for fluid interface
+	 */
+	protected function _makeRoom($group, &$uagent, $filler = array())
+	{
+		if (empty($uagent)) {
+			$uagent = 'all';
+		} else {
+			$uagent = str_replace('ie ', 'IE ', strtolower($uagent));
+		}
+
+		if (!isset(self::$head["{$uagent}"])) {
+			self::$head["{$uagent}"] = array();
+		} else if (!isset(self::$head["{$uagent}"]['script'])) {
+			self::$head["{$uagent}"][$group] = $filler;
 		}
 
 		return $this;
