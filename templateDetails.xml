@@ -8,7 +8,7 @@
 	<authorUrl>http://joomla.webmechanic.biz</authorUrl>
 	<copyright>Copyright (C)2011 WebMechanic. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
-	<version>1.9.3</version>
+	<version>1.9.5</version>
 	<description>TPL_CONSTRUC2_DESCRIPTION</description>
 	<credits><![CDATA[Inspired by "Construct Community", Matt Thomas, Joomla Engineering. See CREDITS.php, README.md]]></credits>
 
@@ -100,7 +100,17 @@
 					<option value="1">JYes</option>
 					<option value="0">JNo</option>
 				</field>
+
 				<field name="loadjQuery" type="jqueryversion" default="" label="TPL_CONSTRUC2_LOAD_JQUERY_LABEL" description="TPL_CONSTRUC2_LOAD_JQUERY_DESC" />
+				<field name="loadjQuerySrc" type="list" default="ajax.googleapis.com" label="TPL_CONSTRUC2_JQUERYSRC_LABEL" description="TPL_CONSTRUC2_JQUERYSRC_DESC">
+					<option value="media/jquery/">jQuery-Source Media</option>
+					<option value="templates/construct2/js/">jQuery-Source Template</option>
+					<option value="ajax.googleapis.com">Google *)</option>
+					<option value="ajax.aspnetcdn.com">Microsoft *)</option>
+					<option value="code.jquery.com">jQuery</option>				
+					<option value="cdnjs.cloudflare.com">CloudFlare</option>				
+				</field>
+				
 				<field name="headCleanup" type="radio" default="0" label="TPL_CONSTRUC2_ENABLE_HEADCLEANUP_LABEL" description="TPL_CONSTRUC2_ENABLE_HEADCLEANUP_DESC">
 					<option value="1">JYes</option>
 					<option value="0">JNo</option>
