@@ -1,4 +1,4 @@
-<?php defined('_JEXEC') or die;
+<?php
 /*
 	ContentViewArticle properties
 	item
@@ -12,8 +12,8 @@
 	_name _models _basePath _defaultModel _layout _layoutExt _layoutTemplate
 	_path _template _output _escape _charset _errors
 */
-
-JLoader::register('ContentLayoutHelper', JPATH_THEMES . '/construc2/html/com_content/_shared/helper.php');
+// No direct access
+defined('_JEXEC') or die;
 
 $params		= $this->item->params;
 $showLabels	= ($params->get('show_author') || $params->get('show_category' ) || $params->get('show_parent_category'));
@@ -24,62 +24,53 @@ $showStuff	= $showLabels || $showDates || $showMeta;
 $canEdit	= $params->get('access-edit');
 $actions	= ($canEdit || $params->get('show_print_icon') || $params->get('show_email_icon'));
 $noPrint	= !(JFactory::getApplication()->input->get('print'));
-
 $showall	= (1 == (int)JFactory::getApplication()->input->get('showall')) ? 'showall ' : '';
 $showtoc	= isset($this->item->toc) ? 'has-toc ' : '';
-$showact	= $actions ? 'has-actions ' : '';
 
-/*
- this layout separates $introtext and $fulltext, however Content Plugins only
- work on the combined $text property, hence we need to reconstuct these parts.
- Page and item navigation as well as page numbering make things a bit trickier...
+$images		= json_decode($this->item->images);
+$urls		= json_decode($this->item->urls);
 
- Plugin 'pagenavigation' if both enabled and "activated" via Artikel Manager parameter:
-	- show_item_navigation: 0|1	activated thru component/menu params
-   	if 1 the Plugin will add:
-   		$item->prev: string, URL (can be empty)
-   		$item->next: string, URL (can be empty)
-   		$item->pagination; string, markup <ul class="pagenav">..
+FB::log($images, 'article images');
+FB::log($urls, 'article urls');
+FB::log($this->item, 'article');
 
-   		$item->paginationposition: 0='above', 1='below'
-   		$item->paginationrelative: 0='above', 1='below'
-
-Plugin 'pagebreak' if both enabled and "activated" via "Shared Options" in Artikel Manager parameter:
-	Page break settings
-	- show_pagination: 0|1|2 ~ hide|show|auto
-	Page numbers settings
-	- show_pagination_results: 1
-
-*/
-
-$ipos = $fpos = $bpos = 0;
+/* this layout separates $introtext and $fulltext but content plugins only work
+   for the combined $text property, hence we need to reconstuct these parts. */
 if ($this->item->fulltext)
 {
-	if ($params->get('show_pagination_results')) {
-		$ipos  = strpos($this->item->text, $this->item->introtext);
-		$ptext = substr($this->item->text, 0, $ipos);
-	}
-	$bpos  = strpos($this->item->fulltext, '<hr class="system-pagebreak"');
-	$bpos  = $bpos ? $bpos : strlen($this->item->fulltext);
-	$fpos  = strpos($this->item->text, substr($this->item->fulltext, 0, $bpos));
-	$itext = substr($this->item->text, 0, $ipos) . substr($this->item->text, $ipos, $fpos - $ipos);
+	$fpos  = strpos($this->item->text, $this->item->fulltext);
+	$itext = substr($this->item->text, 0, $fpos);
 	$ftext = substr($this->item->text, $fpos);
+
 } else {
-	$itext = '';
-	$ftext = $this->item->text;
+	$itext = $this->item->text;
+	$ftext = '';
 }
-FB::log(array($ipos, $fpos, $bpos));
+
+$p1 = strpos($ftext, '<ul class="pagenav">');
+if ($p1 > 0) {
+	$ftext = substr($ftext, 0, $p1);
+}
+
+// pagetoc <nav>
+if (isset($this->item->toc)) {
+	if (empty($showall)) {
+		$this->item->toc = str_replace(array('<div', '/div>'), array('<nav class="unit size2of5 rgt"', '/nav>'), $this->item->toc);
+	} else {
+		// no toc on "all pages" view
+		$this->item->toc = null;
+		// <hr page-break>s become a <br />
+		$ftext = str_replace('<br />'.PHP_EOL, '', $ftext);
+	}
+}
 
 // override introtext and fulltext
 unset($this->item->text);
-$this->item->introtext = trim($itext);
-$this->item->fulltext  = trim($ftext);
-
-// Article Table of Contents: nav.unit.size2of5.page-toc.rgt, h3.H4.toc-title, ol.toc-items, li.mi
-ContentLayoutHelper::betterToc($this->item, $showall);
+$this->item->introtext = $itext;
+$this->item->fulltext  = $ftext;
 
 ?>
-	<article class="line item-page <?php echo $showall, $showtoc, $showact, $this->item->parent_alias, ' ', $this->item->category_alias, ' cid-', $this->item->catid, ($this->item->state == 0 ? ' system-unpublished' : '') ?>">
+	<article class="line item-page <?php echo $showall, $this->item->parent_alias, ' ', $this->item->category_alias, ' cid-', $this->item->catid, ($this->item->state == 0 ? ' system-unpublished' : '') ?>">
 	<header class="article">
 <?php
 if ($params->get('show_page_heading')) {
@@ -112,15 +103,20 @@ if ($this->item->event->beforeDisplayContent)
 ?>
 	</header>
 <?php
-if (isset($this->item->toc)) {
-	echo $this->item->toc;
-}
+// splitting introtext and fulltext also allows us to build our own pagenavigation
+if (!$params->get('show_intro')) {
+	if (isset($this->item->toc)) {
+		echo $this->item->toc;
+	}
+} else {
+	echo '<div id="introtext" class="introtext">';
+	if (isset($this->item->toc)) {
+		echo $this->item->toc;
+	}
 
-if ($params->get('show_intro') && $this->item->introtext) { ?>
-<div id="introtext" class="introtext">
-<?php echo $this->item->introtext ?>
-</div>
-<?php
+	echo $this->item->introtext;
+
+	echo '</div>';
 }
 
 if (!empty($this->item->fulltext)) { ?>
@@ -130,7 +126,7 @@ if (!empty($this->item->fulltext)) { ?>
 <?php
 }
 
-if (isset($this->pagination) ) { ?>
+if ( isset($this->item->prev) && ($this->item->prev || $this->item->next) ) { ?>
 <nav class="pagination"><ul class="pagenav">
 <?php if ($this->item->prev): ?><li class="mi prev"><a class="mi" href="<?= $this->item->prev ?>#content"><span class="mi"><?= JText::_('Previous Article')?></span></a></li><?php endif; ?>
 <?php if ($this->item->next): ?><li class="mi next"><a class="mi" rel="prefetch" href="<?= $this->item->next ?>#content"><span class="mi"><?= JText::_('Next Article')?></span></a></li><?php endif; ?>
@@ -146,5 +142,3 @@ echo $this->item->event->afterDisplayContent;
 
 ?>
 	</article>
-
-<xmp><? print_r($params) ?></xmp>

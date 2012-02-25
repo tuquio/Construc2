@@ -140,4 +140,39 @@ class ContentLayoutHelper
 		return $alias . ($alias2 ? ' '.$alias2 : '');
 	}
 
+	/**
+	 * Pimp an Article's Table of Contents ($item->toc) inplace like so to make it better:
+	 * - nav.unit.size2of5.page-toc.rgt  from <div id="article-index"> (id attribute is retained)
+	 * - h3.H4.toc-title	from class-free <h3>
+	 * - ol.toc-items		from class-free, semantically wrong <ul>
+	 * - li.mi				from class-free <li>
+	 *
+	 * @param  object $item     The article item object
+	 * @param  string $allpages Non-empty if all article is in "all pages" mode
+	 *
+	 * @return void (sets the toc property)
+	 */
+	static public function betterToc($item, $allpages)
+	{
+		if (!isset($item->toc)) {
+			return;
+		}
+
+		$toc = $item->toc;
+
+		if ((bool) $allpages)
+		{
+			// no toc for "all pages" view
+			$toc = null;
+		} else {
+			// replace tags and add better classes
+			$toc = str_replace(
+					array('<div', '/div>', '<h3>', '<ul>', '<ol>', '<li>'),
+					array('<nav class="unit size2of5 page-toc rgt"', '/nav>', '<h3 class="H4 toc-title">', '<ol class="toc-items">', '</ol>', '<li class="mi">'),
+					$toc);
+		}
+
+		$item->toc = $toc;
+	}
+
 }
