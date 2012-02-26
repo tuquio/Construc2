@@ -11,19 +11,21 @@
 
 /**
  * Input variable $list is an array with offsets and the following keys:
+ *	 $list[prefix]		: string
  *	 $list[limit]		: int
  *	 $list[limitstart]	: int
  *	 $list[total]		: int
- *	 $list[limitfield]	: string
- *	 $list[pagescounter]: string
- *	 $list[pageslinks]	: string
+ *	 $list[limitfield]	: HTML select list
+ *	 $list[pagescounter]: string "Page N of M"
+ *	 $list[pageslinks]	: HTML pagination menu
  *
  * @param  array  $list
  * @return string
+ * @todo IMPLEMENT limitfield form
  */
 function pagination_list_footer($list)
 {
-	return '<h1>pagination_list_footer</h1>';
+	return ''; // '<form>'. $list['limitfield'] . '</form>';
 }
 
 /**
@@ -55,8 +57,13 @@ function pagination_list_render($list)
 	// Initialize variables
 	$html = '<menu class="pagination" title="'. JText::_('More Pages') .'">';
 
-	$html .= '<li class="mi first txt" title="'. JText::_('First page') .'">'. $list['start']['data']    .'</li>';
-	$html .= '<li class="mi prev txt">' . $list['previous']['data'] .'</li>';
+	if ($list['start']['active']) {
+		$html .= '<li class="mi first txt" title="'. JText::_('First page') .'">'. $list['start']['data'] .'</li>';
+	}
+
+	if ($list['previous']['active']) {
+		$html .= '<li class="mi prev txt">' . $list['previous']['data'] .'</li>';
+	}
 
 	foreach ($list['pages'] as $page)
 	{
@@ -69,8 +76,13 @@ function pagination_list_render($list)
 		$html .= '</li>';
 	}
 
-	$html .= '<li class="mi next txt">'. $list['next']['data'] .'</li>';
-	$html .= '<li class="mi last txt" title="'. JText::_('Last page') .'">'. $list['end']['data'] .'</li>';
+	if ($list['next']['active']) {
+		$html .= '<li class="mi next txt">'. $list['next']['data'] .'</li>';
+	}
+
+	if ($list['end']['active']) {
+		$html .= '<li class="mi last txt" title="'. JText::_('Last page') .'">'. $list['end']['data'] .'</li>';
+	}
 
 	$html .= '</menu>';
 
