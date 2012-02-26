@@ -1,8 +1,14 @@
-/* äöü - just checking */
 /*!
  * diagnostic.css
- * @version 0.1.0
+ * @version 1.9.5
  * @license DWTF
  */
-#styleswitcher li.switcher {display:inline-block;cursor:pointer}
+
+#styleswitcher {}
+#styleswitcher .switcher {}
+
+body            #styleswitcher .normal,
+body.wireframe  #styleswitcher .wireframe	,
+body.diagnostic #styleswitcher .diagnostic	{font-weight:bold}
+
 /* .eof */
