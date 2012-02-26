@@ -1,6 +1,6 @@
 /*!
  * forms.css
- * @version 1.9.2
+ * @version 1.9.5
  * @license DWTF
  */
 
@@ -11,19 +11,21 @@ fieldset menu	{margin: 20px 0 20px 120px}
 
 fieldset dl		{display:block;clear:both}
 fieldset dt		,
-fieldset dd		{display:inline-block; padding:.5ex 0; vertical-align:top;}
+fieldset dd		{display:inline-block;padding:.25ex 0;vertical-align:top;}
 fieldset dt		{width:32%}
 fieldset dd		{width:50%}
 
-textarea		{border:1px solid; resize:vertical; width:90%}
-input			{border-style:solid; border-width:0 0 2px 1px; padding-left:.2ex; width:90%}
-input[type=radio] {width:auto;border:none;vertical-align:middle}
+textarea		{border:1px solid;resize:vertical;width:90%}
+input			{border-style:solid;border-width:0 0 2px 1px;padding-left:.2ex; width:90%}
+input[type=radio] {width:auto;border:none}
 input[type=image] {width:auto;border:none;outline:none}
 
-input[readonly]	{border:none; cursor:default}
+input[readonly]	{border:none;cursor:default}
 
 input:required, textarea:required {} /* ~ .firm */
 input:valid, textarea:valid {} /* ~ .positive */
 input:focus:invalid, textarea:focus:invalid {border-color:#c20000} /* ~ .negative */
 input.invalid, textarea.invalid {border-color:#c20000} /* ~ .negative */
 label.invalid {color:#c20000;font-weight:bold} /* ~ .negative */
+
+button {font-weight:bold}

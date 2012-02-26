@@ -1,20 +1,21 @@
 /*!
  * screen.css
- * @version 1.9.3
+ * @version 1.9.5
  */
 
-/* -- Layout -- */
+/* =Layout */
+.page-head {margin:0;text-align:left}
 .content-main {position:relative}
 
 .fluid-media img, .fluid-media object, .fluid-media video {max-width:100%}
 .fluid-media img {-ms-interpolation-mode:bicubic}
 
-h1,.H1 {font-size:2em}
+h1,.H1 {font-size:2.0em}
 h2,.H2 {font-size:1.7em}
 h3,.H3 {font-size:1.4em}
 h4,.H4 {font-size:1.2em}
-h5,.H5 {font-size:1.0em}
-h6,.H6 {font-size:0.8em}
+h5,.H5 {font-size:1.1em}
+h6,.H6 {font-size:1.0em}
 
 h3+ul, h3+ol {margin-top:-.3em}
 
@@ -24,7 +25,7 @@ table.data {border:1px solid #000}
 .data tbody tr:hover {background:#dddddd}
 .data td {padding:5px}
 
-/* prevent ugly line-breaks, apply scope using [thead|tbody|tfoot|tr] tr.compact */
+/* prevent ugly line-breaks. apply scoped to [thead|tbody|tfoot|tr] with tr.compact */
 .data .compact th {overflow:hidden;text-overflow:ellipsis}
 
 .pagination {margin-left:auto;margin-right:auto}
@@ -37,15 +38,18 @@ p.counter b, .pagination span.mi {padding:.2ex .4em}
 .actionsmenu li.mi {}
 .actionsmenu span.mi {}
 
-/* generic classes and effects */
-.rounded {-moz-border-radius:10px;-webkit-border-radius:10px;border-radius:10px;padding:5px;margin:5px}
-.outline {border:1px solid #ccc;-moz-border-radius:10px;-webkit-border-radius:10px;border-radius:10px;padding:5px;margin:5px}
+.footer .menu, .footer .menu li {display:inline-block;list-style:none;margin:0;padding:0}
+.footer .menu li a, .footer .menu a:visited {font-weight:normal;padding:1px 3px;text-decoration:none}
 
-/* supplementals */
+/* =supplementals */
 .date-container {float:right}
 .date-weekday, .date-month, .date-day, .date-year {/* intentionally left blank */}
 
-/* Font colors should be as abstract as possible.
+/* =generic classes and effects */
+.rounded,.outline {border-radius:10px;padding:5px;margin:5px}
+.outline {border:1px solid #ccc}
+
+/* =font colors should be as abstract as possible.
  * This allows us using any skins we like without modifying classes
  * Use .firm class for unique color of the project (like orange in this example)
  * Use .positive, .negative to style only relative information (like system messages or feedback, etc)
@@ -60,7 +64,7 @@ p.counter b, .pagination span.mi {padding:.2ex .4em}
 .positive	{color:#73ab00}
 .negative	{color:#c20000}
 
-/* background colors, ought to be combined with a (generic) font color class */
+/* =background colors, ought to be combined with a (generic) font color class */
 .bare-bg		{background-color:#bbb}
 .pale-bg		{background-color:#999}
 .neutral-bg		{background-color:#666}
@@ -71,7 +75,7 @@ p.counter b, .pagination span.mi {padding:.2ex .4em}
 .positive-bg	{background-color:#73ab00}
 .negative-bg	{background-color:#c20000}
 
-/* border colors, inherit active font color */
+/* =border colors */
 .bare-bd		{border-color:#bbb}
 .pale-bd		{border-color:#999}
 .neutral-bd		{border-color:#666}
@@ -87,9 +91,5 @@ p.counter b, .pagination span.mi {padding:.2ex .4em}
 .tip-title {padding:0;margin:0;font-size:1em;font-weight:bold;margin-top:-15px;padding-top:15px;padding-bottom:5px;background:url(../images/selector-arrow.png) no-repeat}
 .tip-text {font-size:1em;margin:0}
 */
-.footer .menu, .footer .menu li {display:inline-block;list-style:none;margin:0;padding:0}
-.footer .menu li a, .footer .menu a:visited {font-weight:normal;padding:1px 3px;text-decoration:none}
-
-.page-head {margin:0;text-align:left}
 
 /* .eof */
