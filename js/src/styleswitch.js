@@ -2,13 +2,14 @@
 // http://www.alistapart.com/articles/alternate
 // brought on par with 2012 practice by WebMechanic.biz
 
-(function (window, document,undefined) {
+(function (window, document, undefined) {
 	function toggleStylesheet(evt) {
 		evt = evt || window.event;
 	}
 
 	function setActiveStyleSheet(title) {
 		var i, a;
+		console.log('setActiveStyleSheet', title);
 		for (i = 0; (a = document.getElementsByTagName("link")[i]); i++) {
 			if (a.getAttribute("rel").indexOf("style") != -1
 			    && a.getAttribute("title")) {
@@ -44,19 +45,17 @@
 	}
 
 	function createCookie(name, value, days) {
+		var date, expires = "";
 		if (days) {
-			var date = new Date();
+			date = new Date();
 			date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-			var expires = "; expires=" + date.toGMTString();
-		} else {
-			expires = "";
+			expires = "; expires=" + date.toGMTString();
 		}
 		document.cookie = name + "=" + value + expires + "; path=/";
 	}
 
 	function readCookie(name) {
-		var nameEQ = name + "=";
-		var ca = document.cookie.split(';');
+		var nameEQ = name + "=", ca = document.cookie.split(';');
 		for ( var i = 0; i < ca.length; i++) {
 			var c = ca[i];
 			while (c.charAt(0) == ' ') {
@@ -72,17 +71,20 @@
 	var $ready = function() {
 		var cookie = readCookie("style");
 		var title = cookie ? cookie : getPreferredStyleSheet();
+		console.log(title, cookie);
 		setActiveStyleSheet(title);
-		if (window.$$) {
+		if (window.jQuery) {
+			jQuery('#styleswitcher')
+				.find('.switcher')
+				.each( function(i, elt) { if( $('#' + $(elt).data().style + '-css').length == 0 ) { $(elt).remove(); } })
+				.end()
+				.live('click', function(evt) { setActiveStyleSheet($(evt.target).data().style); })
+				.toggle();
+		}
+		else if (window.$$) {
 			$$('#styleswitcher .switcher').each(function(elt) {});
 		}
-		if (window.jQuery) {
-			jQuery('#styleswitcher').each(function(i, elt) {
-				console.log(elt);
-				jQuery(elt).bind('click', function(evt) {
-					console.log(evt.target.data);
-				});
-			});
+		else {
 		}
 	};
 
@@ -96,11 +98,9 @@
 		jQuery('document').ready($ready);
 		jQuery('document').unload($unload);
 	} else if (window.addEvent) {
-		console.log('mooish');
-		return;
 		// assign via Mootools
 		window.addEvent('domready', $ready);
 		window.addEvent('unload', $unload);
 	}
 
-})(window,document);
+})(window, document);
