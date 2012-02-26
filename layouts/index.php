@@ -20,25 +20,14 @@
 		<div id="header" class="line page-head">
 <?php if ($headerAboveCount) : include JPATH_THEMES .'/'. $this->template . '/layouts/mod_header_above.php'; endif; ?>
 		<h1 id="logo"><a class="site-link" href="<?php echo $this->baseurl ?>/"><span class="site-name"><?php echo $app->getCfg('sitename');?></span></a></h1>
-		<?php if ($showDateContainer) : ?>
-		<div class="date-container"><?php echo $templateHelper->dateContainer(); ?></div>
-		<?php endif; ?>
-		<?php if ($showDiagnostics) : ?>
-		<ul id="diagnostics" class="menu hmenu">
-			<li><?php echo $currentComponent; ?></li>
-			<?php if($articleId)	echo '<li>article-'.$articleId.'</li>'; ?>
-			<?php if($itemId)		echo '<li>item-'.$itemId.'</li>'; ?>
-			<?php if($catId)		echo '<li>category-'.$catId.'</li>'; ?>
-		</ul>
-		<?php endif; ?>
 
 <?php if ($this->countModules('header')) : $templateHelper->renderModules('header', 'mod'); endif; ?>
 
 		<?php if ($enableSwitcher) : ?>
-		<ul id="styleswitcher" class="menu hmenu">
-			<li class="switcher" data-style="wireframe" title="Wireframe"><?php echo JText::_('TPL_CONSTRUC2_STYLE_WIREFRAME') ?></li>
-			<li class="switcher" data-style="diagnostic" title="Diagnostic"><?php echo JText::_('TPL_CONSTRUC2_STYLE_DIAGNOSTIC_MODE') ?></li>
-			<li class="switcher" data-style="normal" title="Normal"><?php echo JText::_('TPL_CONSTRUC2_STYLE_NORMAL_MODE') ?></li>
+		<ul id="styleswitcher" class="menu style-switcher">
+			<li class="mi switcher wireframe"  data-style="wireframe"><?php echo JText::_('TPL_CONSTRUC2_STYLE_WIREFRAME') ?></li>
+			<li class="mi switcher diagnostic" data-style="diagnostic"><?php echo JText::_('TPL_CONSTRUC2_STYLE_DIAGNOSTIC_MODE') ?></li>
+			<li class="mi switcher normal"     data-style="normal"><?php echo JText::_('TPL_CONSTRUC2_STYLE_NORMAL_MODE') ?></li>
 		</ul>
 		<?php endif; ?>
 		</div><!-- .page-head -->
