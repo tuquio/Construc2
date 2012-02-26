@@ -64,12 +64,7 @@ $item_heading  = (int)  $params->get('item_heading', 3);
 $show_children = (bool) $params->get('show_children', 0);
 $max_level     = (int)  $params->get('maxlevel', 0);
 
-try {
 ?>
 <menu class="menu categories <?php echo $moduleclass_sfx ?>">
 <?php require JModuleHelper::getLayoutPath('mod_articles_categories', $params->get('layout', 'default').'_items'); ?>
 </menu>
-<?php
-} catch (Exception $me) {
-	print_r($me->getMessage());
-}

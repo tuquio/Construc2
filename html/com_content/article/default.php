@@ -146,5 +146,3 @@ echo $this->item->event->afterDisplayContent;
 
 ?>
 	</article>
-
-<xmp><? print_r($params) ?></xmp>

@@ -15,6 +15,11 @@
  */
 defined('_JEXEC') or die;
 
+/* @var $app JSite */
+
+ConstructTemplateHelper::getInstance(JFactory::getDocument(), $module)
+	->addLink('templates/construc2/css/core/forms.css');
+
 ?>
 <?php if ($type == 'logout') { ?>
 <form class="form-validate form-login" id="form-login" action="<?php echo JRoute::_('index.php', true, $params->get('usesecure')) ?>" method="post">
@@ -38,16 +43,15 @@ defined('_JEXEC') or die;
 </form>
 <?php
 } else {
-	$cuparams = JComponentHelper::getParams('com_users');
 ?>
 <form class="form-validate form-login" id="form-login" action="<?php echo JRoute::_('index.php', true, $params->get('usesecure')) ?>" method="post">
 <?php if ( ($ptext = $params->get('pretext')) ) { ?><div class="line description pre-text"><?php echo $ptext ?></div><?php } ?>
 	<fieldset class="login credentials">
 		<dl class="credentials">
 			<dt class="username"><label for="mod-username" class="required"><?php echo JText::_('MOD_LOGIN_VALUE_USERNAME') ?></label></dt>
-			<dd class="username"><input id="mod-username" type="text" name="username" class="validate-username required" required="required" aria-required="true" /></dd>
+			<dd class="username"><input id="mod-username" type="text" name="username" class="inputbox validate-username required" required="required" aria-required="true" /></dd>
 			<dt class="password"><label for="mod-password" class="required"><?php echo JText::_('JGLOBAL_PASSWORD') ?></label></dt>
-			<dd class="password"><input id="mod-password" type="password" name="password" class="validate-password required" required="required" aria-required="true" /></dd>
+			<dd class="password"><input id="mod-password" type="password" name="password" class="inputbox validate-password required" required="required" aria-required="true" /></dd>
 	<?php if (JPluginHelper::isEnabled('system', 'remember')) { ?>
 			<dt></dt><dd class="remember">
 				<label for="mod-remember">
@@ -66,7 +70,7 @@ defined('_JEXEC') or die;
 	<menu class="menu loginmenu">
 	<li class="mi reset"><a class="mi" href="<?php echo JRoute::_('index.php?option=com_users&view=reset') ?>"><span class="mi"><?php echo JText::_('MOD_LOGIN_FORGOT_YOUR_PASSWORD') ?></span></a></li>
 	<li class="mi remind"><a class="mi" href="<?php echo JRoute::_('index.php?option=com_users&view=remind') ?>"><span class="mi"><?php echo JText::_('MOD_LOGIN_FORGOT_YOUR_USERNAME') ?></span></a></li>
-	<?php if ($cuparams->get('allowUserRegistration')) {
+	<?php if (JComponentHelper::getParams('com_users')->get('allowUserRegistration')) {
 	?><li class="mi register"><a class="mi" href="<?php echo JRoute::_('index.php?option=com_users&view=registration') ?>"><span class="mi"><?php echo JText::_('MOD_LOGIN_REGISTER') ?></span></a></li>
 	<?php } ?>
 	</menu>

@@ -124,6 +124,12 @@ if ($this->params->get('show_pagination') == 1 || ($this->params->get('show_pagi
 	echo $this->pagination->getPagesLinks();
 ?>
 	</nav>
-<?php } ?>
+<?php
+}
+
+/* NOT READY YET until ./html/pagination.php pagination_list_footer() is ironed out. */
+// $this->pagination->getListFooter()
+
+?>
 
 </section>
