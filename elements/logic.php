@@ -14,7 +14,7 @@
 /** Register the ConstructTemplateHelper Class */
 JLoader::register('ConstructTemplateHelper', dirname(__FILE__) . '/helper.php');
 
-$templateHelper = ConstructTemplateHelper::getInstance($this);
+$templateHelper = ConstructTemplateHelper::getInstance($this, __FILE__);
 
 /** @var $app JSite To enable use of site configuration */
 $app 		= JFactory::getApplication();
@@ -165,7 +165,7 @@ $this->setMetaData('viewport', 'width=device-width,initial-scale=1.0');
 
 // Transparent favicon
 if (is_file(JPATH_THEMES .'/'. $this->template .'/favicon.png')) {
-	$this->addFavicon($tmpl_url.'/favicon.png', 'image/png', 'icon');
+	$templateHelper->addLink($tmpl_url.'/favicon.png', 'image/png', 'icon');
 }
 
 // Typography (protocol relative URLs)
@@ -181,24 +181,28 @@ if ($ssiIncludes) {
 	$templateHelper->addLink($tmpl_url.'/css/core/base.css');
 	$templateHelper->addLink($tmpl_url.'/css/core/oocss.css');
 	$templateHelper->addLink($tmpl_url.'/css/core/screen.css');
+
 	if ($this->direction == 'rtl') {
 		$templateHelper->addLink($tmpl_url.'/css/core/rtl.css');
 	}
+
 	// cheap and all but smart -- do we need more ACL checks?
 	if (!$ssiIncludes && $editMode && JFactory::getUser()->authorise('core.edit')) {
-		$templateHelper->addLink($tmpl_url.'/css/core/edit-form.css', 'all', array('media'=>'screen'));
+		$templateHelper->addLink($tmpl_url.'/css/core/edit-form.css', null, array('media'=>'screen'));
 	} else {
-		$templateHelper->addLink($tmpl_url.'/css/core/print.css', 'all', array('media'=>'print'));
+		$templateHelper->addLink($tmpl_url.'/css/core/print.css', null, array('media'=>'print'));
 	}
+
 	if ($customStyleSheet) {
 		$templateHelper->addLink($tmpl_url.'/themes/'.$customStyleSheet);
+		FB::log($templateHelper->theme);
 	}
 }
 
 
 // Style sheet switcher
 if ($enableSwitcher) {
-	$templateHelper->addLink($tmpl_url.'/css/core/diagnostic.css', 'all', array('title'=>'diagnostic'), 'alternate stylesheet');
+	$templateHelper->addLink($tmpl_url.'/css/core/diagnostic.css', null, array('title'=>'diagnostic'), 'alternate stylesheet');
 	// $templateHelper->addScript($tmpl_url.'/js/styleswitch.min.js');
 	$templateHelper->addScript($tmpl_url.'/js/src/styleswitch.js');
 }
@@ -227,7 +231,7 @@ $templateHelper->addMetaData('X-UA-Compatible', 'IE=Edge,chrome=1', 'lt IE 9', t
 if ($loadChromeFrame) {
 	$templateHelper->addScript('//ajax.googleapis.com/ajax/libs/chrome-frame/'. $loadChromeFrame .'/CFInstall.min.js',
 		'lt IE 9',
-		array('defer'=>true,'onload'=>'var e=document.createElement("DIV");if(e && CFInstall){e.id="gcf_placeholder";e.style.zIndex="9999";CFInstall.check({node:"gcf_placeholder"});}')
+		array('defer'=>true, 'onload'=>'var e=document.createElement("DIV");if(e && CFInstall){e.id="gcf_placeholder";e.style.zIndex="9999";CFInstall.check({node:"gcf_placeholder"});}')
 		);
 }
 
@@ -241,11 +245,11 @@ $scriptDeclarations[] = '(function(W,D,src) {if (W.JSON) return;var a=D.createEl
 
 /* Preview Module Styles for use with index.php?tp=1 */
 if ($app->get('input')->getBool('tp') && JComponentHelper::getParams('com_templates')->get('template_positions_display') ) {
-	$styleDeclarations[] = '.mod-preview{position:relative}
-.mod-preview-wrapper{border:1px solid #ccc;-moz-border-radius:10px;-webkit-border-radius:10px;border-radius:10px;-webkit-box-shadow:2px 2px 6px rgba(0,0,0,0.6); -moz-box-shadow:2px 2px 6px rgba(0,0,0,0.6); box-shadow:2px 2px 6px rgba(0,0,0,0.6); padding:5px 10px;margin:5px 0;opacity:0.9;background:#666;z-index:999;min-height:50px}
-.mod-preview-wrapper div.moduletable, .mod-preview-wrapper .menu, .mod-preview-wrapper #breadcrumbs{opacity:0}
-.mod-preview-info{color:#fff;background:none;border:none;z-index:999;position:absolute;left:5px;top:5px;font-size:110%}
-#left .mod-preview-wrapper, #left2 .mod-preview-wrapper, #right .mod-preview-wrapper, #right2 .mod-preview-wrapper{height:940px}';
+	$styleDeclarations[] = '.mod-preview{position:relative}';
+	$styleDeclarations[] = '.mod-preview-wrapper{border:none;outline:1px solid #ccc;box-shadow:2px 2px 6px rgba(0,0,0,0.6);padding:5px 10px;margin:5px 0;opacity:0.9;background:#666;z-index:999;min-height:50px}';
+	$styleDeclarations[] = '.mod-preview-wrapper div.moduletable, .mod-preview-wrapper .menu, .mod-preview-wrapper #breadcrumbs{opacity:0}';
+	$styleDeclarations[] = '.mod-preview-info{color:#fff;background:none;border:none;z-index:999;position:absolute;left:5px;top:5px;font-size:110%}';
+	$styleDeclarations[] = '#left .mod-preview-wrapper, #left2 .mod-preview-wrapper, #right .mod-preview-wrapper, #right2 .mod-preview-wrapper{height:940px}';
 }
 
 // add collected custom style declarations

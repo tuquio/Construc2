@@ -35,11 +35,14 @@ class ConstructTemplateHelper
 	const MAX_MODULES  = 4;
 	const MAX_COLUMNS  = 4;
 	const MAX_WEBFONTS = 3;
+	const UA = 'all';
 
 	/** @var array List of template layout files */
 	protected $layouts = array();
 
 	protected $layoutpath;
+
+	protected $themepath;
 
 	/** @var $tmpl JDocumentHTML template instance */
 	protected $tmpl;
@@ -49,6 +52,8 @@ class ConstructTemplateHelper
 	public static $helper;
 
 	protected $config = array('cdn'=>array());
+	
+	public $theme = array('name'=>'Default');
 
 	/**
 	 * @staticvar array chunks from the static html file(s) *
@@ -71,17 +76,21 @@ class ConstructTemplateHelper
 
 	/**
 	 * Template Helper constructor expects the template object as its argument.
+	 * Use {@link getInstance()} to instantiate.
 	 *
 	 * @param JDocument $template an instance of JDocumentHtml for the most part
 	 */
-	public function __construct(JDocument $template)
+	protected function __construct(JDocument $template)
 	{
+		// remove this nonsense
+		$template->setTab('');
 		$this->tmpl =& $template;
+
 		$this->layoutpath = JPATH_THEMES .'/'. $this->tmpl->template .'/layouts';
+		$this->themepath  = JPATH_THEMES .'/'. $this->tmpl->template .'/themes';
 
 		// fake ini file
-		if (is_file(dirname(__FILE__) .'/settings.php'))
-		{
+		if (is_file(dirname(__FILE__) .'/settings.php')) {
 			$this->config = @parse_ini_file(dirname(__FILE__) .'/settings.php', true);
 		}
 
@@ -97,12 +106,14 @@ class ConstructTemplateHelper
 		if ((int) $theme != -1)
 		{
 			$theme = str_replace('.css', '', $theme);
-			if (is_file(JPATH_THEMES .'/'. $this->tmpl->template .'/themes/'. $theme . '.ini'))
+			if (is_file($this->themepath . "/{$theme}.php"))
 			{
-				$overrides = @parse_ini_file(JPATH_THEMES .'/'. $this->tmpl->template .'/themes/'. $theme . '.ini', true);
-				if ($overrides && isset($overrides['layouts']))
+				// fake ini file
+				$this->theme = @parse_ini_file($this->themepath . "/{$theme}.php", true);
+				if ($this->theme && isset($this->theme['layouts']))
 				{
-					foreach ($overrides['layouts'] as $override) {
+					foreach ($this->theme['layouts'] as $override)
+					{
 						list($basename, $scope) = explode(',', $override . ',');
 						$this->addLayout($basename, $scope);
 					}
@@ -112,9 +123,9 @@ class ConstructTemplateHelper
 
 		// @see renderModules()
 		$chunks = array(
-			'unit_before' => '<div class="{class}">',
-			'unit_after'  => '</div>'
-		);
+					'unit_before' => '<div class="{class}">',
+					'unit_after'  => '</div>'
+				);
 		$this->setChunks($chunks);
 
 		// register event handler
@@ -127,18 +138,12 @@ class ConstructTemplateHelper
 	 * @param  JDocument $template an instance of JDocumentHtml for the most part
 	 * @return ConstructTemplateHelper
 	 */
-	public static function getInstance(JDocument $template)
+	public static function getInstance(JDocument $template, $callee = null)
 	{
 		if (!self::$helper) {
 			self::$helper = new ConstructTemplateHelper($template);
 		}
-
 		return self::$helper;
-	}
-
-	public function getTemplate()
-	{
-		return $this->tmpl;
 	}
 
 	/**
@@ -575,26 +580,31 @@ class ConstructTemplateHelper
 
 	/**@#+
 	 * Add browser specific ressources, typically for MSIE in which case a
-	* conditional comment (CC) based on $uagent is added to group output.
-	*
-	* The interface is modeled after JDocument[Html] but not API compliant.
-	* Most optional arguments related to mime types in the JDOcument interface
-	* have been removed because this affects HTML documents only.
-	*
-	* $uagent
-	*  - IE 		= any MSIE with support for CC
-	*  - IE 6		= MSIE 6 only
-	*  - !IE 6		= all but MSIE 6
-	*  - lt IE 9	= MSIE 5 - MSIE 8
-	*  - lte IE 9	= MSIE 5 - MSIE 9
-	*  - gt IE 6	= MSIE 7 - MSIE 9
-	*  - gte IE 9	= MSIE 9
-	*	- IEMobile	= MSIE 7 - MSIE 9 on smart phones
-	*
-	* @see renderHeadElements()
-	*/
+	 * conditional comment (CC) based on $uagent is added to group output.
+	 *
+	 * The interface is modeled after JDocument[Html] but not API compliant.
+	 * Most optional arguments in the JDOcument interface related to mime types
+	 * have been removed and standardized because we're dealing with HTML only
+	 * and mime types are limited anyway.
+	 *
+	 * $uagent
+	 *  - IE 		= any MSIE with support for CC
+	 *  - IE 6		= MSIE 6 only
+	 *  - !IE 6		= all but MSIE 6
+	 *  - lt IE 9	= MSIE 5 - MSIE 8
+	 *  - lte IE 9	= MSIE 5 - MSIE 9
+	 *  - gt IE 6	= MSIE 7 - MSIE 9
+	 *  - gte IE 9	= MSIE 9
+	 *	- IEMobile	= MSIE 7 - MSIE 9 on smart phones
+	 *
+	 * @see renderHeadElements()
+	 */
 
 	/**
+	 * Adds a <link> Element für stylesheets, feeds, favicons etc.
+	 *
+	 * The mime type for (alternatie) styles and icons is enforced.
+	 *
 	 * @param string $href      the links href URL
 	 * @param string $relation  link relation, e.g. "stylesheet"
 	 * @param mixed  $uagent
@@ -603,25 +613,42 @@ class ConstructTemplateHelper
 	 * @return ConstructTemplateHelper for fluid interface
 	 * @see renderHeadElements(), $links
 	 */
-	public function addLink($href, $uagent='all', $attribs=array(), $rel='stylesheet')
+	public function addLink($href, $uagent=self::UA, $attribs=array(), $rel='stylesheet')
 	{
-		//	$this->tmpl->addHeadLink($href, $rel, 'rel', $attribs);
-		if (!$uagent) $uagent = 'all';
+		static $favicon;
+
+		$this->_makeRoom('links', $uagent);
+
+		$href = $this->_tuckUrl($href);
+		$info = pathinfo($href);
+		settype($info['extension'], 'string');
 
 		$rel = strtolower($rel);
 		$attribs['rel'] = $rel;
 
-		if (!isset($attribs['type'])) {
-			if (strpos($rel, 'stylesheet') >= 0) {
-				$attribs['type'] = 'text/css';
-			}
+		// [alternate st]ylesheet
+		if ($info['extension'] == 'css' || strpos($attribs['rel'], 'ylesheet') > 0) {
+			$attribs['type'] = 'text/css';
+			$attribs['id'] = basename($href, '.css') . '-css';
 		}
+
+		// [shortcut ]icon type="image/[x-icon|png]"
+		if (strpos($attribs['rel'], 'icon') !== false) {
+			if ($info['extension'] == 'ico') {
+				$attribs['type'] = 'image/x-icon';
+			}
+			else if ($info['extension'] == 'png') {
+				$attribs['type'] = 'image/png';
+			}
+			// a latter icon will replace a former
+			if (isset($favicon)) {
+				unset(self::$head["{$uagent}"]['links'][$favicon]);
+			}
+			$favicon = $href;
+		}
+
 		krsort($attribs);
 
-		$this->_makeRoom('links', $uagent);
-
-		// store w/o that XML nonsense
-		$href = str_replace('&amp;', '&', $href);
 		self::$head["{$uagent}"]['links'][$href] = JArrayHelper::toString($attribs);
 
 		return $this;
@@ -634,11 +661,8 @@ class ConstructTemplateHelper
 	 * @return ConstructTemplateHelper for fluid interface
 	 * @see renderHeadElements(), $custom
 	 */
-	public function addCustomTag($html, $uagent='all')
+	public function addCustomTag($html, $uagent=self::UA)
 	{
-		//	$this->tmpl->addCustomTag($html);
-		if (!$uagent) $uagent = 'all';
-
 		$this->_makeRoom('custom', $uagent);
 
 		// store
@@ -656,15 +680,12 @@ class ConstructTemplateHelper
 	 * @return ConstructTemplateHelper for fluid interface
 	 * @see renderHeadElements(), $metaTags
 	 */
-	public function addMetaData($name, $content, $uagent='all', $http_equiv=false)
+	public function addMetaData($name, $content, $uagent=self::UA, $http_equiv=false)
 	{
-		//	$this->tmpl->setMetaData($name, $content, $http_equiv);
-		if (!$uagent) $uagent = 'all';
-
 		$this->_makeRoom('meta', $uagent);
 
 		// store
-		$type = $http_equiv ? 'http_equiv' : 'name';
+		$type = $http_equiv ? 'http-equiv' : 'name';
 		self::$head["{$uagent}"]['meta'][$name] = JArrayHelper::toString(array($type=>$name, 'content'=>$content));
 
 		return $this;
@@ -679,17 +700,11 @@ class ConstructTemplateHelper
 	 * @return ConstructTemplateHelper for fluid interface
 	 * @see renderHeadElements(), $script
 	 */
-	public function addScript($url, $uagent='all', $attribs=array())
+	public function addScript($url, $uagent=self::UA, $attribs=array())
 	{
-		static $home;
-
-		if (!isset($home)) {
-			$home = JURI::root(false);
-		}
-
 		$this->_makeRoom('scripts', $uagent, array('cdn'=>array(), 'media'=>array(), 'templates'=>array(), 'scripts'=>array()));
 
-		$url = str_replace(array($home, '&amp;'), array('/', '&'), $url);
+		$url = $this->_tuckUrl($url);
 		$location = 'scripts';
 
 		if (strpos(" {$url}", 'http') >= 1 || strpos(" {$url}", '//') >= 1) {
@@ -720,7 +735,7 @@ class ConstructTemplateHelper
 	 * @return ConstructTemplateHelper for fluid interface
 	 * @see renderHeadElements(), $scripts
 	 */
-	public function addScriptDeclaration($content, $uagent='all')
+	public function addScriptDeclaration($content, $uagent=self::UA)
 	{
 		$this->_makeRoom('script', $uagent);
 
@@ -737,7 +752,7 @@ class ConstructTemplateHelper
 	 * @return ConstructTemplateHelper for fluid interface
 	 * @see renderHeadElements(), $style
 	 */
-	public function addStyle($content, $uagent='all')
+	public function addStyle($content, $uagent=self::UA)
 	{
 		$this->_makeRoom('style', $uagent);
 
@@ -746,7 +761,26 @@ class ConstructTemplateHelper
 
 		return $this;
 	}
+
 	/**@#- */
+
+	/**
+	 * Event handler "onBeforeCompileHead" to fix crappy head elements and
+	 * standardize order. Also groups any UA-specific entries for browser
+	 * emulators from Redmond to get them all into one place.
+	 *
+	 * @return bool true - since this is a "event handler"
+	 *
+	 * @uses buildHead(), sortScripts(), renderHead()
+	 */
+	public static function beforeCompileHead()
+	{
+		self::$helper->buildHead();
+		self::$helper->sortScripts();
+		self::$helper->renderHead();
+
+		return true;
+	}
 
 	/**
 	 * Applies all supplemental, browser-specific head elements to the document,
@@ -757,39 +791,75 @@ class ConstructTemplateHelper
 	 */
 	public function buildHead()
 	{
-		$groups = array('meta'=>'', 'links'=>'', 'style'=>'', 'scripts'=>'', 'script'=>'', 'custom'=>'');
-
-		ksort(self::$head);
-		$uastack = '';
-
-		foreach (self::$head as $ua => $stuff)
-		{
-			$ua = trim($ua);
-			foreach (array_keys($groups) as $group)
-			{
-
-			}
-		}
-
-		return $this;
-	}
-
-	/**
-	 * @return ConstructTemplateHelper for fluid interface
-	 * @see buildHead(), sortScripts()
-	 */
-	public function renderHead()
-	{
 		$head = $this->tmpl->getHeadData();
 
-		// scripts safe
-		$head['script']['text/javascript'] = 'try {' . $head['script']['text/javascript'] . '} catch(e) { if (console) {console.log(e);} };';
+		foreach ($head as $group => $stuff) {
 
-		// cleanup non-standard stuff
-		unset($head['metaTags']['standard']['copyright']);
-		unset($head['metaTags']['standard']['rights']);
-		unset($head['metaTags']['standard']['language']);
-		unset($head['metaTags']['standard']['title']);
+			if (!is_array($stuff)) continue;
+
+			switch ($group) {
+				case 'metaTags':
+					// flip entries
+					$head[$group]['standard']['author'] = $head[$group]['standard']['rights'];
+
+					// cleanup non-standard stuff
+					unset($head[$group]['standard']['copyright']);
+					unset($head[$group]['standard']['rights']);
+					unset($head[$group]['standard']['title']);
+
+					// let '' be but move "normal" away so it appears below <title>
+					foreach ($stuff['standard'] as $key => $data) {
+						$this->addMetaData($key, $data);
+					}
+					$head[$group]['standard'] = array();
+					break;
+
+				case 'links':
+					foreach ($stuff as $key => $data) {
+						$this->addLink($key, null, $data['attribs'], $data['relation']);
+					}
+					$head[$group] = array();
+					break;
+
+				case 'styleSheets':
+					foreach ($stuff as $key => $data) {
+						$this->addLink($key, null, $data);
+					}
+					$head[$group] = array();
+					break;
+
+				case 'style':
+					foreach ($stuff as $key => $data) {
+						$this->addStyle($data);
+					}
+					$head[$group] = array();
+					break;
+
+				case 'scripts':
+					// cleanup, remove dupes, make rel. URLs
+					$scripts = array();
+					foreach ($stuff as $key => $data) {
+						$url = parse_url($key);
+						if (!isset($url['scheme'])) {
+							$key = '/'.ltrim($key, '/');
+						}
+						$rel = str_replace(JURI::root(), '/', $key);
+						$scripts[$rel] = $data;
+					}
+					$head[$group] = array();
+					if (count($scripts)) {
+						$head[$group] = $scripts;
+					}
+					break;
+
+				case 'script':
+					foreach ($stuff as $key => $data) {
+						$this->addScriptDeclaration($data);
+					}
+					$head[$group] = array();
+					break;
+			}
+		}
 
 		// put back what's left
 		$this->tmpl->setHeadData($head);
@@ -808,7 +878,6 @@ class ConstructTemplateHelper
 	 * too late for plugins to bind to jQuery.fn.
 	 *
 	 * @return ConstructTemplateHelper for fluid interface
-	 * @see buildHeadElements(), renderHeadElements()
 	 *
 	 * @static $libs array regexps to locate jquery and mootools libraries
 	 * @static $CDN  array assoc array with CDN URLs and version regexps
@@ -836,10 +905,12 @@ class ConstructTemplateHelper
 		$loadMoo	= (bool) $this->tmpl->params->get('loadMoo', $loadModal);
 		$loadJQuery	= (bool) $this->tmpl->params->get('loadjQuery');
 
-		$moos = preg_grep('#/media/system/js(\/(?!core))#', array_keys($head['scripts']));
-		if (count($moos) > 0) {
-			foreach ($moos as $src) {
-				unset($head['scripts'][$src]);
+		if ($loadMoo == false) {
+			$moos = preg_grep('#/media/system/js(\/(?!core))#', array_keys($head['scripts']));
+			if (count($moos) > 0) {
+				foreach ($moos as $src) {
+					unset($head['scripts'][$src]);
+				}
 			}
 		}
 
@@ -849,16 +920,14 @@ class ConstructTemplateHelper
 				'ajax.aspnetcdn.com'	=> array('jquery'=>'/jquery-(\d\.\d\.\d)' , ),
 				'code.jquery.com' 		=> array('jquery'=>'/jquery-(\d\.\d\.\d)' , ),
 				'cdnjs.cloudflare.com'	=> array('jquery'=>'/jquery/(\d\.\d\.\d)/', 'mootools'=>'/mootools/(\d\.\d\.\d)/'),
-		);
+			);
 
 		// @todo bother with others than jquery as well, like... mootools
 		$jquery  = preg_grep($libs['jquery'], array_keys($head['scripts']));
-		foreach ((array) $jquery as $src)
-		{
-			foreach ($CDN as $host => $lib)
-			{
+		foreach ((array) $jquery as $src) {
+			foreach ($CDN as $host => $lib) {
 				if (strpos($src, $host)) {
-					$this->addScript($src, 'all', $head['scripts'][$src]);
+					$this->addScript($src, self::UA, $head['scripts'][$src]);
 					// nuke old entry
 					unset($head['scripts'][$src]);
 				}
@@ -866,9 +935,8 @@ class ConstructTemplateHelper
 		}
 
 		// followed by media/system, templates/system
-		foreach (preg_grep('#(media|templates)/system/#', array_keys($head['scripts'])) as $src)
-		{
-			$this->addScript($src, 'all', $head['scripts'][$src]);
+		foreach (preg_grep('#(media|templates)/system/#', array_keys($head['scripts'])) as $src) {
+			$this->addScript($src, self::UA, $head['scripts'][$src]);
 			// nuke old entry
 			unset($head['scripts'][$src]);
 		}
@@ -876,13 +944,11 @@ class ConstructTemplateHelper
 		// jQuery compat
 		if (count($jquery) > 0) {
 			$noconflict = array('if(window.jQuery){jQuery.noConflict(); window.addEvent=function(n,f){$$=jQuery;if(n=="domready"||n=="load"){jQuery(document).ready(f);}};}');
-			if ( isset($head['script']['text/javascript']) )
-			{
+			if ( isset($head['script']['text/javascript']) ) {
 				// replace present calls with empty functions
 				if ( false !== strpos($head['script']['text/javascript'], 'jQuery.noConflict') ) {
-					$head['script']['text/javascript'] = str_replace('jQuery.noConflict', 'new Function', $head['script']['text/javascript']);
+					$noconflict[] = str_replace('jQuery.noConflict', 'new Function', $head['script']['text/javascript']);
 				}
-				$noconflict[] = trim($head['script']['text/javascript']);
 			}
 			$this->addScriptDeclaration($noconflict);
 		}
@@ -894,15 +960,75 @@ class ConstructTemplateHelper
 	}
 
 	/**
-	 * Event handler "onBeforeCompileHead" to fix-up crappy head elements.
+	 * @return ConstructTemplateHelper for fluid interface
+	 * @see buildHead(), sortScripts()
 	 */
-	public static function beforeCompileHead()
+	public function renderHead()
 	{
-		self::$helper
-			->buildHead()
-			->sortScripts()
-			->renderHead()
-			;
+		$head = $this->tmpl->getHeadData();
+
+		$head['title'] = strip_tags($head['title']);
+
+		$head['custom'][] = '<!-- Construc2 -->';
+		foreach (self::$head as $ua => $groups)
+		{
+			if ($ua != self::UA) $head['custom'][] = '<!--['.$ua.']>';
+
+			// meta tags
+			if (isset($groups['meta']) && count($groups['meta'])) {
+				foreach ($groups['meta'] as $stuff) {
+					$head['custom'][] =  '<meta '. $stuff . '>';
+				}
+			}
+
+			// links and stylesheets
+			if (isset($groups['links']) && count($groups['links'])) {
+				foreach ($groups['links'] as $href => $stuff) {
+					$head['custom'][] =  '<link '. $stuff . ' href="'. $href .'">';
+				}
+			}
+
+			// scripts
+			if (isset($groups['scripts']) && count($groups['scripts'])) {
+				foreach (array('cdn', 'media', 'templates', 'scripts') as $sect) {
+					if (!isset($groups['scripts'][$sect])) {
+						continue;
+					}
+					if (count($groups['scripts'][$sect])) {
+						foreach (array_keys($groups['scripts'][$sect]) as $href) {
+							$head['custom'][] = '<script src="'. $href . '"></script>';
+						}
+					}
+				}
+			}
+
+			// inline script
+			if (isset($groups['script']) && count($groups['script'])) {
+				$head['custom'][] = '<script type="text/javascript">';
+				// scripts safe
+				$head['custom'][] = 'try {';
+				foreach ($groups['script'] as $stuff) {
+					$head['custom'][] = $stuff;
+				}
+				$head['custom'][] = '} catch(e) {};';
+				$head['custom'][] = '</script>';
+			}
+
+			// inline style
+			if (isset($groups['style']) && count($groups['style'])) {
+				$head['custom'][] = '<style type="text/css">';
+				foreach ($groups['style'] as $stuff) {
+				}
+				$head['custom'][] = '</style>';
+			}
+
+			if ($ua != self::UA) $head['custom'][] = '<![endif]-->';
+		}
+
+		// put back what's left
+		$this->tmpl->setHeadData($head);
+
+		return $this;
 	}
 
 	public static function afterCompileBody()
@@ -1022,7 +1148,7 @@ class ConstructTemplateHelper
 
 	/**
 	 * Initializes the given $group array in the $head section for the $uagent
-	 * (default = 'all') using the $filler data.
+	 * (default = self::UA) using the $filler data.
 	 *
 	 * @param  string $group
 	 * @param  string $uagent
@@ -1030,22 +1156,58 @@ class ConstructTemplateHelper
 	 *
 	 * @return ConstructTemplateHelper for fluid interface
 	 */
-	protected function _makeRoom($group, &$uagent, $filler = array())
+	protected function _makeRoom($group, &$uagent, $filler=array())
 	{
+		settype($uagent, 'string');
+
 		if (empty($uagent)) {
-			$uagent = 'all';
+			$uagent = self::UA;
 		} else {
+			$uagent = str_replace('if ', '', strtolower($uagent));
 			$uagent = str_replace('ie ', 'IE ', strtolower($uagent));
 		}
 
 		if (!isset(self::$head["{$uagent}"])) {
-			self::$head["{$uagent}"] = array();
-		} else if (!isset(self::$head["{$uagent}"]['script'])) {
-			self::$head["{$uagent}"][$group] = $filler;
+			self::$head["{$uagent}"] = $filler;
 		}
 
 		return $this;
 	}
 
+	protected function _tuckUrl($url, $type='link')
+	{
+		static $root;
+
+		if (empty($root)) {
+			$root = JURI::root();
+		}
+
+		// drop that XML nonsense
+		$url = str_replace('&amp;', '&', $url);
+
+		$data = parse_url($url);
+		// make sure URLs w/o a scheme have an absolute path
+		if (!isset($data['scheme'])) {
+			// dealing with protocol relative URLs
+			if (substr("$url /", 0, 2) == '//') {
+				$uri = new JUri('tuck:' . $url);
+				if ($uri->getScheme() == 'tuck') {
+					$url = str_replace('tuck:', '', "{$uri}");
+				}
+			} else {
+				$url = '/'.ltrim($url, '/');
+			}
+		}
+
+		//if ($type == 'link') {
+		//}
+
+		//if ($type == 'icon') {
+		//}
+
+		$url = str_replace($root, '/', $url);
+
+		return $url;
+	}
 }
 
