@@ -1,5 +1,4 @@
-/*!
- * padawan.css (Frontend Template)
+/*! * padawan.css (Frontend Template)
  */
 @import url(http://fonts.googleapis.com/css?family=Ubuntu+Condensed);
 @import url(http://fonts.googleapis.com/css?family=Kristi);
@@ -14,9 +13,9 @@ body {min-width:900px}
 #nav	{margin-top:1em}
 .content-container {margin-top:1em}
 
-#logo   {font-size:60px;height:100px}
+#logo   {font-size:60px;line-height:1;text-rendering:optimizelegibility}
 #logo   ,
-#logo a {float:left;margin:10px;text-align:left;line-height:1;text-rendering:optimizelegibility}
+#logo a {float:left;margin:10px;text-align:left}
 #logo a {height:auto;font-size:1em;width:auto;text-decoration:none}
 
 #to-page-top	{position:absolute;right:10px;text-align:right}
@@ -34,8 +33,11 @@ menu.categories		{font-family:'Ubuntu Condensed','Trebuchet MS',Arial,sans-serif
 .breadcrumbs		{font-size-adjust:.6}
 menu.categories		{font-size-adjust:.52}
 
+/* hyphens are tuned off below for some contexts */
 p {-webkit-hyphens:auto;-moz-hyphens:auto;hyphens:auto}
 p:only-child {margin-bottom:0;text-indent:0}
+
+blockquote {padding:1ex;margin:0 3em;}
 
 /* =column layout [[20|60]20] */
 #body-container	,
@@ -63,7 +65,6 @@ header.below	{margin:0 auto}
 .column-group .mod			{margin-top:0}
 .column-group .moduletable	{margin-bottom:10px}
 .column-group fieldset		{padding:5px;margin:0}
-.column-group .inner {}
 .column-group h3,
 .column-group .H3			{margin-bottom:0;padding:0}
 
@@ -71,17 +72,19 @@ header.below	{margin:0 auto}
 
 /*
  * =contents
+	.items-leading
+	.items-row
+	.items-more
  */
 .item-page		,
 .blog article	,
 .items-more		{padding:10px;margin-bottom:10px}
 
+/* misc components */
+section.component > div.search {padding:10px;margin-bottom:10px}
+
 .blog h1, .blog .H1 {}
 .blog h2, .blog .H2 {margin-top:0}
-
-.items-leading	,
-.items-row		,
-.items-more		{}
 
 .introtext, .fulltext {margin-right:20px}
 
@@ -99,14 +102,10 @@ header.below	{margin:0 auto}
 .lastUnit > article {margin-left:5px;margin-right:0}
 
 /* make room for .actionsmenu */
-header.actions .title {margin-right:36px}
+header.actions .title {}
 
-.readmore	{text-align:right;margin-top:1ex;margin-bottom:0}
-.readmore:after {content:'\2026\A0';display:inline}
-
-.page-toc	{float:right;width:40%}
-#aii		{margin-top:0}
-#article-index li:last-child {border-top:1px solid #CCC}
+.readmore			{text-align:right;margin-top:1ex;margin-bottom:0}
+.readmore:after		{content:'\2026\A0';display:inline}
 
 /*
  * call-outs and <aside>s flush right within their containing box + reveal content on :hover
@@ -149,9 +148,11 @@ summary::-webkit-details-marker {font-size:1.2em}
 
 /* =category page contents */
 .category-desc {font-size:100%}
-.category-desc blockquote {padding:1ex;margin:0 3em;font:normal 2.25em/1 'Kristi',cursive;text-shadow:0px 0px 3px #888;text-align:center;text-rendering:optimizelegibility}
+.category-desc blockquote {font:normal 2.25em/1 'Kristi',cursive;text-align:center;text-rendering:optimizelegibility}
 .category-desc blockquote {font-size-adjust:0.5; font-stretch:expanded} /* FF */
 blockquote:after {content:attr(title);display:block;margin-top:1em;text-align:right;clear:both;font:normal 12px/1 "Trebuchet MS",Arial,Helvetica,sans-serif}
+
+blockquote p {-webkit-hyphens:none;-moz-hyphens:none;hyphens:none}
 
 /*
  * =pictures - single page, blog page, columns list
@@ -167,44 +168,42 @@ blockquote:after {content:attr(title);display:block;margin-top:1em;text-align:ri
 .blog .unit .introtext		{min-height:250px}
 .category-desc img.catimg	{}
 
-figure img 	{height:auto;border:5px solid #FFF;outline:1px solid #CDCDCD}
+figure img		{height:auto;border:5px solid #FFF;outline:1px solid #CDCDCD}
+.portrait		{text-align:center}
 
 /*
- * =modules
+ * =modules / forms
  */
-.mod-login ul		{margin-left:10px;padding-left:.7em}
-
 .column-group .inner 		{padding:5px}
-
 .column-group fieldset		{border:none;outline:none}
-.column-group dl			{margin:0}
+.column-group dl			{margin:0;padding:0}
 .column-group div.button	{text-align:center}
+
+.mod-login ul				{margin-left:10px;padding-left:.7em}
+
+.column-group fieldset dt	,
+.column-group fieldset dd	,
+.column-group .inputbox 	{display:block;width:100%}
 
 .mod-banner {}
 .banneritem img 	{display:block;margin-left:auto;margin-right:auto;text-align:center}
+
 .mod-search 		{margin-right:10px;float:right}
 .mod-search label	{padding-right:1em}
+.search .inputbox 	{width:60%}
 
-.portrait {text-align:center}
-
-/*
- * =module groups
- */
-header.above div.above {}
+button				{padding:0.2ex 2ex}
 
 /*
  * =menus
  */
-.menu li.mi		{padding:0 0.4em}
-
-.hmenu			{padding:.5ex 0}
-
-.mainmenu .active {font-weight:bold}
+.hmenu				{padding:.5ex 0}
+.mainmenu .active	{font-weight:bold}
 
 .current > a.li	{} /* may have nested menu.submenu */
-.active > a.li	{font-weight:bold} /* single item */
-.sep 			{padding:0.25ex}
-li.mi img		{border:none}
+.active > a.li		{font-weight:bold} /* single item */
+.sep 				{padding:0.25ex}
+li.mi img			{border:none}
 
 /* align with menu items */
 .breadcrumbs		{margin-top:1em}
@@ -212,7 +211,6 @@ li.mi img		{border:none}
 .breadcrumbs .active{padding:0.25ex 0.6em}
 
 .actionsmenu 		{position:absolute;padding-top:0;right:-11px;top:2em;width:24px;opacity:.4}
-.actionsmenu:hover	{box-shadow: -4px 0 4px #DDDDDD; border:1px solid #fff;border-radius: 5px 0 0 5px;opacity:1}
 .actionsmenu li.mi	{padding:0.2ex;display:inline-block}
 .actionsmenu .mi .mi img {padding:2px;margin:0}
 
@@ -220,37 +218,63 @@ li.mi img		{border:none}
 .skiplinks .cat-title:before {content:'\A0('}
 .skiplinks .cat-title:after  {content:')'}
 
-.pagenav			{}
+.pagenav			{margin-left:0;margin-right:0;padding-left:0;padding-right:0;overflow:auto}
 .pagenav li.mi		{}
 .pagenav a.mi		{}
+.pagenav .prev:only-child	{float:left}
+.pagenav .next:only-child	{float:right}
+
+.pagenavcounter {}
+
+/* allow the nested list determine its [default] whitepace at bottom */
+nav.page-toc	{padding-top:1ex;padding-left:.6em;margin-left:1em} /* aka #article-index */
+	.toc-title	{}
+	.toc-items	{list-style:decimal outside none}
+	.toc-items li.mi:last-child {list-style:none;margin-left:-1ex}
+
+/* push the whole thing inwards to make room for the .actionsmenu */
+.has-actions nav.page-toc {margin-right:24px}
 
 nav.pagination			{}
-p.counter				{display:inline-block;margin:0.6ex 1em}
 menu.pagination			{display:inline-block}
+
+p.counter				{display:inline-block;margin:.6ex 1em}
 
 .pagination span.mi		{font-weight:bold}
 
-/* .mod-articles-categories .moduletable .<moduleclass_sfx> */
+/* =modules */
 .mod-articles-categories .hd	{font-size:110%}
+
 menu.categories > li.current	{background-color:rgba(200,200,200, 0.2)}
 menu.categories span.active		{text-transform:uppercase}
 menu.categories .submenu		{padding-left:.6em}
 
+menu.loginmenu					{margin-top:0.6ex}
+.loginmenu span.mi				{padding: 1px 3px;}
+
 /* =misc */
-.contact-item {}
+.contact-item	{}
+
+/* this "menu" ist JS based and will be enabled by the script itself */
+#styleswitcher	{display:none}
+li.switcher 	{display:inline-block;cursor:pointer}
+
+/* =widgets */
+summary:focus		{}
+summary:focus + *	{}
 
 /*
  * =color scheme, borders, eye-candy;and not
  */
-
 .mod-custom div.inner	{background:none;outline:none}
 
 /*
  * =branding - category and page styles
  */
+#aii {margin-top:0}
 
 .introtext p:not(:first-of-type),
-.fulltext > p {text-indent:1.6ex}
+.fulltext  p:not(:first-of-type) {text-indent:1.6ex}
 
 .gedichte .introtext p,
 .bestellungen .introtext p,
@@ -258,19 +282,22 @@ article .introtext blockquote p,
 article .introtext p:first-of-type,
 article .introtext p[class] {text-indent:0}
 
+/* can't group :pseudo-selector! */
+.fulltext :-moz-any(h1,h2,h3,h4,h5,h6) + p		{text-indent:0}
+.fulltext :-webkit-any(h1,h2,h3,h4,h5,h6) + p	{text-indent:0}
+.fulltext :matches(h1,h2,h3,h4,h5,h6) + p		{text-indent:0}
+
 .schriftstellerei article p:first-of-type img {float:right;margin-left:10px;max-width:40%;position:relative;z-index:10}
 .schriftstellerei article ~ img:first-child {margin:0 0 5px 1em}
 
 /* =box drop shadows CSS3 */
-
 nav.pages,
- .mainnavi,
- .breadcrumbs,
+ .mainnavi, .breadcrumbs,
  .pagination li.mi:hover,
- .dslt		{-webkit-box-shadow:0 0 3px #CCC;-moz-box-shadow:0 0 3px #CCC;box-shadow:0 0 3px #CCC;outline:none}
+ .dslt		{box-shadow:0 0 3px #CCC;outline:none}
 
 .introtext img	,
-.hbox-ds		{margin-left:3px;-webkit-box-shadow:-2px 3px 5px 1px #888;-moz-box-shadow:-2px 3px 5px 1px #888;box-shadow:-2px 3px 5px 1px #888}
+.hbox-ds		{margin-left:3px;box-shadow:-2px 3px 5px 1px #888}
 
 /* =supplemental property classes */
 .prel {position:relative} .pabs {position:absolute}
