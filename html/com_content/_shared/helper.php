@@ -30,14 +30,6 @@ class ContentLayoutHelper
 	 */
 	static public function showReadmore($item, $params, $class='line readmore')
 	{
-		$more = JText::_('COM_CONTENT_READ_MORE');
-		if (JFactory::getLanguage()->hasKey('READ_MORE_1')) {
-			$r = rand(1, 5);
-			if (JFactory::getLanguage()->hasKey('READ_MORE_'.$r)) {
-				$more = JText::_('READ_MORE_'.$r);
-			}
-		}
-
 		if ($params->get('access-view')) {
 			$link = JRoute::_(ContentHelperRoute::getArticleRoute($item->slug, $item->catid));
 		}
@@ -53,18 +45,18 @@ class ContentLayoutHelper
 		if (!$params->get('access-view')) {
 			$html .= JText::_('COM_CONTENT_REGISTER_TO_READ_MORE');
 		}
-		elseif ($readmore = $item->alternative_readmore) {
-			$html .= $readmore;
-			if ($params->get('show_readmore_title', 0) != 0) {
-				$html .= JHtml::_('string.truncate', ($item->title), $params->get('readmore_limit'));
+		else 
+		{
+			if ($params->get('show_readmore_title') && $item->alternative_readmore) {
+				$more = JHtml::_('string.truncate', $item->alternative_readmore, $params->get('readmore_limit', 50));
 			}
-		}
-		elseif ($params->get('show_readmore_title', 0) == 0) {
-			$html .= JText::sprintf('COM_CONTENT_READ_MORE_TITLE');
-		}
-		else {
-			$html .=  $more;
-			$html .= JHtml::_('string.truncate', ($item->title), $params->get('readmore_limit'));
+			elseif (!empty($more)) {
+				// use the "random" prefix
+				$html .= JText::sprintf($more, $item->readmore);
+			}
+			else {
+				$html .= JText::sprintf('COM_CONTENT_READ_MORE_TITLE', $item->title);
+			}
 		}
 
 		$html .= '</a></p>';

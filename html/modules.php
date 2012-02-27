@@ -35,7 +35,7 @@ function modChrome_chtml( $module, &$params, &$attribs ) {
 		$css[]	= str_replace('_', '-', $module->module);
 	}
 
-	$css[] 	= isset($attribs['module-class'])  ? $attribs['module-class'] : 'moduletable';
+	$css[] 	= isset($attribs['module-class'])  ? $attribs['module-class'] : $module->position;
 	$css[] 	= isset($attribs['outline-style']) ? 'outline-'.$attribs['outline-style'] : '';
 	$css[] 	= $params->get('moduleclass_sfx');
 	$css    = trim(implode(' ', array_unique($css) ));
