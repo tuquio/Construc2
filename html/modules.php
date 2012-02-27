@@ -20,8 +20,8 @@
  * @param JRegistry  $params
  * @param array      $attribs
  */
-function modChrome_chtml( $module, &$params, &$attribs ) {
-
+function modChrome_chtml( $module, &$params, &$attribs )
+{
 	$module->content = trim($module->content);
 	if (empty($module->content)) return;
 
@@ -45,8 +45,18 @@ function modChrome_chtml( $module, &$params, &$attribs ) {
 
 	echo '<div class="inner">', PHP_EOL;
 
-	if ($module->showtitle) {
+	if ($module->showtitle)
+	{
 		$level = isset($attribs['level']) ? (int) $attribs['level'] : 3;
+
+		// flip title for guests and users
+		$u = JFactory::getUser()->guest ? '_0' : '_1';
+		if (JFactory::getLanguage()->hasKey(strtoupper($module->title . $u))) {
+			$module_title = JText::_($module->title . $u);
+		}
+		else {
+			$module_title = $module->title;
+		}
 
 		$css = array();
 		if ('custom' != $module->module) {
@@ -57,7 +67,7 @@ function modChrome_chtml( $module, &$params, &$attribs ) {
 		$css   = trim(implode(' ', array_unique($css) ));
 
 		if ($oocss) echo '<div class="hd">';
-		echo ' <h', $level, ' class="', $css, '">', $module->title, '</h', $level, '>';
+		echo ' <h', $level, ' class="', $css, '">', $module_title, '</h', $level, '>';
 		if ($oocss) echo '</div>', PHP_EOL;
 	}
 

@@ -24,12 +24,14 @@ ConstructTemplateHelper::getInstance(JFactory::getDocument(), $module)
 <?php if ($type == 'logout') { ?>
 <form class="form-validate form-login" id="form-login" action="<?php echo JRoute::_('index.php', true, $params->get('usesecure')) ?>" method="post">
 <?php if ($params->get('greeting')) { ?>
-	<div class="line description pre-text"><?php
+	<div class="line description pre-text">
+	<p><?php
 	if ($params->get('name') == 0) {
 		JText::printf('MOD_LOGIN_HINAME', $user->get('name'));
 	} else {
 		JText::printf('MOD_LOGIN_HINAME', $user->get('username'));
-	} ?></div>
+	} ?></p
+	</div>
 <?php } ?>
 
 	<div class="line button">
