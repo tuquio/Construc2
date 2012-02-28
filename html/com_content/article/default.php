@@ -68,7 +68,6 @@ if ($this->item->fulltext)
 	$itext = '';
 	$ftext = $this->item->text;
 }
-FB::log(array($ipos, $fpos, $bpos));
 
 // override introtext and fulltext
 unset($this->item->text);
