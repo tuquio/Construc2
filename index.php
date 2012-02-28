@@ -10,7 +10,6 @@
  */
 // Load template logic
 require JPATH_THEMES.'/'.$this->template.'/elements/logic.php';
-require JPATH_THEMES.'/'.$this->template.'/elements/widgets.php';
 
 // Add custom layout overrides for components or section here
 /* eg:
