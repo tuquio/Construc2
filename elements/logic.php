@@ -195,7 +195,6 @@ if ($ssiIncludes) {
 
 	if ($customStyleSheet) {
 		$templateHelper->addLink($tmpl_url.'/themes/'.$customStyleSheet);
-		FB::log($templateHelper->theme);
 	}
 }
 

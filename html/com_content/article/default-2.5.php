@@ -30,10 +30,6 @@ $showtoc	= isset($this->item->toc) ? 'has-toc ' : '';
 $images		= json_decode($this->item->images);
 $urls		= json_decode($this->item->urls);
 
-FB::log($images, 'article images');
-FB::log($urls, 'article urls');
-FB::log($this->item, 'article');
-
 /* this layout separates $introtext and $fulltext but content plugins only work
    for the combined $text property, hence we need to reconstuct these parts. */
 if ($this->item->fulltext)
