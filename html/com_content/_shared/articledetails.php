@@ -1,11 +1,17 @@
 <?php defined('_JEXEC') or die;
 /**
  * Article and publishing properties.
+ * This shared layout is optionally included by
+ * - /article/default.php
+ * - /featured/default_item.php
+ * - /category/blog_item.php
+ * any of which also set the variables $showLabels, $showMeta, and $showDates
+ * depending on the associated params.
  *
  * @package     Templates
  * @subpackage  Construc2
  * @author      WebMechanic http://webmechanic.biz
- * @copyright   (C) 2011 WebMechanic
+ * @copyright   (C) 2012 WebMechanic
  * @license     GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
 ?>
@@ -33,7 +39,7 @@ if ($showLabels) {
 	if (isset($this->item->parent_slug)) {
 		if ($params->get('show_parent_category') && $this->item->parent_slug != '1:root') {
 ?>
-	<dt class="parent-category"><?php JText::printf('COM_CONTENT_PARENT', '') ?></dt>
+	<dt class="parent-category"><?php JText::printf('COM_CONTENT_PARENT', '') /* just the label */ ?></dt>
 	<dd class="parent-category"><?php
 	$title = $this->escape($this->item->parent_title);
 	if ($params->get('link_parent_category') && $this->item->parent_slug) {
@@ -48,7 +54,7 @@ if ($showLabels) {
 
 	if ($params->get('show_category')) {
 ?>
-	<dt class="category"><?php JText::printf('COM_CONTENT_CATEGORY', '') ?></dt>
+	<dt class="category"><?php JText::printf('COM_CONTENT_CATEGORY', '') /* just the label */ ?></dt>
 	<dd class="category"><?php
 	$title = $this->escape($this->item->category_title);
 	if ($params->get('link_category') ) {
@@ -64,7 +70,7 @@ if ($showLabels) {
 if ($showMeta) {
 	if ($params->get('show_hits')) {
 ?>
-	<dt class="hits"><?php JText::printf('COM_CONTENT_ARTICLE_HITS', '') ?></dt>
+	<dt class="hits"><?php JText::printf('COM_CONTENT_ARTICLE_HITS', '') /* just the label */ ?></dt>
 	<dd class="hits"><?php echo $this->item->hits ?></dd>
 <?php
 	}
@@ -73,21 +79,21 @@ if ($showMeta) {
 if ($showDates) {
 	if ($params->get('show_create_date')) {
 ?>
-	<dt class="create"><?php JText::printf('COM_CONTENT_CREATED_DATE_ON', '') ?></dt>
+	<dt class="create"><?php JText::printf('COM_CONTENT_CREATED_DATE_ON', '') /* just the label */ ?></dt>
 	<dd class="create"><time><?php echo JHtml::_('date', $this->item->created, 'DATE_FORMAT_LC1') ?></time></dd>
 <?php
 	}
 
 	if ($params->get('show_publish_date')) {
 ?>
-	<dt class="published"><?php JText::printf('COM_CONTENT_PUBLISHED_DATE', '') ?></dt>
+	<dt class="published"><?php JText::printf('COM_CONTENT_PUBLISHED_DATE', '') /* just the label */ ?></dt>
 	<dd class="published"><time pubdate="<?php echo @date('Y-m-d', $this->item->publish_up) ?>"><?php echo JHtml::_('date', $this->item->publish_up, 'DATE_FORMAT_LC1') ?></time></dd>
 <?php
 	}
 
 	if ($params->get('show_modify_date')) {
 ?>
-	<dt class="modified"><?php JText::printf('COM_CONTENT_LAST_UPDATED', '') ?></dt>
+	<dt class="modified"><?php JText::printf('COM_CONTENT_LAST_UPDATED', '') /* just the label */ ?></dt>
 	<dd class="modified"><time><?php echo JHtml::_('date', $this->item->modified, 'DATE_FORMAT_LC1') ?></time></dd>
 <?php
 	}
