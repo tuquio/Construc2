@@ -113,8 +113,7 @@ if ($this->params->get('filter_field') != 'hide') { ?>
 </table>
 <?php
 
-if ($this->params->get('show_pagination') == 1 || ($this->params->get('show_pagination') == 2
-	&& $this->pagination->get('pages.total') > 1))
+if ($this->pagination->get('pages.total') > 1 && ($this->params->get('show_pagination') == 1 || $this->params->get('show_pagination') == 2))
 { ?>
 	<nav id="pages" class="line pagination">
 <?php if ($this->params->def('show_pagination_results', 1)) { ?>
