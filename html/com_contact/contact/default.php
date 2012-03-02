@@ -1,13 +1,13 @@
-<?php
- /**
- * $Id$
- * @package		Joomla.Site
- * @subpackage	com_contact
- * @copyright	Copyright (C) 2005 - 2011 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+<?php defined('_JEXEC') or die;
+/**
+ * Custom Override for com_contact.default.
+ *
+ * @package		Templates
+ * @subpackage  Construc2
+ * @author		WebMechanic http://webmechanic.biz
+ * @copyright	(C) 2011 WebMechanic. All rights reserved.
+ * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
-
-defined('_JEXEC') or die;
 
 $cparams = JComponentHelper::getParams ('com_media');
 $pstyle  = $this->params->get('presentation_style');
