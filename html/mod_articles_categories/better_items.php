@@ -32,7 +32,7 @@ foreach ($list as $item)
 	$licss = implode(' ', $css);
 
 ?><li id="catid-<?php echo $item->id ?>" class="<?php echo $licss ?>">
-<a href="<?php echo $href ?>" class="li"><span class="li <?php echo 'H'. ($item_heading + $levelup) ?>"><?php echo $item->title ?></span></a>
+<a class="mi" href="<?php echo $href ?>"><span class="mi <?php echo 'H'. ($item_heading + $levelup) ?>"><?php echo $item->title ?></span></a>
 <?php
 if ($params->get('show_description', 0)) {
 	echo JHtml::_('content.prepare', $item->description, $item->getParams());
