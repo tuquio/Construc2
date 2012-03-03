@@ -1,6 +1,6 @@
 /*!
  * forms.css
- * @version 1.9.5
+ * @version 1.9.6
  * @license DWTF
  */
 
@@ -13,7 +13,9 @@ fieldset dl		{display:block;clear:both}
 fieldset dt		,
 fieldset dd		{display:inline-block;padding:.25ex 0;vertical-align:top;}
 fieldset dt		{width:32%}
+fieldset dt.wide{display:block;width:auto}
 fieldset dd		{width:50%}
+fieldset dd.wide{display:block;width:auto}
 
 textarea		{border:1px solid;resize:vertical;width:90%}
 input			{border-style:solid;border-width:0 0 2px 1px;padding-left:.2ex; width:90%}
