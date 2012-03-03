@@ -7,16 +7,16 @@
 body {min-width:900px}
 
 /* template param override (#body-container,#header-above 100%) */
-@media screen and (max-width:1039px) {body #body-container, body #header-above, .page-foot {max-width:94%}}
-@media screen and (min-width:1040px) {body #body-container, body #header-above, .page-foot {max-width:90%}}
+@media screen and (max-width:1039px) {body #body-container, body #header-above, .page-foot {max-width:94%} #logo {margin-left:3%}}
+@media screen and (min-width:1040px) {body #body-container, body #header-above, .page-foot {max-width:90%} #logo {margin-left:5%}}
 
 #nav	{margin-top:1em}
 .content-container {margin-top:1em}
 
-#logo   {font-size:60px;line-height:1;text-rendering:optimizelegibility}
-#logo   ,
-#logo a {float:left;margin:10px;text-align:left}
-#logo a {height:auto;font-size:1em;width:auto;text-decoration:none}
+#logo   	{font-size:60px}
+#logo   	{display:inline-block}
+.site-link	{}
+.site-name	{}
 
 #to-page-top	{position:absolute;right:10px;text-align:right}
 #diagnostics	{position:absolute;right:10px;top:20px;max-width:90px}
@@ -28,6 +28,8 @@ h1,h2,h3,h4,h5,h6	,
 .mainmenu			,
 .breadcrumbs		,
 menu.categories		{font-family:'Ubuntu Condensed','Trebuchet MS',Arial,sans-serif;text-rendering:optimizelegibility}
+
+.title				{/* a serif font might be nice */}
 
 .mainmenu			,
 .breadcrumbs		{font-size-adjust:.6}
@@ -134,17 +136,17 @@ summary::-webkit-details-marker {font-size:1.2em}
 
 .article-info	{margin:0}
 
-.article-info dd {margin-right:1ex}
-.article-info .parent-category ,
- .article-info .category	,
- .article-info .createdby	,
- .article-info .hits		,
- .article-info .create		,
- .article-info .published	,
- .article-info .modified	{display:inline-block}
- .article-info dt.create	{display:inline}
+.article-info dt {display:inline}
+.article-info dd {display:inline}
+ .article-info .createdby {}
+ .article-info .parent-category {}
+ .article-info .category {}
+ .article-info .hits {}
+ .article-info .created {}
+ .article-info .modified {}
+ .article-info .published {}
 
-.article-info .create:before {content:' ';display:block;}
+.items-row .article-info dd.createdby:after {content:" ";display: block;}
 
 /* =category page contents */
 .category-desc {font-size:100%}
@@ -163,7 +165,7 @@ blockquote p {-webkit-hyphens:none;-moz-hyphens:none;hyphens:none}
 .item-page .introtext img	,
 .item-page .fulltext img	{max-width:96%}
 
-.blog .introtext img		{max-width:80%}
+.blog .introtext img		{max-width:96%}
 .unit .introtext img 		{max-height:200px;border-width:5px}
 .blog .unit .introtext		{min-height:250px}
 .category-desc img.catimg	{}
@@ -188,11 +190,20 @@ figure img		{height:auto;border:5px solid #FFF;outline:1px solid #CDCDCD}
 .mod-banner {}
 .banneritem img 	{display:block;margin-left:auto;margin-right:auto;text-align:center}
 
-.mod-search 		{margin-right:10px;float:right}
-.mod-search label	{padding-right:1em}
-.search .inputbox 	{width:60%}
+/* align with mainmenu and li paddings */
+.mainnavi form {
+	position: absolute;
+	right: 2px;
+	top: 0.5ex;
+}
+.mainnavi div.search {
+	display: inline-block;
+	padding: 0.2ex;
+}
+.search label	{display:inline;padding:0 1%}
+.search input	{display:inline;width:75%}
 
-button				{padding:0.2ex 2ex}
+button			{padding:0.2ex 2ex}
 
 /*
  * =menus
@@ -276,11 +287,17 @@ summary:focus + *	{}
 .introtext p:not(:first-of-type),
 .fulltext  p:not(:first-of-type) {text-indent:1.6ex}
 
-.gedichte .introtext p,
+article.gedichte .introtext p,
+article.gedichte .fulltext  p,
 .bestellungen .introtext p,
 article .introtext blockquote p,
 article .introtext p:first-of-type,
 article .introtext p[class] {text-indent:0}
+
+.kunstwerke .introtext p,
+.kunstwerke .fulltext  p	{text-indent:0}
+.kunstwerke .introtext img,
+.kunstwerke .fulltext  img	{margin-bottom:.6em}
 
 /* can't group :pseudo-selector! */
 .fulltext :-moz-any(h1,h2,h3,h4,h5,h6) + p		{text-indent:0}
@@ -289,15 +306,6 @@ article .introtext p[class] {text-indent:0}
 
 .schriftstellerei article p:first-of-type img {float:right;margin-left:10px;max-width:40%;position:relative;z-index:10}
 .schriftstellerei article ~ img:first-child {margin:0 0 5px 1em}
-
-/* =box drop shadows CSS3 */
-nav.pages,
- .mainnavi, .breadcrumbs,
- .pagination li.mi:hover,
- .dslt		{box-shadow:0 0 3px #CCC;outline:none}
-
-.introtext img	,
-.hbox-ds		{margin-left:3px;box-shadow:-2px 3px 5px 1px #888}
 
 /* =supplemental property classes */
 .prel {position:relative} .pabs {position:absolute}

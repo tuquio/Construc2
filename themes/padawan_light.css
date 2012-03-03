@@ -47,6 +47,8 @@ menu.categories > li.current	{outline:1px solid #fff}
 .mod-articles-categories .inner,
 .column-group .mod-login .inner	{outline:1px solid hsla(0, 50%, 96%, .25)}
 
+menu.categories span.mi:hover	{border-bottom:1px dotted #999}
+
 /* =widgets */
 summary::-webkit-details-marker {color:#888}
 
@@ -60,18 +62,29 @@ input.inputbox:focus		{box-shadow:0 0 3px 1px #ccc}
 .ds   						{box-shadow:0 0 3px #888}
 
 /* =eye candy text */
-#logo 						{text-shadow:0 1px 1px #fff,1px 0px 1px #000,0 5px 15px #888,0px -5px 10px #fff}
-span.site-name				{color:#333}
-span.site-name:hover		{opacity:0.9}
+#logo 						{text-shadow:0 1px 1px #fff, 1px 0px 1px #000, 0 5px 15px #888, 0px -5px 10px #fff}
+#logo .site-link			{text-decoration:none;border-bottom:none;outline:none}
+.site-link:focus,
+.site-link:hover			{opacity:0.9; text-shadow:0 1px 2px #fff, 1px 0px 1px #000}
+.site-name					{color:#333}
 
 h2,h3,h4, .H2,.H3,.H4		{text-shadow:0 1px 0 #ddd}
 .category-desc				{text-shadow:0 1px 0 #fff, 0px 0px 1px #888}
 .category-desc blockquote	{text-shadow:0px 0px 3px #888, 1px 1px 10px #fff}
 
-h1, .H1, .hts, .ts			{text-shadow:0 0 2px #888}
+article h1, article .H1,
+.hts, .ts	{text-shadow:0 0 2px #888}
 
-.mainmenu li.mi:hover		,
-.breadcrumbs li.mi:hover	,
+h1 a, h1 a:hover,
+h2 a, h2 a:hover,
+h3 a, h3 a:hover 	{border-bottom:1px solid #ccc;text-decoration:none}
+h1 a:hover,
+h2 a:hover,
+h3 a:hover 			{border-bottom-color:inherit}
+
+.mainmenu a.mi:hover		,
+.breadcrumbs a.mi:hover		,
+.categories a.mi:hover		,
 .tslt						{text-shadow:0 0 2px #aaa}
 
 .loginmenu span.mi:hover	{background-color:#fff;border-radius:3px}
@@ -90,8 +103,18 @@ input.inputbox:focus 	{border-color:#bbb}
 /* Tips, Error, Message, Hightlight */
 .error, .warning, .notice, .message, .tips {border:1px solid;background:#efefef;padding:1ex .6em;text-indent:0 !important}
 
-/* =gradients */
 @media screen {
+/* =box drop shadows */
+nav.pages,
+ .mainnavi, .breadcrumbs,
+ .pagination li.mi:hover,
+ .dslt		{box-shadow:0 0 3px #CCC;outline:none}
+
+.introtext img	,
+.fulltext img	,
+.hbox-ds		{margin-left:3px;box-shadow:-2px 3px 5px 1px #888}
+
+/* =gradients */
  .meta ,
  button {
 	background-image: -webkit-linear-gradient(top, #fff, #efefef);
