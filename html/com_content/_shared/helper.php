@@ -17,7 +17,7 @@ JLoader::register('SearchHelper', JPATH_ADMINISTRATOR .'/components/com_search/h
 class ContentLayoutHelper
 {
 	/**
-	 * Renders the "ream more" link and must be wrapped in a call such as
+	 * Renders the "Read More" link and must be wrapped in a call such as
 	 * <code>
 	 * if ($params->get('show_readmore') && $this->item->readmore) {
 	 *     echo ContentLayoutHelper::showReadmore($this->item, $params);
@@ -30,36 +30,31 @@ class ContentLayoutHelper
 	 */
 	static public function showReadmore($item, $params, $class='line readmore')
 	{
-		if ($params->get('access-view')) {
-			$link = JRoute::_(ContentHelperRoute::getArticleRoute($item->slug, $item->catid));
+		$access = (bool) $params->get('access-view');
+
+		$html = '<p class="'. $class . ($access ? ' access-view' : '').'">';
+
+		if ($access) {
+			$link  = JRoute::_(ContentHelperRoute::getArticleRoute($item->slug, $item->catid));
+			$html .= '<a href="'. $link .'#content">';
+
+			if ($params->get('show_readmore_title') && $item->alternative_readmore) {
+				$html .= JHtml::_('string.truncate', $item->alternative_readmore, $params->get('readmore_limit', 50));
+			}
+			else {
+				$html .= JText::sprintf('COM_CONTENT_READ_MORE_TITLE', $item->title);
+			}
 		}
 		else {
 			$itemId  = JSite::getMenu()->getActive()->id;
 			$URL     = JRoute::_(ContentHelperRoute::getArticleRoute($item->slug));
 			$link    = new JURI(JRoute::_('index.php?option=com_users&view=login&Itemid=' . $itemId));
 			$link->setVar('return', base64_encode($URL));
+
+			$html .= '<a href="'. $link .'#content">' . JText::_('COM_CONTENT_REGISTER_TO_READ_MORE') . '</a>';
 		}
 
-		$html = '<p class="'. $class .'"><a href="'. $link .'#content">';
-
-		if (!$params->get('access-view')) {
-			$html .= JText::_('COM_CONTENT_REGISTER_TO_READ_MORE');
-		}
-		else 
-		{
-			if ($params->get('show_readmore_title') && $item->alternative_readmore) {
-				$more = JHtml::_('string.truncate', $item->alternative_readmore, $params->get('readmore_limit', 50));
-			}
-			elseif (!empty($more)) {
-				// use the "random" prefix
-				$html .= JText::sprintf($more, $item->readmore);
-			}
-			else {
-				$html .= JText::sprintf('COM_CONTENT_READ_MORE_TITLE', $item->title);
-			}
-		}
-
-		$html .= '</a></p>';
+		$html .= '</p>';
 
 		return $html;
 	}

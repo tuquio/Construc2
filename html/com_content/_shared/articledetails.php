@@ -36,14 +36,14 @@ if ($showLabels) {
 	}
 
 /* the $parent_slug property is not available in all layouts */
-	if (isset($this->item->parent_slug)) {
-		if ($params->get('show_parent_category') && $this->item->parent_slug != '1:root') {
+	if ($params->get('show_parent_category')) {
+		if (isset($this->item->parent_id) && $this->item->parent_id > 1) {
 ?>
 	<dt class="parent-category"><?php JText::printf('COM_CONTENT_PARENT', '') /* just the label */ ?></dt>
 	<dd class="parent-category"><?php
 	$title = $this->escape($this->item->parent_title);
-	if ($params->get('link_parent_category') && $this->item->parent_slug) {
-		echo '<a href="'.JRoute::_(ContentHelperRoute::getCategoryRoute($this->item->parent_slug)).'">'.$title.'</a>';
+	if ($params->get('link_parent_category')) {
+		echo '<a href="'.JRoute::_(ContentHelperRoute::getCategoryRoute($this->item->parent_id)).'">'.$title.'</a>';
 	} else {
 		echo $title;
 	} ?>
@@ -54,7 +54,7 @@ if ($showLabels) {
 
 	if ($params->get('show_category')) {
 ?>
-	<dt class="category"><?php JText::printf('COM_CONTENT_CATEGORY', '') /* just the label */ ?></dt>
+	<dt class="category" title="<?php echo JText::printf('COM_CONTENT_CATEGORY', '') ?>"><?php echo JText::plural('COM_CONTENT_CATEGORY', (int)$params->get('show_parent_category')) /* use _0 and _1 alternate labels */ ?></dt>
 	<dd class="category"><?php
 	$title = $this->escape($this->item->category_title);
 	if ($params->get('link_category') ) {
@@ -79,8 +79,8 @@ if ($showMeta) {
 if ($showDates) {
 	if ($params->get('show_create_date')) {
 ?>
-	<dt class="create"><?php JText::printf('COM_CONTENT_CREATED_DATE_ON', '') /* just the label */ ?></dt>
-	<dd class="create"><time><?php echo JHtml::_('date', $this->item->created, 'DATE_FORMAT_LC1') ?></time></dd>
+	<dt class="created"><?php JText::printf('COM_CONTENT_CREATED_DATE_ON', '') /* just the label */ ?></dt>
+	<dd class="created"><time><?php echo JHtml::_('date', $this->item->created, 'DATE_FORMAT_LC1') ?></time></dd>
 <?php
 	}
 
