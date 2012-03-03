@@ -75,7 +75,9 @@ if ($showDiagnostics) {
 	$catId = $itemId = $articleId = '';
 	if ($amenu->component == 'com_content') {
 		$itemId 	= $amenu->id;
-		$articleId	= $amenu->query['id'];
+		if (isset($amenu->query['id'])) {
+			$articleId = $amenu->query['id'];
+		}
 	}
 }
 

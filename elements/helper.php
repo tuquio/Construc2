@@ -1131,7 +1131,7 @@ class ConstructTemplateHelper
 					continue;
 				}
 
-				$this->addStyleSheet('//fonts.googleapis.com/css?family='.$font);
+				$this->addLink('//fonts.googleapis.com/css?family='.$font);
 				if ($addSelectors) {
 					// Fix Google Web Font name for CSS
 					$this->addStyle(
