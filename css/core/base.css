@@ -1,7 +1,7 @@
 /* äöü - UTF-8 required! */
 /*!
  * base.css "HTML5ish edition" featuring 'normalise.css'
- * @version 1.6.4 06.02.2012
+ * @version 1.6.5 03.03.2012
  * personal likings + defaults for THIS WEBSITE ONLY mixed with inspirational input from
  * @credits E. Meyer, Yahoo!, N. Sullivan, D. Edwards, CSS-WG, W3C, and the Interwebs,
  * feat. normalize.css - http://github.com/necolas/normalize.css
@@ -28,8 +28,6 @@ abbr[title]{border-bottom:1px dotted}
 b,strong{font-weight:bold}
 dfn{font-style:italic}
 mark{background:#ff0;color:#000}
-q{quotes:none}
-q:before,q:after{content:'';content:none}
 small,sub,sup{font-size:75%}
 sub,sup{line-height:0;position:relative;vertical-align:baseline}
 sup{top:-0.5em}
