@@ -1,239 +1,269 @@
-Construc2 4 J!1.7+
-==================
-check [original repo](https://github.com/betweenbrain/Construct-Community-1.6)
-to learn more about "Joomla Engineering Construct Template Framework for Joomla! 1.6"
+Construc2 4 J!2.5
+=================
+Construc2 is a "HTML5 Template Framework" and as such it is neither a
+"Design" nor does it ship with anything resembling a nice website.
 
-**This** is a clone to fix and change things that don't work for me.
+Thanks to Joomla's template styles and Construc2's ability to create
+"themes" as well as template "layouts" for almost any page the CMS
+can produce, it's all up to your imagination and of course your PHP,
+HTML(5), and CSS(3) skills.
 
-== Ideas / To-do
-*	fix l10n issues (almost done)
-*	make webfont list "live" (cacheable)
-*	make jQuery version list "live" (cacheable)
-*	add (a set of?) "previz" params to render dummy modules at various
-	module positions during layout development
+**This** "Template" started as a fork of "Joomla Engineering Construct
+Template Framework for Joomla! 1.6" primarily to add L10N support and
+to tweak some of its great features that just didn't work for me.
+However, Construc2 is **not compatible** with any former or present
+flavor of JE's nice "Construct Framework"!
 
-Changes
--------
-Removed all `index.html`; have .htaccess for that.
+**Note:** The name will likely change (once more) as of Version 2.0 to
+avoid any potential confusion. The new version will ship with a free
+sample theme and is planned to be released in May 2012. At this point
+the shared history with CTF will also vanish into oblivion.
 
-Removed identical code from main `index.php` leaving `/layouts/index.php`
-the default layout if none is provided or found to match the custom CSS
-from template paramaters.
+Core Style Sheets
+----------------
+Construc2 ships with OOCSS from Nicole Sullivan for flexible grid and
+"module" support.
+You can learn more about OOCSS @ http://oocss.org or fork/download
+the sources from https://github.com/stubbornella/oocss
 
-Both `logic.php` and `helper.php` are now loaded unconditionally.
-There appears to be no reason to validate their filenames or check if they
-exist, since none of the flexibility this template offers would work anyway
-should these files be missing.
+`base.css` is a conglomerate of personal preferences and stuff stolen
+from the Interwebs incl. but not limited to Eric Meyer, Yahoo!, Nicole
+Sullivan, Dean Edwards, the CSS-WG, W3C, browser style sheets, and parts
+of normalize.css for most HTML5 elements.
+The "color scheme", if any, might be considered Black & White with a
+hint of grey.
 
-Added several l10n keys to replace the many hardcoded english strings in
-`index.php`, `elements/*` and `templateDetails.xml` -- still WIP.
+The `oocss.css` file that ships with Construc2 in a concatenation of
+the original oocss.css (with more grid dividers) and mods.css incl.
+the  `.complex` and `.pop` modules. It provides basic grid support
+for RTL scripts and features the basic settings for (horizontal) menus.
 
-== Refactored jqueryversion.php
-Updated to include jQuery 1.6+ using alternative CDN sources.
+jQuery support
+--------------
+Inclusion and `noConflict()` management of all jQuery versions with
+support for alternative CDN sources via relative protocol URLs to work
+with both http and https.
 
-The list of jQuery version is now maintaind in an array, and looped over
-to add them in bulk to the select list, rather than adding each single
-release "manually" as a single option.
+Optional Mootools removal
+-------------------------
+If you prefer jQuery for your DOM manipulation tricks, Ajax development,
+or just happen to love throwing jQuery plugins onto your page, you can
+easily and explicitely remove all traces of Mootools from your frontend;
+or choose to force it.
 
-Google CDN URLs now use a relative protocol URL to work with both http
-and https.
+**Note:** Mootools support cannot be disabled for frontend editing and will in fact be forced!
 
-Cleanup modChrome / modules.php
--------------------------------
-Removed styles marked as deprecated, 'cos they're deprecated.
+HEAD clean-up
+-------------
+More often than not, the ordering of styles and script added from plugins,
+modules, components, the core, and the template may cause conflicts and
+dependency failures. This ordering can be "optimized" to reduce (and potentially
+avoid) any such issues.
 
-Added "OOCSS compliant" styles: mod, complex, pop, bubble.
+This feature also removes various non-standard, non-validating meta elements.
 
-Changed test for module content presence to the top using
-``` php
-	if (empty($module->content)) return;
-```
-If there is no content, there's no need to waste time and memory testing the
-parameter and assigning them to other variables to eventually wrap the whole
-function body in an if-statement.. and eventually output nothing.
-``` php
-	if ( !empty($module->content) ) {
-		// lots of stuff here
-	}
-```
-The code is now only executed if content actually exists.
+MSIE CC grouping
+----------------
+ConstructTemplateHelper does the heavy lifting and amoth other this provides
+"conditional comment grouping" for MSIE for all things going into the HEAD
+element. Instead of cluttering the top of the markup, any hacks and scripts
+to target a particular IE version are wrapped into a single CC and added
+below the "good stuff".
 
-Refactored logic.php
---------------------
-Some param values are now forced to a proper type, e.g. boolean or number.
+Link and Script control
+-----------------------
+In addition to CC groups you gain control over attributes added to the <link>,
+<meta> and <script> elements using ConstructTemplateHelper.
 
-Setting `$loadModal` now forces `$loadMoo` to be true, as the former depends
-on it. Updated calls of deprecated `JHtml::_('behavior.foo')` to
-`JHtmlBehavior::foo()` were appropriate.
-However if `$loadModal` becomes false, all scripts from `/media/system/js`
-execpt core.js are removed, because the all depend on Mootools.
+modChrome / modules.php
+-----------------------
+Module chrome features "OOCSS compliant" module styles via `<jdoc:include/>`
+and explicit content plugin rendering in your custom layouts. This feature is
+a left-over goodie from J!1.5/1.6. As of J!1.7 content plugins are also enabled
+for modules. If you disable this module option, you can still overrule it using
+the 'withevent' chrome style on a per theme and module position basis.
 
-Added condition for the call of SmoothScroller() that woudn't work if
-Mootools were disabled.
+See also "Gone for good" below.
 
-Put some of its "logic" on a diet and killed redundancy = ~30% less code.
+CSS Media "all"
+---------------
+All core styles are loaded using `media="all"`.
+Despite reports to the contrary you won't save any bandwith separating styles
+via `<link>` and different media attributes. Browsers will load those files
+anyway although they're not applied if the media doesn't match. As a consequence
+you may add the print rules to your "theme.css" right upfront and wrap them
+inside `@media print {}`.
+- Stoyan Stefanov: http://www.phpied.com/delay-loading-your-print-css/
 
-Fixed some calls for adding extra (MSIE) styles and links happened unconditionally
-causing issues on the client side.
+A few rules for print media is already present in the core files, such as font
+color and shadow resets, and `display:none` for navigation items.
 
-Replaced all `$doc` with `$this` which in the given context is exactly the
-same as `JFactory::getDocument()`.
+The `print.css` is used (automatically) for the print version of the default
+`component.php` layout. It provides some previz screen formatting and of
+course some print rules if the page of the popup window is actually printed.
 
-Refactored helper.php
----------------------
-Implemented some logic into ConstructTemplateHelper which (as a helper) ought
-to be a static class but is not. Won't change this however, thus:
--	added constructor that requires the template object
--	renamed `$includeFiles` to `$layouts`
--	renamed `getIncludeFile()` to `getLayout()`
--	added support for static HTML "chunks" (for prototyping layouts)
--	added script and link "smart ordering" in <HEAD> to addess library and css
-	dependencies (implemented as a onBeforeCompileHead event listener)
--	added `addLayout($basename, $scope=null)` where `$basename` is the layout
-	file w/o suffix and `$scope` one of 'index', 'component', 'section'.
--	support for fluid interface in setters.
+See "Apache SSI + Compression" below on how you can further improve performace
+by letting Apache concatenate and compress those files for you on-the-fly.
 
-The $basename is adjusted accordingly:
--	index: to work with the custom CSS from params = $basename-index.php
--	component: given the component name ($option) = /component/$basename.php
--	section: given a section id (numeric) = /section/section-$basename.php
+Loads of classes
+----------------
+Construc2 gives you (and your designer) a myriad of very "smart" class names
+out of the box to apply very fine grained styling for individual pages, blog
+and list views, almost any "content items" incl. module type, menus, and
+various navigation links.
 
-Added `dateContainer()` to support the proper language setting for the current
-date. Accepts one of Joomlas date language keys (`DATE_FORMAT_LCx`) for proper
-formatting, an optional "timestamp" (defaults to 'now'), and an element name as
-the wrapper element for the date parts (default = 'span').
-This method now should allow to format any (?) date value using these individual
-(span) elements for each date part. (the whole feature is questionable to me,
-but I left this in.)
-
-Implemented an option for `getLayout()` to test for the
-**active Menu Item** in order to auto-locate a corresponding layout file.
-This works for component overrides and section-ids.
+Additional class names are derived fromtitles, component names, (parent-)
+categories, content and menu aliases, module names, and the layout name itself.
 
 Google Web Font
----------------------
-Changed wording of "html elements, CSS IDs, and classes to apply" to just
-"CSS selectors", which is what they essentially are and what's required.
+---------------
+Google WebFonts (like all external ressources handled in Construc2) are loaded
+using protocol relative URLs, so you can use them with either http or https.
 
-Google CDN URLs now use a relative protocol URL to work with both http
-and https.
+As of Oct 2011 Google Webfonts has an API! Yes! The successor of Construc2
+will then read and cache the official font list and to avoid the (hardcoded)
+maintenance of the ever growing list of nice fonts.
 
-The `$googleWebFontSize` input fields caused a typical selector list such as
-h1,h2,h3,h4,h5,h6 to render all headings in the same font-size.
-Because these style rules apper within the document head they have a higher
-"cascade" than external styles which makes them harder to override and a
-need to enter into "specificity war".
+Shims + Shivs + Switcher
+------------------------
+Construc2 ships with 'html5.js' and 'JSON2.js' to pimp older browsers.
+It also brings you '-prefix-free' by Lea Verou to drop pesky vendor prefixes from your CSS3 files.
+- https://github.com/aFarkas/html5shiv
+- https://github.com/douglascrockford/JSON-js
+- https://github.com/LeaVerou/prefixfree
 
-The default values in XML now allow empty values.
-If a value is empty the CSS property font-size: is ommited.
-
-All font CSS URLs now use a relative protocol to work with both http and https.
-All three font settings are now evaluated in a simple loop.
-> 	**BC break**:
->	This required to rename the 1. param set from the un-numbered
-> 	`$googleWebFont` to `$googleWebFont1` etc. thus: if the template
->	params are revisited in the backend, the first font will be "empty"
->	and deselected and needs to be reapplied.
-
-@TODO: as of Oct 2011 Webfonts has an API! Yes! Added API key field placeholder
-       (as a "mental note") in order to read and cache font list "live" to avoid
-       maintaining that growing static options list. Not implemented yet.
+The good ole Styleswitcher script published some 10 years ago at ALA needed
+a facelist. Whilst functionality remains essentially the same, it's less
+obstrusive and no longer polutes the global JS namespace.
 
 Module Positions
----------------------
-Like the first `$googleWebFont` parameter, loads of module positions helper
-variables also used an un-numbered first `$fooBar` and continue counting from
-`$fooBar2` to `$fooBar6`.
+----------------
+The primary Module position groups that make part of the overall page layout
+are rendered via external .php files located in the ./layouts folder rather
+than `<jdoc:include type="modules" />`.
 
-This inefficiency has been fixed using arrays to quickly loop through all
-variables and results in much less repetitive code.
-@TODO the max amount of "columns" ought to be configurable. It's currently
-frozen to FOUR(!) columns using a class constant in the helper. (Who the hell
-needs 6 columns??)
+A "better" menu module layout
+-----------------------------
+If you love styling individual menu items, you may give this alternative layout
+a shot. To use it head over to the Modul Manager, pick a menu module and select
+"better" in the Advanced Options panel. Enjoy.
+See "HTML5 Validation" section below.
 
-For example `$headerAboveCount[0]` holds to total amount of modules found in
-all of "header-above-1" to "header-above-6", wheras `$headerAboveCount[1]` to
-`$headerAboveCount[6]` contain the inividual amounts.
-If no modules are found `$headerAboveCount` becomes `NULL`. This only affects
-how individualpositions need to be tested in the template code:
+This layout used the `<menu>` element (instead of `<ul>`) as the root container
+to explicitely "force" you to redact or rework your style sheets. The `<menu>`
+element has been part of HTML from the very, very early days and despite its
+superior semantic meaning was dropped by the W3C as of HTML4 only to be revived
+with additional "features" in HTML5.
+Browsers always supported this yelde element, thus without any styling applied
+to it `<menu>`  (erroneously) both looks and acts like the `<ul>` element --
+the primary reason why the W3C considered it to be redundant.
 
-Instead of:
-  `if ($headerAboveCount1) :`
-  `if ($headerAboveCount2) :`
-now use:
-  `if ($headerAboveCount[ 1 ]) :`
-  `if ($headerAboveCount[ 2 ]) :`
-and so forth.
+- http://www.w3.org/TR/1999/REC-html401-19991224/struct/lists.html#h-10.4
+- http://www.w3.org/TR/REC-html32-19970114
 
-Replaced the oh so many `<jdoc:include type="modules"..>` with native PHP
-`ConstructTemplateHelper::renderModules()` as a proxy to
-`JModuleHelper::renderModule()`. This not only saves parsing time and memory,
-but the HTML and PHP validation in the IDE will not complain any longer about
-40-something invalid tags.
-Literaly outsouced module groups into separate .php files included only if a
-group contains modules at all.
+Gone for good
+-------------
+You won't find any notion of the `pageclass_sfx` in any page layout or override.
+The 'C' in CSS stands for *cascading* and in it's standard use and implementation
+`pageclass_sfx` essentially destroys this cascade easily.
+As a site implementor or webmaster you may also dislike to give "a designer"
+access to your backend and to the menu system in order to access this parameter.
+As you dig into Construc2 and learn how the supplemental class names come into
+existance and use, you or your designer won't miss this.
 
-Core Styles
----------------------
-Moved "core" stylesheets to ./css/core reducing name conflicts and more
-flexibility in using `customStyleSheet`. Reserved names remaining:
-template, editor, ie* commonly used in plugins. Files starting with
-`test`or `x~` and others are ignored, too. See also: "Template Params".
+The `moduletable` class also vanished from modules rendered thru Construc2, that
+is the main layout positions. Not only is the "table" a total misnomer and relic
+from Mambo, the much more flexible `.mod` class allows for the same thing.
+And it's shorter to type :)
 
-Removed all `@charset "utf-8"` from .css as they cause serious trouble if files
-are concatenated and minified. Encoding ought to be handled by the text editor
-and via .htaccess anyway (not included):
-> ## force utf-8
-> AddDefaultCharset utf-8
-> AddCharset utf-8 .html .xml .rss
-> AddCharset utf-8 .css .js .json
+Component Layout Overrides
+--------------------------
+Every "release" of Construc2 either adds or (attempts) to improve the output and
+markup of the CMS core component layouts. The com_content overrides are ripped
+from Angie Radtke's Beez5 (when J!1.6 was current) as a kickstart because of
+their great and extensive use of classes.
+The markup has since change a lot and the original XHTML/HTML5 switch was
+"of course" removed. A few common markup fragments now reside in "sub layouts"
+to be shared across diffent layouts, namely the author info or readmore.
 
-Added experimental .css and .js concatenation and compression based on Apache
-Server Side Includes (SSI). Using a custom .styles and .scripts in .htaccess.
-These files concatenate individual .js and .css into a single file that also
-supports Apache's native output compression support.
-@TODO: find a smart and save way to "build" the .styles and .scripts files
-       based on current contents in <head>
+Apache SSI + Compression
+------------------------
+One of the more "esoteric" features of Construc2 is the ability to let Apache
+concatenate and optional compress (gzip) all your .js and .css.
+Output compression might not be available on shared hosts, yet Apache should
+support "Server Side Includes" in which case you should try this feature and
+enable it via .htaccess (see htaccess.txt)
 
-Template Params
----------------------
-Moving all "core" styles to a subfolder simplified the exclusion filter of
-`customStyleSheet` to use a "black-list" regular expression to hide both
-unwanted  or system stylesheets
-```exclude="(template|editor|ie\d+|test.+|x~.+)\.css" ```
+Using a custom `.styles` and `.scripts` to "load" all the required files, Apache
+will concatenate each group into a single file resulting in a single HTTP request
+instead of many. Native output compression will then be applied if supported.
 
-Stylesheets + logic.php
----------------------
-Refactored repetitive module class code into semi-configurable loops and
-external module group rendering "sublayouts".
+**Note:** If you enable this feature **all** URLs in .css files used for background
+images or @imports must be given by their absolute path.
 
-Many selectors are utterly over-specified and there are way too many id-selectors
-in charge **for styling only**, leading into dangerous "specificity wars"(tm).
-To calm that down for areas like columns, wrapper, modules, and gutters, more
-friendly and semantic CSS classes were and will be introduced (also) via logic.php
-to pull back many style rules to a sane applicable specificity level.
+Philosophy, sort of
+-------------------
+Construc2 aims to give you all the power of CSS(3) as much as it can and tries
+to let your site perform a bit better, i.e. using SSI.
+Some purists dislike this "class bloat" or call it "cruft". YMMW and you're free
+to use or ignore them or change the overrides if you like.
 
-Rathern than having ONLY the gazillion 'count-x' to rely on that ALL require a
-brute-force ID selector to format module columns, more subtle "one-for-all"
-classse were added to those module containers, e.g. 'header-above', 'header-below'
-etc. Leveraging the Power Of OOCSS.
+In addition to the new HTML5 elements you also get a bunch of grips to pin your
+CSS rules. Browsers won't care if this adds 200 or 300 bytes to your final page,
+but you take control over a great many of page elements that you couldn't style
+easily or would require lengthy selectors and repetitive code.
+At the end, the markup might be langer, but your style sheets will be much smaller
+nonetheless and rock solid.
 
-This allows to tackle all those elements at once were appropriate with a
-simpler and single rule, rather than being required to write 6 or more.
+Understanding the cascade and specificity of style selectors not only helps to
+improve browser performance a tad, but also keeps maintenance time/costs low.
 
-Renamed the `count-x` classes for the alpha and beta colums to `colcount-x`.
-Very unlikely those colums are meant to "flow" and squeezing the main-content.
-@TODO: alignnames with other column-based classes found in core templates and
-       add/replace all with smart column count detection and .sizeXofY classes.
+All core .css files are usually "grouped" into blocks, starting with the positions
+and dimensions of things, followed by colors, fonts, and finally a pinch of CSS3
+eye-candy and "hacks" if needed. Print rules appear last.
 
-Index Default Layout
----------------------
-Switching to OOCSS for a lightweight "CSS Framework" saves lots of layout
-conditions and simplifies columns and modules to a handvoll **cascading**
-classes. http://oocss.org/
 
-* replaced various Module styles using "jexhtml" with "mod".
-* replaced loads of .clear and .clearfix with .line
+CSS Validation
+--------------
+If you try to run any of the .css you may find it doesn't "validate". These
+warnings or errors are either causes by vendor prefixes or some IE hacks.
 
-2011-10-03
+HTML5 Validation
+----------------
+If you're a Validator addict and believe the world would fall apart, and your
+computer will explode if a Validator software tells your, the **grammar** of
+the HTML sucks, then please move along and stick with XHTML.
+
+HTML5 support still varies greatly even in most recent browsers, let alone
+browser elumators from Redmond. Browsers do not "spell-check" HTML documents,
+yet they can make perfect sense of almost everything you throw at them.
+
+Because Construc2 features a bunch of layout overrides that generate HTML5
+your page will very likely pass any validator without it complaining.
+Most notably, browsers **do** act according to the HTML spec and just ignore
+stuff they don't know. However, they also support any tag, element and attributes
+that has ever been standardizes for decades, no matter what the DOCTYPE suggests
+(unless you're managed to serve your perfect XHTML documents with its appropriate
+MIME type `application/xml+xhtml`.)
+
+validators are not browsers. End of story. They check your markup irregardless
+of the fact that a real browser will indead understand the HTML just fine,
+like a human would understand someone mumbling.
+
+Ideas
+-----
+Mental notes for things that might come (in more or less the following order):
+#	[WIP] add module position mapping to easy migration for sites using J's standard templates (Beez, Beez2, Beez5, Purity)
+#	[WIP] "delegate" (more) parts of `login.php` into `ConstructTemplateHelper` to reduce variable clutter.
+#	improve WAI-ARIA support
+#	allow to exclude module positions from using the `.mod` class
+#	add support for rel="canonical" URLs to main layouts
+#	add backend (only) plugin for custom theme confguration
+#	add API key support and caching of the Google WebFont list
+#	make the jQuery version list "live" (cacheable) or easier configurable w/ hacking the code
+#	add (a set of?) "previz" params to render dummy modules at various module positions during layout development
+#	add 'apply to all' button to copy selected parameters from the edited template style to other
+#	improve RTL support
+
+2012-04-03
 .eof

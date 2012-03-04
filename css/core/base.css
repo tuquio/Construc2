@@ -123,12 +123,12 @@ br.clear, hr.clear{float:none;clear:both;display:block;border:none;height:0;marg
 *:first-child+html hr.clear,
 *:first-child+html br.clear{position:relative;font-size:0;line-height:0;border:0 solid;margin:-9px 0}
 
-/* simple print styles for common stuff (at least of what I do)
- * inlined to avoid another HTTP connection 'cos browsers
- * download "print styles" anyway and always. http://www.phpied.com/delay-loading-your-print-css/
+/* simple print styles for common stuff (at least for what I do), inlined to
+ * avoid another HTTP connection 'cos browsers download "print styles" anyway.
+ * http://www.phpied.com/delay-loading-your-print-css/
  * in FF @page, orphans, windows are screwed up, page-break-* are broken
  */
-@media print{
+@media print {
 	/* hidden from dead trees */
 	menu, nav, .menu, .hmenu, .pagination, .crumbs, #breadcrumbs, .back, #back2top{display:none}
 
