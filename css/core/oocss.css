@@ -1,6 +1,6 @@
 /**!
  * oocss.css (c) 2009 Nicole Sullivan. All rights reserved. BSD License. http://oocss.org/
- * feat. custom "menu.css" (c)2011 WebMechanic.biz. All rights reserved. BSD License.
+ * feat. custom "menu.css" (c)2011-2012 WebMechanic.biz. All rights reserved. BSD License.
  * @version 04.03.2012 (grids.css, grids_rtl.css, mods.css, menu.css)
  */
 /* grids.css */
@@ -86,7 +86,7 @@ menu a, a.mi {text-decoration:none}
 menu .submenu, .menu .submenu {position:relative;z-index:277}
 /* horizontal (.menu .hmenu) */
 .hmenu {display:table;*display:block}
-.hmenu li.mi {position:relative;display:table-cell;*display:inline-block;}
+.hmenu li.mi {position:relative;display:table-cell;*display:inline-block;*display:inline !ie7}
 .hmenu * li.mi {min-width:10em}
 .hmenu .flyout {position:absolute;margin:0 0 0 100%;top:0}
 .flyout li:hover ul {display:block}
