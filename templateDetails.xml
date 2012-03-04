@@ -8,7 +8,7 @@
 	<authorUrl>http://joomla.webmechanic.biz</authorUrl>
 	<copyright>Copyright (C)2011 WebMechanic. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
-	<version>1.9.7</version>
+	<version>1.9.8</version>
 	<description>TPL_CONSTRUC2_DESCRIPTION</description>
 	<credits><![CDATA[Inspired by "Construct Community", Matt Thomas, Joomla Engineering. See CREDITS.php, README.md]]></credits>
 
@@ -137,7 +137,9 @@
 			</fieldset>
 
 			<fieldset name="typography" description="TPL_CONSTRUC2_GOOGLE_WEB_FONT">
+<!-- will return in v2.0
 				<field name="googleWebFontApi" type="text" default="" label="Web Fonts API Key" description="To retrieve the dynamic list of web fonts offered by the Google Web Fonts service enter your Web Fonts API key: http://code.google.com/intl/de-DE/apis/webfonts/docs/developer_api.html" size="50" />
+ -->
 				<field name="googleWebFont1" type="googlewebfont" default="" label="TPL_CONSTRUC2_GOOGLE_WEB_FONT_LABEL" description="TPL_CONSTRUC2_GOOGLE_WEB_FONT_DESC" />
 				<field name="googleWebFontTargets1" type="text" default="h1,h2,h3,h4,h5,h6" label="TPL_CONSTRUC2_GOOGLE_WEB_FONT_TARGETS_LABEL" description="TPL_CONSTRUC2_GOOGLE_WEB_FONT_TARGETS_DESC" size="50" />
 				<field name="googleWebFontSize1" type="text" default="" label="TPL_CONSTRUC2_GOOGLE_WEB_FONT_SIZE_LABEL" description="TPL_CONSTRUC2_GOOGLE_WEB_FONT_SIZE_DESC" size="5" />
