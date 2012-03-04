@@ -15,7 +15,8 @@
  * @license     GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
 ?>
-	<details class="meta" title="<?php echo JText::_('COM_CONTENT_ARTICLE_INFO') ?>">
+
+<details class="meta" title="<?php echo JText::_('COM_CONTENT_ARTICLE_INFO') ?>">
 	<summary tabindex="-1"><?php echo $this->item->title ?></summary>
 	<dl class="article-info">
 <?php
@@ -80,24 +81,24 @@ if ($showDates) {
 	if ($params->get('show_create_date')) {
 ?>
 	<dt class="created"><?php JText::printf('COM_CONTENT_CREATED_DATE_ON', '') /* just the label */ ?></dt>
-	<dd class="created"><time><?php echo JHtml::_('date', $this->item->created, 'DATE_FORMAT_LC1') ?></time></dd>
+	<dd class="created"><time datetime="<?php echo $this->item->created ?>"><?php echo JHtml::_('date', $this->item->created, 'DATE_FORMAT_LC1') ?></time></dd>
 <?php
 	}
 
 	if ($params->get('show_publish_date')) {
 ?>
 	<dt class="published"><?php JText::printf('COM_CONTENT_PUBLISHED_DATE', '') /* just the label */ ?></dt>
-	<dd class="published"><time pubdate="<?php echo @date('Y-m-d', $this->item->publish_up) ?>"><?php echo JHtml::_('date', $this->item->publish_up, 'DATE_FORMAT_LC1') ?></time></dd>
+	<dd class="published"><time datetime="<?php echo $this->item->publish_up ?>" pubdate><?php echo JHtml::_('date', $this->item->publish_up, 'DATE_FORMAT_LC1') ?></time></dd>
 <?php
 	}
 
 	if ($params->get('show_modify_date')) {
 ?>
 	<dt class="modified"><?php JText::printf('COM_CONTENT_LAST_UPDATED', '') /* just the label */ ?></dt>
-	<dd class="modified"><time><?php echo JHtml::_('date', $this->item->modified, 'DATE_FORMAT_LC1') ?></time></dd>
+	<dd class="modified"><time datetime="<?php echo $this->item->modified ?>"><?php echo JHtml::_('date', $this->item->modified, 'DATE_FORMAT_LC1') ?></time></dd>
 <?php
 	}
 }
 ?>
 	</dl>
-	</details>
+</details>

@@ -54,7 +54,7 @@ class ContentLayoutHelper
 			$html .= '<a href="'. $link .'#content">' . JText::_('COM_CONTENT_REGISTER_TO_READ_MORE') . '</a>';
 		}
 
-		$html .= '</p>';
+		$html .= '</a></p>';
 
 		return $html;
 	}
