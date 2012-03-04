@@ -793,20 +793,19 @@ class ConstructTemplateHelper
 	{
 		$head = $this->tmpl->getHeadData();
 
+		// flip entries
+		$head['metaTags']['standard']['author'] = $head['metaTags']['standard']['rights'];
+		// cleanup non-standard stuff
+		unset($head['metaTags']['standard']['copyright']);
+		unset($head['metaTags']['standard']['rights']);
+		unset($head['metaTags']['standard']['title']);
+
 		foreach ($head as $group => $stuff) {
 
 			if (!is_array($stuff)) continue;
 
 			switch ($group) {
 				case 'metaTags':
-					// flip entries
-					$head[$group]['standard']['author'] = $head[$group]['standard']['rights'];
-
-					// cleanup non-standard stuff
-					unset($head[$group]['standard']['copyright']);
-					unset($head[$group]['standard']['rights']);
-					unset($head[$group]['standard']['title']);
-
 					// let '' be but move "normal" away so it appears below <title>
 					foreach ($stuff['standard'] as $key => $data) {
 						$this->addMetaData($key, $data);
@@ -1181,9 +1180,6 @@ class ConstructTemplateHelper
 		if (empty($root)) {
 			$root = JURI::root();
 		}
-
-		// drop that XML nonsense
-		$url = str_replace('&amp;', '&', $url);
 
 		$data = parse_url($url);
 		// make sure URLs w/o a scheme have an absolute path
