@@ -1,13 +1,15 @@
-<?php
+<?php defined('_JEXEC') or die;
 /**
+ * ConstructTemplateHelper
+ * Helper functions for the Construc2 Template.
+ *
  * @package		Templates
  * @subpackage  Construc2
- * @author		WebMechanic http://webmechanic.biz
+ * @copyright	WebMechanic http://webmechanic.biz
  * @copyright	(C) 2011-2012 WebMechanic. All rights reserved.
- * @copyright	Copyright (C) 2010, 2011 Matt Thomas | Joomla Engineering. All rights reserved.
+ * @author		(C) 2010, 2011 Matt Thomas | Joomla Engineering. All rights reserved.
  * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
-defined('_JEXEC') or die;
 
 /**
  * Proxy for the onBeforeCompileHead event because the Dispatcher only
@@ -35,13 +37,12 @@ class ConstructTemplateHelper
 	const MAX_MODULES  = 4;
 	const MAX_COLUMNS  = 4;
 	const MAX_WEBFONTS = 3;
-	const UA = 'all';
+	const UA = 'ALL';
 
 	/** @var array List of template layout files */
 	protected $layouts = array();
 
 	protected $layoutpath;
-
 	protected $themepath;
 
 	/** @var $tmpl JDocumentHTML template instance */
@@ -52,7 +53,7 @@ class ConstructTemplateHelper
 	public static $helper;
 
 	protected $config = array('cdn'=>array());
-	
+
 	public $theme = array('name'=>'Default');
 
 	/**
@@ -110,7 +111,13 @@ class ConstructTemplateHelper
 			{
 				// fake ini file
 				$this->theme = @parse_ini_file($this->themepath . "/{$theme}.php", true);
-				if ($this->theme && isset($this->theme['layouts']))
+				if (!$this->theme || count($this->theme) == 0) {
+					break;
+				}
+
+				$this->theme['url'] = JUri::root(true) .'/templates/'. $this->tmpl->template .'/themes';
+
+				if (isset($this->theme['layouts']))
 				{
 					foreach ($this->theme['layouts'] as $override)
 					{
@@ -134,7 +141,6 @@ class ConstructTemplateHelper
 	}
 
 	/**
-	 *
 	 * @param  JDocument $template an instance of JDocumentHtml for the most part
 	 * @return ConstructTemplateHelper
 	 */
@@ -511,7 +517,8 @@ class ConstructTemplateHelper
 		return $modules;
 	}
 
-	public function numModules($group) {
+	public function numModules($group)
+	{
 		return isset($this->groupcount[$group]) ? $this->groupcount[$group] : 0;
 	}
 
@@ -775,6 +782,32 @@ class ConstructTemplateHelper
 	 */
 	public static function beforeCompileHead()
 	{
+		$theme = &self::$helper->theme;
+
+		if (is_array($theme['scripts']))
+		{
+			foreach ($theme['scripts'] as $key => $line)
+			{
+				list($ua, $src) = explode(',', $line);
+				settype($ua, 'int');
+
+				if (0 == $ua) {
+					continue;
+				}
+				else if ($ua == 4) {
+					$ua = 'IE';
+				}
+				else if ($ua >= 6 && $ua <=9) {
+					$ua = 'IE '.$ua;
+				}
+				else {
+					$ua = '';
+				}
+
+				self::$helper->addScript($theme['url'] .'/'. $src, $ua);
+			}
+		}
+
 		self::$helper->buildHead();
 		self::$helper->sortScripts();
 		self::$helper->renderHead();
@@ -800,11 +833,12 @@ class ConstructTemplateHelper
 		unset($head['metaTags']['standard']['rights']);
 		unset($head['metaTags']['standard']['title']);
 
-		foreach ($head as $group => $stuff) {
-
+		foreach ($head as $group => $stuff)
+		{
 			if (!is_array($stuff)) continue;
 
-			switch ($group) {
+			switch ($group)
+			{
 				case 'metaTags':
 					// let '' be but move "normal" away so it appears below <title>
 					foreach ($stuff['standard'] as $key => $data) {
@@ -966,12 +1000,15 @@ class ConstructTemplateHelper
 	{
 		$head = $this->tmpl->getHeadData();
 
-		$head['title'] = strip_tags($head['title']);
-
+		$head['title' ]   = strip_tags($head['title']);
 		$head['custom'][] = '<!-- Construc2 -->';
+
+		ksort(self::$head);
 		foreach (self::$head as $ua => $groups)
 		{
-			if ($ua != self::UA) $head['custom'][] = '<!--[if '.$ua.']>';
+			if ($ua != self::UA) {
+				$head['custom'][] = '<!--[if '.$ua.']>';
+			}
 
 			// meta tags
 			if (isset($groups['meta']) && count($groups['meta'])) {
@@ -1165,6 +1202,7 @@ class ConstructTemplateHelper
 			$uagent = str_replace('if ', '', strtolower($uagent));
 			$uagent = str_replace('ie ', 'IE ', strtolower($uagent));
 		}
+		$uagent = strtoupper($uagent);
 
 		if (!isset(self::$head["{$uagent}"])) {
 			self::$head["{$uagent}"] = $filler;
