@@ -971,7 +971,7 @@ class ConstructTemplateHelper
 		$head['custom'][] = '<!-- Construc2 -->';
 		foreach (self::$head as $ua => $groups)
 		{
-			if ($ua != self::UA) $head['custom'][] = '<!--['.$ua.']>';
+			if ($ua != self::UA) $head['custom'][] = '<!--[if '.$ua.']>';
 
 			// meta tags
 			if (isset($groups['meta']) && count($groups['meta'])) {
