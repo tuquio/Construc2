@@ -1,14 +1,24 @@
-/*! * padawan.css (Frontend Template)
+/*!
+ * padawan.css (Frontend Template)
+ * flexbox canvas touch rgba hsla borderimage csscolumns
+ * cssgradients csstransitions generatedcontent svg inlinesvg
+ * @license DWTF
  */
 @import url(http://fonts.googleapis.com/css?family=Ubuntu+Condensed);
 @import url(http://fonts.googleapis.com/css?family=Kristi);
 @import url(padawan_light.css);
 
-body {min-width:900px}
+body {min-width:900px;max-width:94%;margin:0 auto}
 
 /* template param override (#body-container,#header-above 100%) */
-@media screen and (max-width:1039px) {body #body-container, body #header-above, .page-foot {max-width:94%} #logo {margin-left:3%}}
-@media screen and (min-width:1040px) {body #body-container, body #header-above, .page-foot {max-width:90%} #logo {margin-left:5%}}
+@media screen and (max-width:1039px) {
+	body #body-container, body #header-above, .page-foot {max-width:94%}
+	#logo {margin-left:3%}
+}
+@media screen and (min-width:1040px) {
+	body #body-container, body #header-above, .page-foot {max-width:90%}
+	#logo {margin-left:5%}
+}
 
 #nav	{margin-top:1em}
 .content-container {margin-top:1em}
@@ -41,6 +51,9 @@ p:only-child {margin-bottom:0;text-indent:0}
 
 blockquote {padding:1ex;margin:0 3em;}
 
+table.data th.clip	,
+.column-group .hd	{text-overflow:ellipsis;-ms-text-overflow:ellipsis;-o-text-overflow:ellipsis}
+
 /* =column layout [[20|60]20] */
 #body-container	,
 header.above	,
@@ -64,8 +77,6 @@ header.below	{margin:0 auto}
 /*
  * =columns context
  */
-.column-group .mod			{margin-top:0}
-.column-group .moduletable	{margin-bottom:10px}
 .column-group fieldset		{padding:5px;margin:0}
 .column-group h3,
 .column-group .H3			{margin-bottom:0;padding:0}
@@ -100,8 +111,8 @@ section.component > div.search {padding:10px;margin-bottom:10px}
 	50% { background-color: floralwhite; }
 }
 
-.unit > article {margin-right:5px}
-.lastUnit > article {margin-left:5px;margin-right:0}
+.unit > article			{margin-right:5px}
+.lastUnit > article		{margin-left:5px;margin-right:0}
 
 /* make room for .actionsmenu */
 header.actions .title {}
@@ -112,10 +123,10 @@ header.actions .title {}
 /*
  * call-outs and <aside>s flush right within their containing box + reveal content on :hover
  */
-aside.article     {position:absolute;right:-10px;top:-10px;width:auto;height:2em;border-right:10px solid #888;}
+aside.article     {position:absolute;right:-10px;top:-10px;width:auto;height:2em}
 aside.article > * {display:none;position:absolute;width:15em;padding:.2em;min-height:1.6em;right:0;z-index:2707}
 
-aside.article:hover > * {display:block;outline:1px solid #CCC;background:#FEFEFE}
+aside.article:hover > * {display:block}
 	.content_rating		,
 	.content_vote		{cursor:default}
 	.content_rating	img	,
@@ -159,19 +170,18 @@ blockquote p {-webkit-hyphens:none;-moz-hyphens:none;hyphens:none}
 /*
  * =pictures - single page, blog page, columns list
  */
-.introtext img	,
-.fulltext img	{height:auto;border:8px solid #FFF}
+.introtext img,.fulltext img{height:auto}
 
 .item-page .introtext img	,
-.item-page .fulltext img	{max-width:96%}
+.item-page .fulltext img	{display:inline-block;max-width:96%}
 
 .blog .introtext img		{max-width:96%}
 .unit .introtext img 		{max-height:200px;border-width:5px}
 .blog .unit .introtext		{min-height:250px}
 .category-desc img.catimg	{}
 
-figure img		{height:auto;border:5px solid #FFF;outline:1px solid #CDCDCD}
-.portrait		{text-align:center}
+figure img					{height:auto}
+.portrait					{text-align:center}
 
 /*
  * =modules / forms
@@ -185,7 +195,7 @@ figure img		{height:auto;border:5px solid #FFF;outline:1px solid #CDCDCD}
 
 .column-group fieldset dt	,
 .column-group fieldset dd	,
-.column-group .inputbox 	{display:block;width:100%}
+.column-group .inputbox 	{display:block;margin-left:0;width:100%}
 
 .mod-banner {}
 .banneritem img 	{display:block;margin-left:auto;margin-right:auto;text-align:center}
@@ -256,7 +266,6 @@ p.counter				{display:inline-block;margin:.6ex 1em}
 /* =modules */
 .mod-articles-categories .hd	{font-size:110%}
 
-menu.categories > li.current	{background-color:rgba(200,200,200, 0.2)}
 menu.categories span.active		{text-transform:uppercase}
 menu.categories .submenu		{padding-left:.6em}
 
@@ -273,11 +282,6 @@ li.switcher 	{display:inline-block;cursor:pointer}
 /* =widgets */
 summary:focus		{}
 summary:focus + *	{}
-
-/*
- * =color scheme, borders, eye-candy;and not
- */
-.mod-custom div.inner	{background:none;outline:none}
 
 /*
  * =branding - category and page styles
@@ -322,5 +326,10 @@ body.print .content_vote 	{display:none}
 	.blog .introtext img,
 	.item-page .introtext img	{height:10cm;max-width:10cm}
 }
+
+/* =MSIE
+ * 7: no-flexbox no-canvas no-touch no-rgba no-hsla no-borderimage no-csscolumns no-cssgradients no-csstransitions no-generatedcontent no-svg no-inlinesvg
+ * 8: no-flexbox no-canvas no-touch no-rgba no-hsla no-borderimage no-csscolumns no-cssgradients no-csstransitions    generatedcontent no-svg no-inlinesvg
+ */
 
 /* .eof */
