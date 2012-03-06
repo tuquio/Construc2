@@ -1,6 +1,6 @@
 <?php defined('_JEXEC') or die;
 /**
- * Frontpage sample template.
+ * Frontpage sample page layout.
  *
  * @package		Templates
  * @subpackage  Construc2

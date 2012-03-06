@@ -1,6 +1,6 @@
 <?php defined('_JEXEC') or die;
 /**
- * Main Template layout.
+ * Main page layout.
  *
  * @package     Templates
  * @subpackage  Layouts

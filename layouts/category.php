@@ -1,6 +1,6 @@
 <?php defined('_JEXEC') or die;
 /**
- * Category sample template.
+ * Category sample page layout.
  *
  * @package		Templates
  * @subpackage  Construc2

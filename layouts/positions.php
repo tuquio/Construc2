@@ -1,6 +1,6 @@
 <?php defined('_JEXEC') or die;
 /**
- * EXPERIMENTAL! Stub layout to previz all module positions in 'index.php'
+ * EXPERIMENTAL! Stub page layout to previz module positions.
  *
  * @package     Templates
  * @subpackage  Layouts
