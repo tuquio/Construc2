@@ -20,7 +20,7 @@ defined('_JEXEC') or die;
 	<div id="page-top">
 		<div id="body-container" class="<?= ConstructTemplateHelper::getPageAlias(true)?>">
 			<div class="line content-container">
-				<div id="content" class="content-main">
+				<div id="content" class="line content-main">
 <?php if ($this->getBuffer('message')) : ?>
 <jdoc:include type="message" />
 <?php endif; ?>

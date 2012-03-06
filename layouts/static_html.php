@@ -45,7 +45,7 @@ if (isset($chunks['header'])) {
 			<div id="content-container" class="clear clearfix">
 				<div id="load-first" class="clearfix">
 					<a id="content"></a>
-					<div id="content-main">
+					<div id="line content-main">
 						<div class="mod">
 <?php echo $templateHelper->loadStaticHtml() ?>
 						</div>

@@ -46,7 +46,7 @@
 			<div class="line content-container">
 <?php if ($navBelowCount) : include JPATH_THEMES .'/'. $this->template . '/layouts/mod_nav_below.php'; endif; ?>
 
-				<div id="content" class="content-main">
+				<div id="content" class="line content-main">
 
 <?php if ($this->getBuffer('message')) : ?><jdoc:include type="message" /><?php endif; ?>
 

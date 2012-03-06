@@ -21,22 +21,22 @@ $templateHelper->setChunks($chunks, true);
 if ($modcount) : ?><div id="header-above" class="above"><div class="line above-inner"><?php endif;
 
 if ($modcount > 1 && $headerAboveCount[1]) :
-	$templateHelper->renderModules('header-above-1', $style, array('autocols'=>$mod_oocss));
+	$templateHelper->renderModules('header-above-1', $style, array());
 endif;
 if ($modcount > 2 && $headerAboveCount[2]) :
-	$templateHelper->renderModules('header-above-2', $style, array('autocols'=>$mod_oocss));
+	$templateHelper->renderModules('header-above-2', $style, array());
 endif;
 if ($modcount > 3 && $headerAboveCount[3]) :
-	$templateHelper->renderModules('header-above-3', $style, array('autocols'=>$mod_oocss));
+	$templateHelper->renderModules('header-above-3', $style, array());
 endif;
 if ($modcount > 4 && $headerAboveCount[4]) :
-	$templateHelper->renderModules('header-above-4', $style, array('autocols'=>$mod_oocss));
+	$templateHelper->renderModules('header-above-4', $style, array());
 endif;
 if ($modcount > 5 && $headerAboveCount[5]) :
-	$templateHelper->renderModules('header-above-5', $style, array('autocols'=>$mod_oocss));
+	$templateHelper->renderModules('header-above-5', $style, array());
 endif;
 if ($modcount > 6 && $headerAboveCount[6]) :
-	$templateHelper->renderModules('header-above-6', $style, array('autocols'=>$mod_oocss));
+	$templateHelper->renderModules('header-above-6', $style, array());
 endif;
 
 if ($modcount) : ?></div></div><?php endif; ?>
