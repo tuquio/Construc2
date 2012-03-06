@@ -1,6 +1,6 @@
 <?php
 /**
- * Modal Window/Popup Template layout.
+ * Modal Window/Popup page layout.
  *
  * @package     Templates
  * @subpackage  Layouts

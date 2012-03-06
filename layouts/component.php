@@ -1,6 +1,6 @@
 <?php
 /**
- * Component Template layout.
+ * Component page layout.
  *
  * @package     Templates
  * @subpackage  Layouts
