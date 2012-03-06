@@ -57,7 +57,7 @@ available template position, which is the whole idea of using them in the first 
 <?php include JPATH_THEMES .'/'. $this->template . '/layouts/mod_nav_below.php' ?>
 </div>
 
-<div id="content" class="names content-main">
+<div id="content" class="line names content-main">
 	<div class="names line content-above">
 <?php include JPATH_THEMES .'/'. $this->template . '/layouts/mod_content_above.php' ?>
 	</div>
