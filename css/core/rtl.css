@@ -1,7 +1,7 @@
 /*!
  * Construc2 "Exceptionally Broken"(tm) right-to-left scripts support
- * @version 0.0.0
- * @license DWTF
+ * @version @version 1.9.8 06.03.2012
+ * @license WTFPL
  */
 #access li{float:right;direction:rtl;}
 #branding {float:right;text-align:right;direction:rtl;}
@@ -33,3 +33,4 @@
 #column-group-beta ul.menu ul,
 #column-group-beta ul.menu ul ul,
 #column-group-beta ul.menu ul ul ul {display: none;position: absolute;top: 10px;right: -75%;z-index:900;}
+/* .eof */

@@ -1,25 +1,43 @@
 /*!
  * edit-form.css loaded only in edit state
- * @version 13.02.2012
- * @license DWTF
+ * @version 1.9.8 06.03.2012
+ * @license WTFPL
  */
 .actions {display:inline-block; position:absolute; right:0; top:0;padding:0;margin:0}
 .actions li {float:left;list-style:none !important;margin:0 0 0 5px}
 .article-info {}
-.button2-left,
-.button2-left div {float:left}
-.button2-left a {font-size:.9em;display:block;float:left}
-.button2-left .page a,
-.button2-left .blank a,
-.button2-left .article a {padding:0 6px}
-.button2-left .image a,
-.button2-left .pagebreak a,
-.button2-left .readmore a {padding:0 25px 0 6px}
-.button2-left a:hover{text-decoration:none}
-.button2-left{background:url(editor-buttons/j_button2_left.png) 0 0 no-repeat;float:left;margin-left:5px;padding-bottom:3px}
-.button2-right{background:url(editor-buttons/j_button2_right.png) 100% 0 no-repeat;float:left;margin-left:5px}
-.button2-left .article {background:url(editor-buttons/j_button2_blank.png) 100% 0 no-repeat}
-.button2-left .image{background:url(editor-buttons/j_button2_image.png) 100% 0 no-repeat}
-.button2-left .readmore{background:url(editor-buttons/j_button2_readmore.png) 100% 0 no-repeat}
-.button2-left .pagebreak{background:url(editor-buttons/j_button2_pagebreak.png) 100% 0 no-repeat}
-.button2-left .blank{background:url(editor-buttons/j_button2_blank.png) 100% 0 no-repeat}
+
+form.form-validate {position:relative}
+form.form-validate fieldset {border-color:#ccc}
+#jform_articletext_parent {max-width:98% !important}
+#jform_articletext_tbl {}
+#jform_articletext_ifr {max-width:100% !important}
+
+div[class^="formelm"] {margin:1ex 0}
+div[class^="formelm"] label.hasTip {}
+div[class^="formelm"] select.inputbox {}
+div[class^="formelm"] textarea.inputbox {}
+div[class^="formelm"] legend {font-weight:bold}
+div[class^="formelm"] > label {display:inline-block;width:20%}
+div[class^="formelm"] > ::-moz-any(input,select) {display:inline-block;min-width:25%;max-width:75%}
+div[class^="formelm"] > textarea {display:inline-block;width:75%}
+
+/* core buttons */
+#editor-xtd-buttons {display:inline-block}
+	.button2-left {display:inline-block;float:none;margin:1ex .5ex;border:1px solid #ccc;box-shadow:0 0 2px 1px #eee;border-radius:3px}
+	.button2-left > div {padding:.5ex;text-align:center;min-width:7em}
+	.button2-left:hover {box-shadow:0 2px 2px 1px #e0e0e0}
+	.button2-left:active {border-color:#73ab00}
+	.button2-left a[onclick] {text-decoration:none;border:none;outline:none}
+	.button2-left .article {}
+	.button2-left .image {}
+	.button2-left .pagebreak {}
+	.button2-left .readmore {}
+div.toggle-editor {display:inline-block}
+	.button2-left .blank {}
+
+.tip {float:left;z-index:50;font-size:100%;line-height:1.2;min-width:10em;max-width:24em;background:rgba(255,255,255,.98);border:1px solid rgb(230,110,0);box-shadow:0 2px 2px 1px #e0e0e0}
+.tip-title, .tip-text {font-size:.9em;padding:.2ex}
+.tip-title {font-weight:bold;margin-top:-3ex;padding-top:3ex}
+
+/* .eof */

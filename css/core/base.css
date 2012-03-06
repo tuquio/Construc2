@@ -1,11 +1,11 @@
 /* äöü - UTF-8 required! */
 /*!
  * base.css "HTML5ish edition" featuring 'normalise.css'
- * @version 1.6.6 04.03.2012
+ * @version 1.6.7 06.03.2012
  * personal likings + defaults for THIS WEBSITE ONLY mixed with inspirational input from
  * @credits E. Meyer, Yahoo!, N. Sullivan, D. Edwards, CSS-WG, W3C, and the Interwebs,
  * feat. normalize.css - http://github.com/necolas/normalize.css
- * @license DWTF
+ * @license WTFPL
  */
 html{font-size:13px;overflow-y:scroll;-webkit-text-size-adjust:55%;-ms-text-size-adjust:55%;font-size-adjust:0.55}
 * {-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box}

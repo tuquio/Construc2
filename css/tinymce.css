@@ -1,27 +1,6 @@
 @import url("core/base.css");
-.mceContentBody   {font-size:100%; padding:10px;margin:0;}
-a:link, a:visited {color: #1B57B1;}
+@import url("tinymce.css");
+/* add some wiggle room */
+.mceContentBody {font-size:100%; padding:10px;margin:0;}
+/* prevent images from overlapping */
 .mceContentBody img {padding:5px;background:white;max-width:98%;}
-#system-readmore {height:3px; padding:1px 0 0 0; border:1px dotted darkred; border-bottom:1px dashed darkred; margin-bottom:1em;}
-#system-readmore:before {content: '[Umbruch]'; display:block; text-align:right; font:normal 10px/normal sans-serif, monospace; color:darkgray;}
-
-table {font-size:100%;}
-td,th {font-size:100%;padding:3px 1ex;vertical-align:top}
-
-.datatable {border:1px solid #EEE; border-collapse: collapse}
-.datatable tr:nth-child(odd) {background-color:#E0E0E0}
-.datatable tr:nth-child(odd) {background-color:#FFFFFF}
-.datatable tbody th:first-child {text-align:left;background-color:#E0E0E0}
-
-h1,h2,h3,h4,h5 {margin-bottom:0}
-
-/* TinyMCE style sheets */
-.ext  {color:#c55}
-.fright {float:right;margin:.6em 0 1ex .6em}
-.feft {float:left;margin:.6em .6em 1ex 0}
-
-/* Custom Styles (typography.css) */
-.error { padding: 5px; color: #BF0000;}
-.warning { padding: 5px; color: #BF0000;font-size:1.1em}
-.message { padding: 5px; color: #069;}
-.tips { padding: 5px; color: #EE9600;}
