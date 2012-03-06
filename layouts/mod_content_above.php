@@ -18,7 +18,7 @@ $chunks = array(
 );
 $templateHelper->setChunks($chunks, true);
 
-if ($modcount) : ?><div class="line content-above"><?php endif;
+if ($modcount) : ?><div id="content-above" class="content-above"><div class="line above-inner"><?php endif;
 
 if ($modcount > 1 && $contentAboveCount[1]) :
 	$templateHelper->renderModules('content-above-1', $style, array('autocols'=>$mod_oocss));
@@ -39,4 +39,4 @@ if ($modcount > 6 && $contentAboveCount[6]) :
 	$templateHelper->renderModules('content-above-6', $style, array('autocols'=>$mod_oocss));
 endif;
 
-if ($modcount) : ?></div><?php endif; ?>
+if ($modcount) : ?></div></div><?php endif; ?>
