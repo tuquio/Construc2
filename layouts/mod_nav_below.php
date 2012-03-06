@@ -19,7 +19,7 @@ $chunks = array(
 );
 $templateHelper->setChunks($chunks, true);
 
-if ($modcount) : ?><div id="nav-below" class="nav-below"><?php endif;
+if ($modcount) : ?><div id="nav-below" class="nav-below"><div class="line below-inner"><?php endif;
 
 if ($modcount > 1 && $navBelowCount[1]) :
 	$templateHelper->renderModules('nav-below-1', $style);
