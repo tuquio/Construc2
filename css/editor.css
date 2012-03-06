@@ -1,1 +1,27 @@
-@import url("tinymce.css");
+/*!
+ * editor.css default styles 
+ */
+a:link, a:visited {color: #1B57B1;}
+#system-readmore {height:3px; padding:1px 0 0 0; border:1px dotted darkred; border-bottom:1px dashed darkred; margin-bottom:1em;}
+#system-readmore:before {content: '[Umbruch]'; display:block; text-align:right; font:normal 10px/normal sans-serif, monospace; color:darkgray;}
+
+table {font-size:100%;}
+td,th {font-size:100%;padding:3px 1ex;vertical-align:top}
+
+table.data, .datatable {border:1px solid #EEE; border-collapse: collapse}
+table.data, .datatable tr:nth-child(odd) {background-color:#E0E0E0}
+table.data, .datatable tr:nth-child(odd) {background-color:#FFFFFF}
+table.data, .datatable tbody th:first-child {text-align:left;background-color:#E0E0E0}
+
+h1,h2,h3,h4,h5 {margin-bottom:0}
+
+/* custom classes */
+a.ext  {color:#c55}
+.fright {float:right;margin:.6em 0 1ex .6em}
+.fleft {float:left;margin:.6em .6em 1ex 0}
+
+/* message box text (div, p, blockquote, etc.) @see screen.css font colors */
+.warning { padding: 5px; color: #c20000; font-size:1.1em}
+.negative, .error { padding: 5px; color: #c20000;}
+.positive, .message { padding: 5px; color: #fc6c06;}
+.tips { padding: 5px; color: #73ab00;}
