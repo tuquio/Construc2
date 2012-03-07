@@ -37,7 +37,7 @@ $loadJQuery 		=		 $this->params->get('loadjQuery');
 $ssiIncludes		= (bool) $this->params->get('ssiIncludes', 0);
 $ssiTheme			=		 $this->params->get('ssiTheme');
 
-// some editor form requested
+// some editor form requested, need mo' styles
 $editMode = in_array($app->input->get('layout'), array('edit','form'))
 		||  in_array($app->input->get('option'), array('com_media'));
 
@@ -122,7 +122,6 @@ if ($columnGroupBetaCount) {
 }
 
 $columnLayout = array('main-only');
-
 if (!$editMode) {
 	# alpha-X-main-beta-Y
 	if ($columnGroupAlphaCount > 0) {
@@ -137,8 +136,8 @@ if (!$editMode) {
 	// merge $columnLayout into a string
 	$columnLayout[] = (bool) $this->params->get('fluidMedia') ? 'fluid-media' : '';
 	$columnLayout = array_unique($columnLayout);
-	$columnLayout = trim(implode(' ', $columnLayout));
 }
+$columnLayout = trim(implode(' ', $columnLayout));
 
 /* --------------------------- Debug Positions ------------------------------- */
 // #TODO get positions from xml and transform names into variable counterparts
