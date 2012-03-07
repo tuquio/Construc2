@@ -11,6 +11,10 @@
  * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
 
+/* SearchHelper knows about the (enhanced) stop words list in xx_XXLocalise
+ * and is misused to clean the alias for use as a class name of list items */
+JLoader::register('SearchHelper', JPATH_ADMINISTRATOR .'/components/com_search/helpers/search.php');
+
 /** Register the CustomTheme Class */
 JLoader::register('CustomTheme', dirname(__FILE__) . '/theme.php');
 
@@ -63,7 +67,7 @@ class ConstructTemplateHelper
 
 	protected $config = array('cdn'=>array());
 
-	protected $theme;
+	protected $theme = null;
 
 	/**
 	 * @staticvar array chunks from the static html file(s) *
@@ -111,8 +115,6 @@ class ConstructTemplateHelper
 
 		$this->addLayout('index');
 
-		$this->theme = new CustomTheme($this);
-
 		// @see renderModules()
 		$chunks = array(
 					'unit_before' => '<div class="{class}">',
@@ -133,6 +135,13 @@ class ConstructTemplateHelper
 		if (!self::$helper) {
 			self::$helper = new ConstructTemplateHelper();
 		}
+
+		if (null === self::$helper->theme) {
+			if (isset(self::$helper->tmpl->params) && (self::$helper->tmpl->params instanceof JRegistry)) {
+				self::$helper->theme = new CustomTheme(self::$helper);
+			}
+		}
+
 		return self::$helper;
 	}
 
@@ -147,9 +156,7 @@ class ConstructTemplateHelper
 		if ($front !== null) return $front;
 		$jmenu = JFactory::getApplication()->getMenu();
 		$front = ( $jmenu->getActive() == $jmenu->getDefault() );
-		if ($front && array_key_exists('view', (array)@$jmenu->getDefault()->query)) {
-			$front = $jmenu->query['view'];
-		}
+
 		return $front;
 	}
 
@@ -165,7 +172,7 @@ class ConstructTemplateHelper
 	 * @param bool $parent Alias des Elternelements verwenden
 	 * @see JApplication::getMenu() JMenu::getActive()
 	 */
-	static public function getPageAlias($parent = false)
+	public function getPageAlias($parent = false)
 	{
 		static $alias = array(0=>null,1=>null);
 
@@ -181,35 +188,80 @@ class ConstructTemplateHelper
 		$app	= JFactory::getApplication();
 		$jmenu	= $app->getMenu()->getActive();
 
-		$css = array();
-		if (!$jmenu) {
-			$jmenu  = $app->getMenu()->getDefault();
-			$css[]	= 'home';
-		}
-		$option = $app->get('input')->getCmd('option');
-		$css[]  = str_replace('com_', '', $option);
-
-		if ($jmenu->type == 'component' && array_key_exists('view', $jmenu->query)) {
-			$css[] = $jmenu->query['view'];
-
-			if ($option == 'com_content' && $jmenu->query['view'] = 'category') {
-				$css[] = self::_catSlug();
-			}
-		}
-
-		if ($parent && $jmenu->parent_id > 1) {
-			if ( ($jmenu = $app->getMenu()->getItem($jmenu->parent_id)) ) {
-				if ($jmenu->type == 'component' && array_key_exists('view', $jmenu->query)) {
-					$css[] = $jmenu->query['view'];
-				}
-			}
-		}
-		$css[]	= $jmenu->alias;
-		$css	= array_unique($css);
-
-		$alias[$parent] = implode(' ', $css);
+		$css    = $this->getCssAlias($jmenu, $jmenu->id, $jmenu->parent_id);
+		$alias[$parent] = $css;
 
 		return $alias[$parent];
+	}
+
+	/**
+	 * Attempts to create a nice alias from the $item to use in the class attribute
+	 * to apply item and category based styles. The resulting names use '_' as a
+	 * word separator to avoid name clashing with module names and common classes.
+	 *
+	 * @param  object $item     with an $alias and optional $category_alias property
+	 * @param  string $item_id  also include an 'item-nn' class name using this string as a prefix
+	 * @param  bool   $cat_id   also include an 'cat-nn' class name
+	 */
+	public function getCssAlias($item, $item_id='', $cat_id=false)
+	{
+
+		$d = array();
+
+		// menu item?
+		if (isset($item->type)) {
+			$d['t'] = $item->type;
+			if (isset($item->query['view'])) {
+				$d['v'] = $item->query['view'];
+			}
+			if (isset($item->query['layout'])) {
+				$d['l'] = $item->query['layout'];
+			}
+		}
+
+		$d['A'] = array();
+		if (isset($item->parent_alias)) {
+			$d['A']['pa'] = $item->parent_alias;
+		}
+		if (isset($item->category_alias)) {
+			$d['A']['ca'] = $item->category_alias;
+		}
+		$d['A']['ia'] = $item->alias;
+
+		if (isset($item->catid)) {
+			$d['cid'] = 'cid-'.$item->catid;
+		}
+		if ($item instanceof JCategoryNode) {
+			$d['id'] = 'cid-' . $item->id;
+		} else {
+			$d['id'] = 'item-' . $item->id;
+		}
+
+		foreach ($d['A'] as $k => $ali)
+		{
+			// single word
+			if (strpos($ali, '-') === false) continue;
+			// short enough
+			if (strlen($ali) <= 20) continue;
+			// split and sanitize
+			$alias = JStringNormalise::toSpaceSeparated($ali);
+
+			$words = explode(' ', $alias);
+			if (count($words) > 1) {
+				$ignore = JFactory::getLanguage()->getIgnoredSearchWords();
+				$ali = array_diff($words, $ignore);
+			}
+
+			if (isset($item->language)) {
+				$d["ALIAS"] = $this->_inflectAlias($ali, $item->language);
+			} else {
+				$d["ALIAS"] = $this->_inflectAlias($ali);
+			}
+		}
+
+//FB::log($d);
+
+		return $item->alias;
 	}
 
 	static protected function _catSlug()
@@ -217,6 +269,46 @@ class ConstructTemplateHelper
 		$route = JRoute::_(ContentHelperRoute::getCategoryRoute( JRequest::getInt('id') ));
 		preg_match('#/(?:\d+)\-(\w+)#', $route, $m);
 		return isset($m[1]) ? $m[1] : null;
+	}
+
+	// @todo refactor to use JStringXXX if that comes available
+	protected function _inflectAlias(&$aliases, $language = null)
+	{
+		static $locale;
+
+		if (!isset($locale)) {
+			// need this to find the default language
+			$locale = JFactory::getLanguage()->get('tag');
+		}
+
+		if (empty($language) || $language = '*') {
+			$language = $locale;
+		}
+
+		settype($aliases, 'array');
+
+		// even if it proxies, singularization is fine for this
+		if (($language == 'de-DE' || $locale == 'de-DE') && method_exists('de_DELocalise', 'singularise')) {
+			foreach ($aliases as $i => $alias) {
+				$aliases[$i] = de_DELocalise::inflect($alias, false);
+			}
+		}
+		// fall back for english
+		elseif (($language == 'en-GB' || $locale == 'en-GB') && method_exists('en_GBLocalise', 'singularise')) {
+			foreach ($aliases as $i => $alias) {
+				$aliases[$i] = en_GBLocalise::inflect($alias, false);
+			}
+		}
+		else {
+			// @todo check for other xx-XXLocalise classes
+			if ( method_exists('en_GBLocalise', 'singularise') ) {
+				foreach ($aliases as $i => $alias) {
+					$aliases[$i] = en_GBLocalise::inflect($alias, false);
+				}
+			}
+		}
+
+		return implode('-', $aliases);
 	}
 
 	/**
