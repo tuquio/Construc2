@@ -2,10 +2,10 @@
 ; -----
 ; Theme configuration
 ;
-name="Padawan"
+title="Padawan"
 author="WebMechanic.biz"
 version="1.0.0"
-copyright="(c)2011 WebMechanic.biz"
+copyright="(c)2012 WebMechanic.biz"
 
 ; -----
 ; All time scripts if SSI powered .scripts don't work for you

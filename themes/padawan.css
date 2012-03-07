@@ -2,7 +2,7 @@
  * padawan.css (Frontend Template)
  * flexbox canvas touch rgba hsla borderimage csscolumns
  * cssgradients csstransitions generatedcontent svg inlinesvg
- * @license DWTF
+ * @license CC BY-NC 3.0/de
  */
 @import url(http://fonts.googleapis.com/css?family=Ubuntu+Condensed);
 @import url(http://fonts.googleapis.com/css?family=Kristi);
@@ -93,7 +93,9 @@ header.below	{margin:0 auto}
 .blog article	,
 .items-more		{padding:10px;margin-bottom:10px}
 
-/* misc components */
+/* 
+ * misc components 
+ */
 section.component > div.search {padding:10px;margin-bottom:10px}
 
 .blog h1, .blog .H1 {}
@@ -114,11 +116,12 @@ section.component > div.search {padding:10px;margin-bottom:10px}
 .unit > article			{margin-right:5px}
 .lastUnit > article		{margin-left:5px;margin-right:0}
 
+
 /* make room for .actionsmenu */
 header.actions .title {}
 
-.readmore			{text-align:right;margin-top:1ex;margin-bottom:0}
-.readmore:after		{content:'\2026\A0';display:inline}
+p.readmore			{text-align:right;margin-top:1ex;margin-bottom:0}
+p.readmore:after	{content:'\2026\A0';display:inline}
 
 /*
  * call-outs and <aside>s flush right within their containing box + reveal content on :hover
@@ -200,7 +203,7 @@ figure img					{height:auto}
 .mod-banner {}
 .banneritem img 	{display:block;margin-left:auto;margin-right:auto;text-align:center}
 
-/* align with mainmenu and li paddings */
+/* =mod_search - align with mainmenu and li paddings */
 .mainnavi form {
 	position: absolute;
 	right: 2px;
@@ -210,8 +213,8 @@ figure img					{height:auto}
 	display: inline-block;
 	padding: 0.2ex;
 }
-.search label	{display:inline;padding:0 1%}
-.search input	{display:inline;width:75%}
+.search > label	{display:inline;padding:0 1%}
+.search > input	{display:inline;width:75%}
 
 button			{padding:0.2ex 2ex}
 
