@@ -185,32 +185,38 @@ class ConstructTemplateHelper
 			return $alias[$parent];
 		}
 
-		$app	= JFactory::getApplication();
-		$jmenu	= $app->getMenu()->getActive();
+		$app = JFactory::getApplication();
+		$jmenu = $app->getMenu()->getActive();
+		if (!$jmenu) {
+			$jmenu	= $app->getMenu()->getDefault();
+		}
 
-		$css    = $this->getCssAlias($jmenu, $jmenu->id, $jmenu->parent_id);
+		$css = $this->getCssAlias($jmenu);
 		$alias[$parent] = $css;
 
 		return $alias[$parent];
 	}
 
 	/**
-	 * Attempts to create a nice alias from the $item to use in the class attribute
-	 * to apply item and category based styles. The resulting names use '_' as a
-	 * word separator to avoid name clashing with module names and common classes.
+	 * Attempts to create a nice alias from the $item to use in the class
+	 * attribute to apply item and category based styles.
+	 * If $item is a menu[ish] item, also includes type, view and layout.
+	 * If $item is an article, parent and category aliases (if available)
+	 * will be included.
+	 * Category and item IDs appear as cat-N and item-N respectively.
 	 *
-	 * @param  object $item     with an $alias and optional $category_alias property
-	 * @param  string $item_id  also include an 'item-nn' class name using this string as a prefix
-	 * @param  bool   $cat_id   also include an 'cat-nn' class name
+	 * @param  object $item  with an $alias and maybe more usefull things
+	 * @return string The alias
 	 */
-	public function getCssAlias($item, $item_id='', $cat_id=false)
+	public function getCssAlias($item)
 	{
-
 		$d = array();
-
 		// menu item?
 		if (isset($item->type)) {
 			$d['t'] = $item->type;
+			if (isset($item->query['option'])) {
+				$d['o'] = str_replace('_', '-', $item->query['option']);
+			}
 			if (isset($item->query['view'])) {
 				$d['v'] = $item->query['view'];
 			}
@@ -226,17 +232,20 @@ class ConstructTemplateHelper
 		if (isset($item->category_alias)) {
 			$d['A']['ca'] = $item->category_alias;
 		}
-		$d['A']['ia'] = $item->alias;
-
-		if (isset($item->catid)) {
-			$d['cid'] = 'cid-'.$item->catid;
+		if (isset($item->alias)) {
+			$d['A']['ia'] = $item->alias;
 		}
+
 		if ($item instanceof JCategoryNode) {
 			$d['id'] = 'cid-' . $item->id;
 		} else {
+			if (isset($item->catid)) {
+				$d['cid'] = 'cid-'.$item->catid;
+			}
 			$d['id'] = 'item-' . $item->id;
 		}
 
+		$alias = '';
 		foreach ($d['A'] as $k => $ali)
 		{
 			// single word
@@ -250,18 +259,18 @@ class ConstructTemplateHelper
 			if (count($words) > 1) {
 				$ignore = JFactory::getLanguage()->getIgnoredSearchWords();
 				$ali = array_diff($words, $ignore);
-			}
-
-			if (isset($item->language)) {
-				$d["ALIAS"] = $this->_inflectAlias($ali, $item->language);
-			} else {
-				$d["ALIAS"] = $this->_inflectAlias($ali);
+				if (isset($item->language)) {
+					$alias = $this->_inflectAlias($ali, $item->language);
+				} else {
+					$alias = $this->_inflectAlias($ali);
+				}
 			}
 		}
+		unset($d['A']);
 
-//FB::log($d);
+		$alias .= ' ' . implode(' ', $d);
 
-		return $item->alias;
+		return trim($alias);
 	}
 
 	static protected function _catSlug()

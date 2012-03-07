@@ -78,7 +78,7 @@ $this->item->fulltext  = trim($ftext);
 ContentLayoutHelper::betterToc($this->item, $showall);
 
 ?>
-	<article class="line item-page <?php echo $showall, $showtoc, $showact, $this->item->parent_alias, ' ', $this->item->category_alias, ' cid-', $this->item->catid, ($this->item->state == 0 ? ' system-unpublished' : '') ?>">
+	<article class="line item-page <?php echo $showall, $showtoc, $showact, ContentLayoutHelper::getCssAlias($this->item), ($this->item->state == 0 ? ' system-unpublished' : '') ?>">
 	<header class="article">
 <?php
 if ($params->get('show_page_heading')) {

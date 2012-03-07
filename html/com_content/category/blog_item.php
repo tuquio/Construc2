@@ -12,7 +12,7 @@ $actions	= ($canEdit || $params->get('show_print_icon') || $params->get('show_em
 $noPrint	= !(JFactory::getApplication()->input->get('print'));
 
 ?>
-	<article class="article <?php echo $this->item->parent_alias, ' ', $this->item->category_alias, ' cid-', $this->item->catid, ($this->item->state == 0 ? ' system-unpublished' : '') ?>">
+	<article class="article <?php echo ContentLayoutHelper::getCssAlias($this->item), ($this->item->state == 0 ? ' system-unpublished' : '') ?>">
 	<header class="article">
 <?php
 if ($params->get('show_title'))
