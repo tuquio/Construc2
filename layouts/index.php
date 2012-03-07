@@ -17,7 +17,7 @@
 <body class="<?php echo $columnLayout ?>">
 <?php ConstructTemplateHelper::msieSwatter() ?>
 	<div id="page-top">
-		<div id="header" class="line page-head <?= ConstructTemplateHelper::getPageAlias() ?>">
+		<div id="header" class="line page-head <?php echo $templateHelper->getPageAlias() ?>">
 <?php if ($headerAboveCount) : include JPATH_THEMES .'/'. $this->template . '/layouts/mod_header_above.php'; endif; ?>
 		<h1 id="logo"><a class="site-link" href="<?php echo $this->baseurl ?>/"><span class="site-name"><?php echo $app->getCfg('sitename');?></span></a></h1>
 
@@ -32,7 +32,7 @@
 		<?php endif; ?>
 		</div><!-- .page-head -->
 
-		<div id="body-container" class="<?= ConstructTemplateHelper::getPageAlias(true) ?>">
+		<div id="body-container" class="<?php echo $templateHelper->getPageAlias(true) ?>">
 <?php if ($headerBelowCount) : include JPATH_THEMES .'/'. $this->template . '/layouts/mod_header_below.php'; endif; ?>
 
 		<?php if ($this->countModules('nav')) : ?>

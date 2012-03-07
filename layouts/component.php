@@ -18,7 +18,7 @@ defined('_JEXEC') or die;
 <body class="main component <?php echo JFactory::getApplication()->input->get('print') ? 'print' : '' ?>">
 <?php ConstructTemplateHelper::msieSwatter() ?>
 	<div id="page-top">
-		<div id="body-container" class="<?= ConstructTemplateHelper::getPageAlias(true)?>">
+		<div id="body-container" class="<?php echo $templateHelper->getPageAlias(true)?>">
 			<div class="line content-container">
 				<div id="content" class="line content-main">
 

@@ -14,7 +14,7 @@ $noPrint	= !(JFactory::getApplication()->input->get('print'));
 $action_styles = ($actions) ? ' actions' : '';
 
 ?>
-	<article id="<?php echo $this->item->alias ?>" class="feature <?php echo $this->item->parent_alias, ' ', $this->item->category_alias, ' cid-', $this->item->catid, ($this->item->state == 0 ? ' system-unpublished' : '') ?>">
+	<article id="<?php echo $this->item->alias ?>" class="feature <?php echo ContentLayoutHelper::getCssAlias($this->item), ($this->item->state == 0 ? ' system-unpublished' : '') ?>">
 	<header class="article<?php echo $action_styles ?>">
 <?php
 if ($params->get('show_title'))

@@ -32,7 +32,6 @@
  *	$path 			array depicting the nesting level of the current menu item
  *
  * 	$app			JSite instance
- * 	$lang 			JLanguage instance
  * 	$menu			JMenuSite instance of the WHOLE menu
  *	$scope			previous application scope, but usually an empty string
  *	$option			active component name incl. com_
@@ -49,48 +48,19 @@
  * @copyright   (C)2005 - 2011 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 // No direct access.
 defined('_JEXEC') or die;
 
+JLoader::register('BetterMenuHelper', dirname(__FILE__) . '/helper.php');
+
 $class_sfx .= ' '.$params->get('menutype');
+$_alang = JFactory::getLanguage()->get('tag');
 
 // cleanup moduleclass_sfx
 if ( preg_match('#(?:[_|-](chapters|book_chapters))#iu', ($msfx = $params->get('moduleclass_sfx', '')), $m) )
 {
 	$params->set('moduleclass_sfx', str_replace('_'.$m[1], ' '.$m[1], $msfx) );
 	unset($msfx);
-}
-
-if (!function_exists('betterCssAlias'))
-{
-	function betterCssAlias($item)
-	{
-		static $helper = 0;
-
-		// check if "Construc2" or "JustLayouts" have already loaded the alias helper code
-		if (!class_exists('ContentLayoutHelper', false)) {
-			JLoader::register('BetterMenuHelper', dirname(__FILE__) . '/helper.php');
-			$helper = (int) JLoader::load('BetterMenuHelper');
-			if ($helper) {
-				$helper += 1;
-			}
-		}
-		else {
-			$helper = 1;
-		}
-
-		switch ($helper) {
-			case 1:
-				return ContentLayoutHelper::getCssAlias($item);
-				break;
-			case 2:
-				return BetterMenuHelper::getCssAlias($item);
-				break;
-			default:
-				return '';
-		}
-	}
 }
 
 // menu got "lost" in XHTML for no reason, but
@@ -183,7 +153,7 @@ if ( preg_match('#(?:[_|-](ordered|ol))#iu', $class_sfx, $settings) )
 ?>><?php
 foreach ($list as $i => &$item)
 {
-	$alias = betterCssAlias($item);
+	$alias = BetterMenuHelper::getCssAlias($item);
 
 	$class = array('mi', $alias);
 

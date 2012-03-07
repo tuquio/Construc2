@@ -17,13 +17,83 @@ JLoader::register('SearchHelper', JPATH_ADMINISTRATOR .'/components/com_search/h
 class BetterMenuHelper
 {
 	/**
-	 * Attempts to create a nice alias from the $item to use in the class attribute
-	 * to apply item and category based styles. The resulting names use '_' as a
-	 * word separator to avoid name clashing with module names and common classes.
+	 * Attempts to create a nice alias from the $item to use in the class
+	 * attribute to apply item and category based styles.
+	 * If $item is a menu[ish] item, also includes type, view and layout.
+	 * If $item is an article, parent and category aliases (if available)
+	 * will be included.
+	 * Category and item IDs appear as cat-N and item-N respectively.
 	 *
-	 * @param  object  $item with an $alias and optional $category_alias property
+	 * @param  object $item  with an $alias and maybe more usefull things
+	 * @return string The alias
 	 */
 	static public function getCssAlias($item)
+	{
+		$d = array();
+		// menu item?
+		if (isset($item->type)) {
+			$d['t'] = $item->type;
+			if (isset($item->query['option'])) {
+				$d['o'] = str_replace('_', '-', $item->query['option']);
+			}
+			if (isset($item->query['view'])) {
+				$d['v'] = $item->query['view'];
+			}
+			if (isset($item->query['layout'])) {
+				$d['l'] = $item->query['layout'];
+			}
+		}
+
+		$d['A'] = array();
+		if (isset($item->parent_alias)) {
+			$d['A']['pa'] = $item->parent_alias;
+		}
+		if (isset($item->category_alias)) {
+			$d['A']['ca'] = $item->category_alias;
+		}
+		if (isset($item->alias)) {
+			$d['A']['ia'] = $item->alias;
+		}
+
+		if ($item instanceof JCategoryNode) {
+			$d['id'] = 'cid-' . $item->id;
+		} else {
+			if (isset($item->catid)) {
+				$d['cid'] = 'cid-'.$item->catid;
+			}
+			$d['id'] = 'item-' . $item->id;
+		}
+
+		$alias = '';
+		foreach ($d['A'] as $k => $ali)
+		{
+			// single word
+			if (strpos($ali, '-') === false) continue;
+			// short enough
+			if (strlen($ali) <= 20) continue;
+			// split and sanitize
+			$alias = JStringNormalise::toSpaceSeparated($ali);
+
+			$words = explode(' ', $alias);
+			if (count($words) > 1) {
+				$ignore = JFactory::getLanguage()->getIgnoredSearchWords();
+				$ali = array_diff($words, $ignore);
+				if (isset($item->language)) {
+					$alias = self::_inflectAlias($ali, $item->language);
+				} else {
+					$alias = self::_inflectAlias($ali);
+				}
+			}
+		}
+		unset($d['A']);
+
+		$alias .= ' ' . implode(' ', $d);
+
+		return trim($alias);
+	}
+
+	// @todo refactor to use JStringXXX if that comes available
+	static protected function _inflectAlias(&$aliases, $language = null)
 	{
 		static $locale;
 
@@ -32,54 +102,34 @@ class BetterMenuHelper
 			$locale = JFactory::getLanguage()->get('tag');
 		}
 
-		$alias = str_replace('-', ' ', $item->alias);
-		SearchHelper::santiseSearchWord($alias, $item->alias);
+		if (empty($language) || $language = '*') {
+			$language = $locale;
+		}
 
-		// create some fancy aliases based on the category
-		if (isset($item->category_alias)) {
-			$alias2 = str_replace('-', ' ', $item->category_alias);
-			SearchHelper::santiseSearchWord($alias2, $item->category_alias);
+		settype($aliases, 'array');
+
+		// even if it proxies, singularization is fine for this
+		if (($language == 'de-DE' || $locale == 'de-DE') && method_exists('de_DELocalise', 'singularise')) {
+			foreach ($aliases as $i => $alias) {
+				$aliases[$i] = de_DELocalise::inflect($alias, false);
+			}
+		}
+		// fall back for english
+		elseif (($language == 'en-GB' || $locale == 'en-GB') && method_exists('en_GBLocalise', 'singularise')) {
+			foreach ($aliases as $i => $alias) {
+				$aliases[$i] = en_GBLocalise::inflect($alias, false);
+			}
 		}
 		else {
-			$alias2 = '';
-		}
-
-		if (isset($item->language))
-		{
-			// @todo test if xx_XXLocalise::INFLECTION is true
-			// even if it proxies, singularization is fine for this
-			if ($item->language == 'de-DE' || ($item->language == '*' && $locale == 'de-DE') ) {
-				if ( method_exists('de_DELocalise', 'singularise') ) {
-					$alias = de_DELocalise::singularise($alias);
-					if ($alias2) {
-						$alias2 = de_DELocalise::singularise($alias2);
-					}
-				}
-			}
-			// fall back for english
-			elseif ($item->language == 'en-GB' || ($item->language == '*' && $locale == 'en-GB') ) {
-				if ( method_exists('en_GBLocalise', 'singularise') ) {
-					$alias = en_GBLocalise::singularise($alias);
-					if ($alias2) {
-						$alias2 = de_DELocalise::singularise($alias2);
-					}
-				}
-			}
-			else {
-				// @todo check for other xx-XXLocalise classes
-				if ( method_exists('en_GBLocalise', 'singularise') ) {
-					$alias = en_GBLocalise::singularise($alias);
-					if ($alias2) {
-						$alias2 = de_DELocalise::singularise($alias2);
-					}
+			// @todo check for other xx-XXLocalise classes
+			if ( method_exists('en_GBLocalise', 'singularise') ) {
+				foreach ($aliases as $i => $alias) {
+					$aliases[$i] = en_GBLocalise::inflect($alias, false);
 				}
 			}
 		}
 
-		$alias  = str_replace(' ', '_', trim($alias));
-		$alias2 = str_replace(' ', '_', trim($alias2));
-
-		return $alias . ($alias2 ? ' '.$alias2 : '');
+		return implode('-', $aliases);
 	}
 
 }
