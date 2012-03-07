@@ -1,9 +1,14 @@
-<?php
+<?php defined('_JEXEC') or die;
 /**
+ * "Imports" set in better.php
+ *
+ * $_acid			cat_id from request
+ * $_alang			application language
+ * $item_heading	parameter
+ * $show_children	parameter
+ * $max_level		parameter
  */
-defined('_JEXEC') or die;
 
-$temp = $list;
 foreach ($list as $item)
 {
 	$levelup = $item->level - $startLevel - 1;
@@ -19,37 +24,38 @@ foreach ($list as $item)
 	}
 
 	// is this node a prent of the active category?
-	if ( isset($tree['pids'][$item->id][$acid]) ) {
+	if ( isset($tree['pids'][$item->id][$_acid]) ) {
 		$css[] = 'current';
 	}
 
 	// can we use extended aliases?
-	if ($xtdalias) {
+	if (class_exists('ContentLayoutHelper', false)) {
 		$css[] = $xtdalias = ContentLayoutHelper::getCssAlias($item);
 	}
 
-	// all classes for the list item
-	$licss = implode(' ', $css);
+	// lang switch, as usual we have a web-unfriendly format
+	$lang  = explode('-', $item->language);
+	$lattr = ($lang[0] != '*' && ($lang[0] != $_alang))
+			? array(' hreflang="'. $lang[0] .'"', ' lang="'. $lang[0] .'"')
+			: array('', '');
 
-?><li id="catid-<?php echo $item->id ?>" class="<?php echo $licss ?>">
-<a class="mi" href="<?php echo $href ?>"><span class="mi <?php echo 'H'. ($item_heading + $levelup) ?>"><?php echo $item->title ?></span></a>
+?><li id="catid-<?php echo $item->id ?>" class="<?php echo implode(' ', $css) ?>">
+<a class="mi" href="<?php echo $href ?>"<?php echo $lattr[0] ?>><span class="mi <?php echo 'H'. ($item_heading + $levelup) ?>"<?php echo $lattr[1] ?>><?php echo $item->title ?></span></a>
 <?php
-if ($params->get('show_description', 0)) {
-	echo JHtml::_('content.prepare', $item->description, $item->getParams());
-}
+	if ($params->get('show_description', 0)) {
+		echo JHtml::_('content.prepare', $item->description, $item->getParams());
+	}
 
-if ($show_children && ($max_level == 0 || $max_level >= ($item->level - $startLevel)) && count($item->getChildren()))
-{
-	$list = $item->getChildren();
-	// submenu classes
-	$css   = array('submenu', $xtdalias);
-	$css[] = $item->level < 1 ? 'leaf' : 'level-'. ($item->level - 1);
-	echo '<menu class="', trim(implode(' ', $css)) ,'">';
-	require __FILE__;
-	echo '</menu>';
-}?>
+	if ($show_children && ($max_level == 0 || $max_level >= ($item->level - $startLevel)) && count($item->getChildren()))
+	{
+		$list = $item->getChildren();
+		// submenu classes
+		$css   = array('submenu', $xtdalias);
+		$css[] = $item->level < 1 ? 'leaf' : 'level-'. ($item->level - 1);
+		echo '<menu class="', trim(implode(' ', $css)) ,'">';
+		require __FILE__;
+		echo '</menu>';
+	}?>
 </li>
 <?php
 }
-
-$list = $temp;

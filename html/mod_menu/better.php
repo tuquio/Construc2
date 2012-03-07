@@ -32,7 +32,6 @@
  *	$path 			array depicting the nesting level of the current menu item
  *
  * 	$app			JSite instance
- * 	$lang 			JLanguage instance
  * 	$menu			JMenuSite instance of the WHOLE menu
  *	$scope			previous application scope, but usually an empty string
  *	$option			active component name incl. com_
@@ -54,6 +53,7 @@
 defined('_JEXEC') or die;
 
 $class_sfx .= ' '.$params->get('menutype');
+$_alang = JFactory::getLanguage()->get('tag');
 
 // cleanup moduleclass_sfx
 if ( preg_match('#(?:[_|-](chapters|book_chapters))#iu', ($msfx = $params->get('moduleclass_sfx', '')), $m) )
@@ -69,7 +69,7 @@ if (!function_exists('betterCssAlias'))
 		static $helper = 0;
 
 		// check if "Construc2" or "JustLayouts" have already loaded the alias helper code
-		if (!class_exists('ContentLayoutHelper', false)) {
+		if (!class_exists('ConstructTemplateHelper', false)) {
 			JLoader::register('BetterMenuHelper', dirname(__FILE__) . '/helper.php');
 			$helper = (int) JLoader::load('BetterMenuHelper');
 			if ($helper) {
@@ -82,7 +82,7 @@ if (!function_exists('betterCssAlias'))
 
 		switch ($helper) {
 			case 1:
-				return ContentLayoutHelper::getCssAlias($item);
+				return ConstructTemplateHelper::getCssAlias($item);
 				break;
 			case 2:
 				return BetterMenuHelper::getCssAlias($item);
