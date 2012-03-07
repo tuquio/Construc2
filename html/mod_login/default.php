@@ -17,8 +17,7 @@ defined('_JEXEC') or die;
 
 /* @var $app JSite */
 
-ConstructTemplateHelper::getInstance(JFactory::getDocument(), $module)
-	->addLink('templates/construc2/css/core/forms.css');
+ConstructTemplateHelper::getInstance()->addLink('templates/construc2/css/core/forms.css');
 
 ?>
 <?php if ($type == 'logout') { ?>

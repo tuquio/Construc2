@@ -3,13 +3,16 @@
  * ConstructTemplateHelper
  * Helper functions for the Construc2 Template.
  *
- * @package		Templates
- * @subpackage  Construc2
+ * @package     Construc2
+ * @subpackage  Elements
  * @copyright	WebMechanic http://webmechanic.biz
  * @copyright	(C) 2011-2012 WebMechanic. All rights reserved.
  * @author		(C) 2010, 2011 Matt Thomas | Joomla Engineering. All rights reserved.
  * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
+
+/** Register the CustomTheme Class */
+JLoader::register('CustomTheme', dirname(__FILE__) . '/theme.php');
 
 /**
  * Proxy for the onBeforeCompileHead event because the Dispatcher only
@@ -18,12 +21,12 @@
  */
 function ConstructTemplateHelperCompileHead()
 {
-	ConstructTemplateHelper::$helper->beforeCompileHead();
+	ConstructTemplateHelper::getInstance()->beforeCompileHead();
 }
 
 function ConstructTemplateHelperCompileBody()
 {
-	ConstructTemplateHelper::$helper->afterCompileBody();
+	ConstructTemplateHelper::getInstance()->afterCompileBody();
 }
 
 /**
@@ -34,6 +37,8 @@ function ConstructTemplateHelperCompileBody()
  */
 class ConstructTemplateHelper
 {
+	const NAME         = 'Construc2';
+
 	const MAX_MODULES  = 4;
 	const MAX_COLUMNS  = 4;
 	const MAX_WEBFONTS = 3;
@@ -43,18 +48,22 @@ class ConstructTemplateHelper
 	protected $layouts = array();
 
 	protected $layoutpath;
-	protected $themepath;
+	protected $themespath;
 
 	/** @var $tmpl JDocumentHTML template instance */
 	protected $tmpl;
 
-	/** @var $helper ConstructTemplateHelper instance of self
-	 * @see getInstance() */
+	protected $edit_mode = false;
+
+	/**
+	 * @var $helper ConstructTemplateHelper instance of self
+	 * @see getInstance()
+	 */
 	public static $helper;
 
 	protected $config = array('cdn'=>array());
 
-	public $theme = array('name'=>'Default');
+	protected $theme;
 
 	/**
 	 * @staticvar array chunks from the static html file(s) *
@@ -76,57 +85,33 @@ class ConstructTemplateHelper
 	/**@#- */
 
 	/**
-	 * Template Helper constructor expects the template object as its argument.
 	 * Use {@link getInstance()} to instantiate.
-	 *
-	 * @param JDocument $template an instance of JDocumentHtml for the most part
 	 */
-	protected function __construct(JDocument $template)
+	protected function __construct()
 	{
+		$this->tmpl = JFactory::getDocument();
+
 		// remove this nonsense
-		$template->setTab('');
-		$this->tmpl =& $template;
+		$this->tmpl->setTab('');
 
 		$this->layoutpath = JPATH_THEMES .'/'. $this->tmpl->template .'/layouts';
-		$this->themepath  = JPATH_THEMES .'/'. $this->tmpl->template .'/themes';
 
 		// fake ini file
 		if (is_file(dirname(__FILE__) .'/settings.php')) {
 			$this->config = @parse_ini_file(dirname(__FILE__) .'/settings.php', true);
 		}
 
-		// if the helper is instatiated within a template layout,
-		// JDocument params are not yet available and most of this will break
-		if (!$template->params) {
-			return $this;
-		}
+		// some edit form requested?
+		// - needs refinement and maybe some config to enforce it
+		$request  = new JInput();
+		$this->edit_mode = in_array($request->get('layout'), array('edit','form'))
+						|| in_array($request->get('view'), array('form'))
+						|| in_array($request->get('option'), array('com_media'))
+						;
 
 		$this->addLayout('index');
 
-		$theme = $template->params->get('customStyleSheet');
-		if ((int) $theme != -1)
-		{
-			$theme = str_replace('.css', '', $theme);
-			if (is_file($this->themepath . "/{$theme}.php"))
-			{
-				// fake ini file
-				$this->theme = @parse_ini_file($this->themepath . "/{$theme}.php", true);
-				if (!$this->theme || count($this->theme) == 0) {
-					break;
-				}
-
-				$this->theme['url'] = JUri::root(true) .'/templates/'. $this->tmpl->template .'/themes';
-
-				if (isset($this->theme['layouts']))
-				{
-					foreach ($this->theme['layouts'] as $override)
-					{
-						list($basename, $scope) = explode(',', $override . ',');
-						$this->addLayout($basename, $scope);
-					}
-				}
-			}
-		}
+		$this->theme = new CustomTheme($this);
 
 		// @see renderModules()
 		$chunks = array(
@@ -141,21 +126,20 @@ class ConstructTemplateHelper
 	}
 
 	/**
-	 * @param  JDocument $template an instance of JDocumentHtml for the most part
 	 * @return ConstructTemplateHelper
 	 */
-	public static function getInstance(JDocument $template, $callee = null)
+	public static function getInstance()
 	{
 		if (!self::$helper) {
-			self::$helper = new ConstructTemplateHelper($template);
+			self::$helper = new ConstructTemplateHelper();
 		}
 		return self::$helper;
 	}
 
 	/**
-	 * Returns true if the currentpage represents the default "homepage"
+	 * Returns the view name if the currentpage represents the default "homepage"
 	 * of the website.
-	 * @return bool
+	 * @return string  View name or empty string if NOT homepage
 	 */
 	static public function isHomePage()
 	{
@@ -163,6 +147,9 @@ class ConstructTemplateHelper
 		if ($front !== null) return $front;
 		$jmenu = JFactory::getApplication()->getMenu();
 		$front = ( $jmenu->getActive() == $jmenu->getDefault() );
+		if ($front && array_key_exists('view', (array)@$jmenu->getDefault()->query)) {
+			$front = $jmenu->query['view'];
+		}
 		return $front;
 	}
 
@@ -180,19 +167,19 @@ class ConstructTemplateHelper
 	 */
 	static public function getPageAlias($parent = false)
 	{
-		static $alias = array(0=>false,1=>false);
+		static $alias = array(0=>null,1=>null);
 
 		$parent = (int)$parent;
 
-		if ($alias[$parent] !== false) return $alias[$parent];
+		if ($alias[$parent] !== null) return $alias[$parent];
+
+		if (($v = self::isHomePage()) ) {
+			$alias[$parent] = trim('home '.$v, ' 01');
+			return $alias[$parent];
+		}
 
 		$app	= JFactory::getApplication();
 		$jmenu	= $app->getMenu()->getActive();
-
-		if (self::isHomePage()) {
-			$alias[$parent] = 'home';
-			return $alias[$parent];
-		}
 
 		$css = array();
 		if (!$jmenu) {
@@ -531,18 +518,28 @@ class ConstructTemplateHelper
 	 */
 	public function renderModules($position, $style=null, $attribs=null)
 	{
+		if ($this->edit_mode) {
+			return $this;
+		}
+
 		if ( !$attribs ) {
 			$attribs = array();
 		}
 		$attribs['name'] = $position;
 		($style) ? $attribs['style'] = $style : true;
 
-		$css = array('mod');
+		$css = array();
 		$prefixes = array(
 				'before' => array('before'),
 				'after'  => array('after')
 				);
-		if (isset($attribs['autocols']) && $attribs['autocols'])
+
+		// no layout override
+		if (!isset($attribs['autocols'])) {
+			$attribs['autocols'] = (bool) $this->tmpl->params->get('modOocss', 0);
+		}
+
+		if ($attribs['autocols'])
 		{
 			$group = $position;
 			$prefixes['before'][] = 'unit_before';
@@ -557,18 +554,21 @@ class ConstructTemplateHelper
 				$n = $this->tmpl->countModules($group);
 			}
 			if ( $n > 0 ) {
-				settype($attribs['oocss'], 'string');
+				settype($attribs['oocss'], 'int');
 				$css[] = 'unit size1of'.$n;
 			}
 			unset($attribs['autocols']);
 		}
+		else {
+			$css[] = 'mod';
+		}
+
 		$css = array_unique($css);
 
 		foreach (JModuleHelper::getModules($position) as $_module)
 		{
 			$prefixes['before'][] = $_module->module;
 			$prefixes['after'][]  = $_module->module;
-
 			if ($chunk = self::getChunk('module', $prefixes['before']) ) {
 				echo str_replace(
 						array('{position}', '{class}'),
@@ -610,7 +610,7 @@ class ConstructTemplateHelper
 	/**
 	 * Adds a <link> Element für stylesheets, feeds, favicons etc.
 	 *
-	 * The mime type for (alternatie) styles and icons is enforced.
+	 * The mime type for (alternative) styles and icons is enforced.
 	 *
 	 * @param string $href      the links href URL
 	 * @param string $relation  link relation, e.g. "stylesheet"
@@ -655,7 +655,6 @@ class ConstructTemplateHelper
 		}
 
 		krsort($attribs);
-
 		self::$head["{$uagent}"]['links'][$href] = JArrayHelper::toString($attribs);
 
 		return $this;
@@ -782,30 +781,8 @@ class ConstructTemplateHelper
 	 */
 	public static function beforeCompileHead()
 	{
-		$theme = &self::$helper->theme;
-
-		if (is_array($theme['scripts']))
-		{
-			foreach ($theme['scripts'] as $key => $line)
-			{
-				list($ua, $src) = explode(',', $line);
-				settype($ua, 'int');
-
-				if (0 == $ua) {
-					continue;
-				}
-				else if ($ua == 4) {
-					$ua = 'IE';
-				}
-				else if ($ua >= 6 && $ua <=9) {
-					$ua = 'IE '.$ua;
-				}
-				else {
-					$ua = '';
-				}
-
-				self::$helper->addScript($theme['url'] .'/'. $src, $ua);
-			}
+		if (isset(self::$helper->theme)) {
+			$theme = self::$helper->theme->build(self::$helper);
 		}
 
 		self::$helper->buildHead();
@@ -826,12 +803,32 @@ class ConstructTemplateHelper
 	{
 		$head = $this->tmpl->getHeadData();
 
-		// flip entries
+		// flip and reorder entries
 		$head['metaTags']['standard']['author'] = $head['metaTags']['standard']['rights'];
-		// cleanup non-standard stuff
+
+		// cleanup (non-standard) stuff
 		unset($head['metaTags']['standard']['copyright']);
 		unset($head['metaTags']['standard']['rights']);
 		unset($head['metaTags']['standard']['title']);
+		unset($head['metaTags']['standard']['description']);
+
+		$this->addMetaData('X-UA-Compatible', 'IE=Edge,chrome=1', null, true);
+		//$this->addMetaData('description', $desc);
+
+		// Change generator tag
+		$this->tmpl->setGenerator(null);
+		$this->addMetaData('generator', trim($this->tmpl->params->get('setGeneratorTag', self::NAME)));
+
+		if (!$this->edit_mode) {
+			// if set, contains the version number, i.e '1.0.2'
+			$cgf = $this->tmpl->params->get('loadGcf');
+			if ((float)$cgf > 1.0) {
+				$this->addScript('//ajax.googleapis.com/ajax/libs/chrome-frame/'. $cgf .'/CFInstall.min.js',
+						'lt IE 9',
+						array('defer'=>true, 'onload'=>'var e=document.createElement("DIV");if(e && CFInstall){e.id="gcf_placeholder";e.style.zIndex="9999";CFInstall.check({node:"gcf_placeholder"});}')
+						);
+			}
+		}
 
 		foreach ($head as $group => $stuff)
 		{
@@ -938,6 +935,12 @@ class ConstructTemplateHelper
 		$loadMoo	= (bool) $this->tmpl->params->get('loadMoo', $loadModal);
 		$loadJQuery	= (bool) $this->tmpl->params->get('loadjQuery');
 
+		// however ...
+		if ($this->edit_mode) {
+			$loadMoo	= true;
+			$loadJQuery	= false;
+		}
+
 		if ($loadMoo == false) {
 			$moos = preg_grep('#/media/system/js(\/(?!core))#', array_keys($head['scripts']));
 			if (count($moos) > 0) {
@@ -955,7 +958,7 @@ class ConstructTemplateHelper
 				'cdnjs.cloudflare.com'	=> array('jquery'=>'/jquery/(\d\.\d\.\d)/', 'mootools'=>'/mootools/(\d\.\d\.\d)/'),
 			);
 
-		// @todo bother with others than jquery as well, like... mootools
+		// @todo bother with others than jquery as well
 		$jquery  = preg_grep($libs['jquery'], array_keys($head['scripts']));
 		foreach ((array) $jquery as $src) {
 			foreach ($CDN as $host => $lib) {
@@ -1183,6 +1186,31 @@ class ConstructTemplateHelper
 	}
 
 	/**
+	 * Returns a config value.
+	 *
+	 * @param  string $key
+	 * @param  string $default
+	 * @return string
+	 */
+	public function getConfig($key, $default='')
+	{
+		if ( array_key_exists($key, $this->config) ) {
+			return $this->config[$key];
+		}
+		return "$default";
+	}
+
+	/**
+	 * Return the current theme instance.
+	 *
+	 * @return CustomTheme
+	 */
+	public function getTheme()
+	{
+		return $this->theme;
+	}
+
+	/**
 	 * Initializes the given $group array in the $head section for the $uagent
 	 * (default = self::UA) using the $filler data.
 	 *
@@ -1216,7 +1244,10 @@ class ConstructTemplateHelper
 		static $root;
 
 		if (empty($root)) {
-			$root = JURI::root();
+			$root = JURI::root(true, '/');
+		}
+		if (strpos('{', $url) !== false) {
+
 		}
 
 		$data = parse_url($url);
@@ -1233,13 +1264,15 @@ class ConstructTemplateHelper
 			}
 		}
 
-		//if ($type == 'link') {
-		//}
+		$url = str_replace($root, '/', $url);
+
+		if ($type == 'link') {
+
+		}
 
 		//if ($type == 'icon') {
 		//}
 
-		$url = str_replace($root, '/', $url);
 
 		return $url;
 	}

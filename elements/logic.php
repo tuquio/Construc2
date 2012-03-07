@@ -1,8 +1,7 @@
 <?php defined('_JEXEC') or die;
 /**
- * @package		Templates
- * @subpackage  Construc2
- * @copyright	WebMechanic http://webmechanic.biz
+ * @package     Construc2
+ * @subpackage  Elements
  * @copyright	(C) 2011-2012 WebMechanic. All rights reserved.
  * @author		(C) 2010, 2011 Matt Thomas | Joomla Engineering. All rights reserved.
  * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
@@ -14,7 +13,7 @@
 /** Register the ConstructTemplateHelper Class */
 JLoader::register('ConstructTemplateHelper', dirname(__FILE__) . '/helper.php');
 
-$templateHelper = ConstructTemplateHelper::getInstance($this, __FILE__);
+$templateHelper = ConstructTemplateHelper::getInstance();
 
 /** @var $app JSite To enable use of site configuration */
 $app 		= JFactory::getApplication();
@@ -29,31 +28,23 @@ $tmpl_url 	= $base_url. 'templates/'. $this->template;
 $customStyleSheet 	= 		 $this->params->get('customStyleSheet');
 $enableSwitcher 	= (bool) $this->params->get('enableSwitcher');
 $showDiagnostics 	= (bool) $this->params->get('showDiagnostics');
-$showDateContainer 	= (bool) $this->params->get('showDateContainer');
-
-$fluidMedia			= (bool) $this->params->get('fluidMedia') ? 'fluid-media' : '';
-$fullWidth			=		 $this->params->get('fullWidth');
-$siteWidth			= (int)	 $this->params->get('siteWidth');
-$siteWidthUnit 		= 		 $this->params->get('siteWidthUnit');
-
-$mod_oocss			= (bool) $this->params->get('modOocss', 1);
 
 $loadModal			= (bool) $this->params->get('loadModal');
 $loadMoo 			= (bool) $this->params->get('loadMoo', $loadModal);
 $loadJQuery 		=		 $this->params->get('loadjQuery');
-$loadChromeFrame	=		 $this->params->get('loadGcf'); // if set, contains the version number, i.e '1.0.2'
 
 // "old-school" concatenating of files and free server based compression
 $ssiIncludes		= (bool) $this->params->get('ssiIncludes', 0);
 $ssiTheme			=		 $this->params->get('ssiTheme');
 
 // some editor form requested
-$editMode			= in_array($app->input->get('layout'), array('edit','form'));
+$editMode = in_array($app->input->get('layout'), array('edit','form'))
+		||  in_array($app->input->get('option'), array('com_media'));
 
 // all things different in edit mode
 if ($editMode) {
-	$fullWidth = $loadMoo = true;
-	$loadChromeFrame = $enableSwitcher = $showDiagnostics = $showDateContainer = false;
+	$loadMoo = true;
+	$enableSwitcher = $showDiagnostics = false;
 }
 
 // 'filelist' params return -1 for none. make FALSE
@@ -63,9 +54,6 @@ if (($ssiTheme + 1) == 0) $ssiTheme = false;
 // will contain custom <script> code depending on selected params
 $scriptDeclarations	= array();
 $styleDeclarations	= array();
-
-// Change generator tag
-$this->setGenerator( trim($this->params->get('setGeneratorTag', 'Construc2')) );
 
 if ($showDiagnostics) {
 	$jmenu = $app->getMenu();
@@ -133,21 +121,24 @@ if ($columnGroupBetaCount) {
 	$columnGroupBetaClass = 'column-beta colcount-'.$columnGroupBetaCount;
 }
 
-# alpha-X-main-beta-Y
 $columnLayout = array('main-only');
-if ($columnGroupAlphaCount > 0) {
-	$columnLayout = array('alpha-main');
-	if ($columnGroupBetaCount > 0) {
-		$columnLayout = array('alpha-main-beta');
-	}
-} elseif ($columnGroupBetaCount > 0) {
-	$columnLayout = array('main-beta');
-}
 
-// merge $columnLayout into a string
-$columnLayout[] = $fluidMedia;
-$columnLayout = array_unique($columnLayout);
-$columnLayout = trim(implode(' ', $columnLayout));
+if (!$editMode) {
+	# alpha-X-main-beta-Y
+	if ($columnGroupAlphaCount > 0) {
+		$columnLayout = array('alpha-main');
+		if ($columnGroupBetaCount > 0) {
+			$columnLayout = array('alpha-main-beta');
+		}
+	} elseif ($columnGroupBetaCount > 0) {
+		$columnLayout = array('main-beta');
+	}
+
+	// merge $columnLayout into a string
+	$columnLayout[] = (bool) $this->params->get('fluidMedia') ? 'fluid-media' : '';
+	$columnLayout = array_unique($columnLayout);
+	$columnLayout = trim(implode(' ', $columnLayout));
+}
 
 /* --------------------------- Debug Positions ------------------------------- */
 // #TODO get positions from xml and transform names into variable counterparts
@@ -188,18 +179,17 @@ if ($ssiIncludes) {
 		$templateHelper->addLink($tmpl_url.'/css/core/rtl.css');
 	}
 
-	// cheap and all but smart -- do we need more ACL checks?
-	if (!$ssiIncludes && $editMode && JFactory::getUser()->authorise('core.edit')) {
-		$templateHelper->addLink($tmpl_url.'/css/core/edit-form.css', null, array('media'=>'screen'));
+	// "task based" stuff
+	if ($editMode) {
+		$templateHelper->addLink($tmpl_url.'/css/core/edit-form.css');
 	} else {
-		$templateHelper->addLink($tmpl_url.'/css/core/print.css', null, array('media'=>'print'));
+		$templateHelper->addLink($tmpl_url.'/css/core/print.css');
 	}
 
 	if ($customStyleSheet) {
 		$templateHelper->addLink($tmpl_url.'/themes/'.$customStyleSheet);
 	}
 }
-
 
 // Style sheet switcher
 if ($enableSwitcher) {
@@ -226,19 +216,9 @@ if ((bool) $this->params->get('html5manifest')) {
 }
 
 /* ----------------------- Internet Explorer Fixes --------------------------- */
-
-// offer Chrome Frame for IE lt 9
-$templateHelper->addMetaData('X-UA-Compatible', 'IE=Edge,chrome=1', 'lt IE 9', true);
-if ($loadChromeFrame) {
-	$templateHelper->addScript('//ajax.googleapis.com/ajax/libs/chrome-frame/'. $loadChromeFrame .'/CFInstall.min.js',
-		'lt IE 9',
-		array('defer'=>true, 'onload'=>'var e=document.createElement("DIV");if(e && CFInstall){e.id="gcf_placeholder";e.style.zIndex="9999";CFInstall.check({node:"gcf_placeholder"});}')
-		);
-}
-
 // html5 shim
 if ($this->params->get('html5shim')) {
-	$templateHelper->addScript($tmpl_url.'/js/html5.js', 'lt IE 9');
+	$templateHelper->addScript($tmpl_url.'/js/html5.js');
 }
 
 // JSON shim
