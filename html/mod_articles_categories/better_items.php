@@ -29,7 +29,7 @@ foreach ($list as $item)
 	}
 
 	// can we use extended aliases?
-	if (class_exists('ContentLayoutHelper', false)) {
+	if (($xtdalias = class_exists('ContentLayoutHelper', false))) {
 		$css[] = $xtdalias = ContentLayoutHelper::getCssAlias($item);
 	}
 

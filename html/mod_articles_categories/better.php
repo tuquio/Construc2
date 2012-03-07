@@ -17,7 +17,6 @@
  *  $path			filepath of this file
  *
  * 	$app			JSite instance
- * 	$lang 			JLanguage instance
  *	$scope			previous application scope, but usually an empty string
  *	$option			active component name incl. com_
  *	$chrome			this file's path
@@ -35,7 +34,7 @@
  */
 defined('_JEXEC') or die;
 
-$xtdalias = JLoader::load('ContentLayoutHelper');
+JLoader::load('ContentLayoutHelper');
 
 function treeWalker($list, &$tree, $level=0)
 {
@@ -58,12 +57,13 @@ $tree = array('pids'=>array());
 $tree['pids'][$params->get('parent')] = array();
 treeWalker($list, $tree);
 
-$acid = $app->get('input')->get('id', 0);
 
-$item_heading  = (int)  $params->get('item_heading', 3);
-$show_children = (bool) $params->get('show_children', 0);
-$max_level     = (int)  $params->get('maxlevel', 0);
+$item_heading	= (int)  $params->get('item_heading', 3);
+$show_children	= (bool) $params->get('show_children', 0);
+$max_level		= (int)  $params->get('maxlevel', 0);
 
+$_alang = JFactory::getLanguage()->get('tag');
+$_acid  = $app->get('input')->get('id', 0);
 ?>
 <menu class="menu categories <?php echo $moduleclass_sfx ?>">
 <?php require JModuleHelper::getLayoutPath('mod_articles_categories', $params->get('layout', 'default').'_items'); ?>
