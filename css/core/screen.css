@@ -89,10 +89,33 @@ p.counter b, .pagination span.mi {padding:.2ex .4em}
 .positive-bd	{border-color:#73ab00}
 .negative-bd	{border-color:#c20000}
 
-/*
-.tip {float:left;background:#ffc;border:1px solid #D4D5AA;padding:5px;max-width:400px;z-index:50;-webkit-box-shadow:5px 5px 10px rgba(0,0,0,0.6);-moz-box-shadow:5px 5px 10px rgba(0,0,0,0.6);box-shadow:5px 5px 10px rgba(0,0,0,0.6)}
-.tip-title {padding:0;margin:0;font-size:1em;font-weight:bold;margin-top:-15px;padding-top:15px;padding-bottom:5px;background:url(../images/selector-arrow.png) no-repeat}
-.tip-text {font-size:1em;margin:0}
-*/
+div.mod-preview {
+	background-color: rgba(255, 255, 255, 0.4);
+	border: 1px solid #FFFFFF;
+	font-size: 75%;
+	margin: 0 auto;
+	min-height: 3.6em;
+	position: relative;
+	width: 100%;
+}
+
+div.mod-preview-info {
+	color: #000000;
+	font-weight: bold;
+	margin: 0 auto;
+	padding-top: 1.6em;
+	position: absolute;
+	text-shadow: 0 0 4px #FFFFFF;
+	top: 0;
+	z-index: 27;
+}
+
+div.mod-preview-wrapper {
+	background-color: rgba(255, 255, 255, 0.2);
+	overflow: auto;
+	z-index: 27;
+}
+
+.mod-preview .mod-preview-wrapper .mod {margin:0}
 
 /* .eof */
