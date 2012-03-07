@@ -70,13 +70,14 @@ b.top, b.top b, b.bottom, b.bottom b{display:block;background-repeat:no-repeat;f
 .pop .bl{bottom:-10px}
 .pop .tr{float:right;margin-right:-10px;_display:inline;/*fix double margin bug*/ }
 
-/* clearfix */
+/* http://www.stubbornella.org/content/2010/12/09/the-hacktastic-zoom-fix/ */
 .line:after,
 .lastUnit:after,
 .mod .inner:after,
 .inner .hd:after,
 .inner .bd:after,
-.inner .ft:after{clear:both;display:block;visibility:hidden;overflow:hidden;height:0 !important;line-height:0;content:"\A0\A0\A0"}
+.inner .ft:after{clear:both;display:block;visibility:hidden;overflow:hidden;height:0 !important;line-height:0;
+content:"\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0"}
 
 /* menus ( [ul|ol] .menu[.hmenu] > li.mi ) */
 menu, .menu, .hmenu {list-style:none;margin:0;padding:0}
