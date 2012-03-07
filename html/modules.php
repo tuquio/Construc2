@@ -1,5 +1,10 @@
 <?php defined('_JEXEC') or die;
 /**
+ * Module "Chrome style" functions: mod, complex, pop, bubble, withevent, chtml.
+ *
+ * modChrome_chtml is the working horse the other "styles" proxy to after
+ * setting different class attributes.
+ *
  * @package     Templates
  * @subpackage  Construc2
  * @author      WebMechanic http://webmechanic.biz
@@ -90,7 +95,6 @@ function modChrome_chtml( $module, &$params, &$attribs )
  * @param array      $attribs
  * @link  https://github.com/stubbornella/oocss/wiki/standard-module-format
  * @link  http://oocss.org
- * @author WebMechanic http://webmechanic.biz
  */
 function modChrome_mod( $module, &$params, &$attribs )
 {
@@ -124,7 +128,6 @@ function modChrome_mod( $module, &$params, &$attribs )
  * @param array      $attribs
  * @uses  modChrome_mod()
  * @link  https://github.com/stubbornella/oocss/wiki/Module
- * @author WebMechanic http://webmechanic.biz
  */
 function modChrome_complex( $module, &$params, &$attribs )
 {
@@ -141,7 +144,6 @@ function modChrome_complex( $module, &$params, &$attribs )
  * @param array      $attribs
  * @uses modChrome_mod()
  * @link https://github.com/stubbornella/oocss/wiki/Module
- * @author WebMechanic http://webmechanic.biz
  */
 function modChrome_pop( $module, &$params, &$attribs )
 {
@@ -168,7 +170,6 @@ function modChrome_pop( $module, &$params, &$attribs )
  * @param array      $attribs
  * @uses modChrome_mod()
  * @link https://github.com/stubbornella/oocss/wiki/Talk-Bubbles
- * @author WebMechanic http://webmechanic.biz
  */
 function modChrome_bubble( $module, &$params, &$attribs )
 {
@@ -181,8 +182,10 @@ function modChrome_bubble( $module, &$params, &$attribs )
 
 /**
  * Trigger content plugins on module content. As of J1.7 this feature is built in.
- * @param string $content
- * @param JParameter $params
+ *
+ * @param object     $module
+ * @param JRegistry  $params
+ * @param array      $attribs
  */
 function modChrome_withevent( $module, &$params, &$attribs )
 {
@@ -190,4 +193,3 @@ function modChrome_withevent( $module, &$params, &$attribs )
 
 	modChrome_chtml( $module, $params, $attribs );
 }
-

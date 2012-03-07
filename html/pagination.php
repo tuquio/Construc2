@@ -23,7 +23,7 @@
  * @return string
  * @todo IMPLEMENT limitfield form
  */
-function pagination_list_footer($list)
+function x_pagination_list_footer($list)
 {
 	return ''; // '<form>'. $list['limitfield'] . '</form>';
 }
