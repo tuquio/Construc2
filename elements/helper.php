@@ -441,8 +441,6 @@ class ConstructTemplateHelper
 		$view	= $req->getCmd('view');
 		$file	= null;
 
-#FIXME - modal com_media = tmpl=component
-FB::info($this->layouts);
 		// override view? (category)
 		if (isset($this->layouts[$view.'.php']))
 		{
