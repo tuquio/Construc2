@@ -25,13 +25,9 @@ $base_url 	= JURI::base(true) . '/';
 $tmpl_url 	= $base_url. 'templates/'. $this->template;
 
 /* Define shortcuts for often used template parameters */
-$customStyleSheet 	= 		 $this->params->get('customStyleSheet');
+$themeStyle 		= 		 $this->params->get('customStyleSheet');
 $enableSwitcher 	= (bool) $this->params->get('enableSwitcher');
 $showDiagnostics 	= (bool) $this->params->get('showDiagnostics');
-
-$loadModal			= (bool) $this->params->get('loadModal');
-$loadMoo 			= (bool) $this->params->get('loadMoo', $loadModal);
-$loadJQuery 		=		 $this->params->get('loadjQuery');
 
 // "old-school" concatenating of files and free server based compression
 $ssiIncludes		= (bool) $this->params->get('ssiIncludes', 0);
@@ -48,7 +44,7 @@ if ($editMode) {
 }
 
 // 'filelist' params return -1 for none. make FALSE
-if (($customStyleSheet + 1) == 0) $customStyleSheet = false;
+if (($themeStyle + 1) == 0) $themeStyle = false;
 if (($ssiTheme + 1) == 0) $ssiTheme = false;
 
 // will contain custom <script> code depending on selected params
@@ -66,20 +62,6 @@ if ($showDiagnostics) {
 		if (isset($amenu->query['id'])) {
 			$articleId = $amenu->query['id'];
 		}
-	}
-}
-
-// Load the jQuery JavaScript Library
-if ($loadJQuery) {
-	$templateHelper->addScript('//ajax.googleapis.com/ajax/libs/jquery/'. $loadJQuery .'/jquery.min.js');
-}
-
-// Load the MooTools JavaScript Library, else @see ConstructTemplateHelper::sortScripts()
-if ($loadMoo == true) {
-	JHtml::_('behavior.framework');
-	if ($loadModal) {
-		// Enable modal pop-ups
-		JHtml::_('behavior.modal');
 	}
 }
 
@@ -185,8 +167,8 @@ if ($ssiIncludes) {
 		$templateHelper->addLink($tmpl_url.'/css/core/print.css');
 	}
 
-	if ($customStyleSheet) {
-		$templateHelper->addLink($tmpl_url.'/themes/'.$customStyleSheet);
+	if ($themeStyle) {
+		$templateHelper->addLink($tmpl_url.'/themes/'.$themeStyle);
 	}
 }
 

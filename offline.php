@@ -1,4 +1,4 @@
-<!DOCTYPE html><?php
+<!DOCTYPE html><?php defined('_JEXEC') or die;
 /**
  * @package     Templates
  * @subpackage  Construc2
@@ -6,8 +6,6 @@
  * @copyright   (C) 2011 WebMechanic
  * @license     GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
-defined('_JEXEC') or die;
-
 $app = JFactory::getApplication();
 ?>
 <html lang="<?php echo $this->language; ?>" dir="<?php echo $this->direction; ?>">

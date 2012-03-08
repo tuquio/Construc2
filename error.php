@@ -1,4 +1,4 @@
-<?php defined('_JEXEC') or die;
+<!DOCTYPE html><?php defined('_JEXEC') or die;
 /**
  * Main Error Page entry script.
  *
@@ -21,9 +21,7 @@ if (!isset($this->error)) {
 		$this->title = JText::_('JERROR_AN_ERROR_HAS_OCCURRED');
 	}
 }
-
 ?>
-<!DOCTYPE html>
 <html lang="<?php echo $lang ?>" dir="<?php echo $this->direction ?>">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">

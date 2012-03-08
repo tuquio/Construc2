@@ -96,20 +96,16 @@
 					<option value="1">JYes</option>
 					<option value="0">JNo</option>
 				</field>
+<!-- 
+				<field name="loadMooSrc" type="cdnlist" members="mootools" default="ajax.googleapis.com" label="TPL_CONSTRUC2_MOOSRC_LABEL" description="TPL_CONSTRUC2_MOOSRC_DESC" />
+ -->
 				<field name="loadModal" type="radio" default="1" label="TPL_CONSTRUC2_LOAD_MODAL_LABEL" description="TPL_CONSTRUC2_LOAD_MODAL_DESC">
 					<option value="1">JYes</option>
 					<option value="0">JNo</option>
 				</field>
 
 				<field name="loadjQuery" type="jqueryversion" default="" label="TPL_CONSTRUC2_LOAD_JQUERY_LABEL" description="TPL_CONSTRUC2_LOAD_JQUERY_DESC" />
-				<field name="loadjQuerySrc" type="list" default="ajax.googleapis.com" label="TPL_CONSTRUC2_JQUERYSRC_LABEL" description="TPL_CONSTRUC2_JQUERYSRC_DESC">
-					<option value="media/jquery/">jQuery-Source Media</option>
-					<option value="templates/construct2/js/">jQuery-Source Template</option>
-					<option value="ajax.googleapis.com">Google *)</option>
-					<option value="ajax.aspnetcdn.com">Microsoft *)</option>
-					<option value="code.jquery.com">jQuery</option>
-					<option value="cdnjs.cloudflare.com">CloudFlare</option>
-				</field>
+				<field name="loadjQuerySrc" type="cdnlist" members="jquery" default="ajax.googleapis.com" label="TPL_CONSTRUC2_JQUERYSRC_LABEL" description="TPL_CONSTRUC2_JQUERYSRC_DESC" />
 
 				<field name="headCleanup" type="radio" default="0" label="TPL_CONSTRUC2_ENABLE_HEADCLEANUP_LABEL" description="TPL_CONSTRUC2_ENABLE_HEADCLEANUP_DESC">
 					<option value="1">JYes</option>
@@ -136,41 +132,6 @@
 		    	</field>
 			</fieldset>
 
-			<fieldset name="typography" description="TPL_CONSTRUC2_GOOGLE_WEB_FONT">
-<!-- will return in v2.0
-				<field name="googleWebFontApi" type="text" default="" label="Web Fonts API Key" description="To retrieve the dynamic list of web fonts offered by the Google Web Fonts service enter your Web Fonts API key: http://code.google.com/intl/de-DE/apis/webfonts/docs/developer_api.html" size="50" />
- -->
-				<field name="googleWebFont1" type="googlewebfont" default="" label="TPL_CONSTRUC2_GOOGLE_WEB_FONT_LABEL" description="TPL_CONSTRUC2_GOOGLE_WEB_FONT_DESC" />
-				<field name="googleWebFontTargets1" type="text" default="h1,h2,h3,h4,h5,h6" label="TPL_CONSTRUC2_GOOGLE_WEB_FONT_TARGETS_LABEL" description="TPL_CONSTRUC2_GOOGLE_WEB_FONT_TARGETS_DESC" size="50" />
-				<field name="googleWebFontSize1" type="text" default="" label="TPL_CONSTRUC2_GOOGLE_WEB_FONT_SIZE_LABEL" description="TPL_CONSTRUC2_GOOGLE_WEB_FONT_SIZE_DESC" size="5" />
-				<field type="spacer" default=" " />
-				<field name="googleWebFont2" type="googlewebfont" default="" label="TPL_CONSTRUC2_GOOGLE_WEB_FONT_LABEL" description="TPL_CONSTRUC2_GOOGLE_WEB_FONT_DESC" />
-				<field name="googleWebFontTargets2" type="text" default="" label="TPL_CONSTRUC2_GOOGLE_WEB_FONT_TARGETS_LABEL" description="TPL_CONSTRUC2_GOOGLE_WEB_FONT_TARGETS_DESC" size="50"/>
-				<field name="googleWebFontSize2" type="text" default="" label="TPL_CONSTRUC2_GOOGLE_WEB_FONT_SIZE_LABEL" description="TPL_CONSTRUC2_GOOGLE_WEB_FONT_SIZE_DESC" size="5" />
-				<field type="spacer" default=" " />
-				<field name="googleWebFont3" type="googlewebfont" default="" label="TPL_CONSTRUC2_GOOGLE_WEB_FONT_LABEL" description="TPL_CONSTRUC2_GOOGLE_WEB_FONT_DESC" />
-				<field name="googleWebFontTargets3" type="text" default="" label="TPL_CONSTRUC2_GOOGLE_WEB_FONT_TARGETS_LABEL" description="TPL_CONSTRUC2_GOOGLE_WEB_FONT_TARGETS_DESC" size="50" />
-				<field name="googleWebFontSize3" type="text" default="" label="TPL_CONSTRUC2_GOOGLE_WEB_FONT_SIZE_LABEL" description="TPL_CONSTRUC2_GOOGLE_WEB_FONT_SIZE_DESC" size="5" />
-			</fieldset>
-
-<!-- EXPERI-MENTAL NOTE (high impact probability on logic.php and index.php)
-			<fieldset name="modulegroups" description="TPL_CONSTRUC2_MODULEGROUPS">
-				<field name="mod_header_above"  type="text" default="6" label="TPL_CONSTRUC2_MODULES_HEADER_ABOVE"  description="TPL_CONSTRUC2_MODULES_GROUPS_DESC" size="5" />
-				<field name="mod_header_below"  type="text" default="6" label="TPL_CONSTRUC2_MODULES_HEADER_BELOW"  description="TPL_CONSTRUC2_MODULES_GROUPS_DESC" size="5" />
-				<field name="mod_nav_below"     type="text" default="6" label="TPL_CONSTRUC2_MODULES_HEADER_ABOVE"  description="TPL_CONSTRUC2_MODULES_GROUPS_DESC" size="5" />
-				<field name="mod_content_above" type="text" default="6" label="TPL_CONSTRUC2_MODULES_NAV_BELOW"     description="TPL_CONSTRUC2_MODULES_GROUPS_DESC" size="5" />
-				<field name="mod_content_below" type="text" default="6" label="TPL_CONSTRUC2_MODULES_CONTENT_ABOVE" description="TPL_CONSTRUC2_MODULES_GROUPS_DESC" size="5" />
-				<field name="mod_footer_above"  type="text" default="6" label="TPL_CONSTRUC2_MODULES_CONTENT_BELOW" description="TPL_CONSTRUC2_MODULES_GROUPS_DESC" size="5" />
-				<field name="mod_alpha_column" type="checkboxes" default="1" label="TPL_CONSTRUC2_MODULES_ALPHA_COLUMN" description="TPL_CONSTRUC2_MODULES_GROUPS_DESC">
-					<option value="1">1</option>
-					<option value="2">2</option>
-				</field>
-				<field name="mod_beta_column" type="checkboxes" default="1" label="TPL_CONSTRUC2_MODULES_BETA_COLUMN" description="TPL_CONSTRUC2_MODULES_GROUPS_DESC">
-					<option value="1">1</option>
-					<option value="2">2</option>
-				</field>
-			</fieldset>
- -->
 		</fields>
 	</config>
 
