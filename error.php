@@ -21,6 +21,16 @@ if (!isset($this->error)) {
 		$this->title = JText::_('JERROR_AN_ERROR_HAS_OCCURRED');
 	}
 }
+
+$sitesearch = false;
+if (!JComponentHelper::isEnabled('com_finder') && !JPluginHelper::isEnabled('finder')) {
+	if (JComponentHelper::isEnabled('com_search')) {
+		$sitesearch = JRoute::_('index.php?option=com_search&view=search');
+	}
+} else {
+	$sitesearch = JRoute::_('index.php?option=com_finder&view=search');
+}
+
 ?>
 <html lang="<?php echo $lang ?>" dir="<?php echo $this->direction ?>">
 <head>
@@ -75,18 +85,16 @@ if (!isset($this->error)) {
 ?>
 			</ol>
 
-<?php if (JComponentHelper::isEnabled('com_search')) { ?>
+<?php if ($sitesearch) { ?>
 			<p><strong><?php echo JText::_('JERROR_LAYOUT_SEARCH') ?></strong></p>
 			<ul>
-				<li><a href="<?php echo JRoute::_($this->baseurl . '/index.php?option=com_search') ?>" title="<?php echo JText::_('JERROR_LAYOUT_GO_TO_THE_HOME_PAGE') ?>"><?php echo JText::_('JERROR_LAYOUT_SEARCH_PAGE') ?></a></li>
-				<li><a href="<?php echo JRoute::_($this->baseurl .'/') ?>" title="<?php echo JText::_('JERROR_LAYOUT_GO_TO_THE_HOME_PAGE') ?>"><?php echo JText::_('JERROR_LAYOUT_HOME_PAGE') ?></a></li>
-			</ul>
-<?php } else {?>
+				<li><a href="<?php echo $sitesearch ?>"><?php echo JText::_('JERROR_LAYOUT_SEARCH_PAGE') ?></a></li>
+<?php } else { ?>
 			<p><strong><?php echo JText::_('JERROR_LAYOUT_PLEASE_TRY_ONE_OF_THE_FOLLOWING_PAGES') ?></strong></p>
 			<ul>
+<?php } ?>
 				<li><a href="<?php echo JRoute::_($this->baseurl .'/') ?>" title="<?php echo JText::_('JERROR_LAYOUT_GO_TO_THE_HOME_PAGE') ?>"><?php echo JText::_('JERROR_LAYOUT_HOME_PAGE') ?></a></li>
 			</ul>
-<?php } ?>
 
 			<p><?php echo JText::_('JERROR_LAYOUT_PLEASE_CONTACT_THE_SYSTEM_ADMINISTRATOR') ?></p>
 		</div>

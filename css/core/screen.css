@@ -16,7 +16,7 @@
 h1,.H1 {font-size:2.0em}
 h2,.H2 {font-size:1.7em}
 h3,.H3 {font-size:1.4em}
-h4,.H4 {font-size:1.2em}
+h4,.H4, dt.result-title {font-size:1.2em}
 h5,.H5 {font-size:1.1em}
 h6,.H6 {font-size:1.0em}
 

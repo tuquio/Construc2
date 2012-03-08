@@ -1,22 +1,21 @@
-<?php
+<?php defined('_JEXEC') or die;
 /**
  * Subtemplate loaded if $footerAboveCount > 0
  *
  * @package     Templates
  * @subpackage  Layouts
- * @author		WebMechanic http://webmechanic.biz
- * @copyright	Copyright (C) 2011 WebMechanic http://webmechanic.biz. All rights reserved.
- * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
+ * @author      WebMechanic http://webmechanic.biz
+ * @copyright   (C) 2011-2012 WebMechanic http://webmechanic.biz. All rights reserved.
+ * @license     GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
-defined('_JEXEC') or die;
 $modcount = count($footerAboveCount);
 
 $style	= null; // null is essentially the same as 'raw'
 $chunks = array(
 		'module_before' => '<div id="{position}" class="{class}">',
 		'module_after'  => '</div>'
-);
-$templateHelper->setChunks($chunks, true);
+		);
+$templateHelper->theme->setChunks($chunks, true);
 
 if ($modcount) : ?><footer id="footer-above" class="above"><div class="line above-inner"><?php endif;
 

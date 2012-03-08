@@ -1,23 +1,21 @@
-<?php
+<?php defined('_JEXEC') or die;
 /**
  * Subtemplate loaded if $navBelowCount > 0
  *
  * @package     Templates
  * @subpackage  Layouts
- * @author		Joomla Engineering http://joomlaengineering.com
- * @author		WebMechanic http://webmechanic.biz
- * @copyright	Copyright (C) 2010, 2011 Matt Thomas | Joomla Engineering. All rights reserved.
- * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
+ * @author      WebMechanic http://webmechanic.biz
+ * @copyright   (C) 2011-2012 WebMechanic http://webmechanic.biz. All rights reserved.
+ * @license     GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
-defined('_JEXEC') or die;
 $modcount = count($navBelowCount);
 
 $style	= 'mod';
 $chunks = array(
 		'module_before' => '<div id="{position}" class="{class}">',
 		'module_after'  => '</div>'
-);
-$templateHelper->setChunks($chunks, true);
+		);
+$templateHelper->theme->setChunks($chunks, true);
 
 if ($modcount) : ?><div id="nav-below" class="nav-below"><div class="line below-inner"><?php endif;
 

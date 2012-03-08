@@ -51,7 +51,7 @@
 // No direct access.
 defined('_JEXEC') or die;
 
-JLoader::register('BetterMenuHelper', dirname(__FILE__) . '/helper.php');
+JLoader::register('BetterMenuHelper', dirname(__FILE__) . '/_helper.php');
 
 $class_sfx .= ' '.$params->get('menutype');
 $_alang = JFactory::getLanguage()->get('tag');
@@ -74,6 +74,8 @@ if (!$active) {
 }
 
 // ordered list requested?
+$ordered = BetterMenuHelper::renderType($module, $params, $active);
+
 if ( preg_match('#(?:[_|-](ordered|ol))#iu', $class_sfx, $settings) )
 {
 	$elt = 'ol';
@@ -111,13 +113,13 @@ if ( preg_match('#(?:[_|-](ordered|ol))#iu', $class_sfx, $settings) )
 	// although we honor the location of this $override for cross-usage
 	// within any template(style), the active template folder seems more
 	// relevant to contain an appropriate stylesheets ;)
-	if (is_file($folder . '/better_'. $tplname. '.css'))
+	if (is_file($folder . '/css/better_'. $tplname. '.css'))
 	{
 		$class_sfx .= ' '.$tplname;
-		$stylesheet	= '/better_'. $tplname. '.css';
+		$stylesheet	= '/css/better_'. $tplname. '.css';
 	}
 	else {
-		$stylesheet	= '/better_menu.css';
+		$stylesheet	= '/css/better_menu.css';
 	}
 
 	JFactory::getDocument()->addStyleSheet(JURI::base(true). $folder . $stylesheet);
