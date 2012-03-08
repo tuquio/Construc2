@@ -4,11 +4,13 @@
  * cssgradients csstransitions generatedcontent svg inlinesvg
  * @license CC BY-NC 3.0/de
  */
+@import url(padawan_light.css);
 @import url(http://fonts.googleapis.com/css?family=Ubuntu+Condensed);
 @import url(http://fonts.googleapis.com/css?family=Kristi);
-@import url(padawan_light.css);
 
 body {min-width:900px;max-width:94%;margin:0 auto}
+#nav	{margin-top:1em}
+.content-container {margin-top:1em}
 
 /* template param override (#body-container,#header-above 100%) */
 @media screen and (max-width:1039px) {
@@ -19,9 +21,18 @@ body {min-width:900px;max-width:94%;margin:0 auto}
 	body #body-container, body #header-above, .page-foot {max-width:90%}
 	#logo {margin-left:5%}
 }
-
-#nav	{margin-top:1em}
-.content-container {margin-top:1em}
+/* popup modal */
+@media screen {
+	body.com_media, body.modal,
+	body.com_media #body-container	,
+	body.modal     #body-container	,
+	body.com_media .page-foot		,
+	body.modal     .page-foot		{min-width:0;max-width:750px}	
+	body.com_media .content-container,
+	body.modal     .content-container {margin-top:0}
+	.body-overlayed #sbox-window.shadow		{padding:2px}
+	.body-overlayed #sbox-content.sbox-content-iframe	{overflow:auto}
+}
 
 #logo   	{font-size:60px}
 #logo   	{display:inline-block}
@@ -271,6 +282,15 @@ p.counter				{display:inline-block;margin:.6ex 1em}
 
 menu.categories span.active		{text-transform:uppercase}
 menu.categories .submenu		{padding-left:.6em}
+menu.categories .H3				{}
+menu.categories .parent > a.mi	{display:inline}
+
+/* kinda drop-down, needs transition and backdrop color
+menu.categories .parent .H3			{display:block;cursor:pointer}
+menu.categories .parent > menu		{height:0;display:none;position:absolute}
+menu.categories .parent:hover menu	{height:auto;display:block}
+menu.categories .current > menu		{height:auto;display:block}
+*/
 
 menu.loginmenu					{margin-top:0.6ex}
 .loginmenu span.mi				{padding: 1px 3px;}

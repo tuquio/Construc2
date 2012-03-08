@@ -2,13 +2,21 @@
 ; -----
 ; Theme configuration
 ;
-title="Padawan"
-author="WebMechanic.biz"
-version="1.0.0"
-copyright="(c)2012 WebMechanic.biz"
+title		= "Padawan"
+author		= "WebMechanic"
+version		= "2.0.0"
+copyright	= "(c)2012 WebMechanic.biz"
+license		= "CC BY-NC-ND"
+url			= "http://webmechanic.biz"
+
+[cdn]
+@default	= "ajax.googleapis.com"
+ajax.aspnetcdn.com			= 0,jquery
+cdn1.depository.de			= 1,mootols
+cdn1.kyrhia-schindler.de	= 1,jquery,mootols
 
 ; -----
-; All time scripts if SSI powered .scripts don't work for you
+; All-time scripts if SSI powered .scripts don't work for you.
 ; Filenames are relative to the ./themes folder
 ; keyname=N,filename.js
 ;   N	meaning
@@ -36,9 +44,9 @@ modernizr=4,modernizr.95863.js
 ; legacy=62,category			used for category with ID 62
 
 [layouts]
-featured=featured
-category=category
-faq=62,article
+featured	= featured
+category	= category
+faq			= 62,article
 
 ; -----
 ; Replacing default switches
@@ -47,15 +55,15 @@ faq=62,article
 diagnostic=TPL_CONSTRUC2_STYLE_DIAGNOSTIC_MODE
 
 ; Color schemes
-.default="Padawan Light"
-contrast="High Contrast"
-darker="Padawan Dark"
+@default	= "Padawan Light"
+contrast	= "High Contrast"
+darker		= "Padawan Dark"
 
 ; -----
 ; Font scaling
 [fontscaler]
-larger="Huge Font"
-large="Larger Font"
-.default="Default Font"
-small="Small Font"
-smaller="Tiny Font"
+larger		= "Huge Font"
+large		= "Large Font"
+@default	= "Default Font"
+small		= "Small Font"
+smaller		= "Tiny Font"
