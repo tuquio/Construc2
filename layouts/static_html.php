@@ -1,4 +1,4 @@
-<?php
+<!DOCTYPE html><?php defined('_JEXEC') or die;
 /**
  * EXPERIMENTAL! Main Layout to render HTML file fragments (aka chunks).
  *
@@ -8,11 +8,10 @@
  * @copyright	Copyright (C) 2011 WebMechanic http://webmechanic.biz. All rights reserved.
  * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
-defined('_JEXEC') or die;
 
 $chunks = $templateHelper->getStaticHtml($alternateIndexFile);
 
-?><!DOCTYPE html>
+?>
 <html lang="<?php echo $this->language; ?>" dir="<?php echo $this->direction; ?>" >
 <head>
 <jdoc:include type="head" />

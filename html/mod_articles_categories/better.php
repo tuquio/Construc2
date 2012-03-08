@@ -62,6 +62,9 @@ $item_heading	= (int)  $params->get('item_heading', 3);
 $show_children	= (bool) $params->get('show_children', 0);
 $max_level		= (int)  $params->get('maxlevel', 0);
 
+// toggle nesting of a+span to span+a
+$outerspan = true;
+
 $_alang = JFactory::getLanguage()->get('tag');
 $_acid  = $app->get('input')->get('id', 0);
 ?>

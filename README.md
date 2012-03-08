@@ -144,21 +144,23 @@ HTML5 support still varies greatly even in most recent browsers, let alone brows
 
 Because Construc2 features a bunch of layout overrides that generate HTML5 your page will very likely pass any validator without it complaining. Most notably, browsers **do** act according to the HTML spec and just ignore stuff they don't know. However, they also support any tag, element and attributes that has ever been standardizes for decades, no matter what the DOCTYPE suggests (unless you're managed to serve your perfect XHTML documents with its appropriate MIME type `application/xml+xhtml`.)
 
-validators are not browsers. End of story. They check your markup irregardless of the fact that a real browser will indead understand the HTML just fine, like a human would understand someone mumbling.
+Validators are no browsers. End of story. 
+They spell-check your markup, they don't render it. Browser will indead understand HTML just fine, like a human would understand someone mumbling.
 
 # Ideas
 Mental notes for things that might come (in more or less the following order):
-#	[WIP] add module position mapping to easy migration for sites using J's standard templates (Beez, Beez2, Beez5, Purity)
-#	[WIP] "delegate" (more) parts of `login.php` into `ConstructTemplateHelper` to reduce variable clutter.
-#	improve WAI-ARIA support
-#	allow to exclude module positions from using the `.mod` class
-#	add support for rel="canonical" URLs to main layouts
-#	add backend (only) plugin for custom theme confguration
-#	add API key support and caching of the Google WebFont list
-#	make the jQuery version list "live" (cacheable) or easier configurable w/ hacking the code
-#	add (a set of?) "previz" params to render dummy modules at various module positions during layout development
-#	add 'apply to all' button to copy selected parameters from the edited template style to other
-#	improve RTL support
+
+- [WIP] add module position mapping to easy migration for sites using J's standard templates (Beez, Beez2, Beez5, Purity)
+- [WIP] "delegate" (more) parts of `login.php` into `ConstructTemplateHelper` to reduce variable clutter.
+- improve WAI-ARIA support
+- allow to exclude module positions from using the `.mod` class
+- add support for rel="canonical" URLs to main layouts
+- add backend (only) plugin for custom theme confguration
+- add API key support and caching of the Google WebFont list
+- make the jQuery version list "live" (cacheable) or easier configurable w/ hacking the code
+- add (a set of?) "previz" params to render dummy modules at various module positions during layout development
+- add 'apply to all' button to copy selected parameters from the edited template style to other
+- improve RTL support
 
 2012-04-03
 .eof

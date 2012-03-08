@@ -65,7 +65,7 @@ class ConstructTemplateHelper
 	 */
 	public static $helper;
 
-	protected $config = array('cdn'=>array());
+	protected $config = array('cdn'=>array('@default'=>''));
 
 	protected $theme = null;
 
@@ -102,7 +102,7 @@ class ConstructTemplateHelper
 
 		// fake ini file
 		if (is_file(dirname(__FILE__) .'/settings.php')) {
-			$this->config = @parse_ini_file(dirname(__FILE__) .'/settings.php', true);
+			$this->config = parse_ini_file(dirname(__FILE__) .'/settings.php', true);
 		}
 
 		// some edit form requested?
@@ -113,7 +113,9 @@ class ConstructTemplateHelper
 						|| in_array($request->get('option'), array('com_media'))
 						;
 
-		$this->addLayout('index');
+		$this->addLayout('index')
+			->addLayout('component')
+			->addLayout('modal');
 
 		// @see renderModules()
 		$chunks = array(
@@ -434,22 +436,28 @@ class ConstructTemplateHelper
 			return;
 		}
 
-		$jmenu	= JFactory::getApplication()->getMenu()->getActive();
-
 		$req	= new JInput();
-		$tmpl	= $req->getCmd('view');
-		$layout	= $req->getCmd('layout');
-		$key	= $tmpl . '.php';
+		$tmpl	= $req->getCmd('tmpl');
+		$view	= $req->getCmd('view');
 		$file	= null;
 
-		if (isset($this->layouts[$key]))
+#FIXME - modal com_media = tmpl=component
+FB::info($this->layouts);
+		// override view? (category)
+		if (isset($this->layouts[$view.'.php']))
 		{
-			$file = $this->layouts[$key];
-			$key  = $tmpl .'-'. $layout .'.php';
+			$file = $this->layouts[$view.'.php'];
+			// or a layout? (blog, list, form)
+			$layout	= $req->getCmd('layout');
+			$key  = $view .'-'. $layout .'.php';
 			if (isset($this->layouts[$key]))
 			{
 				$file = $this->layouts[$key];
 			}
+		}
+		else if (isset($this->layouts[$tmpl .'.php'])) {
+			// alternative tmpl (component, modal)
+			$file = $this->layouts[$tmpl .'.php'];
 		}
 
 		if (is_array($file) && JFile::exists($file['path']))
@@ -1027,14 +1035,21 @@ class ConstructTemplateHelper
 					'jquery'	=> '#/(jquery\.)#',
 					'mootools'	=> '#/(moo\w+[\.\-])#',
 				);
+		// jQuery CDNs: http://docs.jquery.com/Downloading_jQuery#CDN_Hosted_jQuery
+		static $CDN = array(
+				'ajax.googleapis.com'	=> array('jquery'=>'/jquery/(\d\.\d\.\d)/', 'mootools'=>'/mootools/(\d\.\d\.\d)/'),
+				'ajax.aspnetcdn.com'	=> array('jquery'=>'/jquery-(\d\.\d\.\d)' , ),
+				'code.jquery.com' 		=> array('jquery'=>'/jquery-(\d\.\d\.\d)' , ),
+				'cdnjs.cloudflare.com'	=> array('jquery'=>'/jquery/(\d\.\d\.\d)/', 'mootools'=>'/mootools/(\d\.\d\.\d)/'),
+				);
 
 		$head = $this->tmpl->getHeadData();
 
 		// Remove MooTools if set to do so.
 		// without MooTools we must drop all but core.js
 		$loadModal	= (bool) $this->tmpl->params->get('loadModal');
-		$loadMoo	= (bool) $this->tmpl->params->get('loadMoo', $loadModal);
-		$loadJQuery	= (bool) $this->tmpl->params->get('loadjQuery');
+		$loadMoo	= $this->tmpl->params->get('loadMoo', $loadModal);
+		$loadJQuery	= $this->tmpl->params->get('loadjQuery');
 
 		// however ...
 		if ($this->edit_mode) {
@@ -1050,14 +1065,27 @@ class ConstructTemplateHelper
 				}
 			}
 		}
+		else {
+			// Load the MooTools JavaScript Library
+			JHtml::_('behavior.framework');
+			if ($loadModal) {
+				// Enable modal pop-ups
+				JHtml::_('behavior.modal');
+			}
+		}
 
-		// jQuery CDNs: http://docs.jquery.com/Downloading_jQuery#CDN_Hosted_jQuery
-		static $CDN = array(
-				'ajax.googleapis.com'	=> array('jquery'=>'/jquery/(\d\.\d\.\d)/', 'mootools'=>'/mootools/(\d\.\d\.\d)/'),
-				'ajax.aspnetcdn.com'	=> array('jquery'=>'/jquery-(\d\.\d\.\d)' , ),
-				'code.jquery.com' 		=> array('jquery'=>'/jquery-(\d\.\d\.\d)' , ),
-				'cdnjs.cloudflare.com'	=> array('jquery'=>'/jquery/(\d\.\d\.\d)/', 'mootools'=>'/mootools/(\d\.\d\.\d)/'),
-			);
+
+		if ($loadJQuery)
+		{
+			$loadjQuerySrc = $this->tmpl->params->get('loadjQuerySrc');
+			if ($loadjQuerySrc == '@default') {
+				$loadjQuerySrc = @$this->config['cdn']['@default'];
+			}
+			if (isset($CDN[$loadjQuerySrc])) {
+				$loadjQuerySrc = '//ajax.googleapis.com/ajax/libs/jquery/'. $loadJQuery .'/jquery.min.js';
+//FB::log($loadjQuerySrc, "loadJQuery $loadJQuery");
+			}
+		}
 
 		// @todo bother with others than jquery as well
 		$jquery  = preg_grep($libs['jquery'], array_keys($head['scripts']));
@@ -1071,13 +1099,15 @@ class ConstructTemplateHelper
 			}
 		}
 
+/*
 		// followed by media/system, templates/system
 		foreach (preg_grep('#(media|templates)/system/#', array_keys($head['scripts'])) as $src) {
 			$this->addScript($src, self::UA, $head['scripts'][$src]);
 			// nuke old entry
 			unset($head['scripts'][$src]);
 		}
-
+*/
+/*
 		// jQuery compat
 		if (count($jquery) > 0) {
 			$noconflict = array('if(window.jQuery){jQuery.noConflict(); window.addEvent=function(n,f){$$=jQuery;if(n=="domready"||n=="load"){jQuery(document).ready(f);}};}');
@@ -1089,7 +1119,7 @@ class ConstructTemplateHelper
 			}
 			$this->addScriptDeclaration($noconflict);
 		}
-
+*/
 		// put everything back
 		$this->tmpl->setHeadData($head);
 

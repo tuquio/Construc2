@@ -1,4 +1,4 @@
-<?php defined('_JEXEC') or die;
+<!DOCTYPE html><?php defined('_JEXEC') or die;
 /**
  * EXPERIMENTAL! Stub page layout to previz module positions.
  *
@@ -11,8 +11,8 @@
 
 $this->setTitle('Dummy Positions');
 
-?><!DOCTYPE html>
-<html lang="<?php echo $this->language; ?>" dir="<?php echo $this->direction; ?>" >
+?>
+<html lang="<?php echo $this->language ?>" dir="<?php echo $this->direction ?>">
 <head>
 <jdoc:include type="head" />
 <style type="text/css">

@@ -1,4 +1,4 @@
-<?php
+<!DOCTYPE html><?php defined('_JEXEC') or die;
 /**
  * Modal Window/Popup page layout.
  *
@@ -8,10 +8,8 @@
  * @copyright	Copyright (C) 2011 WebMechanic http://webmechanic.biz. All rights reserved.
  * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
-defined('_JEXEC') or die;
-
-?><!DOCTYPE html>
-<html lang="<?php echo $this->language; ?>" dir="<?php echo $this->direction; ?>" <?php echo $cache_manifest ?>>
+?>
+<html lang="<?php echo $this->language ?>" dir="<?php echo $this->direction ?>">
 <head>
 <jdoc:include type="head" />
 </head>

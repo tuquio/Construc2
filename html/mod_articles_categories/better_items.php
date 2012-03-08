@@ -39,14 +39,24 @@ foreach ($list as $item)
 			? array(' hreflang="'. $lang[0] .'"', ' lang="'. $lang[0] .'"')
 			: array('', '');
 
+	$kids = count($item->getChildren());
+
+	if ($kids) {
+		$css[] = 'parent';
+	}
+
 ?><li id="catid-<?php echo $item->id ?>" class="<?php echo implode(' ', $css) ?>">
+<?php if ($outerspan) { ?>
+<span class="mi <?php echo 'H'. ($item_heading + $levelup) ?>"<?php echo $lattr[1] ?>><a class="mi" href="<?php echo $href ?>"<?php echo $lattr[0] ?>><?php echo $item->title ?></a></span>
+<?php } else { ?>
 <a class="mi" href="<?php echo $href ?>"<?php echo $lattr[0] ?>><span class="mi <?php echo 'H'. ($item_heading + $levelup) ?>"<?php echo $lattr[1] ?>><?php echo $item->title ?></span></a>
-<?php
+<?php }
+
 	if ($params->get('show_description', 0)) {
 		echo JHtml::_('content.prepare', $item->description, $item->getParams());
 	}
 
-	if ($show_children && ($max_level == 0 || $max_level >= ($item->level - $startLevel)) && count($item->getChildren()))
+	if ($show_children && ($max_level == 0 || $max_level >= ($item->level - $startLevel)) && $kids)
 	{
 		$list = $item->getChildren();
 		// submenu classes
