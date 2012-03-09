@@ -16,6 +16,16 @@ JLoader::register('SearchHelper', JPATH_ADMINISTRATOR .'/components/com_search/h
 
 class BetterMenuHelper
 {
+	static public function renderType($module, $params, $menuitem = null)
+	{
+		$menu = new stdClass;
+FB::info($module, 'Modul');
+FB::info($params, 'Params');
+FB::log($menuitem, 'Menü');
+
+		return $menu;
+	}
+
 	/**
 	 * Attempts to create a nice alias from the $item to use in the class
 	 * attribute to apply item and category based styles.
