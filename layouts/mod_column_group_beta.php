@@ -1,14 +1,13 @@
-<?php
+<?php defined('_JEXEC') or die;
 /**
  * Subtemplate loaded if $columnGroupBetaCount > 0
  *
  * @package     Templates
  * @subpackage  Layouts
- * @author		WebMechanic http://webmechanic.biz
- * @copyright	Copyright (C) 2011 WebMechanic http://webmechanic.biz. All rights reserved.
- * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
+ * @author      WebMechanic http://webmechanic.biz
+ * @copyright   (C) 2011-2012 WebMechanic http://webmechanic.biz. All rights reserved.
+ * @license     GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
-defined('_JEXEC') or die;
 $modcount = count($columnGroupCount);
 
 $style	= 'mod'; // null is essentially the same as 'raw'
