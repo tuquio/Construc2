@@ -80,7 +80,6 @@ available template position, which is the whole idea of using them in the first 
 </div><!-- end body-container -->
 <?php
 ConstructTemplateHelper::msieSwatter();
-ConstructTemplateHelper::afterCompileBody();
 ?>
 </body>
 </html>

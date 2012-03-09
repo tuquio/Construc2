@@ -91,17 +91,9 @@ if ($footerAboveCount = $templateHelper->getModulesCount('footer-above', Constru
 }
 
 /* ------------------------------ Column Layout ----------------------------- */
-$columnGroupCount = $templateHelper->getModulesCount('column', ConstructTemplateHelper::MAX_COLUMNS);
-
+$columnGroupCount      = $templateHelper->getModulesCount('column', ConstructTemplateHelper::MAX_COLUMNS);
 $columnGroupAlphaCount = $columnGroupCount[1] + $columnGroupCount[2];
-if ($columnGroupAlphaCount) {
-	$columnGroupAlphaClass = 'column-alpha colcount-'.$columnGroupAlphaCount;
-}
-
-$columnGroupBetaCount = $columnGroupCount[3] + $columnGroupCount[4];
-if ($columnGroupBetaCount) {
-	$columnGroupBetaClass = 'column-beta colcount-'.$columnGroupBetaCount;
-}
+$columnGroupBetaCount  = $columnGroupCount[3] + $columnGroupCount[4];
 
 $columnLayout = array('main-only');
 if (!$editMode) {
@@ -122,12 +114,12 @@ if (!$editMode) {
 $columnLayout = trim(implode(' ', $columnLayout));
 
 /* --------------------------- Debug Positions ------------------------------- */
-// #TODO get positions from xml and transform names into variable counterparts
+// max out amount of positions and columns
 if ($app->getCfg('debug') && $app->input->get('tpos', 0, 'int')) {
 	$headerAboveCount  = $headerBelowCount  = $navBelowCount    =
 	$contentAboveCount = $contentBelowCount = $footerAboveCount = range(0, ConstructTemplateHelper::MAX_MODULES, 1);
 
-	$columnGroupCount  = range(0, ConstructTemplateHelper::MAX_COLUMNS, 1);
+	$columnGroupCount = range(0, ConstructTemplateHelper::MAX_COLUMNS, 1);
 	$columnGroupAlphaCount = $columnGroupBetaCount = ($columnGroupCount > 1) ? floor($columnGroupCount / 2) : $columnGroupCount;
 }
 

@@ -3,7 +3,7 @@ Construc2 is a HTML5 "Template Framework" and as such it is neither a "Design" n
 
 It's build for the Joomla!&trade; CMS (v2.5) and thanks to Joomla's template styles and Construc2's ability to create "themes" on top of that incl. "page layouts" for virtually any page the CMS can produce, it's all up to your imagination and of course your PHP, HTML, and CSS skills, what your website will look like.
 
-**This** "Template" started as a fork of "Joomla Engineering Construct Template Framework for Joomla! 1.6" (CTF) primarily to kickstart the migration of some of my older template tools written for J!1.5. CTF also lacked L10N support and I had the urge to tweak some features that just didn't happen to be useful for me. That being said, Construc2 soon cut it's own path and is **not compatible** with any former or present flavor of JE's nice "Construct Framework"!
+**This** "Template" started out as a fork of "Joomla Engineering Construct Template Framework for Joomla! 1.6" (CTF) primarily to kickstart the migration of some of my older template tools written for J!1.5. CTF also lacked L10N support and I had the urge to tweak some features that just didn't happen to be useful for me. That being said, Construc2 soon cut it's own path and is **not compatible** with any former or present flavor of JE's nice "Construct Framework"!
 
 **Note:** The name will likely change (once more) with the release of Version 2.0 to avoid any potential confusion. The new version will also ship with a free sample theme and is planned to be released by May 2012. At that point the shared history with CTF will also fall into digital oblivion.
 
@@ -144,7 +144,7 @@ HTML5 support still varies greatly even in most recent browsers, let alone brows
 
 Because Construc2 features a bunch of layout overrides that generate HTML5 your page will very likely pass any validator without it complaining. Most notably, browsers **do** act according to the HTML spec and just ignore stuff they don't know. However, they also support any tag, element and attributes that has ever been standardizes for decades, no matter what the DOCTYPE suggests (unless you're managed to serve your perfect XHTML documents with its appropriate MIME type `application/xml+xhtml`.)
 
-Validators are no browsers. End of story. 
+Validators are no browsers. End of story.
 They spell-check your markup, they don't render it. Browser will indead understand HTML just fine, like a human would understand someone mumbling.
 
 # Ideas

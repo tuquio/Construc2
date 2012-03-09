@@ -74,7 +74,7 @@ if (!$active) {
 }
 
 // ordered list requested?
-$ordered = BetterMenuHelper::renderType($module, $params, $active);
+#TODO $ordered = BetterMenuHelper::renderType($module, $params, $active);
 
 if ( preg_match('#(?:[_|-](ordered|ol))#iu', $class_sfx, $settings) )
 {
