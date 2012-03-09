@@ -18,9 +18,27 @@ class CustomTheme
 	protected $path    = '';
 	protected $url     = '';
 
-	protected $styles  = array();
-	protected $scripts = array();
-	protected $layouts = array();
+	protected $config = array(
+				'layouts'=>array(),
+				'cdn'=>array(),
+				'scripts'=>array(),
+				'nuke_scripts'=>array(),
+				'nuke_styles'=>array(),
+				'styleswitcher'=>array(),
+				'fontscaler'=>array(),
+				);
+
+	/**
+	 * @staticvar array chunks from the static html file(s) *
+	 * @see getStaticHtml(), loadStaticHtml()
+	 */
+	static $html;
+
+	/**
+	 * @staticvar array with optional html{5} chunks to be used in "static_html.php"
+	 * @see setChunks()
+	 */
+	static $chunks = array('header', 'footer', 'aside', 'nav', 'section', 'article');
 
 	public function __construct(ConstructTemplateHelper $helper, $options = array())
 	{
@@ -50,21 +68,24 @@ class CustomTheme
 		if (is_file($this->path))
 		{
 			// fake ini file
-			$config = @parse_ini_file($this->path, true);
+			$config = parse_ini_file($this->path, true) + $this->config;
 			if (!$config || count($config) == 0) {
 				break;
 			}
-
-			$this->styles  = (array) @$config['styles'];
-			$this->scripts = (array) @$config['scripts'];
-			$this->layouts = (array) @$config['layouts'];
-
-			foreach ($this->layouts as $layout)
+FB::log($config);
+			foreach ($config['layouts'] as $layout)
 			{
 				list ($basename, $scope) = explode(',', $layout . ',');
 				$helper->addLayout($basename, $scope);
 			}
 		}
+
+		// @see renderModules()
+		$chunks = array(
+					'unit_before' => '<div class="{class}">',
+					'unit_after'  => '</div>'
+				);
+		$this->setChunks($chunks);
 	}
 
 	public function build(ConstructTemplateHelper $helper)
@@ -93,4 +114,104 @@ class CustomTheme
 			}
 		}
 	}
+
+
+	/**
+	 * Will load the static html file names and prepare its related "chunks"
+	 * for later inclusion in "static_html.php".
+	 * Default chunks are: 'header', 'footer', 'aside', 'nav', 'section', 'article'.
+	 * Use setChunks() to configure the list.
+	 *
+	 * Static HTML files are useful for prototyping a layout or to include contents
+	 * that are not managed (manageable) within the CMS.
+	 *
+	 * @param  array  $layout
+	 * @return array
+	 * @see self::$chunks, loadStaticHtml(), setChunks()
+	 */
+	public function getStaticHtml(array &$layout)
+	{
+		self::$html = &$layout;
+		if (self::$html['main'] = JFile::exists($layout['path'])) {
+			self::$html['main_path'] = $layout['path'];
+		}
+
+		$info = pathinfo($layout['path'], PATHINFO_DIRNAME | PATHINFO_FILENAME);
+		foreach (self::$chunks as $chunk) {
+			$path = $info['dirname'] .'/'. $info['filename'] .'-'. $chunk . '.html';
+			if ( $layout[$chunk] = JFile::exists($path) ) {
+				$layout[$chunk .'_path'] = $path;
+			}
+		}
+
+		return array_keys(self::$html);
+	}
+
+	/**
+	 * Loads an addition static html file given by its $chunk name, e.g. active
+	 * html layout "ipsum.html", $chunk="header" yields to "ipsum-header.html" to
+	 * be available in "static_html.php" for testing purposes.
+	 *
+	 * @param string $chunk "main" synonym for the main static html file
+	 * @see self::$chunks, setChunks()
+	 *
+	 * @return string  COntent of the static HTML file (or a HTML comment if the file was not found)
+	 */
+	public function loadStaticHtml($chunk='main')
+	{
+		settype(self::$html[$chunk], 'boolean');
+		if (self::$html[$chunk] == true) {
+			return JFile::read(self::$html[$chunk .'_path']);
+		}
+		return '<!-- chunk: "'. $chunk .'" not found -->';
+	}
+
+	/**
+	 * Accepts an array with basename prefixes for the static html feature
+	 * provided with "static_html.php". For a list of default chunk names see
+	 * {@link self::$chunks}.
+	 * If your current html testfile is "ipsum.html" additional files will be
+	 * loaded named "ipsum-header.html", "ipsum-footer.html" etc.
+	 *
+	 * @param  array  $chunks
+	 * @param  bool   $replace  false
+	 *
+	 * @return ConstructTemplateHelper for fluid interface
+	 */
+	static public function setChunks(array $chunks, $replace = false)
+	{
+		if (count($chunks)) {
+			if ($replace) {
+				self::$chunks = $chunks;
+			} else {
+				self::$chunks = array_merge(self::$chunks, $chunks);
+			}
+		}
+	}
+
+	static public function getChunk($name, $suffixes = null)
+	{
+		$chunks = array($name);
+		if (is_string($suffixes)) {
+			$chunks = array($name, $suffixes, $name .' '. $suffixes);
+		}
+		elseif (is_array($suffixes)) {
+			$chunks = array();
+			foreach ($suffixes as $suffix) {
+				$chunks[] = trim($name .'_'. $suffix);
+				$chunks[] = trim($name);
+				$chunks[] = trim($suffix);
+			}
+		}
+
+		$chunks = array_unique($chunks);
+		foreach ($chunks as $chunk) {
+			if (isset(self::$chunks[$chunk])) {
+				return self::$chunks[$chunk];
+			}
+		}
+
+		return false;
+	}
+
 }
