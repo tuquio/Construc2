@@ -21,6 +21,7 @@ body {min-width:900px;max-width:94%;margin:0 auto}
 	body #body-container, body #header-above, .page-foot {max-width:90%}
 	#logo {margin-left:5%}
 }
+
 /* popup modal */
 @media screen {
 	body.com_media, body.modal,
@@ -60,7 +61,9 @@ menu.categories		{font-size-adjust:.52}
 p {-webkit-hyphens:auto;-moz-hyphens:auto;hyphens:auto}
 p:only-child {margin-bottom:0;text-indent:0}
 
-blockquote {padding:1ex;margin:0 3em;}
+blockquote 			{padding:1ex;margin:0 3em;}
+
+button 				{padding:0.2ex 2ex}
 
 table.data th.clip	,
 .column-group .hd	{text-overflow:ellipsis;-ms-text-overflow:ellipsis;-o-text-overflow:ellipsis}
@@ -107,7 +110,17 @@ header.below	{margin:0 auto}
 /* 
  * misc components 
  */
-section.component > div.search {padding:10px;margin-bottom:10px}
+section.component > div.search ,
+section.component > div.finder {padding:10px;margin-bottom:10px}
+
+#finder-search label,
+#finder-search input,
+#finder-search button {display:inline-block; max-width:30%}
+#search-results		{margin-top:10px;padding:1ex 0.8em}
+dl.search-results	{}
+	dt.result-title:not(:first-child) {margin-top:10px}
+	dd.result-text	{padding:1ex 1em 1ex 1ex}
+	dd.result-url	{padding:0 1ex;font-size:.9em}
 
 .blog h1, .blog .H1 {}
 .blog h2, .blog .H2 {margin-top:0}
@@ -214,20 +227,20 @@ figure img					{height:auto}
 .mod-banner {}
 .banneritem img 	{display:block;margin-left:auto;margin-right:auto;text-align:center}
 
-/* =mod_search - align with mainmenu and li paddings */
-.mainnavi form {
-	position: absolute;
-	right: 2px;
-	top: 0.5ex;
-}
-.mainnavi div.search {
-	display: inline-block;
-	padding: 0.2ex;
-}
-.search > label	{display:inline;padding:0 1%}
-.search > input	{display:inline;width:75%}
-
-button			{padding:0.2ex 2ex}
+/* =mod_search / mod_finder - align with mainmenu and li paddings */
+.mainnavi form 				{position:absolute;right:2px;top:0.5ex}
+.mainnavi div.finder ,
+.mainnavi div.search		{display:inline-block;padding:0.2ex}
+.mainnavi label.finder ,
+.mainnavi .search > label	{display:inline;padding-right:1em}
+.mainnavi .finder > input ,
+.mainnavi .search > input	{display:inline;width:75%;padding-right:1em}
+.mainnavi .finder a			{position:absolute;display:none;padding:.5ex;text-align:center;width:100%}
+.mainnavi .finder:hover a	,
+.mainnavi .finder a:focus	,
+.mainnavi .finder a:active	,
+.mainnavi input:focus ~ a	{display:inline-block}
+div.finder br				{display:none}
 
 /*
  * =menus
@@ -272,9 +285,11 @@ nav.page-toc	{padding-top:1ex;padding-left:.6em;margin-left:1em} /* aka #article
 
 nav.pagination			{}
 menu.pagination			{display:inline-block}
+div.search-pagination	{}
 
-p.counter				{display:inline-block;margin:.6ex 1em}
+p.counter, .search-pages-counter {display:inline-block;margin:.6ex 1em}
 
+..search-pages-counter strong,
 .pagination span.mi		{font-weight:bold}
 
 /* =modules */
@@ -342,10 +357,10 @@ article .introtext p[class] {text-indent:0}
 .lft {float:left} .rgt {float:right}
 
 /*= print (popups) */
-body.print .content_rating	,
-body.print .content_vote 	{display:none}
+body.print aside.article {display:none}
 
 @media print {
+	aside.article {display:none}
 	.blog .introtext img,
 	.item-page .introtext img	{height:10cm;max-width:10cm}
 }

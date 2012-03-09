@@ -20,9 +20,10 @@ html, body {background:#E5E5E5;color:#444}
 
 .pagination .active		{background-color:#dadada}
 
-.blog article			,
-.items-more, .item-page	,
-section.component > div.search {background-color:#fff}
+section.component > div.search	,
+section.component > div.finder	,
+.items-more, .item-page			,
+.blog article			{background-color:#fff}
 
 nav, .breadcrumbs		{background-color:#fff}
 button:focus 			,
@@ -124,6 +125,22 @@ input.inputbox:focus 		{border-color:#bbb}
 /* Tips, Error, Message, Hightlight */
 .error, .warning, .notice,
 .message, .tips 			{border:1px solid;background:#efefef;padding:1ex .6em;text-indent:0 !important}
+
+
+/* if <q> wraps terms and results from com_finder */
+.mainnavi .finder a {background:#fff;box-shadow: 0 4px 9px -7px #888}
+#search-query-explained	{}
+
+	div.finder q		{}
+	div.finder .term	,
+	div.finder .node	,
+	div.finder .branch	{}
+	div.finder .when	,
+	div.finder .date	{}
+	dl.search-results	{}
+		dt.result-title {}
+		dd.result-text	{box-shadow:0px -4px 10px -10px #888}
+		dd.result-url	{box-shadow:3px  7px 10px  -9px #888}
 
 @media screen {
 /* =box drop shadows */
