@@ -1,6 +1,7 @@
 @media print {
 	/* generated content */
 	#logo a:after, #footer a:after, #dummy { content:""; display:none; }
+	.actionsmenu,
 	.column-group, .content_rating, .content_vote {display:none}
 
 	/* defloat */
