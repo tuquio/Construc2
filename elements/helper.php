@@ -1090,31 +1090,52 @@ class ConstructTemplateHelper
 	 * Returns the given date (or today) wrapped in HTML elements for individual
 	 * formatting of each date fragent, day, month, year, via CSS.
 	 *
-	 * - $dateformat: supported date formater characters: l, d, F, Y or a DATE_FORMAT_XXX string
-	 * - $date: a value JDate() considers a valid date value, 'now'|null|false result in current date
-	 * - $elt: HTML element to wrap around the date parts
-	 * To set the $elt only, but preseve (todays) defaults use
-	 * <samp>$layoutOverride->dateContainer(null,null,'kbd')</samp>
+	 * - $date  : a value JDate() considers a valid date value, 'now'|null|false result in current date
+	 * - $format: supported date formater characters: l, d, F, Y or a DATE_FORMAT_XXX string
+	 * - $elt   : HTML element to wrap around the date parts
 	 *
-	 * @param  number  $date 		defaults to 'now' (also if null or false are provided)
-	 * @param  string  $dateformat	a Joomla date language string, default: DATE_FORMAT_LC3
-	 * @param  string  $elt			defaults to 'span' as the date fragment wrapper element
+	 * To set the $elt name only, but preseve (todays) default and date format use
+	 * <samp>$templateHelper->dateContainer(null, null, 'kbd')</samp>
+	 *
+	 * @param  number  $date 	defaults to 'now' (also if null or false are provided)
+	 * @param  string  $format	a Joomla date language string, default: DATE_FORMAT_LC4
+	 * @param  string  $elt		defaults to 'span' as the date fragment wrapper element
 	 * @return string
 	 */
-	public function dateContainer($date='now', $dateformat='DATE_FORMAT_LC4', $elt='span')
+	public function dateContainer($date='now', $format='DATE_FORMAT_LC4', $elt='span')
 	{
-		if (!$dateformat) $dateformat = 'DATE_FORMAT_LC3';
-		if (!$date) $date = 'now';
-		$now = new JDate($date);
-		$placeholder = array(
-					'/l([\.,\-])?/'=>'<@X@ class="date-weekday">'. $now->format('l') .'$1</@X@>',
-					'/d([\.,\-])?/'=>'<@X@ class="date-month">'. $now->format('d') .'$1</@X@>',
-					'/F([\.,\-])?/'=>'<@X@ class="date-day">'. $now->format('F') .'$1</@X@>',
-					'/Y([\.,\-])?/'=>'<@X@ class="date-year">'. $now->format('Y') .'$1</@X@>',
-		);
+		// format keys for day and month numbers and names and their mapping to a $markup
+		static
+		$keylist = array('D'=>1,'l'=>1,'d'=>2,'j'=>2,'F'=>3,'M'=>3,'m'=>4,'n'=>4,'o'=>5,'Y'=>5,'y'=>5),
+		$markup  = array(	0 => '',
+							1 => '<%s class="date-day txt">%s</%s>',
+							2 => '<%s class="date-day num">%s</%s>',
+							3 => '<%s class="date-month txt">%s</%s>',
+							4 => '<%s class="date-month num">%s</%s>',
+							5 => '<%s class="date-year num">%s</%s>');
 
-		$html = preg_replace(array_keys($placeholder), array_values($placeholder), JText::_($dateformat));
-		return str_replace('@X@', $elt, $html);
+		if (!$format) $format = 'DATE_FORMAT_LC4';
+		if (!$date) $date = 'now';
+		$now  = new JDate($date);
+
+		$html = array();
+		$out  = JText::_($format);
+		$m    = preg_split('/\W/', $out);
+		if (count($m))
+		{
+			foreach ($m as $i => $k)
+			{
+				$char = "@{$k}{$i}@";
+				$out = str_replace($k, $char, $out);
+				if (isset($keylist[$k])) {
+					$html[$char] = sprintf($markup[$keylist[$k]], $elt, $now->format($k, true, true), $elt);
+				} else {
+					$html[$char] = $now->format($k, true, true);
+				}
+			}
+		}
+
+		return str_replace(array_keys($html), array_values($html), $out);
 	}
 
 	/**
