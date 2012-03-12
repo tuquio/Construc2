@@ -78,7 +78,15 @@ header.below	{margin:0 auto}
 	.column-group 	{width:25%}
 	.group-alpha	{float:left}
 	.group-beta		{float:left}
+
+	/* 2col [  main  | beta] */
 	.main-beta .content-main {width:75%;float:left}
+
+	/* 3col [ [alpha|main] beta] */
+	.alpha-main-beta .column-group {width:23%}
+	.alpha-main-beta .content-main {float:left;width:77%}
+	.alpha-main-beta .group-alpha  {width:30%}
+	.alpha-main-beta section.component {float:right;width:70%}
 }
 
 .page-foot	{margin:0 auto}
