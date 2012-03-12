@@ -19,12 +19,6 @@ class BetterMenuHelper
 	static public function renderType($module, $params, $menuitem = null)
 	{
 		$menu = new stdClass;
-
-if (defined('DEVELOPER_MACHINE')) {
-	FB::info($module, 'Modul');
-	FB::info($params, 'Params');
-	FB::log($menuitem, 'Menü');
-}
 		return $menu;
 	}
 
