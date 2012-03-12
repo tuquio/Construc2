@@ -23,7 +23,6 @@
 <div class="line"><jdoc:include type="component" /></div>
 <?php
 ConstructTemplateHelper::msieSwatter();
-ConstructTemplateHelper::afterCompileBody();
 ?>
 </body>
 </html>

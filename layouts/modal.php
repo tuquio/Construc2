@@ -34,7 +34,6 @@
 if ($this->countModules('debug')) : $templateHelper->renderModules('debug', 'raw'); endif;
 if ($this->countModules('analytics')) : $templateHelper->renderModules('analytics', 'raw'); endif;
 ConstructTemplateHelper::msieSwatter();
-ConstructTemplateHelper::afterCompileBody();
 ?>
 	</body>
 </html>

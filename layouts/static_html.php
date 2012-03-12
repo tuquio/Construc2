@@ -70,7 +70,6 @@ if (isset($chunks['header'])) {
 <?php }
 
 ConstructTemplateHelper::msieSwatter();
-ConstructTemplateHelper::afterCompileBody();
 ?>
 </body>
 </html>
