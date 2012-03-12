@@ -27,20 +27,18 @@ $chunks = $templateHelper->getStaticHtml($alternateIndexFile);
 				<?php if ($this->countModules('header')) { ?>
 					<jdoc:include type="modules" name="header" style="mod" />
 				<?php } ?>
-<?php
-if (isset($chunks['header'])) {
-	echo $templateHelper->loadStaticHtml('header');
-}
-?>
+<?php if (isset($chunks['header'])) {echo $templateHelper->loadStaticHtml('header');}?>
 			</div>
 		</div>
 
 		<div id="body-container">
-<?php if ($this->countModules('nav')) { ?>
-			<div id="nav" class="clear clearfix">
-				<jdoc:include type="modules" name="nav" style="raw" />
-			</div><!-- end nav-->
-<?php } ?>
+
+		<?php if ($this->countModules('nav')) : ?>
+			<nav id="mainnavi" class="line mainnavi">
+			<?php $templateHelper->renderModules('nav'); ?>
+			</nav><!-- #mainnavi .mainnavi-->
+		<?php endif; ?>
+
 			<div id="content-container" class="clear clearfix">
 				<div id="load-first" class="clearfix">
 					<a id="content"></a>
@@ -57,11 +55,7 @@ if (isset($chunks['header'])) {
 	<div id="footer" class="clear clearfix">
 		<div class="mod clearfix">
 		<jdoc:include type="modules" name="footer" style="mod" />
-<?php
-if (isset($chunks['header'])) {
-	echo $templateHelper->loadStaticHtml('footer');
-}
-?>
+<?php if (isset($chunks['footer'])) {echo $templateHelper->loadStaticHtml('footer');} ?>
 		</div>
 	</div>
 

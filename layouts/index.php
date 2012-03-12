@@ -35,9 +35,9 @@
 <?php if ($headerBelowCount) : include JPATH_THEMES .'/'. $this->template . '/layouts/mod_header_below.php'; endif; ?>
 
 		<?php if ($this->countModules('nav')) : ?>
-			<nav id="nav" class="line mainnavi">
+			<nav id="mainnavi" class="line mainnavi">
 			<?php $templateHelper->renderModules('nav'); ?>
-			</nav><!-- #nav .mainnavi-->
+			</nav><!-- #mainnavi .mainnavi-->
 		<?php endif; ?>
 
 <?php if ($this->countModules('breadcrumbs')) : $templateHelper->renderModules('breadcrumbs'); endif; ?>
