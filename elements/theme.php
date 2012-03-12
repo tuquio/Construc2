@@ -147,30 +147,35 @@ class CustomTheme
 	}
 
 	/**
-	 * Will load a static html file name registered for the given $layout and add
-	 * its related "chunks" for later inclusion with "static_html.php".
+	 * Will load the static html files registered for the given $layout and add
+	 * their "chunks" for later inclusion and processing.
 	 *
 	 * Default chunks are: 'header', 'footer', 'aside', 'nav', 'section', 'article'.
 	 * Use setChunks() to configure the list.
 	 *
 	 * Static HTML files are useful for prototyping a layout or to include contents
-	 * that are not managed (manageable) within the CMS and shares similarities with
-	 * Server Side Includes, where a "master file" includes other named files given
-	 * positions.
+	 * that are not managed (manageable) within the CMS. The concept shares similarities
+	 * with Server Side Includes, where a "master file" (the layout) includes other
+	 * named files (chunks) to form the final content.
 	 *
-	 * @param  array  $layout
+	 * @param  array  $layout An array with 'path' and optional 'scope' information
 	 * @return array
-	 * @see self::$chunks, loadStaticHtml(), setChunks()
+	 *
+	 * @see  setChunks(), loadStaticHtml(), setStaticHtml()
+	 * @see  ConstructTemplateHelper::addLayout()
+	 * @uses self::$chunks, JFile::exists()
 	 */
 	public function getStaticHtml(array &$layout)
 	{
-		self::$html = &$layout;
 		if (self::$html['main'] = JFile::exists($layout['path'])) {
 			self::$html['main_path'] = $layout['path'];
 		}
 
 		$info = pathinfo($layout['path'], PATHINFO_DIRNAME | PATHINFO_FILENAME);
-		foreach (self::$html as $name) {
+
+		// run over the list of default and assigned chunks
+		foreach (self::$chunks as $name)
+		{
 			$path = $info['dirname'] .'/'. $info['filename'] .'-'. $name . '.html';
 			if ( $layout[$name] = JFile::exists($path) ) {
 				$layout[$name .'_path'] = $path;
@@ -181,13 +186,20 @@ class CustomTheme
 	}
 
 	/**
-	 * Loads an addition static html file given by its name, e.g. for a selected
-	 * html layout "ipsum.html" the $name="header" yields to "ipsum-header.html"
+	 * Loads an existing static html file from the theme's layout folder into a
+	 * given buffer of the same, e.g. for the html layout "ipsum" the $name="header"
+	 * yields to load "ipsum-header.html".
 	 *
-	 * @param  string  $name  aunique name where "main" is synonym for the "<themename>.html"
+	 * To store (and cache) an arbitrary piece of runtime generated content use
+	 * {@link setStaticHtml()}.
 	 *
-	 * @see self::$chunks, setChunks()
-	 * @return string  COntent of the static HTML file or a HTML comment if the $name was not found
+	 * @param  string  $name  a unique name where "main" is synonym for the "<themename>.html"
+	 *
+	 * @return string  Content of the static HTML file or a HTML comment if the $name was not found
+	 * @see  setStaticHtml()
+	 * @uses self::$html, JFile::read()
+	 *
+	 * @todo implement caching
 	 */
 	public function loadStaticHtml($name='main')
 	{
@@ -197,12 +209,25 @@ class CustomTheme
 			return JFile::read(self::$html[$name .'_path']);
 		}
 
-		return '<!-- fragment: "'. $name .'" not found -->';
+		return false;
 	}
 
-	public function setStaticHtml($name, $content)
+	/**
+	 * Stores a piece of runtime generated content into a named buffer. To load an
+	 * existing HTML file from disk into a butter use {@link loadStaticHtml()}.
+	 *
+	 * @param  string  $name     buffer name, usually a template position or a "chunk" of the theme
+	 * @param  string  $content  the content to store
+	 * @param  array   $options  RESERVED
+	 *
+	 * @return CustomTheme
+	 * @see loadStaticHtml(), getStaticHtml()
+	 *
+	 * @todo implement caching
+	 */
+	public function setStaticHtml($name, $content, $options = array())
 	{
-		self::$html[$name] = is_array($content) ? implode(PHP_EOL, $content) : $content;
+		self::$html[$name] = is_array($content) ? trim(implode(PHP_EOL, $content)) : trim($content);
 
 		return $this;
 	}

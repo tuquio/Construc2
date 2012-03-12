@@ -2,13 +2,13 @@
 /**
  * Subtemplate loaded if $navBelowCount > 0
  *
- * @package     Templates
+ * @package     Construc2
  * @subpackage  Layouts
  * @author      WebMechanic http://webmechanic.biz
  * @copyright   (C) 2011-2012 WebMechanic http://webmechanic.biz. All rights reserved.
  * @license     GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
-$modcount = count($navBelowCount);
+$modcount = $templateHelper->numModules('nav-below');
 
 $style	= 'mod';
 $chunks = array(
@@ -38,4 +38,10 @@ if ($modcount > 6 && $navBelowCount[6]) :
 	$templateHelper->renderModules('nav-below-6', $style);
 endif;
 
-if ($modcount) : ?></div><?php endif; ?>
+if ($modcount) : ?></div></div><?php endif;
+/*
+ * if you want to make use of the CSS3 :empty() selector,
+ * keep these PHP tags tight close to the HTML markup or a
+ * single white space may render your styles useless.
+ */
+

@@ -2,13 +2,13 @@
 /**
  * Subtemplate loaded if $headerBelowCount > 0
  *
- * @package     Templates
+ * @package     Construc2
  * @subpackage  Layouts
  * @author      WebMechanic http://webmechanic.biz
  * @copyright   (C) 2011-2012 WebMechanic http://webmechanic.biz. All rights reserved.
  * @license     GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
-$modcount = count($headerBelowCount);
+$modcount = $templateHelper->numModules('header-below');
 
 $style	= null; // null is essentially the same as 'raw'
 $chunks = array(
@@ -38,4 +38,10 @@ if ($modcount > 6 && $headerBelowCount[6]) :
 	$templateHelper->renderModules('header-below-6', $style, array());
 endif;
 
-if ($modcount) : ?></div></div><?php endif; ?>
+if ($modcount) : ?></div></div><?php endif;
+/*
+ * if you want to make use of the CSS3 :empty() selector,
+ * keep these PHP tags tight close to the HTML markup or a
+ * single white space may render your styles useless.
+ */
+

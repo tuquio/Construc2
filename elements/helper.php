@@ -462,25 +462,34 @@ class ConstructTemplateHelper
 	}
 
 	/**
-	 * Counts and returns the amount of active Modules in the given position group.
+	 * Counts and returns the amount of active Modules in the given position $group.
 	 *
 	 * @param string  $group
 	 * @param integer $max default=5
 	 *
 	 * @return array|null
+	 * @see numModules(), renderModules()
+	 * @uses JDocumentHTML::countModules();
+	 * @todo  fund a more flexible way to count 'column-X' split into 'group-alpha/beta'
 	 */
 	public function getModulesCount($group, $max = self::MAX_MODULES)
 	{
 		settype($max, 'int');
+
+		// #FIXME colums are only 2 per group 'alpha' and 'beta'
+		if ($group =='column') {
+			$max = 4;
+		}
+
 		if ($max < 1) $max = 1;
 
 		$this->groupcount[$group] = 0;
 
 		$modules = array_fill(0, $max, 0);
 
-		for ($i=1; $i<=$max; $i++) :
-		$modules[$i] = $this->doc->countModules($group .'-'. $i);
-		endfor;
+		for ($i=1; $i<=$max; $i++) {
+			$modules[$i] = $this->doc->countModules($group .'-'. $i);
+		}
 
 		$i = array_sum($modules);
 		if ($i == 0) {
@@ -489,11 +498,20 @@ class ConstructTemplateHelper
 
 		$this->groupcount[$group] = $modules[0] = $i;
 
+		// #FIXME special treatment für alpha/beta groups if $group='column'
+		if ($group =='column') {
+			// "mental notes"
+			$_cols = array('alpha'=>2, 'beta'=>2);
+			$this->groupcount['group-alpha'] = (int) @$modules[1] + @$modules[2];
+			$this->groupcount['group-beta']  = (int) @$modules[3] + @$modules[4];
+		}
+
 		return $modules;
 	}
 
 	public function numModules($group)
 	{
+		FB::info($this->groupcount[$group], "numModules $group");
 		return isset($this->groupcount[$group]) ? $this->groupcount[$group] : 0;
 	}
 
@@ -572,7 +590,10 @@ class ConstructTemplateHelper
 		}
 
 		if (isset($attribs['capture'])) {
-			$this->theme->setStaticHtml($attribs['capture'], $html);
+			if (is_numeric($attribs['capture']) || is_bool($attribs['capture'])) {
+				$attribs['capture'] = $position;
+			}
+			$this->theme->setStaticHtml($attribs['capture'], $html, $attribs);
 		} else {
 			echo implode(PHP_EOL, $html);
 		}
@@ -632,6 +653,7 @@ class ConstructTemplateHelper
 		if ($info['extension'] == 'css' || strpos($attribs['rel'], 'ylesheet') > 0) {
 			$attribs['type'] = 'text/css';
 			$attribs['id'] = basename($href, '.css') . '-css';
+			unset($attribs['mime']);
 		}
 
 		// [shortcut ]icon type="image/[x-icon|png]"
@@ -649,7 +671,8 @@ class ConstructTemplateHelper
 			$favicon = $href;
 		}
 
-		krsort($attribs);
+		$attribs = array_filter($attribs);
+
 		self::$head["{$uagent}"]['links'][$href] = JArrayHelper::toString($attribs);
 
 		return $this;
