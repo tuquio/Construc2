@@ -15,7 +15,7 @@ $chunks = array(
 		'module_before' => '<div id="{position}" class="{class}">',
 		'module_after'  => '</div>'
 		);
-$templateHelper->theme->setChunks($chunks, true);
+$templateHelper->getTheme()->setChunks($chunks, true);
 
 if ($modcount) : ?><div id="content-above" class="content-above"><div class="line above-inner"><?php endif;
 
