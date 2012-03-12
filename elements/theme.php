@@ -15,7 +15,6 @@
  */
 function CustomThemeContentEvent($context, $item, $params, $limitstart=0)
 {
-	FB::log($context, __FUNCTION__);
 }
 
 class CustomTheme
@@ -269,7 +268,6 @@ class CustomTheme
 	 */
 	static public function onContentAfterTitle($context, $item, $params, $limitstart=0)
 	{
-		FB::info($context, __FUNCTION__);
 	}
 
 	/**
@@ -280,7 +278,6 @@ class CustomTheme
 	 */
 	static public function onContentBeforeDisplay($context, $item, $params, $limitstart=0)
 	{
-		FB::info($context, __FUNCTION__);
 	}
 
 	/**
@@ -291,7 +288,6 @@ class CustomTheme
 	 */
 	static public function onContentAfterDisplay($context, $item, $params, $limitstart=0)
 	{
-		FB::info($context, __FUNCTION__);
 	}
 
 }

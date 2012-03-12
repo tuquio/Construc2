@@ -1083,12 +1083,6 @@ class ConstructTemplateHelper
 
 	public static function onAfterRender()
 	{
-		FB::info(__METHOD__);
-	}
-
-	public static function update($event)
-	{
-		FB::info($event, __METHOD__);
 	}
 
 	/**
