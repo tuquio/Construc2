@@ -8,8 +8,24 @@
  * @license     GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
 
+/**
+ * Proxy for the onBeforeCompileHead event because the Dispatcher only
+ * allows function or class-based observers and insists on instatiating
+ * the given 'class' for unknown reasons.
+ */
+function CustomThemeContentEvent($context, $item, $params, $limitstart=0)
+{
+	FB::log($context, __FUNCTION__);
+}
+
 class CustomTheme
 {
+	/**
+	 * @var $helper ConstructTemplateHelper instance of self
+	 * @see getInstance()
+	 */
+	public static $theme;
+
 	protected $name    = 'default';
 	protected $title   = 'Default';
 	protected $version = '';
@@ -19,6 +35,8 @@ class CustomTheme
 	protected $url     = '';
 
 	protected $config = array(
+				'title'=>'Default',
+				'version'=>'',
 				'layouts'=>array(),
 				'cdn'=>array(),
 				'scripts'=>array(),
@@ -35,35 +53,33 @@ class CustomTheme
 	static $html;
 
 	/**
-	 * @staticvar array with optional html{5} chunks to be used in "static_html.php"
 	 * @see setChunks()
 	 */
 	static $chunks = array('header', 'footer', 'aside', 'nav', 'section', 'article');
 
-	public function __construct(ConstructTemplateHelper $helper, $options = array())
+	protected function __construct(ConstructTemplateHelper $helper)
 	{
-		$doc = JFactory::getDocument();
-		$ssi = (bool) $doc->params->get('ssiIncludes', 0);
+		$tmpl   = $helper->getTemplate();
 
+		$ssi    = false;
+		$theme  = null;
+
+		$ssi = (bool) $tmpl->params->get('ssiIncludes', 0);
 		if ($ssi) {
-			$theme = $doc->params->get('ssiTheme');
-			$theme = basename($theme, '.styles');
+			$theme = basename($tmpl->params->get('ssiTheme'), '.styles');
 		}
 		else {
-			$theme = $doc->params->get('customStyleSheet');
-			$theme = basename($theme, '.css');
+			$theme = basename($tmpl->params->get('customStyleSheet'), '.css');
 		}
-
 		$this->name = $theme;
 
 		// use "default" == 'template.css"
-		if ((int) $theme == -1)
-		{
+		if ((int) $theme == -1) {
 			$helper->addLink('template.css');
 		}
 
-		$this->path = JPATH_THEMES .'/'. $doc->template .'/themes/'. $this->name . '.php';
-		$this->url  = JUri::root(true) .'/templates/'. $doc->template .'/themes';
+		$this->path = JPATH_THEMES .'/'. $tmpl->template .'/themes/'. $this->name . '.php';
+		$this->url  = JUri::root(true) .'/templates/'. $tmpl->template .'/themes';
 
 		if (is_file($this->path))
 		{
@@ -72,58 +88,76 @@ class CustomTheme
 			if (!$config || count($config) == 0) {
 				break;
 			}
-FB::log($config);
-			foreach ($config['layouts'] as $layout)
-			{
-				list ($basename, $scope) = explode(',', $layout . ',');
-				$helper->addLayout($basename, $scope);
-			}
+
+			$this->title   = $config['title'];
+			$this->version = $config['version'];
 		}
 
-		// @see renderModules()
+		// @see ConstructTemplateHelper::renderModules()
 		$chunks = array(
 					'unit_before' => '<div class="{class}">',
 					'unit_after'  => '</div>'
 				);
+
 		$this->setChunks($chunks);
 	}
 
-	public function build(ConstructTemplateHelper $helper)
+	/**
+	 * @return ConstructTemplateHelper
+	 */
+	public static function getInstance(ConstructTemplateHelper $helper)
 	{
-		if (isset($this->scripts))
+		if (!self::$theme)
 		{
-			foreach ($this->scripts as $key => $line)
-			{
-				list($ua, $src) = explode(',', $line);
-				settype($ua, 'int');
+			self::$theme = new self($helper);
 
-				if (0 == $ua) {
-					continue;
-				}
-				else if ($ua == 4) {
-					$ua = 'IE';
-				}
-				else if ($ua >= 6 && $ua <=9) {
-					$ua = 'IE '.$ua;
-				}
-				else {
-					$ua = '';
-				}
+			// register event handler
+			$dispatcher = JDispatcher::getInstance();
+			$dispatcher->register('onContentAfterTitle',    'CustomThemeContentEvent');
+			$dispatcher->register('onContentBeforeDisplay', 'CustomThemeContentEvent');
+			$dispatcher->register('onContentAfterDisplay',  'CustomThemeContentEvent');
+		}
 
-				$helper->addScript($this->url .'/'. $src, $ua);
+		return self::$theme;
+	}
+
+	public function build()
+	{
+		$helper = ConstructTemplateHelper::getInstance();
+
+		foreach ($this->config['scripts'] as $key => $line)
+		{
+			list($ua, $src) = explode(',', $line);
+			settype($ua, 'int');
+
+			if (0 == $ua) {
+				continue;
 			}
+			else if ($ua == 4) {
+				$ua = 'IE';
+			}
+			else if ($ua >= 6 && $ua <=9) {
+				$ua = 'IE '.$ua;
+			}
+			else {
+				$ua = '';
+			}
+
+			$helper->addScript($src, $ua);
 		}
 	}
 
-
 	/**
-	 * Will load the static html file names and prepare its related "chunks"
-	 * for later inclusion in "static_html.php".
+	 * Will load a static html file name registered for the given $layout and add
+	 * its related "chunks" for later inclusion with "static_html.php".
+	 *
 	 * Default chunks are: 'header', 'footer', 'aside', 'nav', 'section', 'article'.
 	 * Use setChunks() to configure the list.
 	 *
 	 * Static HTML files are useful for prototyping a layout or to include contents
-	 * that are not managed (manageable) within the CMS.
+	 * that are not managed (manageable) within the CMS and shares similarities with
+	 * Server Side Includes, where a "master file" includes other named files given
+	 * positions.
 	 *
 	 * @param  array  $layout
 	 * @return array
@@ -137,10 +171,10 @@ FB::log($config);
 		}
 
 		$info = pathinfo($layout['path'], PATHINFO_DIRNAME | PATHINFO_FILENAME);
-		foreach (self::$chunks as $chunk) {
-			$path = $info['dirname'] .'/'. $info['filename'] .'-'. $chunk . '.html';
-			if ( $layout[$chunk] = JFile::exists($path) ) {
-				$layout[$chunk .'_path'] = $path;
+		foreach (self::$html as $name) {
+			$path = $info['dirname'] .'/'. $info['filename'] .'-'. $name . '.html';
+			if ( $layout[$name] = JFile::exists($path) ) {
+				$layout[$name .'_path'] = $path;
 			}
 		}
 
@@ -148,22 +182,30 @@ FB::log($config);
 	}
 
 	/**
-	 * Loads an addition static html file given by its $chunk name, e.g. active
-	 * html layout "ipsum.html", $chunk="header" yields to "ipsum-header.html" to
-	 * be available in "static_html.php" for testing purposes.
+	 * Loads an addition static html file given by its name, e.g. for a selected
+	 * html layout "ipsum.html" the $name="header" yields to "ipsum-header.html"
 	 *
-	 * @param string $chunk "main" synonym for the main static html file
+	 * @param  string  $name  aunique name where "main" is synonym for the "<themename>.html"
+	 *
 	 * @see self::$chunks, setChunks()
-	 *
-	 * @return string  COntent of the static HTML file (or a HTML comment if the file was not found)
+	 * @return string  COntent of the static HTML file or a HTML comment if the $name was not found
 	 */
-	public function loadStaticHtml($chunk='main')
+	public function loadStaticHtml($name='main')
 	{
-		settype(self::$html[$chunk], 'boolean');
-		if (self::$html[$chunk] == true) {
-			return JFile::read(self::$html[$chunk .'_path']);
+		settype(self::$html[$name], 'boolean');
+
+		if (self::$html[$name] == true) {
+			return JFile::read(self::$html[$name .'_path']);
 		}
-		return '<!-- chunk: "'. $chunk .'" not found -->';
+
+		return '<!-- fragment: "'. $name .'" not found -->';
+	}
+
+	public function setStaticHtml($name, $content)
+	{
+		self::$html[$name] = is_array($content) ? implode(PHP_EOL, $content) : $content;
+
+		return $this;
 	}
 
 	/**
@@ -178,7 +220,7 @@ FB::log($config);
 	 *
 	 * @return ConstructTemplateHelper for fluid interface
 	 */
-	static public function setChunks(array $chunks, $replace = false)
+	public function setChunks(array $chunks, $replace = false)
 	{
 		if (count($chunks)) {
 			if ($replace) {
@@ -189,7 +231,7 @@ FB::log($config);
 		}
 	}
 
-	static public function getChunk($name, $suffixes = null)
+	public function getChunk($name, $suffixes = null)
 	{
 		$chunks = array($name);
 		if (is_string($suffixes)) {
@@ -212,6 +254,44 @@ FB::log($config);
 		}
 
 		return false;
+	}
+
+	public function getConfig($name, $default=null)
+	{
+		return isset($this->config[$name]) ? $this->config[$name] : $default;
+	}
+
+	/**
+	 * @param string     $context    event originator
+	 * @param object     $item       data to be deleted
+	 * @param JRegistry  $params     item parameters
+	 * @param int        $limitstart data offset or paginator
+	 */
+	static public function onContentAfterTitle($context, $item, $params, $limitstart=0)
+	{
+		FB::info($context, __FUNCTION__);
+	}
+
+	/**
+	 * @param string     $context    event originator
+	 * @param object     $item       data to be deleted
+	 * @param JRegistry  $params     item parameters
+	 * @param int        $limitstart data offset or paginator
+	 */
+	static public function onContentBeforeDisplay($context, $item, $params, $limitstart=0)
+	{
+		FB::info($context, __FUNCTION__);
+	}
+
+	/**
+	 * @param string     $context    event originator
+	 * @param object     $item       data to be deleted
+	 * @param JRegistry  $params     item parameters
+	 * @param int        $limitstart data offset or paginator
+	 */
+	static public function onContentAfterDisplay($context, $item, $params, $limitstart=0)
+	{
+		FB::info($context, __FUNCTION__);
 	}
 
 }

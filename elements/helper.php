@@ -23,14 +23,14 @@ JLoader::register('CustomTheme', dirname(__FILE__) . '/theme.php');
  * allows function or class-based observers and insists on instatiating
  * the given 'class' for unknown reasons.
  */
-function ConstructTemplateHelperCompileHead()
+function ConstructHelperBeforeCompileHead()
 {
-	ConstructTemplateHelper::getInstance()->beforeCompileHead();
+	ConstructTemplateHelper::getInstance()->onBeforeCompileHead();
 }
 
-function ConstructTemplateHelperCompileBody()
+function ConstructHelperAfterRender()
 {
-	ConstructTemplateHelper::getInstance()->afterCompileBody();
+	ConstructTemplateHelper::getInstance()->onAfterRender();
 }
 
 /**
@@ -42,51 +42,45 @@ function ConstructTemplateHelperCompileBody()
 class ConstructTemplateHelper
 {
 	const NAME         = 'Construc2';
-
 	const MAX_MODULES  = 4;
 	const MAX_COLUMNS  = 4;
 	const MAX_WEBFONTS = 3;
-	const UA = 'ALL';
+	const UA           = 'ALL';
 
 	/** @var array List of template layout files */
 	protected $layouts = array();
 
-	protected $layoutpath;
-	protected $themespath;
+	/** @var JDocumentHTML instance */
+	protected $doc;
 
-	/** @var $tmpl JDocumentHTML template instance */
+	/** @var object Template name + params */
 	protected $tmpl;
 
+	/** @var boolean */
 	protected $edit_mode = false;
 
-	/**
-	 * @var $helper ConstructTemplateHelper instance of self
-	 * @see getInstance()
-	 */
+	/** @var ConstructTemplateHelper instance of self */
 	public static $helper;
 
+	/** @var array */
 	protected $config = array('cdn'=>array('@default'=>''));
 
+	/** @var CustomTheme */
 	protected $theme = null;
 
-	/**@#+
-	 * Protected head and meta elemente for custom browser ressources
-	* @var array
-	*/
+	/** @var array */
 	static protected $head = array();
-	/**@#- */
 
 	/**
 	 * Use {@link getInstance()} to instantiate.
 	 */
 	protected function __construct()
 	{
-		$this->tmpl = JFactory::getDocument();
+		$this->doc  = JFactory::getDocument();
+		$this->tmpl = JFactory::getApplication()->getTemplate(true);
 
 		// remove this nonsense
-		$this->tmpl->setTab('');
-
-		$this->layoutpath = JPATH_THEMES .'/'. $this->tmpl->template .'/layouts';
+		$this->doc->setTab('');
 
 		// fake ini file
 		if (is_file(dirname(__FILE__) .'/settings.php')) {
@@ -104,10 +98,6 @@ class ConstructTemplateHelper
 		$this->addLayout('index')
 			->addLayout('component')
 			->addLayout('modal');
-
-		// register event handler
-		JDispatcher::getInstance()->register('onBeforeCompileHead', 'ConstructTemplateHelperCompileHead');
-		JDispatcher::getInstance()->register('onAfterCompileBody', 'ConstructTemplateHelperCompileBody');
 	}
 
 	/**
@@ -115,14 +105,19 @@ class ConstructTemplateHelper
 	 */
 	public static function getInstance()
 	{
-		if (!self::$helper) {
-			self::$helper = new ConstructTemplateHelper();
+		if (!self::$helper)
+		{
+			self::$helper = new self();
+
+			// register as event handler (anything after onContentPrepare)
+			$dispatcher = JDispatcher::getInstance();
+			$dispatcher->register('onBeforeCompileHead', 'ConstructHelperBeforeCompileHead');
+			$dispatcher->register('onAfterRender', 'ConstructHelperAfterRender');
 		}
 
-		if (null === self::$helper->theme) {
-			if (isset(self::$helper->tmpl->params) && (self::$helper->tmpl->params instanceof JRegistry)) {
-				self::$helper->theme = new CustomTheme(self::$helper);
-			}
+		if (null === self::$helper->theme)
+		{
+			self::$helper->theme = CustomTheme::getInstance(self::$helper);
 		}
 
 		return self::$helper;
@@ -136,6 +131,7 @@ class ConstructTemplateHelper
 	static public function isHomePage()
 	{
 		static $front;
+
 		if ($front !== null) return $front;
 		$jmenu = JFactory::getApplication()->getMenu();
 		$front = ( $jmenu->getActive() == $jmenu->getDefault() );
@@ -256,13 +252,6 @@ class ConstructTemplateHelper
 		return trim($alias);
 	}
 
-	static protected function _catSlug()
-	{
-		$route = JRoute::_(ContentHelperRoute::getCategoryRoute( JRequest::getInt('id') ));
-		preg_match('#/(?:\d+)\-(\w+)#', $route, $m);
-		return isset($m[1]) ? $m[1] : null;
-	}
-
 	// @todo refactor to use JStringXXX if that comes available
 	protected function _inflectAlias(&$aliases, $language = null)
 	{
@@ -348,6 +337,10 @@ class ConstructTemplateHelper
 			return $this;
 		}
 
+		if (strpos('.', $scope, 1)) {
+			list($scope, $theme) = explode('.', $scope);
+		}
+
 		$ext = '.php';
 		switch ($scope) {
 			case 'index':
@@ -369,8 +362,13 @@ class ConstructTemplateHelper
 				break;
 		}
 
-		$layout     = ltrim($scope .'/'. basename($basename, $ext) . $ext, ' /_-');
-		$layoutpath = $this->layoutpath .'/' . $layout;
+		$layout = ltrim($scope .'/'. basename($basename, $ext) . $ext, ' /_-');
+
+		if (isset($theme)) {
+			$layoutpath = JPATH_THEMES .'/'. $this->tmpl->template .'/' . $theme;
+		} else {
+			$layoutpath = JPATH_THEMES .'/'. $this->tmpl->template .'/layouts/' . $layout;
+		}
 
 		if (JFile::exists($layoutpath)) {
 			$this->layouts[$layout] = array('path'=>$layoutpath, 'scope'=>$scope);
@@ -471,7 +469,7 @@ class ConstructTemplateHelper
 	 *
 	 * @return array|null
 	 */
-	public function getModulesCount($group, $max = ConstructTemplateHelper::MAX_MODULES)
+	public function getModulesCount($group, $max = self::MAX_MODULES)
 	{
 		settype($max, 'int');
 		if ($max < 1) $max = 1;
@@ -481,7 +479,7 @@ class ConstructTemplateHelper
 		$modules = array_fill(0, $max, 0);
 
 		for ($i=1; $i<=$max; $i++) :
-		$modules[$i] = $this->tmpl->countModules($group .'-'. $i);
+		$modules[$i] = $this->doc->countModules($group .'-'. $i);
 		endfor;
 
 		$i = array_sum($modules);
@@ -526,7 +524,7 @@ class ConstructTemplateHelper
 
 		// no layout override
 		if (!isset($attribs['autocols'])) {
-			$attribs['autocols'] = (bool) $this->tmpl->params->get('modOocss', 0);
+			$attribs['autocols'] = (bool) $this->doc->params->get('modOocss', 0);
 		}
 
 		if ($attribs['autocols'])
@@ -541,7 +539,7 @@ class ConstructTemplateHelper
 				$group = substr($position, 0, $pos);
 				$n = $this->numModules($group);
 			} else {
-				$n = $this->tmpl->countModules($group);
+				$n = $this->doc->countModules($group);
 			}
 			if ( $n > 0 ) {
 				settype($attribs['oocss'], 'int');
@@ -555,21 +553,28 @@ class ConstructTemplateHelper
 
 		$css = array_unique($css);
 
+		$html = array();
 		foreach (JModuleHelper::getModules($position) as $_module)
 		{
 			$prefixes['before'][] = $_module->module;
 			$prefixes['after'][]  = $_module->module;
 			if ($chunk = $this->theme->getChunk('module', $prefixes['before']) ) {
-				echo str_replace(
-						array('{position}', '{class}'),
-						array($position, implode(' ', $css)),
-						$chunk
-						);
+				$html[] = str_replace(
+							array('{position}', '{class}'),
+							array($position, implode(' ', $css)),
+							$chunk
+							);
 			}
-			echo JModuleHelper::renderModule($_module, $attribs);
+			$html[] = JModuleHelper::renderModule($_module, $attribs);
 			if ($chunk = $this->theme->getChunk('module', $prefixes['after']) ) {
-				echo $chunk;
+				$html[] = $chunk;
 			}
+		}
+
+		if (isset($attribs['capture'])) {
+			$this->theme->setStaticHtml($attribs['capture'], $html);
+		} else {
+			echo implode(PHP_EOL, $html);
 		}
 
 		return $this;
@@ -769,15 +774,15 @@ class ConstructTemplateHelper
 	 *
 	 * @uses buildHead(), sortScripts(), renderHead()
 	 */
-	public static function beforeCompileHead()
+	public function onBeforeCompileHead()
 	{
-		if (isset(self::$helper->theme)) {
-			$theme = self::$helper->theme->build(self::$helper);
+		if (isset($this->theme)) {
+			$theme = $this->theme->build();
 		}
 
-		self::$helper->buildHead();
-		self::$helper->sortScripts();
-		self::$helper->renderHead();
+		$this->buildHead();
+		$this->sortScripts();
+		$this->renderHead();
 
 		return true;
 	}
@@ -791,7 +796,7 @@ class ConstructTemplateHelper
 	 */
 	public function buildHead()
 	{
-		$head = $this->tmpl->getHeadData();
+		$head = $this->doc->getHeadData();
 
 		// flip and reorder entries
 		$head['metaTags']['standard']['author'] = $head['metaTags']['standard']['rights'];
@@ -806,12 +811,12 @@ class ConstructTemplateHelper
 		//$this->addMetaData('description', $desc);
 
 		// Change generator tag
-		$this->tmpl->setGenerator(null);
-		$this->addMetaData('generator', trim($this->tmpl->params->get('setGeneratorTag', self::NAME)));
+		$this->doc->setGenerator(null);
+		$this->addMetaData('generator', trim($this->doc->params->get('setGeneratorTag', self::NAME)));
 
 		if (!$this->edit_mode) {
 			// if set, contains the version number, i.e '1.0.2'
-			$cgf = $this->tmpl->params->get('loadGcf');
+			$cgf = $this->doc->params->get('loadGcf');
 			if ((float)$cgf > 1.0) {
 				$this->addScript('//ajax.googleapis.com/ajax/libs/chrome-frame/'. $cgf .'/CFInstall.min.js',
 						'lt IE 9',
@@ -882,7 +887,7 @@ class ConstructTemplateHelper
 		}
 
 		// put back what's left
-		$this->tmpl->setHeadData($head);
+		$this->doc->setHeadData($head);
 
 		return $this;
 	}
@@ -907,7 +912,7 @@ class ConstructTemplateHelper
 	 */
 	public function sortScripts()
 	{
-		if (!$this->tmpl->params->get('headCleanup')) {
+		if (!$this->doc->params->get('headCleanup')) {
 			return $this;
 		}
 
@@ -918,27 +923,29 @@ class ConstructTemplateHelper
 				);
 		// jQuery CDNs: http://docs.jquery.com/Downloading_jQuery#CDN_Hosted_jQuery
 		static $CDN = array(
-				'ajax.googleapis.com'	=> array('jquery'=>'/jquery/(\d\.\d\.\d)/', 'mootools'=>'/mootools/(\d\.\d\.\d)/'),
-				'ajax.aspnetcdn.com'	=> array('jquery'=>'/jquery-(\d\.\d\.\d)' , ),
-				'code.jquery.com' 		=> array('jquery'=>'/jquery-(\d\.\d\.\d)' , ),
-				'cdnjs.cloudflare.com'	=> array('jquery'=>'/jquery/(\d\.\d\.\d)/', 'mootools'=>'/mootools/(\d\.\d\.\d)/'),
+					'ajax.googleapis.com'	=> array('jquery'=>'/jquery/(\d\.\d\.\d)/', 'mootools'=>'/mootools/(\d\.\d\.\d)/'),
+					'ajax.aspnetcdn.com'	=> array('jquery'=>'/jquery-(\d\.\d\.\d)' , ),
+					'code.jquery.com' 		=> array('jquery'=>'/jquery-(\d\.\d\.\d)' , ),
+					'cdnjs.cloudflare.com'	=> array('jquery'=>'/jquery/(\d\.\d\.\d)/', 'mootools'=>'/mootools/(\d\.\d\.\d)/'),
 				);
 
-		$head = $this->tmpl->getHeadData();
+		$head = $this->doc->getHeadData();
 
 		// Remove MooTools if set to do so.
 		// without MooTools we must drop all but core.js
-		$loadModal	= (bool) $this->tmpl->params->get('loadModal');
-		$loadMoo	= $this->tmpl->params->get('loadMoo', $loadModal);
-		$loadJQuery	= $this->tmpl->params->get('loadjQuery');
+		$loadModal	= (bool) $this->doc->params->get('loadModal');
+		$loadMoo	= $this->doc->params->get('loadMoo', $loadModal);
+		$loadJQuery	= $this->doc->params->get('loadjQuery');
 
 		// however ...
-		if ($this->edit_mode) {
+		if ($this->edit_mode)
+		{
 			$loadMoo	= true;
 			$loadJQuery	= false;
 		}
 
-		if ($loadMoo == false) {
+		if ($loadMoo == false)
+		{
 			$moos = preg_grep('#/media/system/js(\/(?!core))#', array_keys($head['scripts']));
 			if (count($moos) > 0) {
 				foreach ($moos as $src) {
@@ -955,44 +962,36 @@ class ConstructTemplateHelper
 			}
 		}
 
-
 		if ($loadJQuery)
 		{
-			$loadjQuerySrc = $this->tmpl->params->get('loadjQuerySrc');
+			$loadjQuerySrc = $this->doc->params->get('loadjQuerySrc');
 			if ($loadjQuerySrc == '@default') {
 				$loadjQuerySrc = @$this->config['cdn']['@default'];
 			}
 			if (isset($CDN[$loadjQuerySrc])) {
 				$loadjQuerySrc = '//ajax.googleapis.com/ajax/libs/jquery/'. $loadJQuery .'/jquery.min.js';
-//FB::log($loadjQuerySrc, "loadJQuery $loadJQuery");
+			}
+			if ($loadjQuerySrc) {
+				$attribs['onload'] = 'if(window.jQuery){jQuery.noConflict();}';
+				$attribs['onreadystatechange'] = "if(elt.readyState == 'complete' && window.jQuery){jQuery.noConflict();}";
+				$this->addScript($loadjQuerySrc, self::UA, $attribs);
 			}
 		}
 
-		// @todo bother with others than jquery as well
-		$jquery  = preg_grep($libs['jquery'], array_keys($head['scripts']));
-		foreach ((array) $jquery as $src) {
-			foreach ($CDN as $host => $lib) {
-				if (strpos($src, $host)) {
-					$this->addScript($src, self::UA, $head['scripts'][$src]);
-					// nuke old entry
-					unset($head['scripts'][$src]);
-				}
-			}
-		}
-
-/*
 		// followed by media/system, templates/system
-		foreach (preg_grep('#(media|templates)/system/#', array_keys($head['scripts'])) as $src) {
+		foreach (preg_grep('#(media|templates)/system/#', array_keys($head['scripts'])) as $src)
+		{
 			$this->addScript($src, self::UA, $head['scripts'][$src]);
 			// nuke old entry
 			unset($head['scripts'][$src]);
 		}
-*/
-/*
-		// jQuery compat
-		if (count($jquery) > 0) {
-			$noconflict = array('if(window.jQuery){jQuery.noConflict(); window.addEvent=function(n,f){$$=jQuery;if(n=="domready"||n=="load"){jQuery(document).ready(f);}};}');
-			if ( isset($head['script']['text/javascript']) ) {
+
+		// wrap already present noConflict() placed elsewhere
+		if ($loadJQuery)
+		{
+			$noconflict = array('if(window.jQuery){window.addEvent=function(n,f){$$=jQuery;if(n=="domready"||n=="load"){jQuery(document).ready(f);}};}');
+			if ( isset($head['script']['text/javascript']) )
+			{
 				// replace present calls with empty functions
 				if ( false !== strpos($head['script']['text/javascript'], 'jQuery.noConflict') ) {
 					$noconflict[] = str_replace('jQuery.noConflict', 'new Function', $head['script']['text/javascript']);
@@ -1000,9 +999,9 @@ class ConstructTemplateHelper
 			}
 			$this->addScriptDeclaration($noconflict);
 		}
-*/
+
 		// put everything back
-		$this->tmpl->setHeadData($head);
+		$this->doc->setHeadData($head);
 
 		return $this;
 	}
@@ -1013,7 +1012,7 @@ class ConstructTemplateHelper
 	 */
 	public function renderHead()
 	{
-		$head = $this->tmpl->getHeadData();
+		$head = $this->doc->getHeadData();
 
 		$head['title' ]   = strip_tags($head['title']);
 		$head['custom'][] = '<!-- Construc2 -->';
@@ -1077,13 +1076,19 @@ class ConstructTemplateHelper
 		}
 
 		// put back what's left
-		$this->tmpl->setHeadData($head);
+		$this->doc->setHeadData($head);
 
 		return $this;
 	}
 
-	public static function afterCompileBody()
+	public static function onAfterRender()
 	{
+		FB::info(__METHOD__);
+	}
+
+	public static function update($event)
+	{
+		FB::info($event, __METHOD__);
 	}
 
 	/**
@@ -1102,7 +1107,7 @@ class ConstructTemplateHelper
 	 * @param  string  $elt		defaults to 'span' as the date fragment wrapper element
 	 * @return string
 	 */
-	public function dateContainer($date='now', $format='DATE_FORMAT_LC4', $elt='span')
+	static public function dateContainer($date='now', $format='DATE_FORMAT_LC4', $elt='span')
 	{
 		// format keys for day and month numbers and names and their mapping to a $markup
 		static
@@ -1189,7 +1194,7 @@ class ConstructTemplateHelper
 	 */
 	public function webFonts($addSelectors = false)
 	{
-		$params = $this->tmpl->params;
+		$params = $this->doc->params;
 
 		$googleWebFont = $googleWebFontSize = $googleWebFontTargets = array();
 		for ($i=1; $i <= self::MAX_WEBFONTS; $i++)
@@ -1241,6 +1246,16 @@ class ConstructTemplateHelper
 	public function getTheme()
 	{
 		return $this->theme;
+	}
+
+	public function getTemplate()
+	{
+		return $this->tmpl;
+	}
+
+	public function getLayoutpath()
+	{
+		return JPATH_THEMES .'/'. $this->tmpl->template .'/layouts';
 	}
 
 	/**
