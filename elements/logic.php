@@ -25,13 +25,16 @@ $base_url 	= JURI::base(true) . '/';
 $tmpl_url 	= $base_url. 'templates/'. $this->template;
 
 /* Define shortcuts for often used template parameters */
-$themeStyle 		= 		 $this->params->get('customStyleSheet');
 $enableSwitcher 	= (bool) $this->params->get('enableSwitcher');
 $showDiagnostics 	= (bool) $this->params->get('showDiagnostics');
 
-// "old-school" concatenating of files and free server based compression
+$cssTheme			=		 $this->params->get('customStyleSheet');
 $ssiIncludes		= (bool) $this->params->get('ssiIncludes', 0);
 $ssiTheme			=		 $this->params->get('ssiTheme');
+
+// 'filelist' params return -1 for none.
+if (($cssTheme + 1) == 0) $cssTheme = false;
+if (($ssiTheme + 1) == 0) $ssiTheme = false;
 
 // some editor form requested, need mo' styles
 $editMode = in_array($app->input->get('layout'), array('edit','form'))
@@ -42,10 +45,6 @@ if ($editMode) {
 	$loadMoo = true;
 	$enableSwitcher = $showDiagnostics = false;
 }
-
-// 'filelist' params return -1 for none. make FALSE
-if (($themeStyle + 1) == 0) $themeStyle = false;
-if (($ssiTheme + 1) == 0) $ssiTheme = false;
 
 // will contain custom <script> code depending on selected params
 $scriptDeclarations	= array();
@@ -66,29 +65,12 @@ if ($showDiagnostics) {
 }
 
 /* ----------------------------- Module Counts ----------------------------- */
-if ($headerAboveCount = $templateHelper->getModulesCount('header-above', ConstructTemplateHelper::MAX_MODULES)) {
-	$headerAboveClass = 'above count-'.$headerAboveCount[0];
-}
-
-if ($headerBelowCount = $templateHelper->getModulesCount('header-below', ConstructTemplateHelper::MAX_MODULES)) {
-	$headerBelowClass = 'below count-'.$headerBelowCount[0];
-}
-
-if ($navBelowCount = $templateHelper->getModulesCount('nav-below', ConstructTemplateHelper::MAX_MODULES)) {
-	$navBelowClass = 'below count-'.$navBelowCount[0];
-}
-
-if ($contentAboveCount = $templateHelper->getModulesCount('content-above', ConstructTemplateHelper::MAX_MODULES)) {
-	$contentAboveClass = 'above count-'.$contentAboveCount[0];
-}
-
-if ($contentBelowCount = $templateHelper->getModulesCount('content-below', ConstructTemplateHelper::MAX_MODULES)) {
-	$contentBelowClass = 'below count-'.$contentBelowCount[0];
-}
-
-if ($footerAboveCount = $templateHelper->getModulesCount('footer-above', ConstructTemplateHelper::MAX_MODULES)) {
-	$footerAboveClass = 'above count-'.$footerAboveCount[0];
-}
+$headerAboveCount	= $templateHelper->getModulesCount('header-above',	ConstructTemplateHelper::MAX_MODULES);
+$headerBelowCount	= $templateHelper->getModulesCount('header-below',	ConstructTemplateHelper::MAX_MODULES);
+$navBelowCount		= $templateHelper->getModulesCount('nav-below',		ConstructTemplateHelper::MAX_MODULES);
+$contentAboveCount	= $templateHelper->getModulesCount('content-above',	ConstructTemplateHelper::MAX_MODULES);
+$contentBelowCount	= $templateHelper->getModulesCount('content-below',	ConstructTemplateHelper::MAX_MODULES);
+$footerAboveCount	= $templateHelper->getModulesCount('footer-above',	ConstructTemplateHelper::MAX_MODULES);
 
 /* ------------------------------ Column Layout ----------------------------- */
 $columnGroupCount      = $templateHelper->getModulesCount('column', ConstructTemplateHelper::MAX_COLUMNS);
@@ -139,9 +121,9 @@ $templateHelper->webFonts();
 
 // Style sheets
 if ($ssiIncludes) {
-	$templateHelper->addLink($tmpl_url.'/css/construc2.styles?rtl=' . (int)($this->direction == 'rtl') . '&em=' .(int)$editMode );
+	$templateHelper->addLink($tmpl_url.'/css/construc2.styles?rtl='. ($this->direction == 'rtl') .'&em='. $editMode);
 	if ($ssiTheme) {
-		$templateHelper->addLink($tmpl_url.'/themes/'.$ssiTheme .'?rtl=' . (int)($this->direction == 'rtl') . '&em=' .(int)$editMode);
+		$templateHelper->addLink($tmpl_url.'/themes/'.$ssiTheme .'?rtl='. ($this->direction == 'rtl') .'&em='. $editMode);
 	}
 } else {
 	$templateHelper->addLink($tmpl_url.'/css/core/base.css');
@@ -159,9 +141,14 @@ if ($ssiIncludes) {
 		$templateHelper->addLink($tmpl_url.'/css/core/print.css');
 	}
 
-	if ($themeStyle) {
-		$templateHelper->addLink($tmpl_url.'/themes/'.$themeStyle);
+	if ($cssTheme) {
+		$templateHelper->addLink($tmpl_url.'/themes/'.$cssTheme);
 	}
+}
+
+/* Preview Module Positions with index.php?tp=1 */
+if ($app->get('input')->getBool('tp', 0) && JComponentHelper::getParams('com_templates')->get('template_positions_display')) {
+	$templateHelper->addLink($tmpl_url.'/css/core/tp.css');
 }
 
 // Style sheet switcher
@@ -196,15 +183,6 @@ if ($this->params->get('html5shim')) {
 
 // JSON shim
 $scriptDeclarations[] = '(function(W,D,src) {if (W.JSON) return;var a=D.createElement("script");var b=D.getElementsByTagName("script")[0];a.src=src;a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b);})(window,document,"'. $tmpl_url .'/js/json2.min.js");';
-
-/* Preview Module Styles for use with index.php?tp=1 */
-if ($app->get('input')->getBool('tp') && JComponentHelper::getParams('com_templates')->get('template_positions_display') ) {
-	$styleDeclarations[] = '.mod-preview{position:relative}';
-	$styleDeclarations[] = '.mod-preview-wrapper{border:none;outline:1px solid #ccc;box-shadow:2px 2px 6px rgba(0,0,0,0.6);padding:5px 10px;margin:5px 0;opacity:0.9;background:#666;z-index:999;min-height:50px}';
-	$styleDeclarations[] = '.mod-preview-wrapper div.moduletable, .mod-preview-wrapper .menu, .mod-preview-wrapper #breadcrumbs{opacity:0}';
-	$styleDeclarations[] = '.mod-preview-info{color:#fff;background:none;border:none;z-index:999;position:absolute;left:5px;top:5px;font-size:110%}';
-	$styleDeclarations[] = '#left .mod-preview-wrapper, #left2 .mod-preview-wrapper, #right .mod-preview-wrapper, #right2 .mod-preview-wrapper{height:940px}';
-}
 
 // add collected custom style declarations
 if ( count($styleDeclarations) ) {

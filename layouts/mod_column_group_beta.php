@@ -8,18 +8,17 @@
  * @copyright   (C) 2011-2012 WebMechanic http://webmechanic.biz. All rights reserved.
  * @license     GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
-$modcount = $templateHelper->numModules('group-beta');
 
 $style	= 'mod'; // null is essentially the same as 'raw'
 
-?><div class="column-group group-beta colcount-<?php echo $columnGroupBetaCount ?>"><?php
+?><div id="group-beta" class="column-group group-beta colcount-<?php echo $columnGroupBetaCount ?>"><?php
 
-if ($modcount > 1 && $columnGroupCount[3]) :
-	$templateHelper->renderModules('column-3', $style, array('capture'=>'group-beta', 'toggle'=>'odd,even', 'autocols'=>false));
-endif;
-if ($modcount > 1 && $columnGroupCount[4]) :
-	$templateHelper->renderModules('column-4', $style, array('capture'=>'group-beta', 'toggle'=>'odd,even', 'autocols'=>false));
-endif;
+if ($columnGroupCount[3]) {
+	$templateHelper->renderModules('column-3', $style, array('toggle'=>'odd,even', 'autocols'=>false));
+}
+if ($columnGroupCount[4]) {
+	$templateHelper->renderModules('column-4', $style, array('toggle'=>'odd,even', 'autocols'=>false));
+}
 
 ?></div><?php
 /*
@@ -27,3 +26,6 @@ endif;
  * keep these PHP tags tight close to the HTML markup or a
  * single white space may render your styles useless.
  */
+
+//cleanup
+unset($style);

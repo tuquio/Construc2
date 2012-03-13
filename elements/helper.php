@@ -47,28 +47,28 @@ class ConstructTemplateHelper
 	const MAX_WEBFONTS = 3;
 	const UA           = 'ALL';
 
-	/** @var array List of template layout files */
+	/** @var $layouts array List of template layout files */
 	protected $layouts = array();
 
-	/** @var JDocumentHTML instance */
+	/** @var $doc JDocumentHTML instance */
 	protected $doc;
 
-	/** @var object Template name + params */
+	/** @var $tmpl object Template name + params */
 	protected $tmpl;
 
-	/** @var boolean */
+	/** @var $edit_mode boolean */
 	protected $edit_mode = false;
 
-	/** @var ConstructTemplateHelper instance of self */
+	/** @var $helper ConstructTemplateHelper instance of self */
 	public static $helper;
 
-	/** @var array */
+	/** @var $config array */
 	protected $config = array('cdn'=>array('@default'=>''));
 
-	/** @var CustomTheme */
+	/** @var $theme CustomTheme */
 	protected $theme = null;
 
-	/** @var array */
+	/** @var $head array */
 	static protected $head = array();
 
 	/**
@@ -170,7 +170,7 @@ class ConstructTemplateHelper
 			$jmenu	= $app->getMenu()->getDefault();
 		}
 
-		$css = $this->getCssAlias($jmenu);
+		$css = $this->getCssAlias($jmenu, $parent);
 		$alias[$parent] = $css;
 
 		return $alias[$parent];
@@ -184,14 +184,16 @@ class ConstructTemplateHelper
 	 * will be included.
 	 * Category and item IDs appear as cat-N and item-N respectively.
 	 *
-	 * @param  object $item  with an $alias and maybe more usefull things
+	 * @param  object $item   with an $alias and maybe more useful things
+	 * @param  bool   $parent travel up the tree to fetch parent item aliases
+	 *
 	 * @return string The alias
 	 */
-	public function getCssAlias($item)
+	public function getCssAlias($item, $parent = false)
 	{
 		$d = array();
 		// menu item?
-		if (isset($item->type)) {
+		if (isset($item->type) && $parent) {
 			$d['t'] = $item->type;
 			if (isset($item->query['option'])) {
 				$d['o'] = str_replace('_', '-', $item->query['option']);
@@ -205,12 +207,15 @@ class ConstructTemplateHelper
 		}
 
 		$d['A'] = array();
-		if (isset($item->parent_alias)) {
-			$d['A']['pa'] = $item->parent_alias;
+		if ($parent) {
+			if (isset($item->parent_alias)) {
+				$d['A']['pa'] = $item->parent_alias;
+			}
+			if (isset($item->category_alias)) {
+				$d['A']['ca'] = $item->category_alias;
+			}
 		}
-		if (isset($item->category_alias)) {
-			$d['A']['ca'] = $item->category_alias;
-		}
+
 		if (isset($item->alias)) {
 			$d['A']['ia'] = $item->alias;
 		}
@@ -465,7 +470,7 @@ class ConstructTemplateHelper
 	 * Counts and returns the amount of active Modules in the given position $group.
 	 *
 	 * @param string  $group
-	 * @param integer $max default=5
+	 * @param integer $max   default self::MAX_MODULES
 	 *
 	 * @return array|null
 	 * @see numModules(), renderModules()
@@ -487,8 +492,9 @@ class ConstructTemplateHelper
 
 		$modules = array_fill(0, $max, 0);
 
-		for ($i=1; $i<=$max; $i++) {
+		for ($i = 1; $i <= $max; $i += 1) {
 			$modules[$i] = $this->doc->countModules($group .'-'. $i);
+	//		$modules[$i] = &JModuleHelper::getModules($group .'-'. $i);
 		}
 
 		$i = array_sum($modules);
@@ -502,8 +508,13 @@ class ConstructTemplateHelper
 		if ($group =='column') {
 			// "mental notes"
 			$_cols = array('alpha'=>2, 'beta'=>2);
-			$this->groupcount['group-alpha'] = (int) @$modules[1] + @$modules[2];
-			$this->groupcount['group-beta']  = (int) @$modules[3] + @$modules[4];
+			$this->groupcount['group-alpha']	= $modules[1] + $modules[2];
+			$this->groupcount['column-1']		= $modules[1];
+			$this->groupcount['column-2']		= $modules[2];
+
+			$this->groupcount['group-beta']		= $modules[3] + $modules[4];
+			$this->groupcount['column-3']		= $modules[3];
+			$this->groupcount['column-4']		= $modules[4];
 		}
 
 		return $modules;
@@ -511,26 +522,24 @@ class ConstructTemplateHelper
 
 	public function numModules($group)
 	{
-		FB::info($this->groupcount[$group], "numModules $group");
 		return isset($this->groupcount[$group]) ? $this->groupcount[$group] : 0;
 	}
 
 	/**
-	 * @param string $position
-	 * @param string $style
-	 * @param array  $attribs
+	 * @param string $position  Name of a module position
+	 * @param string $style     The module chrome style to apply (see ./html/modules.php)
+	 * @param array  $attribs   Optional attributes passed to the chrome rendering function
 	 *
 	 * @return ConstructTemplateHelper for fluid interface
+	 *
+	 * @uses CustomTheme::setCapture()
 	 */
-	public function renderModules($position, $style=null, $attribs=null)
+	public function renderModules($position, $style=null, $attribs=array())
 	{
 		if ($this->edit_mode) {
 			return $this;
 		}
 
-		if ( !$attribs ) {
-			$attribs = array();
-		}
 		$attribs['name'] = $position;
 		($style) ? $attribs['style'] = $style : true;
 
@@ -583,7 +592,9 @@ class ConstructTemplateHelper
 							$chunk
 							);
 			}
-			$html[] = JModuleHelper::renderModule($_module, $attribs);
+
+			$html[] = trim(JModuleHelper::renderModule($_module, $attribs));
+
 			if ($chunk = $this->theme->getChunk('module', $prefixes['after']) ) {
 				$html[] = $chunk;
 			}
@@ -593,12 +604,25 @@ class ConstructTemplateHelper
 			if (is_numeric($attribs['capture']) || is_bool($attribs['capture'])) {
 				$attribs['capture'] = $position;
 			}
-			$this->theme->setStaticHtml($attribs['capture'], $html, $attribs);
+			$this->theme->setCapture($attribs['capture'], $html, $attribs);
 		} else {
-			echo implode(PHP_EOL, $html);
+			echo trim(implode('', $html));
 		}
 
 		return $this;
+	}
+
+	/**
+	 * Proxy for {@link CustomTheme::getCapture()}.
+	 *
+	 * @param  string  $name
+	 * @param  bool    $checkonly
+	 *
+	 * @uses CustomTheme::getCapture()
+	 */
+	public function getCapture($name, $checkonly = false)
+	{
+		return $this->theme->getCapture($name, $checkonly);
 	}
 
 	/**@#+

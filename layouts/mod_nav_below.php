@@ -17,31 +17,28 @@ $chunks = array(
 		);
 $templateHelper->getTheme()->setChunks($chunks, true);
 
-if ($modcount) : ?><div id="nav-below" class="nav-below"><div class="line below-inner"><?php endif;
-
-if ($modcount > 1 && $navBelowCount[1]) :
-	$templateHelper->renderModules('nav-below-1', $style);
-endif;
-if ($modcount > 2 && $navBelowCount[2]) :
-	$templateHelper->renderModules('nav-below-2', $style);
-endif;
-if ($modcount > 3 && $navBelowCount[3]) :
-	$templateHelper->renderModules('nav-below-3', $style);
-endif;
-if ($modcount > 4 && $navBelowCount[4]) :
-	$templateHelper->renderModules('nav-below-4', $style);
-endif;
-if ($modcount > 5 && $navBelowCount[5]) :
-	$templateHelper->renderModules('nav-below-5', $style);
-endif;
-if ($modcount > 6 && $navBelowCount[6]) :
-	$templateHelper->renderModules('nav-below-6', $style);
-endif;
-
-if ($modcount) : ?></div></div><?php endif;
 /*
  * if you want to make use of the CSS3 :empty() selector,
  * keep these PHP tags tight close to the HTML markup or a
  * single white space may render your styles useless.
  */
+if ($modcount) : ?><div id="nav-below" class="below count-<?php echo $navBelowCount[0] ?>"><div class="line below-inner"><?php endif;
+
+if ($modcount > 1 && $navBelowCount[1]) {
+	$templateHelper->renderModules('nav-below-1', $style);
+}
+if ($modcount > 2 && $navBelowCount[2]) {
+	$templateHelper->renderModules('nav-below-2', $style);
+}
+if ($modcount > 3 && $navBelowCount[3]) {
+	$templateHelper->renderModules('nav-below-3', $style);
+}
+if ($modcount > 4 && $navBelowCount[4]) {
+	$templateHelper->renderModules('nav-below-4', $style);
+}
+
+if ($modcount) : ?></div></div><?php endif;
+
+//cleanup
+unset($style, $modcount, $chunks);
 

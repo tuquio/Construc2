@@ -161,7 +161,7 @@ class CustomTheme
 	 * @param  array  $layout An array with 'path' and optional 'scope' information
 	 * @return array
 	 *
-	 * @see  setChunks(), loadStaticHtml(), setStaticHtml()
+	 * @see  setChunks(), loadStaticHtml(), setCapture()
 	 * @see  ConstructTemplateHelper::addLayout()
 	 * @uses self::$chunks, JFile::exists()
 	 */
@@ -191,12 +191,12 @@ class CustomTheme
 	 * yields to load "ipsum-header.html".
 	 *
 	 * To store (and cache) an arbitrary piece of runtime generated content use
-	 * {@link setStaticHtml()}.
+	 * {@link setCapture()}.
 	 *
 	 * @param  string  $name  a unique name where "main" is synonym for the "<themename>.html"
 	 *
 	 * @return string  Content of the static HTML file or a HTML comment if the $name was not found
-	 * @see  setStaticHtml()
+	 * @see  setCapture()
 	 * @uses self::$html, JFile::read()
 	 *
 	 * @todo implement caching
@@ -225,11 +225,31 @@ class CustomTheme
 	 *
 	 * @todo implement caching
 	 */
-	public function setStaticHtml($name, $content, $options = array())
+	public function setCapture($name, $content, $options = array())
 	{
-		self::$html[$name] = is_array($content) ? trim(implode(PHP_EOL, $content)) : trim($content);
+		$buffer = is_array($content) ? trim(implode('', $content)) : trim($content);
+
+		if (strlen($buffer)) {
+			settype(self::$html[$name], 'string');
+			self::$html[$name] .= trim($buffer);
+		}
 
 		return $this;
+	}
+
+	/**
+	 * @param  string  $name
+	 * @param  bool    $checkonly
+	 */
+	public function getCapture($name, $checkonly = false)
+	{
+		if ($checkonly == true) {
+			return isset(self::$html[$name]) ? strlen(self::$html[$name]) : 0;
+		}
+
+		if (isset(self::$html[$name])) {
+			return self::$html[$name];
+		}
 	}
 
 	/**
