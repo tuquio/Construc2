@@ -8,20 +8,19 @@
  * @copyright	Copyright (C) 2011 WebMechanic http://webmechanic.biz. All rights reserved.
  * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
-
-// option=com_media&view=images&tmpl=component&e_name=jform_articletext
-// option=com_media&view=imagesList&tmpl=component&folder=&asset=134&author=43
+// com_content &print=1  &layout=XYZ  &page=[NN]
+// com_media  &view=images  &e_name=jform_articletext
+// com_media  &view=imagesList  &folder=[XYZ]  &asset=NN  &author=NN
 $app = JFactory::getApplication();
-
 ?>
 <html lang="<?php echo $this->language ?>" dir="<?php echo $this->direction ?>" <?php echo $cache_manifest ?>>
 <head>
 <jdoc:include type="head" />
 </head>
-<body class="main component <?php echo $app->input->get('option'), ' ', $app->input->get('print') ? 'print' : $app->input->get('layout') ?>">
+<body class="main-only component <?php echo $app->input->get('option'), ' ', $app->input->get('print') ? 'print' : $app->input->get('layout') ?>">
 <?php ConstructTemplateHelper::msieSwatter() ?>
-	<div id="page-top">
-		<div id="body-container" class="<?php echo $templateHelper->getPageAlias(true)?>">
+	<div id="page-top" class="<?php echo $templateHelper->getPageAlias(true) ?>">
+		<div id="body-container">
 			<div class="line content-container">
 				<div id="content" class="line content-main">
 
