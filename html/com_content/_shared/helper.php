@@ -62,24 +62,27 @@ class ContentLayoutHelper
 	 * to apply item and category based styles. The resulting names use '_' as a
 	 * word separator to avoid name clashing with module names and common classes.
 	 *
-	 * @param  object $item     with an $alias and optional $category_alias property
-	 * @param  string $item_id  also include an 'item-nn' class name using this string as a prefix
-	 * @param  bool   $cat_id   also include an 'cat-nn' class name
+	 * @param  object $item   with an $alias and optional $category_alias property
+	 * @param  bool   $parent travel up the tree to fetch parent item aliases
+	 *
+	 * @return string some CSS classes
+	 *
+	 * @uses ConstructTemplateHelper::getCssAlias()
 	 */
-	static public function getCssAlias($item)
+	static public function getCssAlias($item, $parent = true)
 	{
-		return ConstructTemplateHelper::getInstance()->getCssAlias($item);
+		return ConstructTemplateHelper::getInstance()->getCssAlias($item, $parent);
 	}
 
 	/**
-	 * Pimp an Article's Table of Contents ($item->toc) inplace like so to make it better:
-	 * - nav.unit.size2of5.page-toc.rgt  from <div id="article-index"> (id attribute is retained)
-	 * - h3.H4.toc-title	from class-free <h3>
-	 * - ol.toc-items		from class-free, semantically wrong <ul>
-	 * - li.mi				from class-free <li>
+	 * Pimp an Article's Table of Contents ($item->toc) inplace to make it better:
+	 * - from <div id="article-index">	to nav.unit.size2of5.page-toc.rgt  (id attribute is retained)
+	 * - from class-free <h3> 			to h3.H4.toc-title
+	 * - from class-free <ul>			to ol.toc-items  (semantically correct)
+	 * - from class-free <li> 			to li.mi
 	 *
-	 * @param  object $item     The article item object
-	 * @param  string $allpages Non-empty if all article is in "all pages" mode
+	 * @param  object  $item      The article item object
+	 * @param  string  $allpages  Non-empty if article is in "all pages" mode
 	 *
 	 * @return void (sets the toc property)
 	 */

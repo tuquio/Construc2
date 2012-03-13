@@ -12,11 +12,11 @@ JHtml::addIncludePath(JPATH_COMPONENT_SITE .'/helpers');
 
 $isep    = JText::_('JGLOBAL_ICON_SEP');
 $actions = array(
-		array('<a ', '<img', '</a>'),
-		array('<a tabindex="-1" ', '<span class="mi"><img ', '</span></a>')
-	);
+				array('<a ', '<img', '</a>'),
+				array('<a tabindex="-1" ', '<span class="mi"><img ', '</span></a>')
+			);
 ?>
-	<ul class="menu hmenu actionsmenu">
+	<ul class="menu hmenu actionsmenu" title="<?php echo JText::_('Article Actions') ?>">
 	<?php if ($params->get('show_print_icon')) { ?>
 	<li class="mi print-icon"><?php echo str_replace($actions[0], $actions[1], JHtml::_('icon.print_popup', $this->item, $params)) ?></li>
 <?php }
