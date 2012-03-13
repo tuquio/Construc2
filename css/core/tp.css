@@ -1,0 +1,38 @@
+/*! 
+ * tp.css Template Positions
+ * @version 13.03.2012
+ * 
+ * @license WTFPL
+ */
+
+div.mod-preview {
+	background-color: rgba(255, 255, 255, 0.4);
+	border: 1px solid #FFFFFF;
+	font-size: 75%;
+	margin: 0 auto;
+	min-height: 3.6em;
+	position: relative;
+	width: 100%;
+}
+
+div.mod-preview-info {
+	color: #000000;
+	font-weight: bold;
+	margin: 0 auto;
+	padding-top: 1.6em;
+	position: absolute;
+	text-shadow: 0 0 4px #FFFFFF;
+	top: 0;
+	z-index: 27;
+}
+
+div.mod-preview-wrapper {
+	background-color: rgba(255, 255, 255, 0.2);
+	overflow: auto;
+	z-index: 27;
+}
+
+.mod-preview .mod-preview-wrapper .mod {margin:0}
+
+
+/* .eof */
