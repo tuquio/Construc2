@@ -12,7 +12,7 @@
 require JPATH_THEMES.'/'.$this->template.'/elements/logic.php';
 
 // Add custom layout overrides for components or section here
-$templateHelper->addLayout('component');
+// eg: $templateHelper->addLayout('component');
 
 // Check for alternate index file, load it if it exists, and leave
 if ($alternateIndexFile = $templateHelper->getLayout()) {
