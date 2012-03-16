@@ -2,13 +2,13 @@
 /**
  * Subtemplate loaded if $contentBelowCount > 0
  *
- * @package     Templates
+ * @package     Construc2
  * @subpackage  Layouts
  * @author      WebMechanic http://webmechanic.biz
  * @copyright   (C) 2011-2012 WebMechanic http://webmechanic.biz. All rights reserved.
  * @license     GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
-$modcount = count($contentBelowCount);
+$modcount = $templateHelper->numModules('content-below');
 
 $style	= null; // null is essentially the same as 'raw'
 $chunks = array(
@@ -17,25 +17,27 @@ $chunks = array(
 		);
 $templateHelper->getTheme()->setChunks($chunks, true);
 
-if ($modcount) : ?><div id="content-below" class="content-below"><div class="line below-inner"><?php endif;
+/*
+ * if you want to make use of the CSS3 :empty() selector,
+ * keep these PHP tags tight close to the HTML markup or a
+ * single white space may render your styles useless.
+ */
+if ($modcount) : ?><div id="content-below" class="below count-<?php echo $contentBelowCount[0] ?>"><div class="line below-inner"><?php endif;
 
-if ($modcount > 1 && $contentBelowCount[1]) :
+if ($contentBelowCount[1]) {
 	$templateHelper->renderModules('content-below-1', $style, array());
-endif;
-if ($modcount > 2 && $contentBelowCount[2]) :
+}
+if ($contentBelowCount[2]) {
 	$templateHelper->renderModules('content-below-2', $style, array());
-endif;
-if ($modcount > 3 && $contentBelowCount[3]) :
+}
+if ($contentBelowCount[3]) {
 	$templateHelper->renderModules('content-below-3', $style, array());
-endif;
-if ($modcount > 4 && $contentBelowCount[4]) :
+}
+if ($contentBelowCount[4]) {
 	$templateHelper->renderModules('content-below-4', $style, array());
-endif;
-if ($modcount > 5 && $contentBelowCount[5]) :
-	$templateHelper->renderModules('content-below-5', $style, array());
-endif;
-if ($modcount > 6 && $contentBelowCount[6]) :
-	$templateHelper->renderModules('content-below-6', $style, array());
-endif;
+}
 
-if ($modcount) : ?></div></div><?php endif; ?>
+if ($modcount) : ?></div></div><?php endif;
+
+//cleanup
+unset($style, $modcount, $chunks);

@@ -8,6 +8,9 @@
  * @copyright	Copyright (C) 2011 WebMechanic http://webmechanic.biz. All rights reserved.
  * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
+
+
+
 ?>
 <html lang="<?php echo $this->language ?>" dir="<?php echo $this->direction ?>" <?php echo $cache_manifest ?>>
 <head>
@@ -15,8 +18,8 @@
 </head>
 <body class="<?php echo $columnLayout ?>">
 <?php ConstructTemplateHelper::msieSwatter() ?>
-	<div id="page-top">
-		<div id="header" class="line page-head <?php echo $templateHelper->getPageAlias() ?>">
+	<div id="page-top" class="<?php echo $templateHelper->getPageAlias(true) ?>">
+		<div id="header" class="line page-head">
 <?php if ($headerAboveCount) : include JPATH_THEMES .'/'. $this->template . '/layouts/mod_header_above.php'; endif; ?>
 		<h1 id="logo"><a class="site-link" href="<?php echo $this->baseurl ?>/"><span class="site-name"><?php echo $app->getCfg('sitename');?></span></a></h1>
 
@@ -31,7 +34,7 @@
 		<?php endif; ?>
 		</div><!-- .page-head -->
 
-		<div id="body-container" class="<?php echo $templateHelper->getPageAlias(true) ?>">
+		<div id="body-container" class="<?php echo $templateHelper->getPageAlias() ?>">
 <?php if ($headerBelowCount) : include JPATH_THEMES .'/'. $this->template . '/layouts/mod_header_below.php'; endif; ?>
 
 		<?php if ($this->countModules('nav')) : ?>
