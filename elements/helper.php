@@ -15,6 +15,10 @@
  * and is misused to clean the alias for use as a class name of list items */
 JLoader::register('SearchHelper', JPATH_ADMINISTRATOR .'/components/com_search/helpers/search.php');
 
+/** Register some Widget Classes */
+#	JLoader::register('ContentWidgets', dirname(__FILE__) . '/widgets/content.php');
+#	JLoader::register('BehaviorWidgets', dirname(__FILE__) . '/widgets/behavior.php');
+
 /** Register the CustomTheme Class */
 JLoader::register('CustomTheme', dirname(__FILE__) . '/theme.php');
 
@@ -31,6 +35,15 @@ function ConstructHelperBeforeCompileHead()
 function ConstructHelperAfterRender()
 {
 	ConstructTemplateHelper::getInstance()->onAfterRender();
+}
+
+class ConstructWidgets
+{
+	static public function better($old, $new)
+	{
+		JHtml::unregister($old);
+		JHtml::register($old, $new);
+	}
 }
 
 /**
@@ -78,6 +91,9 @@ class ConstructTemplateHelper
 	{
 		$this->doc  = JFactory::getDocument();
 		$this->tmpl = JFactory::getApplication()->getTemplate(true);
+
+		if ($this->tmpl->params->get('headCleanup')) {
+		}
 
 		// remove this nonsense
 		$this->doc->setTab('');
@@ -167,7 +183,7 @@ class ConstructTemplateHelper
 		$app = JFactory::getApplication();
 		$jmenu = $app->getMenu()->getActive();
 		if (!$jmenu) {
-			$jmenu	= $app->getMenu()->getDefault();
+			$jmenu = $app->getMenu()->getDefault();
 		}
 
 		$css = $this->getCssAlias($jmenu, $parent);
@@ -207,13 +223,11 @@ class ConstructTemplateHelper
 		}
 
 		$d['A'] = array();
-		if ($parent) {
-			if (isset($item->parent_alias)) {
-				$d['A']['pa'] = $item->parent_alias;
-			}
-			if (isset($item->category_alias)) {
-				$d['A']['ca'] = $item->category_alias;
-			}
+		if (isset($item->parent_alias)) {
+			$d['A']['pa'] = $item->parent_alias;
+		}
+		if (isset($item->category_alias)) {
+			$d['A']['ca'] = $item->category_alias;
 		}
 
 		if (isset($item->alias)) {
@@ -221,6 +235,7 @@ class ConstructTemplateHelper
 		}
 
 		if ($item instanceof JCategoryNode) {
+			list($tmp, $d['sl']) = explode(':', $item->slug);
 			$d['id'] = 'cid-' . $item->id;
 		} else {
 			if (isset($item->catid)) {
@@ -252,7 +267,7 @@ class ConstructTemplateHelper
 		}
 		unset($d['A']);
 
-		$alias .= ' ' . implode(' ', $d);
+		$alias .= ' ' . implode(' ', array_unique($d));
 
 		return trim($alias);
 	}
@@ -479,16 +494,17 @@ class ConstructTemplateHelper
 	 */
 	public function getModulesCount($group, $max = self::MAX_MODULES)
 	{
-		settype($max, 'int');
+		if (isset($this->groupcount[$group])) {
+			return $this->groupcount[$group];
+		}
 
+		settype($max, 'int');
 		// #FIXME colums are only 2 per group 'alpha' and 'beta'
 		if ($group =='column') {
 			$max = 4;
 		}
 
 		if ($max < 1) $max = 1;
-
-		$this->groupcount[$group] = 0;
 
 		$modules = array_fill(0, $max, 0);
 
@@ -502,12 +518,11 @@ class ConstructTemplateHelper
 			return null;
 		}
 
-		$this->groupcount[$group] = $modules[0] = $i;
+		$modules[0] = $i;
+		$this->groupcount[$group] = $modules;
 
-		// #FIXME special treatment für alpha/beta groups if $group='column'
+		// #FIXME special treatment for alpha/beta groups if $group='column'
 		if ($group =='column') {
-			// "mental notes"
-			$_cols = array('alpha'=>2, 'beta'=>2);
 			$this->groupcount['group-alpha']	= $modules[1] + $modules[2];
 			$this->groupcount['column-1']		= $modules[1];
 			$this->groupcount['column-2']		= $modules[2];
@@ -549,27 +564,32 @@ class ConstructTemplateHelper
 				'after'  => array('after')
 				);
 
-		// no layout override
-		if (!isset($attribs['autocols'])) {
-			$attribs['autocols'] = (bool) $this->doc->params->get('modOocss', 0);
+		// no layout override?
+		if (!array_key_exists('autocols', $attribs)) {
+			$attribs['autocols'] = $this->tmpl->params->get('modOocss', 0);
 		}
 
-		if ($attribs['autocols'])
+		settype($attribs['autocols'], 'bool');
+
+		if ($attribs['autocols'] !== false)
 		{
-			$group = $position;
 			$prefixes['before'][] = 'unit_before';
 			$prefixes['after'][]  = 'unit_after';
 
-			$this->getModulesCount($group);
-
+			$group = false;
 			if ( $pos = strrpos($position, '-') ) {
 				$group = substr($position, 0, $pos);
-				$n = $this->numModules($group);
-			} else {
-				$n = $this->doc->countModules($group);
 			}
+
+			if ( $group != false ) {
+				$modules = $this->getModulesCount($group);
+				$n = $modules[0];
+			} else {
+				$n = $this->doc->countModules($position);
+			}
+
 			if ( $n > 0 ) {
-				settype($attribs['oocss'], 'int');
+				$attribs['oocss'] = '';
 				$css[] = 'unit size1of'.$n;
 			}
 			unset($attribs['autocols']);
@@ -583,9 +603,18 @@ class ConstructTemplateHelper
 		$html = array();
 		foreach (JModuleHelper::getModules($position) as $_module)
 		{
+			$content = JModuleHelper::renderModule($_module, $attribs);
+			if (self::isEmpty($content)) {
+				continue;
+			}
+
+			// this crap doesn't belong here
+			$content = $this->_choppInlineCrap($content, $_module->module);
+
 			$prefixes['before'][] = $_module->module;
 			$prefixes['after'][]  = $_module->module;
-			if ($chunk = $this->theme->getChunk('module', $prefixes['before']) ) {
+			if ($chunk = $this->theme->getChunk('module', $prefixes['before']) )
+			{
 				$html[] = str_replace(
 							array('{position}', '{class}'),
 							array($position, implode(' ', $css)),
@@ -593,14 +622,15 @@ class ConstructTemplateHelper
 							);
 			}
 
-			$html[] = trim(JModuleHelper::renderModule($_module, $attribs));
+			$html[] = $content;
 
 			if ($chunk = $this->theme->getChunk('module', $prefixes['after']) ) {
 				$html[] = $chunk;
 			}
 		}
 
-		if (isset($attribs['capture'])) {
+		if (isset($attribs['capture']))
+		{
 			if (is_numeric($attribs['capture']) || is_bool($attribs['capture'])) {
 				$attribs['capture'] = $position;
 			}
@@ -644,7 +674,7 @@ class ConstructTemplateHelper
 	 *  - gte IE 9	= MSIE 9
 	 *	- IEMobile	= MSIE 7 - MSIE 9 on smart phones
 	 *
-	 * @see renderHeadElements()
+	 * @see renderHead()
 	 */
 
 	/**
@@ -658,7 +688,7 @@ class ConstructTemplateHelper
 	 * @param array  $attribs   optional attributes as associative array
 	 *
 	 * @return ConstructTemplateHelper for fluid interface
-	 * @see renderHeadElements(), $links
+	 * @see renderHead(), $links
 	 */
 	public function addLink($href, $uagent=self::UA, $attribs=array(), $rel='stylesheet')
 	{
@@ -707,7 +737,7 @@ class ConstructTemplateHelper
 	 * @param mixed  $uagent
 	 *
 	 * @return ConstructTemplateHelper for fluid interface
-	 * @see renderHeadElements(), $custom
+	 * @see renderHead(), $custom
 	 */
 	public function addCustomTag($html, $uagent=self::UA)
 	{
@@ -726,7 +756,7 @@ class ConstructTemplateHelper
 	 * @param bool   $http_equiv
 	 *
 	 * @return ConstructTemplateHelper for fluid interface
-	 * @see renderHeadElements(), $metaTags
+	 * @see renderHead(), $metaTags
 	 */
 	public function addMetaData($name, $content, $uagent=self::UA, $http_equiv=false)
 	{
@@ -746,7 +776,7 @@ class ConstructTemplateHelper
 	 * @param array  $attribs  optional attributes as associative array
 	 *
 	 * @return ConstructTemplateHelper for fluid interface
-	 * @see renderHeadElements(), $script
+	 * @see renderHead(), $script
 	 */
 	public function addScript($url, $uagent=self::UA, $attribs=array())
 	{
@@ -762,6 +792,8 @@ class ConstructTemplateHelper
 		if (preg_match('#(media|templates)/system/#', $url, $match)) {
 			$location = $match[1];
 		}
+
+		unset($attribs['src']);
 
 		if (isset($attribs['defer']) && $attribs['defer'] == false) {
 			unset($attribs['defer']);
@@ -781,14 +813,18 @@ class ConstructTemplateHelper
 	 * @param mixed  $uagent
 	 *
 	 * @return ConstructTemplateHelper for fluid interface
-	 * @see renderHeadElements(), $scripts
+	 * @see renderHead(), $scripts
 	 */
 	public function addScriptDeclaration($content, $uagent=self::UA)
 	{
 		$this->_makeRoom('script', $uagent);
 
-		// store
-		self::$head["{$uagent}"]['script'][] = (is_array($content) ? implode(PHP_EOL, $content) : $content);
+		// flatten
+		$script = (is_array($content) ? implode(PHP_EOL, $content) : $content);
+		// de-XHTMLize inline <script> created by modules
+		$script = str_replace(array('<![CDATA[', ']]>',"//\n"), '', $script);
+
+		self::$head["{$uagent}"]['script'][] = $script;
 
 		return $this;
 	}
@@ -798,7 +834,7 @@ class ConstructTemplateHelper
 	 * @param mixed  $uagent
 	 *
 	 * @return ConstructTemplateHelper for fluid interface
-	 * @see renderHeadElements(), $style
+	 * @see renderHead(), $style
 	 */
 	public function addStyle($content, $uagent=self::UA)
 	{
@@ -827,9 +863,9 @@ class ConstructTemplateHelper
 			$theme = $this->theme->build();
 		}
 
-		$this->buildHead();
-		$this->sortScripts();
-		$this->renderHead();
+			$this->buildHead();
+			$this->sortScripts();
+			$this->renderHead();
 
 		return true;
 	}
@@ -840,10 +876,13 @@ class ConstructTemplateHelper
 	 *
 	 * @return ConstructTemplateHelper for fluid interface
 	 * @see renderHead(), sortScripts()
+	 *
+	 * @todo move to "head renderer" class
 	 */
-	public function buildHead()
+	protected function buildHead()
 	{
 		$head = $this->doc->getHeadData();
+		$tmpl_url = JURI::base(true) . '/templates/'. $this->tmpl->template;
 
 		// flip and reorder entries
 		$head['metaTags']['standard']['author'] = $head['metaTags']['standard']['rights'];
@@ -859,17 +898,40 @@ class ConstructTemplateHelper
 
 		// Change generator tag
 		$this->doc->setGenerator(null);
-		$this->addMetaData('generator', trim($this->doc->params->get('setGeneratorTag', self::NAME)));
+		$this->addMetaData('generator', trim($this->tmpl->params->get('setGeneratorTag', self::NAME)));
 
+		// Google Chrome Frame
 		if (!$this->edit_mode) {
 			// if set, contains the version number, i.e '1.0.2'
-			$cgf = $this->doc->params->get('loadGcf');
+			$cgf = $this->tmpl->params->get('loadGcf');
 			if ((float)$cgf > 1.0) {
 				$this->addScript('//ajax.googleapis.com/ajax/libs/chrome-frame/'. $cgf .'/CFInstall.min.js',
 						'lt IE 9',
 						array('defer'=>true, 'onload'=>'var e=document.createElement("DIV");if(e && CFInstall){e.id="gcf_placeholder";e.style.zIndex="9999";CFInstall.check({node:"gcf_placeholder"});}')
 						);
 			}
+		}
+
+		// JSON shim
+		$jsonShim = '(function(W,D,src) {if (W.JSON) return;var a=D.createElement("script");var b=D.getElementsByTagName("script")[0];a.src=src;a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b);})(window,document,"'. $tmpl_url .'/js/json2.min.js");';
+
+		// wrap already present noConflict() placed elsewhere
+		if ((bool) $this->tmpl->params->get('loadjQuery')) {
+			$noconflict = array();
+			$loadModal	= (bool) $this->tmpl->params->get('loadModal');
+			$loadMoo	= $this->tmpl->params->get('loadMoo', $loadModal);
+
+			if (!$loadMoo) {
+				$noconflict[] = 'if(window.jQuery){window.addEvent=function(n,f){console.log(\'addEvent \',n,f);var $$=jQuery;if(n=="domready"||n=="load"){jQuery(document).ready(f);}};}';
+			}
+
+			if (isset($head['script']['text/javascript'])) {
+				// replace present calls with empty functions
+				if ( false !== strpos($head['script']['text/javascript'], 'jQuery.noConflict') ) {
+					$noconflict[] = str_replace('jQuery.noConflict', 'new Function', $head['script']['text/javascript']);
+				}
+			}
+			$this->addScriptDeclaration($noconflict);
 		}
 
 		foreach ($head as $group => $stuff)
@@ -954,12 +1016,12 @@ class ConstructTemplateHelper
 	 * @static $libs array regexps to locate jquery and mootools libraries
 	 * @static $CDN  array assoc array with CDN URLs and version regexps
 	 *
-	 * @todo move static vars and make this mess a decorator for other libs
+	 * @todo make this mess a decorator for other libs
 	 * @todo handle scripts version conflicts loaded elsewhere
 	 */
-	public function sortScripts()
+	protected function sortScripts()
 	{
-		if (!$this->doc->params->get('headCleanup')) {
+		if (!$this->tmpl->params->get('headCleanup')) {
 			return $this;
 		}
 
@@ -979,20 +1041,20 @@ class ConstructTemplateHelper
 		$head = $this->doc->getHeadData();
 
 		// Remove MooTools if set to do so.
-		// without MooTools we must drop all but core.js
-		$loadModal	= (bool) $this->doc->params->get('loadModal');
-		$loadMoo	= $this->doc->params->get('loadMoo', $loadModal);
-		$loadJQuery	= $this->doc->params->get('loadjQuery');
+		$loadModal	= (bool) $this->tmpl->params->get('loadModal');
+		$loadMoo	= $this->tmpl->params->get('loadMoo', $loadModal);
+		$loadJQuery	= $this->tmpl->params->get('loadjQuery');
 
 		// however ...
 		if ($this->edit_mode)
 		{
-			$loadMoo	= true;
+			$loadMoo = true;
 			$loadJQuery	= false;
 		}
 
 		if ($loadMoo == false)
 		{
+			// without MooTools we must drop all but core.js
 			$moos = preg_grep('#/media/system/js(\/(?!core))#', array_keys($head['scripts']));
 			if (count($moos) > 0) {
 				foreach ($moos as $src) {
@@ -1011,7 +1073,7 @@ class ConstructTemplateHelper
 
 		if ($loadJQuery)
 		{
-			$loadjQuerySrc = $this->doc->params->get('loadjQuerySrc');
+			$loadjQuerySrc = $this->tmpl->params->get('loadjQuerySrc');
 			if ($loadjQuerySrc == '@default') {
 				$loadjQuerySrc = @$this->config['cdn']['@default'];
 			}
@@ -1033,20 +1095,6 @@ class ConstructTemplateHelper
 			unset($head['scripts'][$src]);
 		}
 
-		// wrap already present noConflict() placed elsewhere
-		if ($loadJQuery)
-		{
-			$noconflict = array('if(window.jQuery){window.addEvent=function(n,f){$$=jQuery;if(n=="domready"||n=="load"){jQuery(document).ready(f);}};}');
-			if ( isset($head['script']['text/javascript']) )
-			{
-				// replace present calls with empty functions
-				if ( false !== strpos($head['script']['text/javascript'], 'jQuery.noConflict') ) {
-					$noconflict[] = str_replace('jQuery.noConflict', 'new Function', $head['script']['text/javascript']);
-				}
-			}
-			$this->addScriptDeclaration($noconflict);
-		}
-
 		// put everything back
 		$this->doc->setHeadData($head);
 
@@ -1055,9 +1103,11 @@ class ConstructTemplateHelper
 
 	/**
 	 * @return ConstructTemplateHelper for fluid interface
+	 *
 	 * @see buildHead(), sortScripts()
+	 * @todo move to "head renderer" class
 	 */
-	public function renderHead()
+	protected function renderHead()
 	{
 		$head = $this->doc->getHeadData();
 
@@ -1067,6 +1117,11 @@ class ConstructTemplateHelper
 		ksort(self::$head);
 		foreach (self::$head as $ua => $groups)
 		{
+			// collected crap from modules and plugins will go elsewhere
+			if ($ua == 'BODY') {
+				continue;
+			}
+
 			if ($ua != self::UA) {
 				$head['custom'][] = '<!--[if '.$ua.']>';
 			}
@@ -1133,58 +1188,6 @@ class ConstructTemplateHelper
 	}
 
 	/**
-	 * Returns the given date (or today) wrapped in HTML elements for individual
-	 * formatting of each date fragent, day, month, year, via CSS.
-	 *
-	 * - $date  : a value JDate() considers a valid date value, 'now'|null|false result in current date
-	 * - $format: supported date formater characters: l, d, F, Y or a DATE_FORMAT_XXX string
-	 * - $elt   : HTML element to wrap around the date parts
-	 *
-	 * To set the $elt name only, but preseve (todays) default and date format use
-	 * <samp>$templateHelper->dateContainer(null, null, 'kbd')</samp>
-	 *
-	 * @param  number  $date 	defaults to 'now' (also if null or false are provided)
-	 * @param  string  $format	a Joomla date language string, default: DATE_FORMAT_LC4
-	 * @param  string  $elt		defaults to 'span' as the date fragment wrapper element
-	 * @return string
-	 */
-	static public function dateContainer($date='now', $format='DATE_FORMAT_LC4', $elt='span')
-	{
-		// format keys for day and month numbers and names and their mapping to a $markup
-		static
-		$keylist = array('D'=>1,'l'=>1,'d'=>2,'j'=>2,'F'=>3,'M'=>3,'m'=>4,'n'=>4,'o'=>5,'Y'=>5,'y'=>5),
-		$markup  = array(	0 => '',
-							1 => '<%s class="date-day txt">%s</%s>',
-							2 => '<%s class="date-day num">%s</%s>',
-							3 => '<%s class="date-month txt">%s</%s>',
-							4 => '<%s class="date-month num">%s</%s>',
-							5 => '<%s class="date-year num">%s</%s>');
-
-		if (!$format) $format = 'DATE_FORMAT_LC4';
-		if (!$date) $date = 'now';
-		$now  = new JDate($date);
-
-		$html = array();
-		$out  = JText::_($format);
-		$m    = preg_split('/\W/', $out);
-		if (count($m))
-		{
-			foreach ($m as $i => $k)
-			{
-				$char = "@{$k}{$i}@";
-				$out = str_replace($k, $char, $out);
-				if (isset($keylist[$k])) {
-					$html[$char] = sprintf($markup[$keylist[$k]], $elt, $now->format($k, true, true), $elt);
-				} else {
-					$html[$char] = $now->format($k, true, true);
-				}
-			}
-		}
-
-		return str_replace(array_keys($html), array_values($html), $out);
-	}
-
-	/**
 	 * Renders a bunch of IE wrapper divs within conditional comments covering
 	 * MSIE6 ($min) to MSIE9 ($max); IE10 dropped support for CC's.
 	 * This method should be called TWICE: after the opening <body> and before
@@ -1201,7 +1204,7 @@ class ConstructTemplateHelper
 	 * @param int $min default 6, CC's start with MSIE 6
 	 * @param int $max default 6, CC's end with MSIE 9
 	 */
-	static function msieSwatter($min=6, $max=9)
+	static public function msieSwatter($min=6, $max=9)
 	{
 		static $flap = 0;
 		$flap++;
@@ -1225,19 +1228,34 @@ class ConstructTemplateHelper
 	}
 
 	/**
-	 * Generates CSS links for Google Webfonts and adds optional style selectors
-	 * to the document head -- which IMHO is actually a pretty bad idea unless you
-	 * toggle fonts like crazy on every single page. You'd better add those names
-	 * to your theme stylesheet which is why the default is false.
+	 * Find if the $markup contains "content".
+	 * Allows the Module Chrome to decide if it's worth adding more stuff to nothing.
+	 * Allows the Layouts to avoid spitting out empty container.
 	 *
-	 * @param  ool $addSelectors Adds selectors to the document head
+	 * The following elements are considered "non empty" content:
+	 * audio, canvas, embed, iframe, img, math, object, svg, video, command, script, style
+	 *
+	 * @param  string  $markup
+	 * @return bool
+	 */
+	static public function isEmpty(&$markup)
+	{
+		// decode entities, keep meta + embeds, then remove "white-space"
+		$blank = preg_replace('#[\r\n\s\t\h\v\f]+#', '',
+					strip_tags(html_entity_decode($markup), '<audio><canvas><embed><iframe><img><math><object><svg><video><command><script><style>')
+					);
+		return empty($blank);
+	}
+
+	/**
+	 * Generates CSS links for Google Webfonts.
+	 *
 	 * @return ConstructTemplateHelper for fluid interface
 	 */
-	public function webFonts($addSelectors = false)
+	public function webFonts()
 	{
-		$params = $this->doc->params;
+		$params = $this->tmpl->params;
 
-		$googleWebFont = $googleWebFontSize = $googleWebFontTargets = array();
 		for ($i=1; $i <= self::MAX_WEBFONTS; $i++)
 		{
 			$font = $params->def('googleWebFont'.$i);
@@ -1248,16 +1266,7 @@ class ConstructTemplateHelper
 				if (empty($fontSize) || empty($fontTargets)) {
 					continue;
 				}
-
 				$this->addLink('//fonts.googleapis.com/css?family='.$font);
-				if ($addSelectors) {
-					// Fix Google Web Font name for CSS
-					$this->addStyle(
-								$fontTargets
-								. '{font-family:'. str_replace(array('+',':bold',':italic'), ' ', $font) .', serif;'
-								. (($fontSize>0) ? 'font-size:'.$fontSize.';' : '')
-								. '}');
-				}
 			}
 		}
 
@@ -1365,5 +1374,50 @@ class ConstructTemplateHelper
 
 		return $url;
 	}
+
+	/**
+	 * Some Modules and Plugins, incl. the "Core" don't use the JDocumentHTML API
+	 * to add scripts and styles to the HEAD element.
+	 *
+	 * @param  string  $content  Some markup
+	 * @param  string  $culprit  A string that identifies the content originator
+	 */
+	protected function _choppInlineCrap($content, $culprit = '')
+	{
+		// <script></script> $script[1] = attribs $script[2] = code
+		if (preg_match_all('#<script(.*)>(.*)</script>#siU', $content, $m))
+		{
+			for ($i = 0; $i < count($m[0]); $i += 1)
+			{
+				// some moron developer still uses document.write[ln]
+				// instead proper DOM manipulation. Can't fix this BS!
+				if (strpos($m[2][$i], 'document.write')) {
+					JLog::add('Performance hog document.write() detected '.$culprit, JLog::WARNING, 'deprecated');
+					continue;
+				}
+
+				// fails on "boolean" attribs w/ value ie defer async
+				parse_str($m[1][$i], $arr);
+
+				$found = false;
+				if (isset($arr['src'])) {
+					$this->addScript($arr['src'], 'BODY', $arr);
+					$found = true;
+				}
+				// not type or a type pointing to a script language
+				else if (!isset($arr['type']) || (isset($arr['type']) && strpos($arr['type'], 'script') )) {
+					$this->addScriptDeclaration($m[2][$i], 'BODY');
+					$found = true;
+				}
+
+				if ($found) {
+					$content = str_replace($m[0][$i], '', $content);
+				}
+			}
+		}
+
+		return $content;
+	}
+
 }
 
