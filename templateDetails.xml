@@ -6,11 +6,11 @@
 	<author>WebMechanic</author>
 	<authorEmail>joomla@webmechanic.biz</authorEmail>
 	<authorUrl>http://joomla.webmechanic.biz</authorUrl>
-	<copyright>Copyright (C)2011 WebMechanic. All rights reserved.</copyright>
+	<copyright>Copyright (C)2011-2012 WebMechanic. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
-	<version>1.9.10</version>
+	<version>1.9.11</version>
 	<description>TPL_CONSTRUC2_DESCRIPTION</description>
-	<credits><![CDATA[Inspired by "Construct Community", Matt Thomas, Joomla Engineering. See CREDITS.php, README.md]]></credits>
+	<credits><![CDATA[Inspired by "Construct Community", Matt Thomas, Joomla Engineering. See CREDITS.php]]></credits>
 
 	<positions>
 		<position>nav</position>
@@ -68,11 +68,19 @@
 					<option value="0">JNo</option>
 				</field>
 				<field name="ssiTheme" type="filelist" default=""
-						label="SSI Theme"
-						description="TPL_CONSTRUC2_ENABLE_SSITHEME_DESC"
+						label="TPL_CONSTRUC2_SSITHEME_LABEL"
+						description="TPL_CONSTRUC2_SSITHEME_LABEL"
 						directory="templates/construc2/themes"
 						filter="\.styles"
 					/>
+				<field name="modOocss" type="radio" default="0" label="TPL_CONSTRUC2_USE_MODOOCSS_LABEL" description="TPL_CONSTRUC2_USE_MODOOCSS_DESC">
+					<option value="1">On</option>
+					<option value="0">Off</option>
+				</field>
+			</fieldset>
+
+			<fieldset name="features">
+				<field name="setGeneratorTag" type="text" default="" label="TPL_CONSTRUC2_CUSTOM_GENERATOR_TAG" description="TPL_CONSTRUC2_CUSTOM_GENERATOR_TAG_DESC" size="56" />
 				<field name="enableSwitcher" type="radio" default="0" label="TPL_CONSTRUC2_ENABLE_SWITCHER_LABEL" description="TPL_CONSTRUC2_ENABLE_SWITCHER_DESC">
 					<option value="1">JShow</option>
 					<option value="0">JHide</option>
@@ -85,11 +93,13 @@
 					<option value="1">JShow</option>
 					<option value="0">JHide</option>
 				</field>
-				<field name="modOocss" type="radio" default="0" label="TPL_CONSTRUC2_USE_MODOOCSS_LABEL" description="TPL_CONSTRUC2_USE_MODOOCSS_DESC">
-        			<option value="1">On</option>
-        			<option value="0">Off</option>
-		    	</field>
-				<field name="setGeneratorTag" type="text" default="" label="TPL_CONSTRUC2_CUSTOM_GENERATOR_TAG" description="TPL_CONSTRUC2_CUSTOM_GENERATOR_TAG_DESC" size="56" />
+				<field name="dateFormat" type="list" default="4" label="TPL_CONSTRUC2_DATEFORMAT_LABEL" description="TPL_CONSTRUC2_DATEFORMAT_DESC">
+					<option value="" >DATE_FORMAT_LC</option>
+					<option value="1">DATE_FORMAT_LC1</option>
+					<option value="2">DATE_FORMAT_LC2</option>
+					<option value="3">DATE_FORMAT_LC3</option>
+					<option value="4">DATE_FORMAT_LC4</option>
+				</field>
 			</fieldset>
 
 			<fieldset name="javascript">
@@ -115,23 +125,34 @@
 			</fieldset>
 
 			<fieldset name="compat" description="TPL_CONSTRUC2_COMPAT_DESC">
+				<field name="html5shim" type="radio" default="1" label="TPL_CONSTRUC2_HTML5_LABEL" description="TPL_CONSTRUC2_HTML5_DESC">
+					<option value="1">JYes</option>
+					<option value="0">JNo</option>
+				</field>
 				<field name="html5manifest" type="radio" default="0" label="TPL_CONSTRUC2_ENABLE_HTML5MANIFEST_LABEL" description="TPL_CONSTRUC2_ENABLE_HTML5MANIFEST_DESC">
 					<option value="1">JYes</option>
 					<option value="0">JNo</option>
 				</field>
-				<field name="loadGcf" type="radio" default="0" label="TPL_CONSTRUC2_CHROME_FRAME_LABEL" description="TPL_CONSTRUC2_CHROME_FRAME_DESC">
-		        	<option value="1.0.2">JYes</option><!-- field value = version number-->
-		        	<option value="0">JNo</option>
-		    	</field>
 				<field name="prefixfree" type="radio" default="0" label="TPL_CONSTRUC2_PREFIXFREE_LABEL" description="TPL_CONSTRUC2_PREFIXFREE_DESC">
-		        	<option value="1">JYes</option>
-		        	<option value="0">JNo</option>
-		    	</field>
-				<field name="html5shim" type="radio" default="1" label="TPL_CONSTRUC2_HTML5_LABEL" description="TPL_CONSTRUC2_HTML5_DESC">
-		        	<option value="1">JYes</option>
-		        	<option value="0">JNo</option>
-		    	</field>
+					<option value="1">JYes</option>
+					<option value="0">JNo</option>
+				</field>
+				<field name="loadGcf" type="radio" default="0" label="TPL_CONSTRUC2_CHROME_FRAME_LABEL" description="TPL_CONSTRUC2_CHROME_FRAME_DESC">
+					<option value="1.0.2">JYes</option><!-- field value = version number-->
+					<option value="0">JNo</option>
+				</field>
 			</fieldset>
+<!-- 
+			<!** stub for themes to plug-in optional parameters **>
+			<fieldset name="theme">
+				<field name="theme_note" type="spacer" label="Custom_Theme_Parameters" description="Custom_Theme_Parameters_Desc" class="tpl-theme" />
+			</fieldset>
+
+			<!** stub for the extended backend plugin and maintenance tools **>
+			<fieldset name="maintenance">
+				<field name="maintenance_note" type="spacer" label="Maintenance_Plugin_Slot" description="Maintenance_Plugin_Slot_Desc" class="tpl-plugin" />
+			</fieldset>
+ -->
 
 		</fields>
 	</config>
