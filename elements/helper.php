@@ -15,6 +15,10 @@
  * and is misused to clean the alias for use as a class name of list items */
 JLoader::register('SearchHelper', JPATH_ADMINISTRATOR .'/components/com_search/helpers/search.php');
 
+/** Register some Widget Classes */
+#	JLoader::register('ContentWidgets', dirname(__FILE__) . '/widgets/content.php');
+#	JLoader::register('BehaviorWidgets', dirname(__FILE__) . '/widgets/behavior.php');
+
 /** Register the CustomTheme Class */
 JLoader::register('CustomTheme', dirname(__FILE__) . '/theme.php');
 
@@ -31,6 +35,15 @@ function ConstructHelperBeforeCompileHead()
 function ConstructHelperAfterRender()
 {
 	ConstructTemplateHelper::getInstance()->onAfterRender();
+}
+
+class ConstructWidgets
+{
+	static public function better($old, $new)
+	{
+		JHtml::unregister($old);
+		JHtml::register($old, $new);
+	}
 }
 
 /**
@@ -78,6 +91,9 @@ class ConstructTemplateHelper
 	{
 		$this->doc  = JFactory::getDocument();
 		$this->tmpl = JFactory::getApplication()->getTemplate(true);
+
+		if ($this->tmpl->params->get('headCleanup')) {
+		}
 
 		// remove this nonsense
 		$this->doc->setTab('');
@@ -847,9 +863,9 @@ class ConstructTemplateHelper
 			$theme = $this->theme->build();
 		}
 
-		$this->buildHead();
-		$this->sortScripts();
-		$this->renderHead();
+			$this->buildHead();
+			$this->sortScripts();
+			$this->renderHead();
 
 		return true;
 	}
@@ -894,6 +910,28 @@ class ConstructTemplateHelper
 						array('defer'=>true, 'onload'=>'var e=document.createElement("DIV");if(e && CFInstall){e.id="gcf_placeholder";e.style.zIndex="9999";CFInstall.check({node:"gcf_placeholder"});}')
 						);
 			}
+		}
+
+		// JSON shim
+		$jsonShim = '(function(W,D,src) {if (W.JSON) return;var a=D.createElement("script");var b=D.getElementsByTagName("script")[0];a.src=src;a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b);})(window,document,"'. $tmpl_url .'/js/json2.min.js");';
+
+		// wrap already present noConflict() placed elsewhere
+		if ((bool) $this->tmpl->params->get('loadjQuery')) {
+			$noconflict = array();
+			$loadModal	= (bool) $this->tmpl->params->get('loadModal');
+			$loadMoo	= $this->tmpl->params->get('loadMoo', $loadModal);
+
+			if (!$loadMoo) {
+				$noconflict[] = 'if(window.jQuery){window.addEvent=function(n,f){console.log(\'addEvent \',n,f);var $$=jQuery;if(n=="domready"||n=="load"){jQuery(document).ready(f);}};}';
+			}
+
+			if (isset($head['script']['text/javascript'])) {
+				// replace present calls with empty functions
+				if ( false !== strpos($head['script']['text/javascript'], 'jQuery.noConflict') ) {
+					$noconflict[] = str_replace('jQuery.noConflict', 'new Function', $head['script']['text/javascript']);
+				}
+			}
+			$this->addScriptDeclaration($noconflict);
 		}
 
 		foreach ($head as $group => $stuff)
