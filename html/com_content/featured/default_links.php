@@ -9,8 +9,8 @@ foreach ($this->link_items as $item)
 {
 	// create some fancy aliases
 	$alias = ContentLayoutHelper::getCssAlias($item);
-?>
-		<li class="mi <?php echo $alias ?>"><a href="<?php
+
+?>		<li class="mi <?php echo $alias ?>"><a href="<?php
 	echo JRoute::_(ContentHelperRoute::getArticleRoute($item->id, $item->catid))
 	?>" class="mi"><span class="mi"><?php echo $item->title ?></span></a></li>
 <?php

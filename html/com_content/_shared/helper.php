@@ -54,7 +54,7 @@ class ContentLayoutHelper
 
 		$html .= '</a></p>';
 
-		return $html;
+		return PHP_EOL."\t".$html;
 	}
 
 	/**
@@ -72,6 +72,21 @@ class ContentLayoutHelper
 	static public function getCssAlias($item, $parent = true)
 	{
 		return ConstructTemplateHelper::getInstance()->getCssAlias($item, $parent);
+	}
+
+	static public function isEmpty(&$content)
+	{
+		return ConstructTemplateHelper::getInstance()->isEmpty($content);
+	}
+
+	/*@todo delegate to Widget Class */
+	static public function widget($key, &$item, &$params, $attribs=array())
+	{
+		// list($class, $method) = explode('.', $key);
+		return str_replace(
+					array('&#160;','&nbsp;',JText::_('JGLOBAL_ICON_SEP')), '',
+					JHtml::_($key, $item, $params, $attribs)
+				);
 	}
 
 	/**

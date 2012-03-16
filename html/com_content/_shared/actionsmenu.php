@@ -2,6 +2,11 @@
 /**
  * Print, Mail, and Edit icons for com_content.
  *
+ * Item Params of interest:
+ * - show_icons: 0|1
+ * - show_print_icon: 0|1
+ * - show_email_icon: 0|1
+ *
  * @package     Templates
  * @subpackage  Construc2
  * @author      WebMechanic http://webmechanic.biz
@@ -10,22 +15,25 @@
  */
 JHtml::addIncludePath(JPATH_COMPONENT_SITE .'/helpers');
 
-$isep    = JText::_('JGLOBAL_ICON_SEP');
-$actions = array(
-				array('<a ', '<img', '</a>'),
-				array('<a tabindex="-1" ', '<span class="mi"><img ', '</span></a>')
-			);
-?>
-	<ul class="menu hmenu actionsmenu" title="<?php echo JText::_('Article Actions') ?>">
+$ielt = array(
+			'p'=>array('<a ', '<img', '</a>'),
+			'r'=>array('<a tabindex="-1" ', '<span class="mi"><img ', '</span></a>')
+		);
+$iwhat = $params->get('show_icons') ? 'icon' : 'text';
+
+?><ul class="menu hmenu actionsmenu <?php echo $iwhat,'s' ?>" title="<?php echo JText::_('Article Actions') ?>">
 	<?php if ($params->get('show_print_icon')) { ?>
-	<li class="mi print-icon"><?php echo str_replace($actions[0], $actions[1], JHtml::_('icon.print_popup', $this->item, $params)) ?></li>
+	<li class="print <?php echo $iwhat ?> mi"><?php echo str_replace($ielt['p'], $ielt['r'], ContentLayoutHelper::widget('icon.print_popup', $this->item, $params)) ?></li>
 <?php }
 
 	if ($params->get('show_email_icon')) { ?>
-	<li class="mi email-icon"><?php echo str_replace($actions[0], $actions[1], JHtml::_('icon.email', $this->item, $params)) ?></li>
+	<li class="email <?php echo $iwhat ?> mi"><?php echo str_replace($ielt['p'], $ielt['r'], ContentLayoutHelper::widget('icon.email', $this->item, $params)) ?></li>
 <?php }
 
 	if ($canEdit) { ?>
-	<li class="mi edit-icon"><?php echo str_replace($actions[0], $actions[1], JHtml::_('icon.edit', $this->item, $params)) ?></li>
+	<li class="edit <?php echo $iwhat ?> mi"><?php echo str_replace($ielt['p'], $ielt['r'], ContentLayoutHelper::widget('icon.edit', $this->item, $params)) ?></li>
 <?php } ?>
-	</ul>
+</ul><?php
+
+// cleanup after ourself
+unset($ielt);

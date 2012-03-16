@@ -77,25 +77,43 @@ if ($showMeta) {
 	}
 }
 
+/* The W3C doesn't event mention the `pubdate` attribute whereas the WHATWG
+ * explains in great details its proper use and scope:
+ *
+ * The pubdate attribute is a boolean attribute. If specified, it indicates that
+ * the date and time given by the element is the publication date and time of the
+ * nearest ancestor article element, or, if the element has no ancestor article
+ * element, of the document as a whole. If the element has a pubdate attribute s
+ * pecified, then the element needs a date. For each article element, there must
+ * no more than one time element with a pubdate attribute whose nearest ancestor
+ * is that article element. Furthermore, for each Document, there must be no more
+ * than one time element with a pubdate attribute that does not have an ancestor
+ * article element.
+ * @link http://developers.whatwg.org/text-level-semantics.html#the-time-element
+ *
+ * You should not expect a complete IDL interface for the DOM model of this element
+ * in some browsers.
+ */
+
 if ($showDates) {
 	if ($params->get('show_create_date')) {
 ?>
 	<dt class="created"><?php JText::printf('COM_CONTENT_CREATED_DATE_ON', '') /* just the label */ ?></dt>
-	<dd class="created"><time datetime="<?php echo $this->item->created ?>"><?php echo JHtml::_('date', $this->item->created, 'DATE_FORMAT_LC1') ?></time></dd>
+	<dd class="created"><time datetime="<?php echo JHtml::_('date', $this->item->created, 'W3C_DATE') ?>"><?php echo JHtml::_('date', $this->item->created, 'DATE_FORMAT_LC1') ?></time></dd>
 <?php
 	}
 
 	if ($params->get('show_publish_date')) {
 ?>
 	<dt class="published"><?php JText::printf('COM_CONTENT_PUBLISHED_DATE', '') /* just the label */ ?></dt>
-	<dd class="published"><time datetime="<?php echo $this->item->publish_up ?>" pubdate><?php echo JHtml::_('date', $this->item->publish_up, 'DATE_FORMAT_LC1') ?></time></dd>
+	<dd class="published"><time datetime="<?php echo JHtml::_('date', $this->item->publish_up, 'W3C_DATE') ?>" pubdate><?php echo JHtml::_('date', $this->item->publish_up, 'DATE_FORMAT_LC1') ?></time></dd>
 <?php
 	}
 
 	if ($params->get('show_modify_date')) {
 ?>
 	<dt class="modified"><?php JText::printf('COM_CONTENT_LAST_UPDATED', '') /* just the label */ ?></dt>
-	<dd class="modified"><time datetime="<?php echo $this->item->modified ?>"><?php echo JHtml::_('date', $this->item->modified, 'DATE_FORMAT_LC1') ?></time></dd>
+	<dd class="modified"><time datetime="<?php echo JHtml::_('date', $this->item->modified, 'W3C_DATE') ?>"><?php echo JHtml::_('date', $this->item->modified, 'DATE_FORMAT_LC1') ?></time></dd>
 <?php
 	}
 }
