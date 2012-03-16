@@ -7,8 +7,7 @@
  *
  * @package     Templates
  * @subpackage  Construc2
- * @author      WebMechanic http://webmechanic.biz
- * @copyright   (C) 2011 WebMechanic
+ * @copyright   (C)2011-2012 WebMechanic
  * @license     GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
 
@@ -20,33 +19,49 @@
  * - header-class: default 'ct-header', CSS class for the Hx element
  * In addition to moduleclass and moduleclass_sfx
  * - module-class: optional CSS class for the DIV container
- * - outline-style: optional CSS class for the DIV container
+ *
  * @param object     $module
  * @param JRegistry  $params
  * @param array      $attribs
  */
 function modChrome_chtml( $module, &$params, &$attribs )
 {
-	$module->content = trim($module->content);
-	if (empty($module->content)) return;
+	static $ooobj = array('mod'=>false,'complex'=>false,'pop'=>false,'bubble'=>false);
 
-	$oocss	= isset($attribs['oocss']);
+	// don't render empty modules, "whitelist" for mod_custom and mod_banner
+	if (ConstructTemplateHelper::isEmpty($module->content)) return;
 
 	$css	= array();
-	$css[] 	= $oocss ? $attribs['oocss'] : '';
+	$oocss  = null;
+
+	if (isset($attribs['oocss']))
+	{
+		$oocss = (object) $ooobj;
+		$css   = explode(' ', $attribs['oocss']);
+		array_filter($css);
+		foreach ($css as $modx)
+		{
+			$modx = trim($modx);
+			if ($modx) {
+				$oocss->{$modx} = true;
+			}
+		}
+	}
 
 	// 'custom' makes for a pretty weired name
 	if ('custom' != $module->module) {
-		$css[]	= str_replace('_', '-', $module->module);
+		$css[] = str_replace('_', '-', $module->module);
 	}
 
 	$css[] 	= isset($attribs['module-class'])  ? $attribs['module-class'] : $module->position;
-	$css[] 	= isset($attribs['outline-style']) ? 'outline-'.$attribs['outline-style'] : '';
 	$css[] 	= $params->get('moduleclass_sfx');
 	$css    = trim(implode(' ', array_unique($css) ));
 
 	echo '<div class="', $css, '">';
-	if ($oocss) echo '<b class="top"><b class="tl"></b><b class="tr"></b></b>', PHP_EOL;
+
+		if ($oocss && $oocss->complex) {
+			echo '<b class="top"><b class="tl"></b><b class="tr"></b></b>', PHP_EOL;
+		}
 
 	echo '<div class="inner">', PHP_EOL;
 
@@ -82,7 +97,10 @@ function modChrome_chtml( $module, &$params, &$attribs )
 
 	echo '</div><!-- .inner -->';
 
-	if ($oocss) echo '<b class="bottom"><b class="bl"></b><b class="br"></b></b>', PHP_EOL;
+		if ($oocss && $oocss->complex) {
+			echo '<b class="bottom"><b class="bl"></b><b class="br"></b></b>', PHP_EOL;
+		}
+
 	echo '</div>', PHP_EOL;
 }
 
@@ -100,8 +118,8 @@ function modChrome_mod( $module, &$params, &$attribs )
 {
 	static $toggle = 0;
 
-	$module->content = trim($module->content);
-	if (empty($module->content)) return;
+	// don't render empty modules, "whitelist" for mod_custom and mod_banner
+	if (ConstructTemplateHelper::isEmpty($module->content)) return;
 
 	if (array_key_exists('oocss', $attribs)) {
 		$attribs['oocss'] = 'mod '. $attribs['oocss'];
@@ -174,8 +192,8 @@ function modChrome_pop( $module, &$params, &$attribs )
 function modChrome_bubble( $module, &$params, &$attribs )
 {
 	$attribs['oocss'] = 'bubble';
-	$attribs['oocss'] = isset($attribs['bubble']) ? $attribs['bubble'] : '';
-	$attribs['oocss'] = isset($attribs['edge'])   ? $attribs['edge'] : '';
+	if (isset($attribs['bubble'])) $attribs['oocss'] .= ' ' . $attribs['bubble'];
+	if (isset($attribs['edge']))   $attribs['oocss'] .= ' ' . $attribs['edge'];
 
 	modChrome_mod( $module, $params, $attribs );
 }
@@ -189,7 +207,30 @@ function modChrome_bubble( $module, &$params, &$attribs )
  */
 function modChrome_withevent( $module, &$params, &$attribs )
 {
+	// don't render empty modules, "whitelist" for mod_custom and mod_banner
+	if (ConstructTemplateHelper::isEmpty($module->content)) return;
+
 	$module->content = JHtml::_('content.prepare', $module->content, $params);
 
 	modChrome_chtml( $module, $params, $attribs );
+}
+
+/**
+ * As simple as it can get: the (optional) title at the given heading level
+ * and the content.
+ *
+ * @param object     $module
+ * @param JRegistry  $params
+ * @param array      $attribs
+ */
+function modChrome_raw( $module, &$params, &$attribs )
+{
+	// don't render empty modules, "whitelist" for mod_custom and mod_banner
+	if (ConstructTemplateHelper::isEmpty($module->content)) return;
+
+	if ($module->showtitle) {
+		$level = isset($attribs['level']) ? (int) $attribs['level'] : 3;
+		echo ' <h', $level, ' class="', $css, '">', $module_title, '</h', $level, '>';
+	}
+	echo $module->content;
 }
