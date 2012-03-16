@@ -20,6 +20,11 @@ $app = JFactory::getApplication();
 <body class="main-only component <?php echo $app->input->get('option'), ' ', $app->input->get('print') ? 'print' : $app->input->get('layout') ?>">
 <?php ConstructTemplateHelper::msieSwatter() ?>
 	<div id="page-top" class="<?php echo $templateHelper->getPageAlias(true) ?>">
+<?php if($app->input->get('print')) { ?>
+		<div id="header" class="line page-head">
+		<h1 id="logo"><a class="site-link" href="<?php echo $this->baseurl ?>/"><span class="site-name"><?php echo $app->getCfg('sitename');?></span></a></h1>
+		</div>
+<?php } ?>
 		<div id="body-container">
 			<div class="line content-container">
 				<div id="content" class="line content-main">
@@ -30,7 +35,7 @@ $app = JFactory::getApplication();
 </section>
 
 				</div><!-- .content-main -->
-<?php if ($footerAboveCount) : include JPATH_THEMES .'/'. $this->template . '/layouts/mod_footer_above.php'; endif; ?>
+<?php if ($this->countModules('footer')) : $templateHelper->renderModules('footer'); endif; ?>
 			</div><!-- .content-container -->
 		</div><!-- #body-container -->
 	</div><!-- #page-top -->

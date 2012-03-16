@@ -41,12 +41,12 @@ if ($headerBelowCount[4]) {
 //       which getCapture() can't tell apart!!
 $modsize = $templateHelper->getCapture('header-above', true);
 
-if ($modsize) { ?><div id="header-below" class="below count-<?php echo $headerBelowCount[0] ?>"><div class="line below-inner"><?php }
+if ($modsize > 1) { ?><div id="header-below" class="below count-<?php echo $headerBelowCount[0] ?>"><div class="line below-inner"><?php }
 
 	// get the big blob of all the modules in header-above-1 to header-above-6
 	echo $templateHelper->getCapture('header-above');
 
-if ($modsize) { ?></div></div><?php }
+if ($modsize > 1) { ?></div></div><?php }
 /*
  * if you want to make use of the CSS3 :empty() selector,
  * keep these PHP tags tight close to the HTML markup or a
