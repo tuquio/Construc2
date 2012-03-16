@@ -15,17 +15,15 @@ url			= "http://webmechanic.biz"
 [layouts]
 	; Page level layouts:
 	; unique_name=category|article|blog
+	;
 	; 	~ layouts/category.php		used for all category views
 	; 	~ layouts/article.php		used for all article views
 	; 	~ layouts/blog.php			used for all blog views
+	; 	~ layouts/featured.php		used for a view named 'featured'
 	;
 	; Item level layouts:
-	; hitchhiker=42,article			used for article with ID 42
-	; legacy=62,category			used for category with ID 62
-
-featured	= featured
-category	= category
-faq			= 62,article
+	; hitchhiker= 42,article		used for article with ID 42
+	; legacy	= 62,category		used for category with ID 62
 
 ; -----
 [cdn]

@@ -1,16 +1,16 @@
 /*!
- * padawan.css (Frontend Template)
- * flexbox canvas touch rgba hsla borderimage csscolumns
- * cssgradients csstransitions generatedcontent svg inlinesvg
+ * padawan.css (Frontend Template Layout)
+ * @version 15.03.2012
  * @license CC BY-NC 3.0/de
+ * FF9+ generatedcontent flexbox canvas touch rgba hsla borderimage csscolumns cssgradients csstransitions svg inlinesvg
+ * IE7: no-generatedcontent no-flexbox no-canvas no-touch no-rgba no-hsla no-borderimage no-csscolumns no-cssgradients no-csstransitions no-svg no-inlinesvg
+ * OE8:    generatedcontent no-...
  */
-@import url(padawan_light.css);
-@import url(http://fonts.googleapis.com/css?family=Ubuntu+Condensed);
-@import url(http://fonts.googleapis.com/css?family=Kristi);
+@import url(//fonts.googleapis.com/css?family=Ubuntu+Condensed);
+@import url(//fonts.googleapis.com/css?family=Kristi);
+@import url(padawan_light.css) screen,projection;
 
 body {min-width:900px;max-width:94%;margin:0 auto}
-#nav	{margin-top:1em}
-.content-container {margin-top:1em}
 
 /* template param override (#body-container,#header-above 100%) */
 @media screen and (max-width:1039px) {
@@ -35,14 +35,18 @@ body {min-width:900px;max-width:94%;margin:0 auto}
 	.body-overlayed #sbox-content.sbox-content-iframe	{overflow:auto}
 }
 
-#logo   	{font-size:60px}
-#logo   	{display:inline-block}
+#header		{height:100px}
+#logo   	{font-size:60px;display:inline-block}
 .site-link	{}
 .site-name	{}
 
-#to-page-top	{position:absolute;right:10px;text-align:right}
-#diagnostics	{position:absolute;right:10px;top:20px;max-width:90px}
-#diagnostics li	{padding:0;margin:0;line-height:1}
+nav, .breadcrumbs	{margin-bottom:10px}
+#mainmenu			{}
+#breadcrumbs		{}
+
+#to-page-top		{position:absolute;right:10px;text-align:right}
+#diagnostics		{position:absolute;right:10px;top:20px;max-width:90px}
+#diagnostics li		{padding:0;margin:0;line-height:1}
 
 h1,h2,h3,h4,h5,h6	{line-height:normal}
 
@@ -52,14 +56,13 @@ h1,h2,h3,h4,h5,h6	,
 menu.categories		{font-family:'Ubuntu Condensed','Trebuchet MS',Arial,sans-serif;text-rendering:optimizelegibility}
 
 .title				{/* a serif font might be nice */}
-
 .mainmenu			,
 .breadcrumbs		{font-size-adjust:.6}
 menu.categories		{font-size-adjust:.52}
 
 /* hyphens are tuned off below for some contexts */
-p {-webkit-hyphens:auto;-moz-hyphens:auto;hyphens:auto}
-p:only-child {margin-bottom:0;text-indent:0}
+p 					{-webkit-hyphens:auto;-moz-hyphens:auto;hyphens:auto}
+p:only-child 		{margin-bottom:0}
 
 blockquote 			{padding:1ex;margin:0 3em;}
 
@@ -96,6 +99,15 @@ header.below	{margin:0 auto}
 		 column-count:2;		column-gap:10px;
 }
 
+#system-message-container {		display:none,
+	position: absolute;
+	right: 0;
+	top:-3.25em;
+	min-width: 50%;
+	max-width: 75%;
+	opacity:.95
+}
+
 /*
  * =columns context
  */
@@ -111,9 +123,9 @@ header.below	{margin:0 auto}
 	.items-row
 	.items-more
  */
-.item-page		,
-.blog article	,
-.items-more		{padding:10px;margin-bottom:10px}
+.blog article		,
+.item-page			,
+.items-more			{padding:10px;margin-bottom:10px}
 
 /* 
  * misc components 
@@ -156,17 +168,20 @@ p.readmore			{text-align:right;margin-top:1ex;margin-bottom:0}
 p.readmore:after	{content:'\2026\A0';display:inline}
 
 /*
- * call-outs and <aside>s flush right within their containing box + reveal content on :hover
+ * call-outs and <aside>s flush right within their containing box + reveal their content on :hover
+ * - right border matches the inner padding of <article> and provides the hoverable area
  */
-aside.article     {position:absolute;right:-10px;top:-10px;width:auto;height:2em}
-aside.article > * {display:none;position:absolute;width:15em;padding:.2em;min-height:1.6em;right:0;z-index:2707}
+aside.article		{position:absolute;right:0;top:0;width:auto;height:2em;border-right:10px solid #888}
+.content_rating		, 
+aside.article form	{display:none;position:absolute;width:15em;padding:.2em;min-height:1.6em;right:0;z-index:2707}
+aside.article form	{top:2em}
 
-aside.article:hover > * {display:block}
-	.content_rating		,
-	.content_vote		{cursor:default}
-	.content_rating	img	,
-	.content_vote input	{display:inline-block;margin:0 2px;vertical-align:middle}
-	aside.article > form {top:2em}
+aside.article:hover .content_rating ,
+aside.article:hover .content_rating + form {display:block}
+ .content_rating		,
+ .content_vote			{cursor:default}
+ .content_rating img	,
+ .content_vote input	{display:inline-block;margin:0 2px;vertical-align:middle}
 
 /* @todo make <details> see padawan/padawan-dark.css
  * the disclosure widget will still be displayed if you don't provide a summary element
@@ -256,19 +271,20 @@ div.finder br				{display:none}
 .hmenu				{padding:.5ex 0}
 .mainmenu .active	{font-weight:bold}
 
-.current > a.li	{} /* may have nested menu.submenu */
+.current > a.li	{} /* may contain a nested menu.submenu */
 .active > a.li		{font-weight:bold} /* single item */
 .sep 				{padding:0.25ex}
-li.mi img			{border:none}
+li.mi img			{border:none;box-shadow:none}
 
 /* align with menu items */
-.breadcrumbs		{margin-top:1em}
 .breadcrumbs a.mi	,
 .breadcrumbs .active{padding:0.25ex 0.6em}
 
-.actionsmenu 		{position:absolute;padding-top:0;right:-11px;top:2em;width:24px;opacity:.4}
-.actionsmenu li.mi	{padding:0.2ex;display:inline-block}
-.actionsmenu .mi .mi img {padding:2px;margin:0}
+.actionsmenu 		{position:absolute;right:0;top:auto;width:21px;opacity:.4}
+.actionsmenu li.mi	{display:inline-block;width:100%;text-align:center}
+.actionsmenu .text	{padding:0}
+.actionsmenu .text	{pading:0 1ex}
+.actionsmenu img	{padding:2px;margin:0}
 
 .skiplinks a.mi		{text-decoration: underline}
 .skiplinks .cat-title:before {content:'\A0('}
@@ -334,28 +350,13 @@ summary:focus + *	{}
  */
 #aii {margin-top:0}
 
-.introtext p:not(:first-of-type),
-.fulltext  p:not(:first-of-type) {text-indent:1.6ex}
-
-article.gedichte .introtext p,
-article.gedichte .fulltext  p,
-.bestellungen .introtext p,
-article .introtext blockquote p,
-article .introtext p:first-of-type,
-article .introtext p[class] {text-indent:0}
-
-.kunstwerke .introtext p,
-.kunstwerke .fulltext  p	{text-indent:0}
-.kunstwerke .introtext img,
-.kunstwerke .fulltext  img	{margin-bottom:.6em}
-
-/* can't group :pseudo-selector! */
-.fulltext :-moz-any(h1,h2,h3,h4,h5,h6) + p		{text-indent:0}
-.fulltext :-webkit-any(h1,h2,h3,h4,h5,h6) + p	{text-indent:0}
-.fulltext :matches(h1,h2,h3,h4,h5,h6) + p		{text-indent:0}
-
+.schriftstellerei .introtext p:not(:first-of-type),
+.schriftstellerei .fulltext  p:not(:first-of-type) {text-indent:1.6ex}
 .schriftstellerei article p:first-of-type img {float:right;margin-left:10px;max-width:40%;position:relative;z-index:10}
 .schriftstellerei article ~ img:first-child {margin:0 0 5px 1em}
+
+.kunstwerke .introtext img,
+.kunstwerke .fulltext  img	{margin-bottom:.6em}
 
 /* =supplemental property classes */
 .prel {position:relative} .pabs {position:absolute}
@@ -365,17 +366,14 @@ article .introtext p[class] {text-indent:0}
 .lft {float:left} .rgt {float:right}
 
 /*= print (popups) */
+body.print {min-width:0;max-width:100%}
 body.print aside.article {display:none}
+body.print #logo {display:block;text-align:center}
 
 @media print {
 	aside.article {display:none}
 	.blog .introtext img,
-	.item-page .introtext img	{height:10cm;max-width:10cm}
+	.item-page .introtext img	{height:13cm;max-width:13cm;display:block;margin:0 auto}
 }
-
-/* =MSIE
- * 7: no-flexbox no-canvas no-touch no-rgba no-hsla no-borderimage no-csscolumns no-cssgradients no-csstransitions no-generatedcontent no-svg no-inlinesvg
- * 8: no-flexbox no-canvas no-touch no-rgba no-hsla no-borderimage no-csscolumns no-cssgradients no-csstransitions    generatedcontent no-svg no-inlinesvg
- */
 
 /* .eof */
