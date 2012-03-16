@@ -138,14 +138,23 @@ All core .css files are usually "grouped" into blocks, starting with the positio
 If you try to run any of the .css you may find it doesn't "validate". These warnings or errors are either causes by vendor prefixes or some IE hacks.
 
 ## HTML5 Validation
-If you're a Validator addict and believe the world would fall apart, and your computer will explode if a Validator software tells your, the **grammar** of the HTML sucks, then please move along and stick with XHTML.
-
-HTML5 support still varies greatly even in most recent browsers, let alone browser elumators from Redmond. Browsers do not "spell-check" HTML documents, yet they can make perfect sense of almost everything you throw at them.
-
-Because Construc2 features a bunch of layout overrides that generate HTML5 your page will very likely pass any validator without it complaining. Most notably, browsers **do** act according to the HTML spec and just ignore stuff they don't know. However, they also support any tag, element and attributes that has ever been standardizes for decades, no matter what the DOCTYPE suggests (unless you're managed to serve your perfect XHTML documents with its appropriate MIME type `application/xml+xhtml`.)
+If you're a Validator addict and believe the world would fall apart, and your computer will explode if a Validator software tells your, the **grammar** of Construc2's HTML sucks, then please move along and stick with XHTML.
 
 Validators are no browsers. End of story.
-They spell-check your markup, they don't render it. Browser will indead understand HTML just fine, like a human would understand someone mumbling.
+They **spell-check* your markup, they don't **render** it. Browser do render and display this <q>invalid</b> HTML just fine, like a person is able to understand some other person mumbling or whispering.
+
+Because Construc2 features a bunch of layout overrides that generate HTML5 your page will presumably not pass any validator without it complaining. Yet **real browsers do act** according to the HTML spec and just ignore stuff they don't know. In addition they also support any tag, element and attributes that has been standardizes in any flavor of HTML for decades, no matter what the DOCTYPE suggests (unless you're managed to serve your perfect XHTML documents with its appropriate MIME type `application/xml+xhtml`.)
+
+### Why you should continue using a Validator
+Browsers do not "spell-check" HTML documents, yet they can make perfect sense of almost everything you throw at them and so Browsers don't get confused if you don't add the closing tags of a P, TD, TR, LI and several others. This is not the case if you ommit the closing tag for DIV, SECTION, ARTICLE and similar semantic containers or inline elements such as EM or STRONG. **So please do validate your pages and Layouts!**
+
+Validators are a very pessimistic piece of software because HTML5 support still varies even in most recent browsers, let alone browser emulators from Redmond. But real browsers catch up quickly and you can litteraly watch support grow -- most validators aren't that fast.
+
+This are some <q>false positives</q> you may get if you use Construc2:
+- _Bad value X-UA-Compatible for attribute http-equiv on element meta._ This is the infamous Explorer Trident switch also used to trigger ChromeFrame. A validator should actually ignore attributes starting with 'X-' for the http-equiv types as defined in the specs of HTTP.
+- _The **menu element** is not supported by browsers yet. It would probably be better to wait for implementations._ That's wrong for the most part. It's the new stuff added to the MENU element in HTML browser don't quiet get. They render it like an UL with LI which is exactly what Construc2 uses it for.
+- _Warning: The **details element** is not supported properly by browsers yet. It would probably be better to wait for implementations._ It is supported by Webkit since late 2011. Construc2's use of details and summary is non critical and if you want support in non-Webkit browsers you can use a Shim.
+- _Attribute pubdate not allowed on element time at this point._ The W3C doesn't event mention the `pubdate` attribute whereas the WHATWG explains in great details its proper use and scope, see: http://developers.whatwg.org/text-level-semantics.html#the-time-element
 
 # Ideas
 Mental notes for things that might come (in more or less the following order):
