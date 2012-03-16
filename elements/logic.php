@@ -42,13 +42,11 @@ $editMode = in_array($app->input->get('layout'), array('edit','form'))
 
 // all things different in edit mode
 if ($editMode) {
-	$loadMoo = true;
 	$enableSwitcher = $showDiagnostics = false;
 }
 
 // will contain custom <script> code depending on selected params
 $scriptDeclarations	= array();
-$styleDeclarations	= array();
 
 if ($showDiagnostics) {
 	$jmenu = $app->getMenu();
@@ -64,19 +62,20 @@ if ($showDiagnostics) {
 	}
 }
 
-/* ----------------------------- Module Counts ----------------------------- */
-$headerAboveCount	= $templateHelper->getModulesCount('header-above',	ConstructTemplateHelper::MAX_MODULES);
-$headerBelowCount	= $templateHelper->getModulesCount('header-below',	ConstructTemplateHelper::MAX_MODULES);
-$navBelowCount		= $templateHelper->getModulesCount('nav-below',		ConstructTemplateHelper::MAX_MODULES);
-$contentAboveCount	= $templateHelper->getModulesCount('content-above',	ConstructTemplateHelper::MAX_MODULES);
-$contentBelowCount	= $templateHelper->getModulesCount('content-below',	ConstructTemplateHelper::MAX_MODULES);
-$footerAboveCount	= $templateHelper->getModulesCount('footer-above',	ConstructTemplateHelper::MAX_MODULES);
+/* Count and Seed Module Position Groups */
+$headerAboveCount	= $templateHelper->getModulesCount('header-above');
+$headerBelowCount	= $templateHelper->getModulesCount('header-below');
+$navBelowCount		= $templateHelper->getModulesCount('nav-below');
+$contentAboveCount	= $templateHelper->getModulesCount('content-above');
+$contentBelowCount	= $templateHelper->getModulesCount('content-below');
+$footerAboveCount	= $templateHelper->getModulesCount('footer-above');
 
-/* ------------------------------ Column Layout ----------------------------- */
+/* Count and Seed Column Module Position */
 $columnGroupCount      = $templateHelper->getModulesCount('column', ConstructTemplateHelper::MAX_COLUMNS);
-$columnGroupAlphaCount = $columnGroupCount[1] + $columnGroupCount[2];
-$columnGroupBetaCount  = $columnGroupCount[3] + $columnGroupCount[4];
+$columnGroupAlphaCount = $templateHelper->numModules('group-alpha');
+$columnGroupBetaCount  = $templateHelper->numModules('group-beta');
 
+/* Build Column Layout class */
 $columnLayout = array('main-only');
 if (!$editMode) {
 	# alpha-X-main-beta-Y
@@ -90,14 +89,13 @@ if (!$editMode) {
 	}
 
 	// merge $columnLayout into a string
-	$columnLayout[] = (bool) $this->params->get('fluidMedia') ? 'fluid-media' : '';
 	$columnLayout = array_unique($columnLayout);
 }
 $columnLayout = trim(implode(' ', $columnLayout));
 
-/* --------------------------- Debug Positions ------------------------------- */
+/* Debug Template Positions */
 // max out amount of positions and columns
-if ($app->getCfg('debug') && $app->input->get('tpos', 0, 'int')) {
+if ($app->getCfg('debug') && $app->input->get('tpos', 0, 'bool')) {
 	$headerAboveCount  = $headerBelowCount  = $navBelowCount    =
 	$contentAboveCount = $contentBelowCount = $footerAboveCount = range(0, ConstructTemplateHelper::MAX_MODULES, 1);
 
@@ -105,7 +103,7 @@ if ($app->getCfg('debug') && $app->input->get('tpos', 0, 'int')) {
 	$columnGroupAlphaCount = $columnGroupBetaCount = ($columnGroupCount > 1) ? floor($columnGroupCount / 2) : $columnGroupCount;
 }
 
-/* ---------------------------- Head Elements -------------------------------- */
+/* HEAD Elements */
 // Custom tags
 // tell mobile devices to treat the viewport as being the same width as the
 // physical width of the device to make width work in media-queries as expected
@@ -121,14 +119,17 @@ $templateHelper->webFonts();
 
 // Style sheets
 if ($ssiIncludes) {
-	$templateHelper->addLink($tmpl_url.'/css/construc2.styles?rtl='. ($this->direction == 'rtl') .'&em='. $editMode);
+	$printMode = $app->input->get('print');
+	$templateHelper->addLink($tmpl_url.'/css/construc2.styles?rtl='. ($this->direction == 'rtl') .'&em='. $editMode .'&pm='.$printMode);
+
 	if ($ssiTheme) {
-		$templateHelper->addLink($tmpl_url.'/themes/'.$ssiTheme .'?rtl='. ($this->direction == 'rtl') .'&em='. $editMode);
+		$templateHelper->addLink($tmpl_url.'/themes/'.$ssiTheme .'?rtl='. ($this->direction == 'rtl') .'&em='. $editMode .'&pm='.$printMode);
 	}
-} else {
+}
+else {
 	$templateHelper->addLink($tmpl_url.'/css/core/base.css');
 	$templateHelper->addLink($tmpl_url.'/css/core/oocss.css');
-	$templateHelper->addLink($tmpl_url.'/css/core/screen.css');
+	$templateHelper->addLink($tmpl_url.'/css/core/template.css');
 
 	if ($this->direction == 'rtl') {
 		$templateHelper->addLink($tmpl_url.'/css/core/rtl.css');
@@ -137,8 +138,6 @@ if ($ssiIncludes) {
 	// "task based" stuff
 	if ($editMode) {
 		$templateHelper->addLink($tmpl_url.'/css/core/edit-form.css');
-	} else {
-		$templateHelper->addLink($tmpl_url.'/css/core/print.css');
 	}
 
 	if ($cssTheme) {
@@ -147,7 +146,7 @@ if ($ssiIncludes) {
 }
 
 /* Preview Module Positions with index.php?tp=1 */
-if ($app->get('input')->getBool('tp', 0) && JComponentHelper::getParams('com_templates')->get('template_positions_display')) {
+if ($app->get('input')->get('tp', 0, 'bool') && JComponentHelper::getParams('com_templates')->get('template_positions_display')) {
 	$templateHelper->addLink($tmpl_url.'/css/core/tp.css');
 }
 
@@ -175,21 +174,10 @@ if ((bool) $this->params->get('html5manifest')) {
 	$cache_manifest = '';
 }
 
-/* ----------------------- Internet Explorer Fixes --------------------------- */
+/* Shim files and MSIE Fixes */
 // html5 shim
 if ($this->params->get('html5shim')) {
 	$templateHelper->addScript($tmpl_url.'/js/html5.js');
 }
 
-// JSON shim
-$scriptDeclarations[] = '(function(W,D,src) {if (W.JSON) return;var a=D.createElement("script");var b=D.getElementsByTagName("script")[0];a.src=src;a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b);})(window,document,"'. $tmpl_url .'/js/json2.min.js");';
-
-// add collected custom style declarations
-if ( count($styleDeclarations) ) {
-	$templateHelper->addStyle($styleDeclarations);
-}
-
-// add collected custom script declarations
-if ( count($scriptDeclarations) ) {
-	$templateHelper->addScriptDeclaration($scriptDeclarations);
-}
+/* .eof */
