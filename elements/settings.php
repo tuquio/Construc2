@@ -14,7 +14,7 @@ code.jquery.com				= 1,jquery
 cdnjs.cloudflare.com		= 1,jquery,mootols
 
 ; LINK url placeholders
-; addLink('{core}/print.css')
+; addLink('{core}/l10n.css')
 [link_subst]
 theme		= "templates/construc2"
 template	= "{theme}/css"
@@ -28,3 +28,7 @@ system		= "media/system/css"
 wireframe	= TPL_CONSTRUC2_STYLE_WIREFRAME
 diagnostic	= TPL_CONSTRUC2_STYLE_DIAGNOSTIC_MODE
 normal		= TPL_CONSTRUC2_STYLE_NORMAL_MODE
+
+; HTML Widgets supplied/activated by theme
+[widgets]
+date	= 0
