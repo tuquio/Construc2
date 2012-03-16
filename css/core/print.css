@@ -1,12 +1,21 @@
-@media print {
+/*!
+ * print.css
+ * standard print styles are in "template.css" 
+ * THIS file is only applicable for component.php in "print preview" mode. 
+ */
+@media screen,print {
 	/* generated content */
-	#logo a:after, #footer a:after, #dummy { content:""; display:none; }
+	#logo a:after, #footer a:after, 
+	#dummy { content:""; display:none; }
+
 	.actionsmenu,
-	.column-group, .content_rating, .content_vote {display:none}
+	.column-group, .content_rating, .content_vote,
+	.noprint, .wgac, #dummy {display:none}
 
 	/* defloat */
 	.content-container .content-main,
 	.content-container .column-group,
-	#dummy
-	{float:none;clear:both;width:auto;}
+	#dummy {float:none;clear:both;width:auto;}
 }
+
+/* .eof */

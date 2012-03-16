@@ -76,8 +76,7 @@ b.top, b.top b, b.bottom, b.bottom b{display:block;background-repeat:no-repeat;f
 .mod .inner:after,
 .inner .hd:after,
 .inner .bd:after,
-.inner .ft:after{clear:both;display:block;visibility:hidden;overflow:hidden;height:0 !important;line-height:0;
-content:"\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0"}
+.inner .ft:after{clear:both;display:block;visibility:hidden;overflow:hidden;height:0 !important;line-height:0;content:"\A0"}
 
 /* menus ( [ul|ol] .menu[.hmenu] > li.mi ) */
 menu, .menu, .hmenu {list-style:none;margin:0;padding:0}
