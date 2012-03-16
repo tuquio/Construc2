@@ -40,7 +40,7 @@ if (!JComponentHelper::isEnabled('com_finder') && !JPluginHelper::isEnabled('fin
 <meta name="generator" content="Construc2">
 <link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/construc2/css/core/base.css" type="text/css">
 <link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/construc2/css/core/oocss.css" type="text/css">
-<link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/construc2/css/core/screen.css" type="text/css">
+<link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/construc2/css/core/template.css" type="text/css">
 </head>
 <body>
 <div class="line error">
