@@ -2,7 +2,7 @@
 /**
  * "Imports" set in better.php
  *
- * $_acid			cat_id from request
+ * $_ccid			cat_id from request
  * $_alang			application language
  * $item_heading	parameter
  * $show_children	parameter
@@ -23,8 +23,8 @@ foreach ($list as $item)
 		$css[] = 'active';
 	}
 
-	// is this node a prent of the active category?
-	if ( isset($tree['pids'][$item->id][$_acid]) ) {
+	// is this node a parent of the active category?
+	if ( isset($tree['pids'][$item->id][$_ccid]) ) {
 		$css[] = 'current';
 	}
 

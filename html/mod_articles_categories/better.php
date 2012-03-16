@@ -57,7 +57,6 @@ $tree = array('pids'=>array());
 $tree['pids'][$params->get('parent')] = array();
 treeWalker($list, $tree);
 
-
 $item_heading	= (int)  $params->get('item_heading', 3);
 $show_children	= (bool) $params->get('show_children', 0);
 $max_level		= (int)  $params->get('maxlevel', 0);
@@ -66,7 +65,7 @@ $max_level		= (int)  $params->get('maxlevel', 0);
 $outerspan = true;
 
 $_alang = JFactory::getLanguage()->get('tag');
-$_acid  = $app->get('input')->get('id', 0);
+$_ccid  = $app->input->get('catid', $app->input->get('id', 0));
 ?>
 <menu class="menu categories <?php echo $moduleclass_sfx ?>">
 <?php require JModuleHelper::getLayoutPath('mod_articles_categories', $params->get('layout', 'default').'_items'); ?>
