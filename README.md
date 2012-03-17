@@ -141,20 +141,31 @@ If you try to run any of the .css you may find it doesn't "validate". These warn
 If you're a Validator addict and believe the world would fall apart, and your computer will explode if a Validator software tells your, the **grammar** of Construc2's HTML sucks, then please move along and stick with XHTML.
 
 Validators are no browsers. End of story.
-They **spell-check* your markup, they don't **render** it. Browser do render and display this <q>invalid</b> HTML just fine, like a person is able to understand some other person mumbling or whispering.
+They **spell-check** your markup, they don't **render** it. Browser do render and display this <q>invalid</q> HTML just fine, like a person is able to understand some other person mumbling or whispering.
 
-Because Construc2 features a bunch of layout overrides that generate HTML5 your page will presumably not pass any validator without it complaining. Yet **real browsers do act** according to the HTML spec and just ignore stuff they don't know. In addition they also support any tag, element and attributes that has been standardizes in any flavor of HTML for decades, no matter what the DOCTYPE suggests (unless you're managed to serve your perfect XHTML documents with its appropriate MIME type `application/xml+xhtml`.)
+Because Construc2 features a bunch of layout overrides that generate HTML5 your page will presumably not pass any validator without it complaining. Yet **real browsers do act** according to the HTML spec and just ignore stuff they don't know. In addition they also support the tags, elements and attributes that has once been in an ancient flavor of a HTML Standard, no matter what the DOCTYPE suggests (unless you've managed to serve your perfect XHTML documents with its appropriate MIME type `application/xml+xhtml`.)
 
 ### Why you should continue using a Validator
-Browsers do not "spell-check" HTML documents, yet they can make perfect sense of almost everything you throw at them and so Browsers don't get confused if you don't add the closing tags of a P, TD, TR, LI and several others. This is not the case if you ommit the closing tag for DIV, SECTION, ARTICLE and similar semantic containers or inline elements such as EM or STRONG. **So please do validate your pages and Layouts!**
+Browsers "spell-check" HTML documents to get a grasp of what it _means_, and they can make perfect sense of almost everything you throw at them. Browsers don't get confused if you don't add the closing tags of a P, TD, TR, LI and several other <q>self-closing</q> elements. However, this is not the case if you ommit the closing tag for generic elements such as DIV and similar semantic containers such as SECTION or ARTICLE, incl. inline elements such as EM or STRONG. **So please do validate your pages and Layouts!**
 
-Validators are a very pessimistic piece of software because HTML5 support still varies even in most recent browsers, let alone browser emulators from Redmond. But real browsers catch up quickly and you can litteraly watch support grow -- most validators aren't that fast.
+Validators are a very pessimistic piece of software because HTML5 support varies in most recent browsers, let alone browser emulators from Redmond. Support will continue to vary on a per-browser brnad, and per-borwser version basis **by definition**: HTML5 is a <q>living Standard</q>! Yet real Browsers catch up pretty quickly and you can literally watch support grow -- most validators, however, aren't that fast.
 
-This are some <q>false positives</q> you may get if you use Construc2:
-- _Bad value X-UA-Compatible for attribute http-equiv on element meta._ This is the infamous Explorer Trident switch also used to trigger ChromeFrame. A validator should actually ignore attributes starting with 'X-' for the http-equiv types as defined in the specs of HTTP.
-- _The **menu element** is not supported by browsers yet. It would probably be better to wait for implementations._ That's wrong for the most part. It's the new stuff added to the MENU element in HTML browser don't quiet get. They render it like an UL with LI which is exactly what Construc2 uses it for.
-- _Warning: The **details element** is not supported properly by browsers yet. It would probably be better to wait for implementations._ It is supported by Webkit since late 2011. Construc2's use of details and summary is non critical and if you want support in non-Webkit browsers you can use a Shim.
-- _Attribute pubdate not allowed on element time at this point._ The W3C doesn't event mention the `pubdate` attribute whereas the WHATWG explains in great details its proper use and scope, see: http://developers.whatwg.org/text-level-semantics.html#the-time-element
+This are some <q>false positives</q> you may get if you attempt to validate Construc2's output:
+
+- _Bad value **X-UA-Compatible** for attribute http-equiv on element meta._ OF course it's bas, as its targeting the Explorer Trident switch and is meanwhile used to trigger Google's ChromeFrame. A validator should actually ignore attributes starting with 'X-' for the `http-equiv` types as defined in the HTTP specs.
+- _The **menu element** is not supported by browsers yet. It would probably be better to wait for implementations._ That's plain wrong for the most part. It's the _new stuff_ added in HTML5 browsers don't quiet get. They render it like a dumb UL with a bunch LI as they did over the last 15 years, which is exactly what Construc2 expects them todo.
+- _Warning: The **details element** is not supported properly by browsers yet. It would probably be better to wait for implementations._ It is supported by Webkit since late 2011. Construc2's use of `<details>` and `<summary>` is non critical and to group stuff such as article + author info. It could easily be replaced with a dumb `<div class="summary">` for the net effect. If you want a more realistic functional support in non-Webkit browsers you can use a Shim.
+- _Attribute **pubdate** not allowed on element time at this point._ The W3C doesn't event mention the `pubdate` attribute whereas the WHATWG explains in great details its proper use and scope, see: http://developers.whatwg.org/text-level-semantics.html#the-time-element
+
+### Drawbacks of using "unknown" elements
+Real browser act according to the HTML standards and render unknown as inline elements, and we can change this easily using CSS, as we do all the time for known elements, i.e. floating lists and inlining headings.
+Visually there's nothing wrong and we (often) get what we do.
+Semantically, an unknown element is about as meaningful as a DIV or SPAN.
+Accessing an unknown element via script may cause more difficulties due to incomplete or missing APIs.
+
+A great collection of _HTML5 Cross Browser Polyfills_ is available from
+
+- https://github.com/Modernizr/Modernizr/wiki/HTML5-Cross-browser-Polyfills
 
 # Ideas
 Mental notes for things that might come (in more or less the following order):

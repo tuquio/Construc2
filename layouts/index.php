@@ -18,9 +18,10 @@
 </head>
 <body class="<?php echo $columnLayout ?>">
 <?php ConstructTemplateHelper::msieSwatter() ?>
-	<div id="page-top" class="<?php echo $templateHelper->getPageAlias(true) ?>">
+	<div id="page-top" class="line <?php echo $templateHelper->getPageAlias(true) ?>">
 		<div id="header" class="line page-head">
-<?php if ($headerAboveCount) : include JPATH_THEMES .'/'. $this->template . '/layouts/mod_header_above.php'; endif; ?>
+<?php if ($headerAboveCount[0]) : include JPATH_THEMES .'/'. $this->template . '/layouts/mod_header_above.php'; endif; ?>
+
 		<h1 id="logo"><a class="site-link" href="<?php echo $this->baseurl ?>/"><span class="site-name"><?php echo $app->getCfg('sitename');?></span></a></h1>
 
 <?php if ($this->countModules('header')) : $templateHelper->renderModules('header', 'mod'); endif; ?>
@@ -34,8 +35,8 @@
 		<?php endif; ?>
 		</div><!-- .page-head -->
 
-		<div id="body-container" class="<?php echo $templateHelper->getPageAlias() ?>">
-<?php if ($headerBelowCount) : include JPATH_THEMES .'/'. $this->template . '/layouts/mod_header_below.php'; endif; ?>
+		<div id="body-container" class="line <?php echo $templateHelper->getPageAlias() ?>">
+<?php if ($headerBelowCount[0]) : include JPATH_THEMES .'/'. $this->template . '/layouts/mod_header_below.php'; endif; ?>
 
 		<?php if ($this->countModules('nav')) : ?>
 			<nav id="nav" class="line mainnavi">
@@ -46,36 +47,36 @@
 <?php if ($this->countModules('breadcrumbs')) : $templateHelper->renderModules('breadcrumbs'); endif; ?>
 
 			<div class="line content-container">
-<?php if ($navBelowCount) : include JPATH_THEMES .'/'. $this->template . '/layouts/mod_nav_below.php'; endif; ?>
+<?php if ($navBelowCount[0]) : include JPATH_THEMES .'/'. $this->template . '/layouts/mod_nav_below.php'; endif; ?>
 
 				<div id="content" class="line content-main">
 
 <?php if ($this->getBuffer('message')) : ?><jdoc:include type="message" /><?php endif; ?>
 
-<?php if ($contentAboveCount) :	include JPATH_THEMES .'/'. $this->template . '/layouts/mod_content_above.php'; endif; ?>
+<?php if ($contentAboveCount[0]) :	include JPATH_THEMES .'/'. $this->template . '/layouts/mod_content_above.php'; endif; ?>
 	<section class="line component">
 	<jdoc:include type="component" />
-<?php if ($contentBelowCount) : include JPATH_THEMES .'/'. $this->template . '/layouts/mod_content_below.php'; endif; ?>
+<?php if ($contentBelowCount[0]) : include JPATH_THEMES .'/'. $this->template . '/layouts/mod_content_below.php'; endif; ?>
 	</section>
 
-<?php if ($columnGroupAlphaCount) : include JPATH_THEMES .'/'. $this->template . '/layouts/mod_column_group_alpha.php'; endif; ?>
+<?php if ($columnGroupAlphaCount > 0) : include JPATH_THEMES .'/'. $this->template . '/layouts/mod_column_group_alpha.php'; endif; ?>
 				</div><!-- end content-main -->
 
-<?php if ($columnGroupBetaCount) : include JPATH_THEMES .'/'. $this->template . '/layouts/mod_column_group_beta.php'; endif; ?>
+<?php if ($columnGroupBetaCount > 0) : include JPATH_THEMES .'/'. $this->template . '/layouts/mod_column_group_beta.php'; endif; ?>
 
-<?php if ($footerAboveCount) : include JPATH_THEMES .'/'. $this->template . '/layouts/mod_footer_above.php'; endif; ?>
+<?php if ($footerAboveCount[0]) : include JPATH_THEMES .'/'. $this->template . '/layouts/mod_footer_above.php'; endif; ?>
 			</div><!-- .content-container -->
 		</div><!-- #body-container -->
 	</div><!-- #page-top -->
 
 	<footer id="footer" class="line page-foot"><div class="foot-inner">
-	<?php /* echo JText::_('TPL_CONSTRUC2_JUMP_BACK_TO_TOP') */ ?>
-	<?php if ($this->countModules('syndicate')) : ?>
+<?php /* echo JText::_('TPL_CONSTRUC2_JUMP_BACK_TO_TOP') */ ?>
+<?php if ($this->countModules('syndicate')) : ?>
 		<div class="mod syndicate">
-		<?php $templateHelper->renderModules('syndicate'); ?>
+	<?php $templateHelper->renderModules('syndicate'); ?>
 		</div><!-- .syndicate -->
-	<?php endif; ?>
-	<?php $templateHelper->renderModules('footer', 'mod'); ?>
+<?php endif; ?>
+<?php $templateHelper->renderModules('footer', 'mod'); ?>
 	</div></footer><!-- end footer -->
 <?php
 if ($this->countModules('debug')) : $templateHelper->renderModules('debug', 'raw'); endif;

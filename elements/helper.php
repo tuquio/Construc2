@@ -555,6 +555,11 @@ class ConstructTemplateHelper
 			return $this;
 		}
 
+		$group = false;
+		if ( ($pos = strrpos($position, '-')) ) {
+			$group = substr($position, 0, $pos);
+		}
+
 		$attribs['name'] = $position;
 		($style) ? $attribs['style'] = $style : true;
 
@@ -576,10 +581,6 @@ class ConstructTemplateHelper
 			$prefixes['before'][] = 'unit_before';
 			$prefixes['after'][]  = 'unit_after';
 
-			$group = false;
-			if ( $pos = strrpos($position, '-') ) {
-				$group = substr($position, 0, $pos);
-			}
 
 			if ( $group != false ) {
 				$modules = $this->getModulesCount($group);
@@ -631,8 +632,8 @@ class ConstructTemplateHelper
 
 		if (isset($attribs['capture']))
 		{
-			if (is_numeric($attribs['capture']) || is_bool($attribs['capture'])) {
-				$attribs['capture'] = $position;
+			if ($attribs['capture'] === true) {
+				$attribs['capture'] = $group;
 			}
 			$this->theme->setCapture($attribs['capture'], $html, $attribs);
 		} else {
@@ -1238,7 +1239,7 @@ class ConstructTemplateHelper
 	 * @param  string  $markup
 	 * @return bool
 	 */
-	static public function isEmpty(&$markup)
+	static public function isEmpty(&$markup, $by='')
 	{
 		// decode entities, keep meta + embeds, then remove "white-space"
 		$blank = preg_replace('#[\r\n\s\t\h\v\f]+#', '',
@@ -1306,6 +1307,11 @@ class ConstructTemplateHelper
 	public function getLayoutpath()
 	{
 		return JPATH_THEMES .'/'. $this->tmpl->template .'/layouts';
+	}
+
+	public function isEditMode()
+	{
+		return $this->edit_mode;
 	}
 
 	/**

@@ -7,7 +7,7 @@
 
 div.mod-preview {
 	background-color: rgba(255, 255, 255, 0.4);
-	border: 1px solid #FFFFFF;
+	outline: 1px solid #BADA55;
 	font-size: 75%;
 	margin: 0 auto;
 	min-height: 3.6em;
@@ -16,12 +16,14 @@ div.mod-preview {
 }
 
 div.mod-preview-info {
-	color: #000000;
-	font-weight: bold;
+	color: #C55;
+	font-weight: normal;
 	margin: 0 auto;
 	padding-top: 1.6em;
 	position: absolute;
-	text-shadow: 0 0 4px #FFFFFF;
+	text-shadow: -1px -1px 1px #fff,  1px 1px 1px #000;
+	letter-spacing: 1px;
+	text-indent:1ex;
 	top: 0;
 	z-index: 27;
 }

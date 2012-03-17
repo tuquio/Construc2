@@ -22,7 +22,7 @@ $templateHelper->getTheme()->setChunks($chunks, true);
  * keep these PHP tags tight close to the HTML markup or a
  * single white space may render your styles useless.
  */
-if ($modcount) : ?><div id="content-below" class="below count-<?php echo $contentBelowCount[0] ?>"><div class="line below-inner"><?php endif;
+if ($modcount) : ?><div id="content-below" class="line below count-<?php echo $contentBelowCount[0] ?>"><div class="below-inner"><?php endif;
 
 if ($contentBelowCount[1]) {
 	$templateHelper->renderModules('content-below-1', $style, array());

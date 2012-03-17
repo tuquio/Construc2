@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>screen demo</title>
+<!-- smartphones: expand to full width regarless of orientation -->
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<link rel="stylesheet" href="base.css" />
+<link rel="stylesheet" href="oocss.css" />
+<link rel="stylesheet" href="forms.css" />
+
+<link rel="stylesheet" href="template.css" />
+
+<style type="text/css">
+article.line {margin:10px 20px}
+
+.mod.headings {margin:0 10px}
+
+/* depict line box and alignment */
+.mod.headings :-moz-any(h1,h2,h3,h4,h5,h6) {outline:1px solid silver}
+.mod.headings :-moz-any(.H1,.H2,.H3,.H4,.H5,.H6) {outline:1px solid grey}
+
+.mod.headings :-moz-any(h1,h2,h3,h4,h5,h6):after ,
+.mod.headings :-moz-any(.H1,.H2,.H3,.H4,.H5,.H6):after {content:' .' attr(class); font:normal 10px sans-serif; color:#777}
+
+</style>
+
+</head>
+<body id="construc2">
+	<div id="page-top">
+		<div id="header" class="line page-head">
+
+	<header id="page-head" class="page-head">
+	<h1 id="logo">core styles demo</h1>
+	</header>
+
+		</div><!-- .page-head -->
+
+		<div id="body-container">
+
+	<section id="content" class="main">
+
+		<article class="line">
+			<h1>The heading classes .H1 &hellip; .H6</h1>
+			<div class="unit">
+			<p>More often than not you want a piece of (short) text to look like a specific <em>heading level</em> of your theme including it's font and color settings but without using the sematics associated with that heading element.
+			The <code>.H1</code> to <code>.H6</code> classes complement the styles assigned to the <q>true</q> heading elements for exactly that <em>visual</em> purpose. If you make it your habit to always add any of the heading classes to your heading element rules this not only saves you a ton of CSS rules, it also helps to make the overall look of your theme to be more consistent and easier to manage.
+			<p>You can then have the semantically corrent &lt;H3&gt; element in your markup but make it look like an &lt;H4&gt; simply by setting the .H4 class and add this rule to your selectors:
+			<pre class="css">.mod :any(h3, h4, .H3, .H4) {font-size:140%;color:navy}</pre>
+			</div>
+
+			<div class="unit size1of2">
+			<div class="mod headings"><div class="bd">
+				<h1>Heading level one</h1>
+				<h2>Heading level two</h2>
+				<h3>Heading level three</h3>
+				<h4>Heading level four</h4>
+				<h5>Heading level five</h5>
+				<h6>Heading level six</h6>
+			</div></div>
+			</div>
+
+			<div class="unit size1of2">
+			<div class="mod headings"><div class="bd">
+				<!-- shuffling heading levels and regular paragraphs -->
+				<h3 class="H1">Heading level one</h3>
+				<p  class="H2">Heading level two</p>
+				<h4 class="H3">Heading level three</h4>
+				<p  class="H4">Heading level four</p>
+				<h2 class="H5">Heading level five</h2>
+				<p  class="H6">Heading level six</p>
+			</div></div>
+			</div>
+		</article>
+
+		<article class="line">
+			<header>
+				<h2>OOCSS Grids</h2>
+				<p>Because we can: a lil' demo of the <q>Grid System</q>.</p>
+			</header>
+
+			<!-- excerpts from ./layouts/ipsum.html -->
+
+			<section class="line">
+			<div class="unit size2of3">
+				<div class="unit size1of2">
+					<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
+				</div>
+				<div class="unit size1of2">
+					<blockquote>
+					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+					</blockquote>
+				</div>
+			</div>
+
+			<div class="unit size1of3">
+				<div class="mod">
+				<em>Emphasis</em><br>
+				<strong>Strong emphasis</strong><br>
+				<dfn>Definition</dfn>
+				</div>
+				<div class="mod">
+				<del>Deleted</del><br>
+				<ins>Inserted</ins><br>
+				<p><abbr>Abbreviation</abbr></p>
+				</div>
+			</div>
+			</section>
+		</article>
+
+		<article class="line">
+
+		<address>
+		Andy Clarke<br>
+		Stuff and Nonsense Ltd.<br>
+		<a href="http://twitter.com/malarkey">Twitter URL</a>
+		</address>
+
+<pre>&lt;pre&gt; Lorem ipsum dolor sit amet
+Lorem ipsum dolor sit amet  consectetur
+Lorem ipsum dolor sit amet consectetur adipisicing
+Lorem ipsum dolor sit amet consectetur adipisicing elit</pre>
+
+<p><code>&lt;code&gt; Lorem ipsum dolor sit amet, consectetur adipisicing elit
+Lorem ipsum dolor sit amet, consectetur adipisicing elit
+Lorem ipsum dolor sit amet, consectetur adipisicing elit
+Lorem ipsum dolor sit amet, consectetur adipisicing elit</code></p>
+
+<div class="line">
+	<h2>Lists</h2>
+	<div class="unit size1of3">
+		<ul>
+			<li>Unordered list item</li>
+			<li>Unordered list item</li>
+			<li>Unordered list item</li>
+		</ul>
+
+		<ol>
+			<li>Ordered list item</li>
+			<li>Ordered list item</li>
+			<li>Ordered list item</li>
+		</ol>
+
+		<ul>
+			<li>Unordered list item
+			<ul>
+				<li>Nested unordered list item</li>
+				<li>Nested unordered list item</li>
+				<li>Nested unordered list item</li>
+			</ul>
+			</li>
+			<li>Unordered list item</li>
+			<li>Unordered list item</li>
+		</ul>
+	</div>
+
+	<div class="unit size2of3">
+		<dl>
+			<dt>Definition term</dt>
+			<dd>Definition description: Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</dd>
+
+			<dt>Definition term</dt>
+			<dd>Definition description: Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</dd>
+
+			<dt>Definition term</dt>
+			<dd>Definition description: Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</dd>
+		</dl>
+	</div>
+</div>
+
+<div class="line">
+		<h2>Tables</h2>
+
+		<table class="data unit size2of5 mod">
+		<caption>Standard data table with caption</caption>
+
+		<tr>
+		<th>Table header one</th>
+		<th>Table header two</th>
+		</tr>
+
+		<tr>
+		<td>Lorem ipsum dolor sit amet</td>
+		<td>Lorem ipsum dolor sit amet</td>
+		</tr>
+
+		<tr>
+		<td colspan="2">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</td>
+		</tr>
+		</table>
+
+		<table class="data unit size2of5 mod">
+		<caption>Standard data table with caption, thead, tfoot and tbody</caption>
+
+		<thead>
+		<tr>
+		<th>Table header one</th>
+		<th>Table header two</th>
+		</tr>
+		</thead>
+
+		<tfoot>
+		<tr>
+		<td colspan="2">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</td>
+		</tr>
+		</tfoot>
+
+		<tbody>
+		<tr>
+		<td>Lorem ipsum dolor sit amet</td>
+		<td>Lorem ipsum dolor sit amet</td>
+		</tr>
+
+		<tr>
+		<td>Lorem ipsum dolor sit amet</td>
+		<td>Lorem ipsum dolor sit amet</td>
+		</tr>
+		</tbody>
+		</table>
+</div>
+
+<div class="line">
+		<h2>Form elements</h2>
+
+		<form class="line" id="dummy" action="#" method="post">
+
+		<fieldset class="unit size3of6 mod">
+		<legend>Simple form</legend>
+
+		<p><label for="dummy0">Text input</label><br>
+		<input type="text" name="dummy0" id="dummy0" value="" /></p>
+
+		<p><label for="dummy1">Text input</label><br>
+		<input type="text" name="dummy1" id="dummy1" value="" /></p>
+
+		<p><label for="dummy2">Textarea</label><br>
+		<textarea name="dummy2" id="dummy2" rows="5" cols="20"></textarea></p>
+		</fieldset>
+
+		<fieldset class="unit size2of6 mod">
+		<h2 class="H2">Heading level two</h2>
+		<h3 class="H3">Heading level three</h3>
+		<h4 class="H4">Heading level four</h4>
+		<h5 class="H5">Heading level five</h5>
+		<h6 class="H6">Heading level six</h6>
+
+		<p><label for="dummy3">Select field</label><br>
+		<select id="dummy3" name="dummy3">
+		<option value="1">Lorem ipsum dolor</option>
+		<option value="2">Lorem ipsum dolor</option>
+		<option value="3">Lorem ipsum dolor</option>
+		</select></p>
+
+		<p><label for="dummy4">Select with groups</label><br>
+		<select id="dummy4" name="dummy4">
+		<option>Lorem ipsum dolor</option>
+		<optgroup label="optgroup">
+		<option>Lorem ipsum dolor</option>
+		<option>Lorem ipsum dolor</option>
+		<option>Lorem ipsum dolor</option>
+		<option>Lorem ipsum dolor</option>
+		</optgroup>
+		<optgroup label="optgroup">
+		<option>Lorem ipsum dolor</option>
+		<option>Lorem ipsum dolor</option>
+		</optgroup>
+		</select></p>
+
+		<p><label>Radio buttons</label><br>
+		<input type="radio" name="example" /> Radio one<br>
+		<input type="radio" name="example" /> Radio two<br>
+		<input type="radio" name="example" /> Radio three<br></p>
+
+		<p><label>Checkboxes</label><br>
+		<input type="checkbox" /> Check one<br>
+		<input type="checkbox" /> Check two<br>
+		<input type="checkbox" /> Check three<br></p>
+
+		<p><input type="submit" value="Submit" /></p>
+		</fieldset>
+		</form>
+</div>
+
+		</article>
+
+		<aside id="sidebar" style="border-width:thin;border-style:solid" class="sidebar positive-bd">
+			<div class="mod pale">
+			<p>Based on the demonstration file for <a href="http://stuffandnonsense.co.uk/blog/about/universal_internet_explorer_6_css/">Universal Internet Explorer 6 stylesheet</a>.</p>
+			</div>
+		</aside>
+
+	</section>
+		</div><!-- #body-container -->
+	</div><!-- #page-top -->
+
+	<footer id="footer" class="line page-foot"><div class="foot-inner">
+	</div></footer><!-- end footer -->
+
+<script type="text/javascript">
+
+</script>
+</body>
+</html>
