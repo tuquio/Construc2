@@ -14,11 +14,11 @@ body {min-width:900px;max-width:94%;margin:0 auto}
 
 /* template param override (#body-container,#header-above 100%) */
 @media screen and (max-width:1039px) {
-	body #body-container, body #header-above, .page-foot {max-width:94%}
+	body #body-container, .page-foot {max-width:94%}
 	#logo {margin-left:3%}
 }
 @media screen and (min-width:1040px) {
-	body #body-container, body #header-above, .page-foot {max-width:90%}
+	body #body-container, .page-foot {max-width:90%}
 	#logo {margin-left:5%}
 }
 
@@ -35,14 +35,17 @@ body {min-width:900px;max-width:94%;margin:0 auto}
 	.body-overlayed #sbox-content.sbox-content-iframe	{overflow:auto}
 }
 
-#header		{height:100px}
-#logo   	{font-size:60px;display:inline-block}
-.site-link	{}
-.site-name	{}
+.page-head {}
+.page-foot {}
+
+#header			{height:100px}
+#logo   		{font-size:60px;display:inline-block}
+.site-link {}
+.site-name {}
 
 nav, .breadcrumbs	{margin-bottom:10px}
-#mainmenu			{}
-#breadcrumbs		{}
+#mainmenu {}
+#breadcrumbs {}
 
 #to-page-top		{position:absolute;right:10px;text-align:right}
 #diagnostics		{position:absolute;right:10px;top:20px;max-width:90px}
@@ -137,7 +140,7 @@ section.component > div.finder {padding:10px;margin-bottom:10px}
 #finder-search input,
 #finder-search button {display:inline-block; max-width:30%}
 #search-results		{margin-top:10px;padding:1ex 0.8em}
-dl.search-results	{}
+dl.search-results {}
 	dt.result-title:not(:first-child) {margin-top:10px}
 	dd.result-text	{padding:1ex 1em 1ex 1ex}
 	dd.result-url	{padding:0 1ex;font-size:.9em}
@@ -228,7 +231,7 @@ blockquote p {-webkit-hyphens:none;-moz-hyphens:none;hyphens:none}
 .blog .introtext img		{max-width:96%}
 .unit .introtext img 		{max-height:200px;border-width:5px}
 .blog .unit .introtext		{min-height:250px}
-.category-desc img.catimg	{}
+.category-desc img.catimg {}
 
 figure img					{height:auto}
 .portrait					{text-align:center}
@@ -291,8 +294,8 @@ li.mi img			{border:none;box-shadow:none}
 .skiplinks .cat-title:after  {content:')'}
 
 .pagenav			{margin-left:0;margin-right:0;padding-left:0;padding-right:0;overflow:auto}
-.pagenav li.mi		{}
-.pagenav a.mi		{}
+.pagenav li.mi {}
+.pagenav a.mi {}
 .pagenav .prev:only-child	{float:left}
 .pagenav .next:only-child	{float:right}
 
@@ -300,16 +303,16 @@ li.mi img			{border:none;box-shadow:none}
 
 /* allow the nested list determine its [default] whitepace at bottom */
 nav.page-toc	{padding-top:1ex;padding-left:.6em;margin-left:1em} /* aka #article-index */
-	.toc-title	{}
+	.toc-title {}
 	.toc-items	{list-style:decimal outside none}
 	.toc-items li.mi:last-child {list-style:none;margin-left:-1ex}
 
 /* push the whole thing inwards to make room for the .actionsmenu */
 .has-actions nav.page-toc {margin-right:24px}
 
-nav.pagination			{}
+nav.pagination {}
 menu.pagination			{display:inline-block}
-div.search-pagination	{}
+div.search-pagination {}
 
 p.counter, .search-pages-counter {display:inline-block;margin:.6ex 1em}
 
@@ -321,7 +324,7 @@ p.counter, .search-pages-counter {display:inline-block;margin:.6ex 1em}
 
 menu.categories span.active		{text-transform:uppercase}
 menu.categories .submenu		{padding-left:.6em}
-menu.categories .H3				{}
+menu.categories .H3 {}
 menu.categories .parent > a.mi	{display:inline}
 
 /* kinda drop-down, needs transition and backdrop color
@@ -335,15 +338,15 @@ menu.loginmenu					{margin-top:0.6ex}
 .loginmenu span.mi				{padding: 1px 3px;}
 
 /* =misc */
-.contact-item	{}
+.contact-item {}
 
 /* this "menu" ist JS based and will be enabled by the script itself */
 #styleswitcher	{display:none}
 li.switcher 	{display:inline-block;cursor:pointer}
 
 /* =widgets */
-summary:focus		{}
-summary:focus + *	{}
+summary:focus {}
+summary:focus + * {}
 
 /*
  * =branding - category and page styles
