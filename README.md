@@ -49,7 +49,7 @@ This feature also removes various non-standard, non-validating meta elements.
 ConstructTemplateHelper does the heavy lifting within Construc2 and amoth other things provides "conditional comment grouping" for MSIE for all things going into the HEAD element. Instead of cluttering the top of the markup, any hacks and scripts to target a particular IE version are wrapped into a single CC per version, and moved below the "good stuff".
 
 ### Link and Script control
-In addition to CC groups you gain control over attributes added to the <link>, <meta> and <script> elements using ConstructTemplateHelper if you create your own page layouts.
+In addition to CC groups you gain control over attributes added to the `<link>`, `<meta>` and `<script>` elements using ConstructTemplateHelper if you create your own page layouts.
 
 ## modChrome / modules.php
 Module chrome features an "OOCSS compliant" module styles via `<jdoc:include/>` and allows for explicit content plugin rendering in your page layouts. As of J!1.7 content plugins are also enabled for modules. If you disable this module option, you can still overrule it using the 'withevent' chrome style on a per theme and module position basis.
