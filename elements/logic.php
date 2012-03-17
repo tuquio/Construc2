@@ -24,29 +24,30 @@ $base_url 	= JURI::base(true) . '/';
 /** @var $tmpl_url string Define relative shortcut for current template directory */
 $tmpl_url 	= $base_url. 'templates/'. $this->template;
 
-/* Define shortcuts for often used template parameters */
+/* Define some shortcuts */
 $enableSwitcher 	= (bool) $this->params->get('enableSwitcher');
 $showDiagnostics 	= (bool) $this->params->get('showDiagnostics');
 
 $cssTheme			=		 $this->params->get('customStyleSheet');
 $ssiIncludes		= (bool) $this->params->get('ssiIncludes', 0);
-$ssiTheme			=		 $this->params->get('ssiTheme');
 
-// 'filelist' params return -1 for none.
+// a 'filelist' param returns -1 for 'none'
 if (($cssTheme + 1) == 0) $cssTheme = false;
-if (($ssiTheme + 1) == 0) $ssiTheme = false;
 
-// some editor form requested, need mo' styles
-$editMode = in_array($app->input->get('layout'), array('edit','form'))
-		||  in_array($app->input->get('option'), array('com_media'));
+// some editor form requested, needs mo' styles, and less modules
+$editMode = $templateHelper->isEditMode();
+
+if ($app->getCfg('debug') && ($cts = $app->input->get('cts')) ) {
+	$cts = basename($cts, '.css');
+	if (is_file(JPATH_THEMES .'/'. $this->template . '/themes/'. $cts .'.css')) {
+		$cssTheme = $cts;
+	}
+}
 
 // all things different in edit mode
 if ($editMode) {
 	$enableSwitcher = $showDiagnostics = false;
 }
-
-// will contain custom <script> code depending on selected params
-$scriptDeclarations	= array();
 
 if ($showDiagnostics) {
 	$jmenu = $app->getMenu();
@@ -122,6 +123,11 @@ if ($ssiIncludes) {
 	$printMode = $app->input->get('print');
 	$templateHelper->addLink($tmpl_url.'/css/construc2.styles?rtl='. ($this->direction == 'rtl') .'&em='. $editMode .'&pm='.$printMode);
 
+	// a 'filelist' param returns -1 for 'none'
+	$ssiTheme = $this->params->get('ssiTheme');
+	if (($ssiTheme + 1) == 0) {
+		$ssiTheme = false;
+	}
 	if ($ssiTheme) {
 		$templateHelper->addLink($tmpl_url.'/themes/'.$ssiTheme .'?rtl='. ($this->direction == 'rtl') .'&em='. $editMode .'&pm='.$printMode);
 	}

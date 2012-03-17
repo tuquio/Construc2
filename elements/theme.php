@@ -33,6 +33,7 @@ class CustomTheme
 	protected $path    = '';
 	protected $url     = '';
 
+	/** @var $config JObject */
 	protected $config = array(
 				'title'=>'Default',
 				'version'=>'',
@@ -80,16 +81,20 @@ class CustomTheme
 		$this->path = JPATH_THEMES .'/'. $tmpl->template .'/themes/'. $this->name . '.php';
 		$this->url  = JUri::root(true) .'/templates/'. $tmpl->template .'/themes';
 
+		$this->config = new JObject($this->config);
+
 		if (is_file($this->path))
 		{
 			// fake ini file
-			$config = parse_ini_file($this->path, true) + $this->config;
+			$config = parse_ini_file($this->path, true);
 			if (!$config || count($config) == 0) {
 				break;
 			}
 
 			$this->title   = $config['title'];
 			$this->version = $config['version'];
+
+			$this->config->setProperties($config);
 		}
 
 		// @see ConstructTemplateHelper::renderModules()
@@ -124,7 +129,7 @@ class CustomTheme
 	{
 		$helper = ConstructTemplateHelper::getInstance();
 
-		foreach ($this->config['scripts'] as $key => $line)
+		foreach ($this->config->get('scripts', array()) as $key => $line)
 		{
 			list($ua, $src) = explode(',', $line);
 			settype($ua, 'int');
@@ -302,7 +307,7 @@ class CustomTheme
 
 	public function getConfig($name, $default=null)
 	{
-		return isset($this->config[$name]) ? $this->config[$name] : $default;
+		return $this->config->get($name, $default);
 	}
 
 	/**
