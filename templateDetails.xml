@@ -166,7 +166,6 @@
 		<folder>language</folder>
 		<folder>layouts</folder>
 		<folder>themes</folder>
-		<filename>ajax.php</filename>
 		<filename>component.php</filename>
 		<filename>construc2.manifest</filename>
 		<filename>construc2_rtl.manifest</filename>
