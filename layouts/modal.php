@@ -18,8 +18,8 @@ $app = JFactory::getApplication();
 </head>
 <body class="main modal <?php echo $app->input->get('option'), ' ', $app->input->get('print') ? 'print' : $app->input->get('layout') ?>">
 <?php ConstructTemplateHelper::msieSwatter() ?>
-	<div id="page-top">
-		<div id="body-container" class="<?php echo $templateHelper->getPageAlias(true) ?>">
+	<div id="page-top" class="line">
+		<div id="body-container" class="line <?php echo $templateHelper->getPageAlias(true) ?>">
 			<div class="line content-container">
 				<div id="content" class="line content-main">
 
@@ -29,7 +29,7 @@ $app = JFactory::getApplication();
 </section>
 
 				</div><!-- .content-main -->
-<?php if ($footerAboveCount) : include JPATH_THEMES .'/'. $this->template . '/layouts/mod_footer_above.php'; endif; ?>
+<?php if ($footerAboveCount[0]) : include JPATH_THEMES .'/'. $this->template . '/layouts/mod_footer_above.php'; endif; ?>
 			</div><!-- .content-container -->
 		</div><!-- #body-container -->
 	</div><!-- #page-top -->

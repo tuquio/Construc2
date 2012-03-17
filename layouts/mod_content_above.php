@@ -22,7 +22,7 @@ $templateHelper->getTheme()->setChunks($chunks, true);
  * keep these PHP tags tight close to the HTML markup or a
  * single white space may render your styles useless.
  */
-if ($modcount) : ?><div id="content-above" class="above count-<?php echo $contentAboveCount[0] ?>"><div class="line above-inner"><?php endif;
+if ($modcount) : ?><div id="content-above" class="line above count-<?php echo $contentAboveCount[0] ?>"><div class="above-inner"><?php endif;
 
 if ($contentAboveCount[1]) {
 	$templateHelper->renderModules('content-above-1', $style, array());

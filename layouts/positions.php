@@ -27,7 +27,7 @@ body.debug .names:before {
 	position:relative;
 	widh:25%;
 }
-body.debug .names:before {text-align:left;  content:'Id: 'attr(id);}
+body.debug .names:before {text-align:left;  content:'Id: ' attr(id);}
 body.debug .names:after  {text-align:right; content:'Classes: ' attr(class);}
 
 </style>
@@ -38,32 +38,43 @@ body.debug .names:after  {text-align:right; content:'Classes: ' attr(class);}
 <?php include JPATH_THEMES .'/'. $this->template . '/layouts/mod_header_above.php' ?>
 </header>
 
-<div id="body-container">
+<div id="body-container" class="line">
 <h1>Position Renderer (WIP)</h1>
-<p>Use this layout to test style theming and chrome applied to the content located
-within the scope of template positions as well as all modules assigned to the various
-position groups. The structure only features the immediate container element surrounding
-a position group. It is intentionally kept much simpler than the standard layout and
-also excludes component rendering or menus. If your styles properly catch you did an
-excellent job on <b>not</b> using overspecified location-dependant selectors and also
-did great on leveraging the cascade! Your mmodules are then ready to be placed on any
-available template position, which is the whole idea of using them in the first place.</p>
+<p>
+Use this Layout to test theming and Module chrome applied to Modules when they're loaded in different template positions or position groups.
+The structure only features the immediate container element surrounding a position group.
+It is intentionally kept much simpler than a regular page layout and excludes component rendering.
+If your styles are smart and Modules appear correct no matter what position they're assigned to
+you did an excellent job on leveraging the cascade!
+You can now safely plumb Modules into any template position, which is the whole idea of using them in the first place.
+</p>
 
 <header class="names line below">
 <?php include JPATH_THEMES .'/'. $this->template . '/layouts/mod_header_below.php' ?>
 </header>
 
-<div id="nav-below" class="names nav-below">
+<div id="nav-below" class="names line nav-below">
 <?php include JPATH_THEMES .'/'. $this->template . '/layouts/mod_nav_below.php' ?>
 </div>
 
-<div id="content" class="line names content-main">
+<div id="content" class="names line content-main">
 	<div class="names line content-above">
 <?php include JPATH_THEMES .'/'. $this->template . '/layouts/mod_content_above.php' ?>
 	</div>
+
+	<section class="line component">
+		<article class="line item-page">
+		<header class="article"><h2 class="H2 title">Liber Primus!</h2></header>
+		<p>Certe, inquam, pertinax non ero tibique, si mihi probabis ea, quae dices, libenter assentiar. Probabo, inquit, modo ista sis aequitate, quam ostendis. sed uti oratione perpetua malo quam interrogare aut interrogari. Ut placet, inquam. Tum dicere exorsus est. Primum igitur, inquit, sic agam, ut ipsi auctori huius disciplinae placet: constituam, quid et quale sit id, de quo quaerimus, non quo ignorare vos arbitrer, sed ut ratione et via procedat oratio. quaerimus igitur, quid sit extremum et ultimum bonorum, quod omnium philosophorum sententia tale debet esse, ut ad id omnia referri oporteat, ipsum autem nusquam. hoc Epicurus in voluptate ponit, quod summum bonum esse vult, summumque malum dolorem, idque instituit docere sic:</p>
+		<blockquote><p>Omne animal, simul atque natum sit, voluptatem appetere eaque gaudere ut summo bono, dolorem aspernari ut summum malum et, quantum possit, a se repellere, idque facere nondum depravatum ipsa natura incorrupte atque integre iudicante. </p></blockquote>
+		<p>itaque negat opus esse ratione neque disputatione, quam ob rem voluptas expetenda, fugiendus dolor sit. sentiri haec putat, ut calere ignem, nivem esse albam, dulce mel. quorum nihil oportere exquisitis rationibus confirmare, tantum satis esse admonere. interesse enim inter argumentum conclusionemque rationis et inter mediocrem animadversionem atque admonitionem. altera occulta quaedam et quasi involuta aperiri, altera prompta et aperta iudicari. etenim quoniam detractis de homine sensibus reliqui nihil est, necesse est, quid aut ad naturam aut contra sit, a natura ipsa iudicari. ea quid percipit aut quid iudicat, quo aut petat aut fugiat aliquid, praeter voluptatem et dolorem?</p>
+		</article>
+
 	<div class="names line content-below">
 <?php include JPATH_THEMES .'/'. $this->template . '/layouts/mod_content_below.php' ?>
 	</div>
+	</section>
+
 	<div class="names column-group group-alpha">
 <?php include JPATH_THEMES .'/'. $this->template . '/layouts/mod_column_group_alpha.php' ?>
 	</div>
@@ -78,8 +89,6 @@ available template position, which is the whole idea of using them in the first 
 </div>
 
 </div><!-- end body-container -->
-<?php
-ConstructTemplateHelper::msieSwatter();
-?>
+<?php ConstructTemplateHelper::msieSwatter() ?>
 </body>
 </html>
