@@ -7,7 +7,6 @@
 [cdn]
 @default	= "ajax.googleapis.com"
 @media		= "/media/system"
-@template	= "/templates/padawan/js"
 ajax.googleapis.com			= 1,jquery,mootols
 ajax.aspnetcdn.com			= 0,jquery
 code.jquery.com				= 1,jquery

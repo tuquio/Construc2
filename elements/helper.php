@@ -944,6 +944,7 @@ class ConstructTemplateHelper
 				case 'metaTags':
 					// let '' be but move "normal" away so it appears below <title>
 					foreach ($stuff['standard'] as $key => $data) {
+						if (empty($data)) continue;
 						$this->addMetaData($key, $data);
 					}
 					$head[$group]['standard'] = array();
