@@ -55,6 +55,10 @@ p.counter b, .pagination span.mi {padding:.2ex .4em}
 .footer .menu, .footer .menu li {display:inline-block;list-style:none;margin:0;padding:0}
 .footer .menu li a, .footer .menu a:visited {font-weight:normal;padding:1px 3px;text-decoration:none}
 
+/* =modules and groups */
+.line.below, .line.above	,
+.above-inner, .below-inner	{display:inline-block}
+
 /* =supplementals */
 .date-container {float:right}
 .date-weekday, .date-month, .date-day, .date-year {/* intentionally left blank */}
