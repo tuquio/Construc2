@@ -10,7 +10,8 @@
  */
 $modcount = $templateHelper->numModules('nav-below');
 
-$style	= 'mod';
+$style	= 'raw';
+
 $chunks = array(
 		'module_before' => '<div id="{position}" class="{class}">',
 		'module_after'  => '</div>'
