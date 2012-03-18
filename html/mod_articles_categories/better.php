@@ -42,7 +42,8 @@ function treeWalker($list, &$tree, $level=0)
 	{
 		foreach ($item->getPath() as $slug)
 		{
-			$pid = array_shift(explode(':', $slug));
+			$ar  = explode(':', $slug);
+			$pid = array_shift($ar);
 			$tree['pids'][$pid][$item->id] = $item->id;
 		}
 
