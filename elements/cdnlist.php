@@ -1,10 +1,11 @@
 <?php defined('_JEXEC') or die;
 /**
+ * Provides a list of CDN Sources
+ *
  * @package     Construc2
  * @subpackage  Elements
- * @copyright   (C) 2010, 2011 Matt Thomas | Joomla Engineering. All rights reserved.
- * @license     GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
- * @author		WebMechanic http://webmechanic.biz
+ * @copyright	(C)2012 WebMechanic. All rights reserved.
+ * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
 
 /**

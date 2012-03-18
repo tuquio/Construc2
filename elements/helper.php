@@ -5,19 +5,13 @@
  *
  * @package     Construc2
  * @subpackage  Elements
- * @copyright	WebMechanic http://webmechanic.biz
- * @copyright	(C) 2011-2012 WebMechanic. All rights reserved.
- * @author		(C) 2010, 2011 Matt Thomas | Joomla Engineering. All rights reserved.
+ * @copyright	(C)2012 WebMechanic. All rights reserved.
  * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
 
 /* SearchHelper knows about the (enhanced) stop words list in xx_XXLocalise
  * and is misused to clean the alias for use as a class name of list items */
 JLoader::register('SearchHelper', JPATH_ADMINISTRATOR .'/components/com_search/helpers/search.php');
-
-/** Register some Widget Classes */
-#	JLoader::register('ContentWidgets', dirname(__FILE__) . '/widgets/content.php');
-#	JLoader::register('BehaviorWidgets', dirname(__FILE__) . '/widgets/behavior.php');
 
 /** Register the CustomTheme Class */
 JLoader::register('CustomTheme', dirname(__FILE__) . '/theme.php');
@@ -93,7 +87,10 @@ class ConstructTemplateHelper
 		$this->tmpl = JFactory::getApplication()->getTemplate(true);
 
 		if ($this->tmpl->params->get('headCleanup')) {
+			JLoader::register('JDocumentRendererHead', dirname(__FILE__) .'/renderer/header.php');
 		}
+
+		require_once dirname(__FILE__) .'/renderer/header.php';
 
 		// remove this nonsense
 		$this->doc->setTab('');
@@ -864,9 +861,9 @@ class ConstructTemplateHelper
 			$theme = $this->theme->build();
 		}
 
-			$this->buildHead();
-			$this->sortScripts();
-			$this->renderHead();
+		$this->buildHead();
+		$this->sortScripts();
+		$this->renderHead();
 
 		return true;
 	}
