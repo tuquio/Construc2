@@ -230,7 +230,7 @@ function modChrome_raw( $module, &$params, &$attribs )
 
 	if ($module->showtitle) {
 		$level = isset($attribs['level']) ? (int) $attribs['level'] : 3;
-		echo ' <h', $level, ' class="', $css, '">', $module_title, '</h', $level, '>';
+		echo ' <h', $level, ' class="', $css, '">', $module->title, '</h', $level, '>';
 	}
 	echo $module->content;
 }

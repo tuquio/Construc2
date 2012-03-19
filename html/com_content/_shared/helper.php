@@ -90,38 +90,123 @@ class ContentLayoutHelper
 	}
 
 	/**
-	 * Pimp an Article's Table of Contents ($item->toc) inplace to make it better:
-	 * - from <div id="article-index">	to nav.unit.size2of5.page-toc.rgt  (id attribute is retained)
-	 * - from class-free <h3> 			to h3.H4.toc-title
-	 * - from class-free <ul>			to ol.toc-items  (semantically correct)
-	 * - from class-free <li> 			to li.mi
+	 * Pimp both Article's Table of Contents and Page Navigation inplace to make
+	 * them better. Will replaces the content of $item->toc and $item->pagination.
 	 *
-	 * @param  object  $item      The article item object
-	 * @param  string  $allpages  Non-empty if article is in "all pages" mode
+	 * @param  object  $item The article item object
 	 *
 	 * @return void (sets the toc property)
 	 */
-	static public function betterToc($item, $allpages)
+	static public function betterToc(&$item, $reserved = array())
 	{
+		$item->pagenav = null;
+
 		if (!isset($item->toc)) {
 			return;
 		}
 
-		$toc = $item->toc;
-
-		if ((bool) $allpages)
+		// no toc for "all pages" view
+		if ((bool) JFactory::getApplication()->input->get('showall'))
 		{
-			// no toc for "all pages" view
-			$toc = null;
-		} else {
-			// replace tags and add better classes
-			$toc = str_replace(
-					array('<div', '/div>', '<h3>', '<ul>', '<ol>', '<li>'),
-					array('<nav class="unit size2of5 page-toc rgt"', '/nav>', '<h3 class="H4 toc-title">', '<ol class="toc-items">', '</ol>', '<li class="mi">'),
-					$toc);
+			$item->toc = null;
 		}
 
+		try {
+			// let's be tough...
+			$nav = self::_makePageToc($item);
+
+			if ($nav) {
+				// pick stored "HTML5" data attributes
+				$pagenav = new JPagination((int)$nav['data-pages'], (int)$nav['data-page'], 1);
+				$item->pagenav = $pagenav->getPagesLinks();
+			}
+
+			return;
+		}
+		catch (Exception $e) {
+			// ok, 'twas worth trying
+		}
+
+		// replace tags and add better classes the old fashion way
+		$toc = $item->toc;
+		$toc = str_replace(
+				array('<div', '/div>', '<h3>', '<ul>', '<ol>', '<li>'),
+				array('<nav class="unit size2of5 page-toc rgt"', '/nav>', '<h3 class="H4 toc-title">', '<ol class="toc-items">', '</ol>', '<li class="mi">'),
+				$toc);
+
 		$item->toc = $toc;
+
+	}
+
+	/**
+	 * Renders the page table of contents and creates a new pagination.
+	 *
+	 * @param  object  $item  article item
+	 * @param  string  $class class attribute
+	 *
+	 * @return SimpleXMLElement
+	 *
+	 * @todo insert skiplink href="#fulltext"
+	 */
+	static protected function _makePageToc(&$item, $class='unit size1of3 rgt')
+	{
+		$shutup = libxml_use_internal_errors(false);
+
+		$flags = LIBXML_NOBLANKS | LIBXML_NOEMPTYTAG | LIBXML_NOCDATA;
+
+		$div = new SimpleXMLElement($item->toc, $flags);
+
+		// pagination list using pagination.php
+		$i = 0;
+		$p = (int)JFactory::getApplication()->input->get('start', 0);
+		$n = count($div->ul->children());
+
+		// rebuild as <nav>
+		$nav = new SimpleXMLElement('<nav id="article-index" class="page-toc '. $class .'"/>', $flags);
+
+		// save numbers as "HTML5" data attribute
+		$nav['data-pages'] = count($div->ul->children()) - 1;
+		$nav['data-page']  = $p;
+
+		$nav->addChild('h3', JText::_('PLG_CONTENT_PAGEBREAK_ARTICLE_INDEX'));
+		$nav->h3['class'] = 'H4 toc-title';
+
+		// skiplinks here, please
+
+		$nav->addChild('ol');
+		$nav->ol['class'] = 'toc-items';
+
+		// .. and use an awkward API
+		foreach ($div->ul->children() as $elt)
+		{
+			$li = $nav->ol->addChild('li');
+
+			if ($i == $p) {
+				$li['class'] = 'mi current';
+
+				$li->span = "$elt->a";
+				$li->span['class'] = 'mi';
+			} else {
+				$li['class'] = 'mi';
+
+				$li->a['href'] = $elt->a['href'];
+				$li->a['class'] = 'mi toclink';
+				$li->a->span = "$elt->a";
+				$li->a->span['class'] = 'mi';
+			}
+			$i += 1;
+		}
+
+		$item->toc = str_replace('<?xml version="1.0"?>', '', $nav->asXml());
+
+		libxml_use_internal_errors($shutup);
+
+		return $nav;
+	}
+
+	static protected function _paginationToc($nav)
+	{
+
 	}
 
 }

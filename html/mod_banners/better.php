@@ -21,13 +21,18 @@ if ($headerText) { echo $headerText; }
 
 foreach ($list as $item)
 {
-?><div class="banneritem item-<?php echo $item->id ?>"><?php
-
 	$item->link = JRoute::_('index.php?option=com_banners&task=click&id='. $item->id);
+
+?><div class="banneritem item-<?php echo $item->id, ($item->type == 1) ? ' textual' : ' visual' ?>"><?php
+
 
 	if ($item->type == 1) {
 		// Text based banners
-		echo str_replace(array('{CLICKURL}', '{NAME}'), array($item->link, $item->name), $item->custombannercode);
+		echo str_replace(array(
+				'<span class="ext">{CLICKURL}</span>', '<span class="name">{NAME}</span>'),
+				array($item->link, $item->name),
+				$item->custombannercode
+			);
 	}
 	else
 	{
@@ -42,8 +47,10 @@ foreach ($list as $item)
 		// Image based banner
 		if (BannerHelper::isImage($imageurl))
 		{
-			$alt = $item->params->get('alt');
-			$css = '';
+			$alt   = $item->params->get('alt');
+			// this parameter is only availabe for ConstructWidgets
+			$title = $item->params->get('title', '');
+			$css   = '';
 
 			if ($alt) {
 				$alt = ' alt="'.  htmlspecialchars($alt, ENT_QUOTES, 'UTF-8') .'"';
@@ -60,12 +67,14 @@ foreach ($list as $item)
 			{
 				switch ((int)$params->get('target', 1))
 				{
-					case 1;	// Open in a new window
+					case 1;	// open in a new window
 						$target = ' target="_blank"';
+						if (empty($title)) $title = JText::_('JBROWSERTARGET_NEW');
 						break;
 
-					case 2;	// open in a popup window
+					case 2;	// open in a modal window
 						$target = '';
+						if (empty($title)) $title = JText::_('JBROWSERTARGET_POPUP');
 						$css    = ' class="modal"';
 						break;
 
@@ -108,6 +117,7 @@ foreach ($list as $item)
 	}
 
 ?></div><?php
+
 }
 
 if ($footerText) { ?><div class="bannerfooter"><?php echo $footerText ?></div><?php }

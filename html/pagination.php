@@ -62,7 +62,7 @@ function pagination_list_render($list)
 	}
 
 	if ($list['previous']['active']) {
-		$html .= '<li class="mi prev txt">' . $list['previous']['data'] .'</li>';
+		$html .= '<li class="mi prev txt">' . str_replace('href', 'id="prev-page" href', $list['previous']['data']) .'</li>';
 	}
 
 	foreach ($list['pages'] as $page)
@@ -77,7 +77,7 @@ function pagination_list_render($list)
 	}
 
 	if ($list['next']['active']) {
-		$html .= '<li class="mi next txt">'. $list['next']['data'] .'</li>';
+		$html .= '<li class="mi next txt">'. str_replace('href', 'rel="prefetch" id="next-page" href', $list['next']['data']) .'</li>';
 	}
 
 	if ($list['end']['active']) {
