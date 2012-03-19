@@ -135,10 +135,14 @@ smaller nonetheless and rock solid.
 All core .css files are usually "grouped" into blocks, starting with the positions and dimensions of things, followed by colors, fonts, and finally a pinch of CSS3 eye-candy and "hacks" if needed. Print rules appear last.
 
 ## CSS Validation
-If you try to run any of the .css you may find it doesn't "validate". These warnings or errors are either causes by vendor prefixes or some IE hacks.
+If you try to run any of the .css you may find it doesn't "validate". These warnings or errors are either caused by vendor prefixes or some IE hacks.
 
 ## HTML5 Validation
 If you're a Validator addict and believe the world would fall apart, and your computer will explode if a Validator software tells your, the **grammar** of Construc2's HTML sucks, then please move along and stick with XHTML.
+
+As Louis Lazaris on impressivewebs.com pointed out:
+	**Validation is Just a Guide**
+	This is the most important point here. You should not view validation as the holy grail of good code. The validator should just be a useful guide that helps you correct any actual errors that you’ve missed.
 
 Validators are no browsers. End of story.
 They **spell-check** your markup, they don't **render** it. Browser do render and display this <q>invalid</q> HTML just fine, like a person is able to understand some other person mumbling or whispering.
