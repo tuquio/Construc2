@@ -204,45 +204,47 @@ class ConstructTemplateHelper
 	 */
 	public function getCssAlias($item, $parent = false)
 	{
-		$d = array();
+		$C = array();
 		// menu item?
 		if (isset($item->type) && $parent) {
-			$d['t'] = $item->type;
+			$C[] = $item->type;
 			if (isset($item->query['option'])) {
-				$d['o'] = str_replace('_', '-', $item->query['option']);
+				$C[] = str_replace('_', '-', $item->query['option']);
 			}
 			if (isset($item->query['view'])) {
-				$d['v'] = $item->query['view'];
+				$C[] = $item->query['view'];
 			}
 			if (isset($item->query['layout'])) {
-				$d['l'] = $item->query['layout'];
+				$C[] = $item->query['layout'];
 			}
-		}
-
-		$d['A'] = array();
-		if (isset($item->parent_alias)) {
-			$d['A']['pa'] = $item->parent_alias;
-		}
-		if (isset($item->category_alias)) {
-			$d['A']['ca'] = $item->category_alias;
-		}
-
-		if (isset($item->alias)) {
-			$d['A']['ia'] = $item->alias;
 		}
 
 		if ($item instanceof JCategoryNode) {
-			list($tmp, $d['sl']) = explode(':', $item->slug);
-			$d['id'] = 'cid-' . $item->id;
+			list($tmp, $C[]) = explode(':', $item->slug);
+			$C[] = 'cid-' . $item->id;
 		} else {
 			if (isset($item->catid)) {
-				$d['cid'] = 'cid-'.$item->catid;
+				$C[] = 'cid-'.$item->catid;
 			}
-			$d['id'] = 'item-' . $item->id;
+			$C[] = 'item-' . $item->id;
+		}
+
+		$A = array();
+		if (isset($item->parent_route)) {
+			$A[] = substr($item->parent_route, 0, strpos($item->parent_route, '/'));
+		}
+		if (isset($item->parent_alias)) {
+			$A[] = $item->parent_alias;
+		}
+		if (isset($item->category_alias)) {
+			$A[] = $item->category_alias;
+		}
+		if (isset($item->alias)) {
+			$A[] = $item->alias;
 		}
 
 		$alias = '';
-		foreach ($d['A'] as $k => $ali)
+		foreach ((array)$A as $k => $ali)
 		{
 			// single word
 			if (strpos($ali, '-') === false) continue;
@@ -261,10 +263,11 @@ class ConstructTemplateHelper
 					$alias = $this->_inflectAlias($ali);
 				}
 			}
+			$A[$k] = $alias;
 		}
-		unset($d['A']);
 
-		$alias .= ' ' . implode(' ', array_unique($d));
+		$words = array_unique( array_merge($C, $A) );
+		$alias = implode(' ', $words);
 
 		return trim($alias);
 	}
@@ -632,7 +635,7 @@ class ConstructTemplateHelper
 			if ($attribs['capture'] === true) {
 				$attribs['capture'] = $group;
 			}
-			$this->theme->setCapture($attribs['capture'], $html, $attribs);
+			$this->theme->setCapture($attribs['capture'], $html);
 		} else {
 			echo trim(implode('', $html));
 		}
@@ -1105,6 +1108,7 @@ class ConstructTemplateHelper
 	 *
 	 * @see buildHead(), sortScripts()
 	 * @todo move to "head renderer" class
+	 * @todo fix "IEMobile" "(IE 7)&!(IEMobile)" "(IE 8)&!(IEMobile)" "(gte IE 9)|(gt IEMobile 7)"
 	 */
 	protected function renderHead()
 	{
@@ -1321,6 +1325,8 @@ class ConstructTemplateHelper
 	 * @param  array  $filler
 	 *
 	 * @return ConstructTemplateHelper for fluid interface
+	 *
+	 * @todo fix "IEMobile" "(IE 7)&!(IEMobile)" "(IE 8)&!(IEMobile)" "(gte IE 9)|(gt IEMobile 7)"
 	 */
 	protected function _makeRoom($group, &$uagent, $filler=array())
 	{
