@@ -9,6 +9,7 @@
 @import url(//fonts.googleapis.com/css?family=Ubuntu+Condensed);
 @import url(//fonts.googleapis.com/css?family=Kristi);
 @import url(padawan_light.css) screen,projection;
+@import url(padawan_light_fx.css) screen,projection;
 
 body {min-width:900px;max-width:94%;margin:0 auto}
 
@@ -21,6 +22,12 @@ body {min-width:900px;max-width:94%;margin:0 auto}
 	body #body-container, .page-foot {max-width:90%}
 	#logo {margin-left:5%}
 }
+
+/* Retina Resolution 
+@media only screen and (-webkit-min-device-pixel-ratio: 2) {
+	
+}
+*/
 
 /* popup modal */
 @media screen {
@@ -39,7 +46,7 @@ body {min-width:900px;max-width:94%;margin:0 auto}
 .page-foot {}
 
 #header			{height:100px}
-#logo   		{font-size:60px;display:inline-block}
+#logo   		{font-size:450%;display:inline-block}
 .site-link {}
 .site-name {}
 
@@ -89,7 +96,7 @@ header.below	{margin:0 auto}
 	.main-beta .content-main {width:75%;float:left}
 
 	/* 3col [ [alpha|main] beta] */
-	.alpha-main-beta .column-group {width:23%}
+	.alpha-main-beta .group-beta   {width:23%}
 	.alpha-main-beta .content-main {float:left;width:77%}
 	.alpha-main-beta .group-alpha  {width:30%}
 	.alpha-main-beta section.component {float:right;width:70%}
@@ -102,14 +109,7 @@ header.below	{margin:0 auto}
 		 column-count:2;		column-gap:10px;
 }
 
-#system-message-container {		display:none,
-	position: absolute;
-	right: 0;
-	top:-3.25em;
-	min-width: 50%;
-	max-width: 75%;
-	opacity:.95
-}
+#system-message-container {display:none;position:absolute;right:0;top:-3.25em;min-width:50%;max-width:75%;opacity:.95}
 
 /*
  * =columns context
@@ -129,6 +129,7 @@ header.below	{margin:0 auto}
 .blog article		,
 .item-page			,
 .items-more			{padding:10px;margin-bottom:10px}
+.items-more .links	{-webkit-columns:2;-moz-columns:2;-ms-columns:2;columns:2}
 
 /* 
  * misc components 
@@ -138,27 +139,17 @@ section.component > div.finder {padding:10px;margin-bottom:10px}
 
 #finder-search label,
 #finder-search input,
-#finder-search button {display:inline-block; max-width:30%}
-#search-results		{margin-top:10px;padding:1ex 0.8em}
+#finder-search button	{display:inline-block; max-width:30%}
+#search-results			{margin-top:10px;padding:1ex 0.8em}
 dl.search-results {}
 	dt.result-title:not(:first-child) {margin-top:10px}
-	dd.result-text	{padding:1ex 1em 1ex 1ex}
-	dd.result-url	{padding:0 1ex;font-size:.9em}
+	dd.result-text		{padding:1ex 1em 1ex 1ex}
+	dd.result-url		{padding:0 1ex;font-size:.9em}
 
 .blog h1, .blog .H1 {}
-.blog h2, .blog .H2 {margin-top:0}
+.blog h2, .blog .H2		{margin-top:0}
 
-.introtext, .fulltext {margin-right:20px}
-
-#content:target .fulltext p:first-of-type {
-	-moz-animation: moz-readmore 3s;
-	-webkit-animation: webkit-readmore 3s;
-}
-
-@-moz-keyframes moz-readmore {
-	from, 100% { background-color:#fff; }
-	50% { background-color: floralwhite; }
-}
+.introtext, .fulltext	{margin-right:20px}
 
 .unit > article			{margin-right:5px}
 .lastUnit > article		{margin-left:5px;margin-right:0}
@@ -233,7 +224,7 @@ blockquote p {-webkit-hyphens:none;-moz-hyphens:none;hyphens:none}
 .blog .unit .introtext		{min-height:250px}
 .category-desc img.catimg {}
 
-figure img					{height:auto}
+figure img					{max-width:100%;height:auto}
 .portrait					{text-align:center}
 
 /*
@@ -250,8 +241,11 @@ figure img					{height:auto}
 .column-group fieldset dd	,
 .column-group .inputbox 	{display:block;margin-left:0;width:100%}
 
+/* @todo test with multiple banners in a single bannergroup, using table-row and table-cell */
 .mod-banner {}
-.banneritem img 	{display:block;margin-left:auto;margin-right:auto;text-align:center}
+.bannergroup 				{vertical-align:top;text-align:center}
+.banneritem					{margin-left:auto;margin-right:auto}
+.banneritem img 			{display:inline-block}
 
 /* =mod_search / mod_finder - align with mainmenu and li paddings */
 .mainnavi form 				{position:absolute;right:2px;top:0.5ex}
@@ -279,45 +273,53 @@ div.finder br				{display:none}
 .sep 				{padding:0.25ex}
 li.mi img			{border:none;box-shadow:none}
 
+/* allow the nested list determine its [default] whitepace at bottom */
+nav.page-toc					{padding-top:1ex;padding-left:.6em;margin-left:1em} /* aka #article-index */
+	.toc-title {}
+	.toc-items					{list-style-type:decimal;counter-reset:toc}
+	.toc-items .current 		{font-weight:bold}
+	.toc-items span.mi			{display:inline-block;width:95%}
+	.toc-items li.mi:last-child {list-style:none;margin-left:-1ex}
+
+/* push the whole thing inwards to make room for .actionsmenu:width */
+.has-actions nav.page-toc 		{margin-right:20px}
+
 /* align with menu items */
-.breadcrumbs a.mi	,
-.breadcrumbs .active{padding:0.25ex 0.6em}
+.breadcrumbs a.mi		,
+.breadcrumbs .active	{padding:0.25ex 0.6em}
 
-.actionsmenu 		{position:absolute;right:0;top:auto;width:21px;opacity:.4}
-.actionsmenu li.mi	{display:inline-block;width:100%;text-align:center}
-.actionsmenu .text	{padding:0}
-.actionsmenu .text	{pading:0 1ex}
-.actionsmenu img	{padding:2px;margin:0}
+.has-toc .actionsmenu	{position:absolute;float:none;margin-right:0;right:0}
+.actionsmenu 			{margin-top:-1em;margin-right:-10px;width:20px;opacity:.4}
+.actionsmenu li.mi		{display:inline-block;width:100%;text-align:center}
+.actionsmenu .text		{padding:0}
+.actionsmenu .icon		{padding:.2ex 0}
+.actionsmenu .icon img {}
+/* fly-out 'title' as icon label - offset .right by .actionsmenu:width */
+.actionsmenu .icon a:before 		{font-size:.8em;margin-right:1ex;padding:.2ex 1ex;position:absolute;right:20px}
+.actionsmenu .icon:hover a:before	{content:attr(title);white-space:pre}
 
-.skiplinks a.mi		{text-decoration: underline}
-.skiplinks .cat-title:before {content:'\A0('}
-.skiplinks .cat-title:after  {content:')'}
 
-.pagenav			{margin-left:0;margin-right:0;padding-left:0;padding-right:0;overflow:auto}
+.skiplinks a.mi					{text-decoration: underline}
+.skiplinks .cat-title:before	{content:'\A0('}
+.skiplinks .cat-title:after		{content:')'}
+
+.pagenav						{margin-left:0;margin-right:0;padding-left:0;padding-right:0;overflow:auto}
 .pagenav li.mi {}
 .pagenav a.mi {}
-.pagenav .prev:only-child	{float:left}
-.pagenav .next:only-child	{float:right}
+.pagenav .prev:only-child		{float:left}
+.pagenav .next:only-child		{float:right}
 
 .pagenavcounter {}
 
-/* allow the nested list determine its [default] whitepace at bottom */
-nav.page-toc	{padding-top:1ex;padding-left:.6em;margin-left:1em} /* aka #article-index */
-	.toc-title {}
-	.toc-items	{list-style:decimal outside none}
-	.toc-items li.mi:last-child {list-style:none;margin-left:-1ex}
-
-/* push the whole thing inwards to make room for the .actionsmenu */
-.has-actions nav.page-toc {margin-right:24px}
-
 nav.pagination {}
-menu.pagination			{display:inline-block}
+footer nav.pagination			{overflow:auto;padding:0 10px}
+menu.pagination					{display:inline-block}
 div.search-pagination {}
 
 p.counter, .search-pages-counter {display:inline-block;margin:.6ex 1em}
 
-..search-pages-counter strong,
-.pagination span.mi		{font-weight:bold}
+.search-pages-counter strong,
+.pagination span.mi				{font-weight:bold}
 
 /* =modules */
 .mod-articles-categories .hd	{font-size:110%}
@@ -353,10 +355,13 @@ summary:focus + * {}
  */
 #aii {margin-top:0}
 
-.schriftstellerei .introtext p:not(:first-of-type),
-.schriftstellerei .fulltext  p:not(:first-of-type) {text-indent:1.6ex}
-.schriftstellerei article p:first-of-type img {float:right;margin-left:10px;max-width:40%;position:relative;z-index:10}
-.schriftstellerei article ~ img:first-child {margin:0 0 5px 1em}
+.satire .introtext p:not(:first-of-type),
+.satire .fulltext  p:not(:first-of-type) {text-indent:1em}
+.tierische-geschichte .introtext p:not(:first-of-type),
+.tierische-geschichte .fulltext  p:not(:first-of-type) {text-indent:1em}
+
+.tierische-geschichte article p:first-of-type img {float:right;margin-left:10px;max-width:40%;position:relative;z-index:10}
+.tierische-geschichte article ~ img:first-child {margin:0 0 5px 1em}
 
 .kunstwerke .introtext img,
 .kunstwerke .fulltext  img	{margin-bottom:.6em}

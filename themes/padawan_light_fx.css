@@ -1,0 +1,74 @@
+/*!
+ * padawan_fxt.css CSS3 eye candy and vendor stuff
+ * @version 15.03.2012
+ * @license CC BY-NC 3.0/de
+ * FF9+ generatedcontent flexbox canvas touch rgba hsla borderimage csscolumns cssgradients csstransitions svg inlinesvg
+ * IE7: no-generatedcontent no-flexbox no-canvas no-touch no-rgba no-hsla no-borderimage no-csscolumns no-cssgradients no-csstransitions no-svg no-inlinesvg
+ * OE8:    generatedcontent no-...
+ */
+
+/* keeps oldIEs away */
+@media screen and (min-width:320px)
+{
+	/* =widgets */
+	summary::-webkit-details-marker {color:#888}
+	
+	/* just colors, base.css cares for the rest */
+	*::-moz-selection {background-color:#444;color:#fff}
+	*::selection      {background-color:#444;color:#fff}
+
+	#content:target .fulltext p:first-of-type {
+		-moz-animation: moz-readmore 3s;
+		-webkit-animation: webkit-readmore 3s;
+	}
+	
+	@-moz-keyframes moz-readmore {
+		from, 100% { background-color:#fff; }
+		50% { background-color: floralwhite; }
+	}
+
+	/* =gradients */
+	.meta ,
+	.page-toc,
+	button {
+		background-image: -webkit-linear-gradient(top, #fff, #efefef);
+		background-image:    -moz-linear-gradient(top, #fff, #efefef);
+		background-image:     -ms-linear-gradient(top, #fff, #efefef);
+		background-image:      -o-linear-gradient(top, #fff, #efefef);
+	}
+
+	.mod-articles-categories .inner,
+	.column-group .mod-login .inner {
+		background-image:-moz-radial-gradient(0 45%, hsl(0,0%,96%), hsl(0,0%,90%));
+		box-shadow:5px 5px 13px -5px #fff inset
+	}
+
+	.items-leading article {
+		background-image:-webkit-linear-gradient(50% bottom, #efefef 4em, #fff 8em);
+		background-image:   -moz-linear-gradient(50% bottom, #efefef 4em, #fff 8em);
+		background-image:    -ms-linear-gradient(50% bottom, #efefef 4em, #fff 8em);
+		background-image:     -o-linear-gradient(50% bottom, #efefef 4em, #fff 8em);
+		box-shadow: 0px -3px 9px -1px #fff inset;
+	}
+
+	.items-row article {
+		background-image:-webkit-linear-gradient(50% bottom, #efefef 3em, #fff 10em);
+		background-image:   -moz-linear-gradient(50% bottom, #efefef 3em, #fff 10em);
+		background-image:    -ms-linear-gradient(50% bottom, #efefef 3em, #fff 10em);
+		background-image:     -o-linear-gradient(50% bottom, #efefef 3em, #fff 10em);
+		box-shadow: 0px -3px 9px -1px #fff inset;
+	}
+
+}
+
+/* =IE7 \0/ */
+.ltie9 .introtext img,
+.ltie9 .fulltext img {
+	filter: progid:DXImageTransform.Microsoft.Shadow(direction=315,Color=#dddddd)
+			progid:DXImageTransform.Microsoft.Shadow(direction=135,Color=#dddddd);
+	}
+
+.ltie9 .actionsmenu img			{filter:Gray(Enabled=true);display:inline-block}
+.ltie9 .actionsmenu img:hover	{filter:Gray(Enabled=false)}
+
+/* .eof */
