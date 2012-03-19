@@ -35,6 +35,9 @@ Plugin 'pagebreak' if activated via "Shared Options" in Artikel Manager paramete
 
 JLoader::register('ContentLayoutHelper', JPATH_THEMES . '/construc2/html/com_content/_shared/helper.php');
 
+// Article Table of Contents, Page Navigation
+ContentLayoutHelper::betterToc($this->item);
+
 $params		= $this->item->params;
 $showLabels	= ($params->get('show_author') || $params->get('show_category' ) || $params->get('show_parent_category'));
 $showDates	= ($params->get('show_create_date') || $params->get('show_modify_date') || $params->get('show_publish_date'));
@@ -45,41 +48,48 @@ $canEdit	= $params->get('access-edit');
 $actions	= ($canEdit || $params->get('show_print_icon') || $params->get('show_email_icon'));
 $noPrint	= !(JFactory::getApplication()->input->get('print'));
 
-$showact	= $actions ? 'has-actions ' : '';
-$showall	= (1 == (int)JFactory::getApplication()->input->get('showall')) ? 'showall ' : '';
-$showtoc	= isset($this->item->toc) ? 'has-toc ' : '';
-
 $images		= json_decode($this->item->images);
 $urls		= json_decode($this->item->urls);
 
-$ipos = $fpos = $bpos = 0;
-if ($this->item->fulltext)
-{
-	if ($params->get('show_pagination_results')) {
-		$ipos  = strpos($this->item->text, $this->item->introtext);
-		$ptext = substr($this->item->text, 0, $ipos);
+$showall	= (1 == (int)JFactory::getApplication()->input->get('showall'));
+
+// property and state classes
+$more = array('f'=>array(),'p'=>array(),'s'=>array());
+if  ($this->item->featured) 	{$more['f'][] = 'featured';}
+if  ($showall)					{$more['f'][] = 'showall';}
+if  (isset($this->item->toc))	{$more['p'][] = 'has-toc';}
+if  ($actions)					{$more['p'][] = 'has-actions';}
+if  (!$this->item->rating)  	{$more['s'][] = 'unrated';}
+
+	// #TODO move to helper
+	$ipos = $fpos = $bpos = 0;
+	if ($this->item->fulltext)
+	{
+		if ($params->get('show_pagination_results')) {
+			$ipos  = strpos($this->item->text, $this->item->introtext);
+			$ptext = substr($this->item->text, 0, $ipos);
+		}
+		$bpos  = strpos($this->item->fulltext, '<hr class="system-pagebreak"');
+		$bpos  = $bpos ? $bpos : strlen($this->item->fulltext);
+		$fpos  = strpos($this->item->text, substr($this->item->fulltext, 0, $bpos));
+		$itext = substr($this->item->text, 0, $ipos) . substr($this->item->text, $ipos, $fpos - $ipos);
+		$ftext = substr($this->item->text, $fpos);
+	} else {
+		$itext = '';
+		$ftext = $this->item->text;
 	}
-	$bpos  = strpos($this->item->fulltext, '<hr class="system-pagebreak"');
-	$bpos  = $bpos ? $bpos : strlen($this->item->fulltext);
-	$fpos  = strpos($this->item->text, substr($this->item->fulltext, 0, $bpos));
-	$itext = substr($this->item->text, 0, $ipos) . substr($this->item->text, $ipos, $fpos - $ipos);
-	$ftext = substr($this->item->text, $fpos);
-} else {
-	$itext = '';
-	$ftext = $this->item->text;
-}
-
-// override introtext and fulltext
-unset($this->item->text);
-$this->item->introtext = trim($itext);
-$this->item->fulltext  = trim($ftext);
-
-// Article Table of Contents: nav.unit.size2of5.page-toc.rgt, h3.H4.toc-title, ol.toc-items, li.mi
-ContentLayoutHelper::betterToc($this->item, $showall);
+	// have a better pagenav?
+	if (isset($this->item->pagenav) ) {
+		$ftext = substr($ftext, 0, strpos($ftext, '<div class="pagination"'));
+	}
+	// override introtext and fulltext
+	unset($this->item->text);
+	$this->item->introtext = trim($itext);
+	$this->item->fulltext  = trim($ftext);
 
 ?>
-	<article class="line item-page <?php echo $showall, $showtoc, $showact, ContentLayoutHelper::getCssAlias($this->item), ($this->item->state == 0 ? ' system-unpublished' : '') ?>">
-	<header class="article">
+	<article id="the-article" class="line item-page <?php echo implode(' ', $more['p']) ,' ', ContentLayoutHelper::getCssAlias($this->item, true), ($this->item->state == 0 ? ' system-unpublished' : '') ?>">
+	<header id="the-header" class="article">
 <?php
 if ($params->get('show_page_heading')) {
 	if ($params->get('show_title')) { echo '<hgroup class="article">'; }
@@ -104,7 +114,7 @@ if (!ContentLayoutHelper::isEmpty($this->item->event->beforeDisplayContent))
 	if (strpos($this->item->event->beforeDisplayContent, 'content_rating')) {
 		$this->item->event->beforeDisplayContent = str_replace('<br />', '', $this->item->event->beforeDisplayContent);
 	}
-	echo '<aside class="article">', $this->item->event->beforeDisplayContent, '</aside>';
+	echo '<aside class="article ', implode(' ', $more['s']) ,'">', $this->item->event->beforeDisplayContent, '</aside>';
 }
 
 if (isset($this->item->toc)) {
@@ -127,11 +137,14 @@ if (!empty($this->item->fulltext)) { ?>
 <?php
 }
 
-if (isset($this->pagination) ) { ?>
-<nav class="pagination"><ul class="pagenav">
-<?php if ($this->item->prev): ?><li class="mi prev"><a class="mi" href="<?= $this->item->prev ?>#content"><span class="mi"><?= JText::_('Previous Article')?></span></a></li><?php endif; ?>
-<?php if ($this->item->next): ?><li class="mi next"><a class="mi" rel="prefetch" href="<?= $this->item->next ?>#content"><span class="mi"><?= JText::_('Next Article')?></span></a></li><?php endif; ?>
-</ul></nav>
+// better multipage navigation
+if (isset($this->item->pagenav) ) { ?>
+
+	<footer id="the-footer">
+	<h4 class="H4"><?php JText::printf('Article spans several pages', $this->escape($this->item->title)) ?></h4>
+	<?php echo $this->item->pagenav ?>
+	</footer>
+
 <?php
 }
 
@@ -142,3 +155,12 @@ if ($showStuff) {
 echo $this->item->event->afterDisplayContent;
 ?>
 	</article>
+
+<?php if (isset($this->item->pagination) ) { ?>
+<footer id="component-footer" class="component article">
+	<nav class="pagination"><ul class="pagenav">
+	<?php if ($this->item->prev): ?><li class="mi prev"><a class="mi" href="<?= $this->item->prev ?>#content"><span class="mi"><?= JText::_('Previous Article')?></span></a></li><?php endif; ?>
+	<?php if ($this->item->next): ?><li class="mi next"><a class="mi" rel="prefetch" href="<?= $this->item->next ?>#content"><span class="mi"><?= JText::_('Next Article')?></span></a></li><?php endif; ?>
+	</ul></nav>
+</footer>
+<?php }

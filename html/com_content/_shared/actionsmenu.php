@@ -21,7 +21,7 @@ $ielt = array(
 		);
 $iwhat = $params->get('show_icons') ? 'icon' : 'text';
 
-?><ul class="menu hmenu actionsmenu <?php echo $iwhat,'s' ?>" title="<?php echo JText::_('Article Actions') ?>">
+?><ul class="menu hmenu actionsmenu rgt <?php echo $iwhat,'s' ?>" title="<?php echo JText::_('Article Actions') ?>">
 	<?php if ($params->get('show_print_icon')) { ?>
 	<li class="print <?php echo $iwhat ?> mi"><?php echo str_replace($ielt['p'], $ielt['r'], ContentLayoutHelper::widget('icon.print_popup', $this->item, $params)) ?></li>
 <?php }

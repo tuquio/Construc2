@@ -11,7 +11,7 @@
 
 $style	= 'mod'; // null is essentially the same as 'raw'
 
-?><div id="group-alpha" class="column-group group-alpha colcount-<?php echo $columnGroupAlphaCount ?>""><?php
+?><div id="group-alpha" class="column-group group-alpha colcount-<?php echo $columnGroupAlphaCount ?>"><?php
 
 if ($columnGroupCount[1]) {
 	$templateHelper->renderModules('column-1', $style, array('toggle'=>'odd,even', 'autocols'=>false));

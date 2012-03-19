@@ -1,7 +1,7 @@
 /* äöü - UTF-8 required! */
 /*!
  * base.css "HTML5ish edition" featuring 'normalise.css'
- * @version 1.6.7 06.03.2012
+ * @version 1.6.8 19.03.2012
  * personal likings + defaults for THIS WEBSITE ONLY mixed with inspirational input from
  * @credits E. Meyer, Yahoo!, N. Sullivan, D. Edwards, CSS-WG, W3C, and the Interwebs,
  * feat. normalize.css - http://github.com/necolas/normalize.css
@@ -92,7 +92,7 @@ q{quotes: '„' '“' '‚' '‘' }
 ul,ol,dl{margin:1ex auto .625em 1ex;padding:0 0 0 1ex}
 ol{list-style:decimal}
 ul{list-style:disc}
-li{display:list-item;list-style-position:outside;text-indent:0;margin-left:1.2ex}
+li{display:list-item;list-style-position:outside;text-indent:0;margin-left:1.2ex;vertical-align:top}
 dd{margin-left:1.2ex;-moz-margin-start:0;-webkit-margin-start:0;-ms-margin-start:0}
 ol li{margin-left:1.7ex}
 dd ol,dd ul{padding-left:1ex}

@@ -26,16 +26,16 @@ $templateHelper->getTheme()->setChunks($chunks, true);
 $group = 'header-below';
 
 if ($headerBelowCount[1]) {
-	$templateHelper->renderModules('header-below-1', 'mod', array('capture'=>true));
+	$templateHelper->renderModules('header-below-1', 'raw', array('capture'=>true));
 }
 if ($headerBelowCount[2]) {
-	$templateHelper->renderModules('header-below-2', 'mod', array('capture'=>true));
+	$templateHelper->renderModules('header-below-2', 'raw', array('capture'=>true));
 }
 if ($headerBelowCount[3]) {
-	$templateHelper->renderModules('header-below-3', 'mod', array('capture'=>true));
+	$templateHelper->renderModules('header-below-3', 'raw', array('capture'=>true));
 }
 if ($headerBelowCount[4]) {
-	$templateHelper->renderModules('header-below-4', 'mod', array('capture'=>true));
+	$templateHelper->renderModules('header-below-4', 'raw', array('capture'=>true));
 }
 
 // AFTER module positions where rendered and captured

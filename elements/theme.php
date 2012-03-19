@@ -8,6 +8,10 @@
  * @license     GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
 
+/** Register some Widget Classes */
+#	JLoader::register('ContentWidgets', dirname(__FILE__) . '/widgets/content.php');
+#	JLoader::register('BehaviorWidgets', dirname(__FILE__) . '/widgets/behavior.php');
+
 /**
  * Proxy for the onBeforeCompileHead event because the Dispatcher only
  * allows function or class-based observers and insists on instatiating
