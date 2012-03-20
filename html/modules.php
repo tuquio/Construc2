@@ -29,7 +29,7 @@ function modChrome_chtml( $module, &$params, &$attribs )
 	static $ooobj = array('mod'=>false,'complex'=>false,'pop'=>false,'bubble'=>false);
 
 	// don't render empty modules, "whitelist" for mod_custom and mod_banner
-	if (ConstructTemplateHelper::isEmpty($module->content)) return;
+#	if (ConstructTemplateHelper::isEmpty($module->content)) return;
 
 	$css	= array();
 	$oocss  = null;
@@ -119,7 +119,7 @@ function modChrome_mod( $module, &$params, &$attribs )
 	static $toggle = 0;
 
 	// don't render empty modules, "whitelist" for mod_custom and mod_banner
-	if (ConstructTemplateHelper::isEmpty($module->content)) return;
+#	if (ConstructTemplateHelper::isEmpty($module->content)) return;
 
 	if (array_key_exists('oocss', $attribs)) {
 		$attribs['oocss'] = 'mod '. $attribs['oocss'];
@@ -211,8 +211,6 @@ function modChrome_withevent( $module, &$params, &$attribs )
 	if (ConstructTemplateHelper::isEmpty($module->content)) return;
 
 	$module->content = JHtml::_('content.prepare', $module->content, $params);
-
-	modChrome_chtml( $module, $params, $attribs );
 }
 
 /**
@@ -230,6 +228,12 @@ function modChrome_raw( $module, &$params, &$attribs )
 
 	if ($module->showtitle) {
 		$level = isset($attribs['level']) ? (int) $attribs['level'] : 3;
+		$css   = 'H'.$level;
+		// 'custom' makes for a pretty weired name
+		if ('custom' != $module->module) {
+			$css .= ' '.str_replace('_', '-', $module->module);
+		}
+
 		echo ' <h', $level, ' class="', $css, '">', $module->title, '</h', $level, '>';
 	}
 	echo $module->content;
