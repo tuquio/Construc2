@@ -604,10 +604,26 @@ class ConstructTemplateHelper
 		$html = array();
 		foreach (JModuleHelper::getModules($position) as $_module)
 		{
-			$content = JModuleHelper::renderModule($_module, $attribs);
-			if (self::isEmpty($content)) {
-				continue;
+			if (in_array($_module->name, $this->config['allow_empty']))
+			{
+				if (self::isEmpty($content)) {
+					continue;
+				}
 			}
+
+			// find @stylename encoded in moduleclass_sfx
+			$mparams = json_decode($_module->params);
+			if (isset($mparams->moduleclass_sfx) && strpos($mparams->moduleclass_sfx, '@') !== false)
+			{
+				$style = preg_grep('/^@([a-z]+)/', explode(' ', $mparams->moduleclass_sfx));
+				$attribs['style'] = str_replace('@', '', implode(' ', $style));
+
+				// put everything else back
+				$mparams->moduleclass_sfx = trim(str_replace($style, '', $mparams->moduleclass_sfx));
+				$_module->params = json_encode($mparams);
+			}
+
+			$content = JModuleHelper::renderModule($_module, $attribs);
 
 			// this crap doesn't belong here
 			$content = $this->_choppInlineCrap($content, $_module->module);
