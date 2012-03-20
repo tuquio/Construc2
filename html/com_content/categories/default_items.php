@@ -18,7 +18,7 @@ foreach ($this->items[$this->parent->id] as $id => $item)
 		if ($this->params->get('show_cat_num_articles_cat') == 1) { ?>
 	<p class="article-info">
 	<strong><?php echo JText::_('COM_CONTENT_NUM_ITEMS') ?></strong>
-	<span><?php echo $child->getNumItems(true) ?></span>
+	<span><?php echo $item->getNumItems(true) ?></span>
 	</p><?php
 		}
 
