@@ -3,7 +3,7 @@
  * Construc2 Template Theme.
  *
  * @package     Construc2
- * @subpackage  Elements
+ * @subpackage  Engine
  * @copyright   (C) 2011-2012 WebMechanic. All rights reserved.
  * @license     GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -21,24 +21,46 @@ function CustomThemeContentEvent($context, $item, $params, $limitstart=0)
 {
 }
 
+/**
+ * CustomTheme Base Class.
+ */
 class CustomTheme
 {
 	/**
-	 * @var $helper ConstructTemplateHelper instance of self
+	 * @var $theme CustomTheme instance of self
 	 * @see getInstance()
 	 */
 	public static $theme;
 
+	/**#+
+	 * Theme Properties
+	 * @see getConfig()
+	 */
+	/** @var $name string */
 	protected $name    = 'default';
+	/** @var $title string */
 	protected $title   = 'Default';
-	protected $version = '';
-	protected $author  = '';
-
+	/** @var $version string */
+	protected $version = '0.1.0';
+	/** @var $author string */
+	protected $author  = 'WebMechanic';
+	/** @var $path string */
 	protected $path    = '';
+	/** @var $url string */
 	protected $url     = '';
+	/**#- */
 
-	/** @var $config JObject */
-	protected $config = array(
+	/**
+	 * @var $config JObject
+	 * @see getConfig()
+	 */
+	protected $config;
+
+	/**
+	 * @ignore
+	 * @var array defaults
+	 */
+	protected $_config = array(
 				'title'=>'Default',
 				'version'=>'',
 				'layouts'=>array(),
@@ -85,7 +107,7 @@ class CustomTheme
 		$this->path = JPATH_THEMES .'/'. $tmpl->template .'/themes/'. $this->name . '.php';
 		$this->url  = JUri::root(true) .'/templates/'. $tmpl->template .'/themes';
 
-		$this->config = new JObject($this->config);
+		$this->config = new JObject($this->_config);
 
 		if (is_file($this->path))
 		{

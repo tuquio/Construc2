@@ -1,10 +1,9 @@
 <?php defined('_JEXEC') or die;
 /**
- * ConstructTemplateHelper
- * Helper functions for the Construc2 Template.
+ * Construc2 Template Main class.
  *
  * @package     Construc2
- * @subpackage  Elements
+ * @subpackage  Engine
  * @copyright	(C)2012 WebMechanic. All rights reserved.
  * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -41,9 +40,7 @@ class ConstructWidgets
 }
 
 /**
- * ConstructTemplateHelper
- *
- * Helper functions for the Construc2 Template.
+ * Construc2 Template Main class.
  * @since 1.0
  */
 class ConstructTemplateHelper
