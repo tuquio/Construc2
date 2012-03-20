@@ -87,10 +87,9 @@ class ConstructTemplateHelper
 		$this->tmpl = JFactory::getApplication()->getTemplate(true);
 
 		if ($this->tmpl->params->get('headCleanup')) {
+			require_once dirname(__FILE__) .'/renderer/header.php';
 			JLoader::register('JDocumentRendererHead', dirname(__FILE__) .'/renderer/header.php');
 		}
-
-		require_once dirname(__FILE__) .'/renderer/header.php';
 
 		// remove this nonsense
 		$this->doc->setTab('');
