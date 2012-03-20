@@ -1,5 +1,12 @@
-<?php
-defined('_JEXEC') or die;
+<?php defined('_JEXEC') or die;
 
-// no wrapper: containers are created in module chrome
-echo $module->content;
+$attr = 'id="custom-'. $module->id .'"';
+if ($params->get('backgroundimage')) {
+	$attr .= ' style="display:inline-block;background-image:url('. $params->get('backgroundimage') .')"';
+}
+if ($moduleclass_sfx) {
+	$attr .= ' class="custom '. $moduleclass_sfx .'"';
+}
+
+?>
+<div <?php echo $attr ?>><?php echo $module->content ?></div>
