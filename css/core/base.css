@@ -7,7 +7,7 @@
  * feat. normalize.css - http://github.com/necolas/normalize.css
  * @license WTFPL
  */
-html{font-size:13px;overflow-y:scroll;-webkit-text-size-adjust:55%;-ms-text-size-adjust:55%;font-size-adjust:0.55}
+html{font-size:13px;overflow-y:scroll}
 * {-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box}
 
 /* Gecko Hacks */
@@ -27,7 +27,6 @@ a:hover,a:active{outline:0}
 abbr[title]{border-bottom:1px dotted}
 b,strong{font-weight:bold}
 dfn{font-style:italic}
-mark{background:#ff0;color:#000}
 small,sub,sup{font-size:75%}
 sub,sup{line-height:0;position:relative;vertical-align:baseline}
 sup{top:-0.5em}
@@ -61,6 +60,7 @@ dfn[title]{border-bottom:1px dotted}
 img{vertical-align:middle}
 
 /* =sorta typography */
+/* html{-webkit-text-size-adjust:55%;-ms-text-size-adjust:55%;font-size-adjust:0.55} */
 body{font-size:100.1%;font-family:"Trebuchet MS",Arial,Helvetica,sans-serif;line-height:1.6;word-wrap:break-word}
 table,dl,ol,ul,form,fieldset,output{font-size:100%;font-weight:normal}
 p,address,blockquote,li,dt,dd{line-height: 1.6}
@@ -102,13 +102,13 @@ blockquote{margin-left:1.2ex}
 /* =bits of color */
 body{color:#222; background:white}
 a,a:hover{color:inherit}
-mark{background:yellow}
+mark{background-color:yellow}
 ::selection{background:#333;color:#eee;text-shadow:none}
 
 /* =wgac, bitv, off-screen contents */
 .wgac, .invisible{position:absolute;display:inline;left:-27766px;z-index:-1;overflow:hidden;width:1px;line-height:1px;border:none;background:none}
 /* =Clears A0~nbsp */
-.clr,.clear{float:none}
+.clr,.clear{float:none;clear:both;}
 .clearfix:after,.clear:after{content:"\A0\A0\A0";visibility:hidden;clear:both;height:0 !important;display:block;line-height:0;font-size:xx-small;overflow:hidden}
 br.clear, hr.clear{float:none;clear:both;display:block;border:none;height:0;margin:0;padding:0;z-index:-1}
 
@@ -121,7 +121,7 @@ br.clear, hr.clear{float:none;clear:both;display:block;border:none;height:0;marg
 * html br.clear,
 *:first-child+html hr.clear,
 *:first-child+html br.clear{position:relative;font-size:0;line-height:0;border:0 solid;margin:-9px 0}
-img {*background:#fff;filter: progid:DXImageTransform.Microsoft.ICMFilter(ColorSpace=sRGB)}
+.msie img {filter: progid:DXImageTransform.Microsoft.ICMFilter(ColorSpace=sRGB)}
 
 /* simple print styles for common stuff (at least for what I do), inlined to
  * avoid another HTTP connection 'cos browsers download "print styles" anyway.
@@ -130,7 +130,7 @@ img {*background:#fff;filter: progid:DXImageTransform.Microsoft.ICMFilter(ColorS
  */
 @media print {
 	/* hidden from dead trees */
-	menu, nav, .menu, .hmenu, .pagination, .crumbs, #breadcrumbs, .back, #back2top{display:none}
+	menu, nav, .menu, .hmenu, #mainmenu, .pagination, .crumbs, #breadcrumbs, .back, #back2top{display:none}
 
 	/* generated content */
 	blockquote:before, blockquote:after{content:"";display:none}
