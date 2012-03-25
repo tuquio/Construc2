@@ -204,9 +204,4 @@ class ContentLayoutHelper
 		return $nav;
 	}
 
-	static protected function _paginationToc($nav)
-	{
-
-	}
-
 }
