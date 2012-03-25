@@ -928,6 +928,10 @@ class ConstructTemplateHelper
 		// JSON shim
 		$jsonShim = '(function(W,D,src) {if (W.JSON) return;var a=D.createElement("script");var b=D.getElementsByTagName("script")[0];a.src=src;a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b);})(window,document,"'. $tmpl_url .'/js/json2.min.js");';
 
+		// Remove MooTools if set to do so.
+		$loadModal	= (bool) $this->tmpl->params->def('loadModal', 0);
+		$loadMoo	= $this->tmpl->params->def('loadMoo', $loadModal);
+
 		// wrap already present noConflict() placed elsewhere
 		if ((bool) $this->tmpl->params->get('loadjQuery')) {
 			$noconflict = array();
@@ -958,28 +962,28 @@ class ConstructTemplateHelper
 					foreach ($stuff['standard'] as $key => $data) {
 						$this->addMetaData($key, $data);
 					}
-					$head[$group]['standard'] = array();
+					unset($head[$group]['standard']);
 					break;
 
 				case 'links':
 					foreach ($stuff as $key => $data) {
 						$this->addLink($key, null, $data['attribs'], $data['relation']);
 					}
-					$head[$group] = array();
+					unset($head[$group]);
 					break;
 
 				case 'styleSheets':
 					foreach ($stuff as $key => $data) {
 						$this->addLink($key, null, $data);
 					}
-					$head[$group] = array();
+					unset($head[$group]);
 					break;
 
 				case 'style':
 					foreach ($stuff as $key => $data) {
 						$this->addStyle($data);
 					}
-					$head[$group] = array();
+					unset($head[$group]);
 					break;
 
 				case 'scripts':
@@ -988,11 +992,12 @@ class ConstructTemplateHelper
 					foreach ($stuff as $key => $data) {
 						$url = parse_url($key);
 						if (!isset($url['scheme'])) {
-							$key = '/'.ltrim($key, '/');
+							$key = ltrim($key, '/');
 						}
 						$rel = str_replace(JURI::root(), '/', $key);
 						$scripts[$rel] = $data;
 					}
+
 					$head[$group] = array();
 					if (count($scripts)) {
 						$head[$group] = $scripts;
@@ -1003,7 +1008,7 @@ class ConstructTemplateHelper
 					foreach ($stuff as $key => $data) {
 						$this->addScriptDeclaration($data);
 					}
-					$head[$group] = array();
+					unset($head[$group]);
 					break;
 			}
 		}
@@ -1054,8 +1059,7 @@ class ConstructTemplateHelper
 		$head = $this->doc->getHeadData();
 
 		// Remove MooTools if set to do so.
-		$loadModal	= (bool) $this->tmpl->params->get('loadModal');
-		$loadMoo	= $this->tmpl->params->get('loadMoo', $loadModal);
+		$loadMoo	= $this->tmpl->params->get('loadMoo');
 		$loadJQuery	= $this->tmpl->params->get('loadjQuery');
 
 		// however ...
@@ -1363,7 +1367,7 @@ class ConstructTemplateHelper
 		static $root;
 
 		if (empty($root)) {
-			$root = JURI::root(true, '/');
+			$root = JURI::root(true) . '/';
 		}
 		if (strpos('{', $url) !== false) {
 
@@ -1379,7 +1383,7 @@ class ConstructTemplateHelper
 					$url = str_replace('tuck:', '', "{$uri}");
 				}
 			} else {
-				$url = '/'.ltrim($url, '/');
+				$url =  '/'. ltrim($url, '/');
 			}
 		}
 
