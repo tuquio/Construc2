@@ -1,12 +1,17 @@
 <?php defined('_JEXEC') or die;
 
-$attr = 'id="custom-'. $module->id .'"';
-if ($params->get('backgroundimage')) {
-	$attr .= ' style="display:inline-block;background-image:url('. $params->get('backgroundimage') .')"';
-}
-if ($moduleclass_sfx) {
-	$attr .= ' class="custom '. $moduleclass_sfx .'"';
-}
+$attr = array('id="custom-'. $module->id .'"');
+$cls  = array('custom');
+if (!empty($moduleclass_sfx)) $css[] = $moduleclass_sfx;
 
+if ($params->get('backgroundimage')) {
+	$cls[]  = 'has-image';
+	$attr[] = 'style="background-image:url('. $params->get('backgroundimage') .')"';
+}
+$attr[] = implode(' ', $cls);
+
+if (empty($module->content)) {
+	$module->content = '&nbsp;';
+}
 ?>
-<div <?php echo $attr ?>><?php echo $module->content ?></div>
+<div <?php echo implode(' ', $attr) ?>><?php echo $module->content ?></div>
