@@ -1,35 +1,45 @@
-##
-## Construc2 .htaccess file to add support for the 'Apache SSI'
-## style and script concatenation option.
-##
-## Keep it in this folder or copy to your main .htaccess file
-## (C)2011-2012 WebMechanic. All rights reserved.
-## version: 1.9.7
-##
+## -----------------------------------------------------
+# Supplemental .htaccess file to add support for 'Apache SSI'
+# style and script concatenation option in Construc2
+#
+# Rename this file to .htaccess and keep it in this folder
+#   OR OTHERWISE 
+# copy what you need into your existing .htaccess file.
+#
+# @version   1.9.7
+# @copyright (C)2011-2012 WebMechanic. All rights reserved.
+## -----------------------------------------------------
 
-## {{ --------------------------------------------------
-## -- combine files into one using SSI to allow better caching
-## -- i.e. create 'jq-142-ui-185.scripts' (versioning for proxy caches)
-##	  <!--#include file="/media/system/js/jquery-1.4.2.min.js" -->
-##	  <!--#include file="/media/system/js/jquery-ui-1.8.5.min.js" -->
-## -- will combine both files into one and allows DEFLATE to be applied
+## {{ -----------------------------------------------------
+## -- 'Apache SSI' combine multiple files into one and 
+## --  in available will compress the output in one go.
 
-## -- have elsehere: AddOutputFilterByType DEFLATE text/css text/javascript
+## -- Example: concatenates 2 js files into one
+## -- Create 'jq-171-ui-1818.scripts' (versioning for proxy caches) and add
+##
+##	  <!--#include file="/media/jquery/jquery-1.7.1.min.js" -->
+##	  <!--#include file="/media/jquery/jquery-ui-1.8.18.min.js" -->
+
 ## -- COPY THE FOLLOWING TO YOUR .htaccess IN THE ROOT FOLDER!
 
-AddCharset utf-8 .styles .scripts
+	AddCharset utf-8 .styles .scripts
 
-AddHandler server-parsed .styles
-AddType text/css .styles
+	AddHandler server-parsed .styles
+	AddType text/css .styles
 
-AddHandler server-parsed .scripts
-AddType text/javascript .scripts
-## ---------------------------------------------------- }}
+	AddHandler server-parsed .scripts
+	AddType text/javascript .scripts
 
-## {{ ----------------------------------------------------
-#  cheap UA string browser sniffer
+## -- To enable compression, have elsehere in your .htaccess:
+	#AddOutputFilterByType DEFLATE text/css text/javascript
+
+## ----------------------------------------------------- }}
+
+## {{ -----------------------------------------------------
+## -- Cheap and simple UA string browser sniffer
+
 <IfModule mod_setenvif.c>
-# -- Version numbers, from generic to specific
+## -- Version numbers, from generic to specific
 	BrowserMatch "Version/(\d+)"	UA_VER=$1
 
 	BrowserMatch "Presto/(\d+)"		UAGENT=op UA_NAME=opera
@@ -46,13 +56,13 @@ AddType text/javascript .scripts
 	BrowserMatch "Trident/5"	UA_VER=9
 	BrowserMatch "Trident/6"	UA_VER=10
 
-# -- Render Engines
+## -- Render Engines
 	BrowserMatchNoCase (apple|chrome|webkit)	UA_ENGINE=WebKit UA_NAME=$1
 	BrowserMatchNoCase (msie|opera|gecko)		UA_ENGINE=$1
 	BrowserMatchNoCase (trident|presto)			UA_ENGINE=$1
 	BrowserMatchNoCase chromeframe				UAGENT=cr UA_NAME=chrome UA_GCF=1
 
-# -- Operating systems
+## -- Operating systems
 	BrowserMatchNoCase windows|win 		UA_OS=win UA_TYPE=gui
 	BrowserMatchNoCase inux|freebsd 	UA_OS=lin UA_TYPE=gui
 	BrowserMatchNoCase mac|ppc|powerpc 	UA_OS=mac UA_TYPE=gui
@@ -61,6 +71,6 @@ AddType text/javascript .scripts
 
 	BrowserMatch "Windows (CE|Phone)"	UA_TYPE=mob
 	BrowserMatch "IEMobile.?(\d+)"		UA_TYPE=mob UAGENT=ie UA_NAME=msie UA_VER=$1
-
 </IfModule>
-## ---------------------------------------------------- }}
+
+## ----------------------------------------------------- }}

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE extension>
-<extension version="1.7" type="template" client="site" method="upgrade" >
+<extension version="2.5" type="template" client="site" method="upgrade" >
 	<name>Construc2</name>
 	<creationDate>2011-06-20</creationDate>
 	<author>WebMechanic</author>
@@ -8,7 +8,7 @@
 	<authorUrl>http://joomla.webmechanic.biz</authorUrl>
 	<copyright>Copyright (C)2011-2012 WebMechanic. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
-	<version>1.9.12</version>
+	<version>1.9.13</version>
 	<description>TPL_CONSTRUC2_DESCRIPTION</description>
 	<credits><![CDATA[Inspired by "Construct Community", Matt Thomas, Joomla Engineering. See CREDITS.php]]></credits>
 
@@ -110,7 +110,7 @@
 <!-- 
 				<field name="loadMooSrc" type="cdnlist" members="mootools" default="ajax.googleapis.com" label="TPL_CONSTRUC2_MOOSRC_LABEL" description="TPL_CONSTRUC2_MOOSRC_DESC" />
  -->
-				<field name="loadModal" type="radio" default="1" label="TPL_CONSTRUC2_LOAD_MODAL_LABEL" description="TPL_CONSTRUC2_LOAD_MODAL_DESC">
+				<field name="loadModal" type="radio" default="1" label="TPL_CONSTRUC2_LOAD_MODAL" description="TPL_CONSTRUC2_LOAD_MODAL_DESC">
 					<option value="1">JYes</option>
 					<option value="0">JNo</option>
 				</field>
@@ -172,7 +172,7 @@
 		<filename>CREDITS.php</filename>
 		<filename>embed.php</filename>
 		<filename>error.php</filename>
-		<filename>gz.php</filename>
+		<!-- <filename>gz.php</filename> -->
 		<filename>htaccess.txt</filename>
 		<filename>index.php</filename>
 		<filename>modal.php</filename>
@@ -186,5 +186,9 @@
 		<language tag="de-DE">language/de-DE/de-DE.tpl_construc2.ini</language>
 		<language tag="de-DE">language/de-DE/de-DE.tpl_construc2.sys.ini</language>
 	</languages>
+	
+	<updateservers>
+		<server type="extension">http://joomla.webmechanic.biz/tpl/construc2.xml</server>
+	</updateservers>
 
 </extension>
