@@ -8,7 +8,7 @@ fieldset ul {list-style: none}
 fieldset menu {margin: 20px 0 20px 120px}
 fieldset dl {display:block;clear:both}
 fieldset dt,
-fieldset dd {display:inline-block;padding:.25ex 0;vertical-align:top;}
+fieldset dd {display:inline-block;padding:.25ex 0;vertical-align:top;*display:inline;*zoom:1}
 fieldset dt {width:32%}
 fieldset dt.wide {display:block;width:auto}
 fieldset dd {width:50%}
@@ -23,5 +23,5 @@ input:valid, textarea:valid {} /* ~ .positive */
 input:focus:invalid, textarea:focus:invalid {border-color:#c20000} /* ~ .negative */
 input.invalid, textarea.invalid {border-color:#c20000} /* ~ .negative */
 label.invalid {color:#c20000;font-weight:bold} /* ~ .negative */
-button {font-weight:bold}
+button {font-weight:bold;padding:0.5ex 2ex}
 /* .eof */

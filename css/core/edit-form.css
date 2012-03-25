@@ -28,7 +28,7 @@ div[class^="formelm"] > textarea {display:inline-block;width:75%}
 	.button2-left > div {padding:.5ex;text-align:center;min-width:7em}
 	.button2-left:hover {box-shadow:0 2px 2px 1px #e0e0e0}
 	.button2-left:active {border-color:#73ab00}
-	.button2-left a[rel] {text-decoration:none;border:none;outline:none}
+	.button2-left a {text-decoration:none;border:none;outline:none;padding:0.5ex 2ex} /* sync with std <button> */
 	.button2-left .article {}
 	.button2-left .image {}
 	.button2-left .pagebreak {}
