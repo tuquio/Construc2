@@ -19,12 +19,12 @@
 <body class="<?php echo $columnLayout ?>">
 <?php ConstructTemplateHelper::msieSwatter() ?>
 	<div id="page-top" class="line <?php echo $templateHelper->getPageAlias(true) ?>">
-		<div id="header" class="line page-head">
+		<div id="page-head" class="line page-head">
 <?php if ($headerAboveCount[0]) : include JPATH_THEMES .'/'. $this->template . '/layouts/mod_header_above.php'; endif; ?>
 
 		<h1 id="logo"><a class="site-link" href="<?php echo $this->baseurl ?>/"><span class="site-name"><?php echo $app->getCfg('sitename');?></span></a></h1>
 
-<?php if ($this->countModules('header')) : $templateHelper->renderModules('header', 'mod'); endif; ?>
+<?php if ($this->countModules('header')) : $templateHelper->renderModules('header', 'raw'); endif; ?>
 
 		<?php if ($enableSwitcher) : ?>
 		<ul id="styleswitcher" class="menu style-switcher">
@@ -69,14 +69,14 @@
 		</div><!-- #body-container -->
 	</div><!-- #page-top -->
 
-	<footer id="footer" class="line page-foot"><div class="foot-inner">
+	<footer id="page-foot" class="line page-foot"><div class="foot-inner">
 <?php /* echo JText::_('TPL_CONSTRUC2_JUMP_BACK_TO_TOP') */ ?>
 <?php if ($this->countModules('syndicate')) : ?>
 		<div class="mod syndicate">
 	<?php $templateHelper->renderModules('syndicate'); ?>
 		</div><!-- .syndicate -->
 <?php endif; ?>
-<?php $templateHelper->renderModules('footer', 'mod'); ?>
+<?php $templateHelper->renderModules('footer', 'raw'); ?>
 	</div></footer><!-- end footer -->
 <?php
 if ($this->countModules('debug')) : $templateHelper->renderModules('debug', 'raw'); endif;
