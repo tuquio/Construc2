@@ -18,10 +18,9 @@ $chunks = $templateHelper->getStaticHtml($alternateIndexFile);
 </head>
 <body class="<?php echo $columnLayout ?>">
 <?php ConstructTemplateHelper::msieSwatter() ?>
-	<div id="footer-push">
-	<a id="page-top"></a>
+	<div id="page-top">
 
-		<div id="header" class="clear clearfix">
+		<div id="page-head" class="clear clearfix">
 			<div class="mod clearfix">
 				<h1 id="logo"><a href="<?php echo $this->baseurl ?>/" title="<?php echo $app->getCfg('sitename');?>"><?php echo $app->getCfg('sitename');?></a></h1>
 				<?php if ($this->countModules('header')) { ?>
@@ -54,7 +53,7 @@ if (isset($chunks['header'])) {
 		</div>
 	</div>
 
-	<div id="footer" class="clear clearfix">
+	<div id="page-foot" class="clear clearfix">
 		<div class="mod clearfix">
 		<jdoc:include type="modules" name="footer" style="mod" />
 <?php

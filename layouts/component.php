@@ -21,7 +21,7 @@ $app = JFactory::getApplication();
 <?php ConstructTemplateHelper::msieSwatter() ?>
 	<div id="page-top" class="line <?php echo $templateHelper->getPageAlias(true) ?>">
 <?php if($app->input->get('print')) { ?>
-		<div id="header" class="line page-head">
+		<div id="page-head" class="line page-head">
 		<h1 id="logo"><a class="site-link" href="<?php echo $this->baseurl ?>/"><span class="site-name"><?php echo $app->getCfg('sitename');?></span></a></h1>
 		</div>
 <?php } ?>
