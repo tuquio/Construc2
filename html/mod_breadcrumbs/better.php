@@ -15,15 +15,17 @@ if ($count == 0) {
 	return;
 }
 
-?><div id="breadcrumbs" class="menu breadcrumbs <?php echo $moduleclass_sfx ?>"><?php
+?><div class="menu breadcrumbs <?php echo $moduleclass_sfx ?>"><?php
 if ($count > 1 && $params->get('showHere', 1)) {
 	echo '<span class="mi first showHere">' .JText::_('MOD_BREADCRUMBS_HERE').'</span>';
 }
 
 for ($i = 0; $i < $count; $i++)
 {
-	$css   = isset($list[$i]->alias) ? $list[$i]->alias : '';
-	$label = '<span class="mi '. $css .'">'. $list[$i]->name .'</span>';
+	$css   = isset($list[$i]->alias) ? ' '.$list[$i]->alias : '';
+	if ($i == 0) $css .= ' first';
+
+	$label = '<span class="mi'. $css .'">'. $list[$i]->name .'</span>';
 
 	if ($i < $count - 1)
 	{
