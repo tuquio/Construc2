@@ -13,15 +13,6 @@
 #	JLoader::register('BehaviorWidgets', dirname(__FILE__) . '/widgets/behavior.php');
 
 /**
- * Proxy for the onBeforeCompileHead event because the Dispatcher only
- * allows function or class-based observers and insists on instatiating
- * the given 'class' for unknown reasons.
- */
-function CustomThemeContentEvent($context, $item, $params, $limitstart=0)
-{
-}
-
-/**
  * CustomTheme Base Class.
  */
 class CustomTheme
@@ -140,12 +131,6 @@ class CustomTheme
 		if (!self::$theme)
 		{
 			self::$theme = new self($helper);
-
-			// register event handler
-			$dispatcher = JDispatcher::getInstance();
-			$dispatcher->register('onContentAfterTitle',    'CustomThemeContentEvent');
-			$dispatcher->register('onContentBeforeDisplay', 'CustomThemeContentEvent');
-			$dispatcher->register('onContentAfterDisplay',  'CustomThemeContentEvent');
 		}
 
 		return self::$theme;
@@ -334,36 +319,6 @@ class CustomTheme
 	public function getConfig($name, $default=null)
 	{
 		return $this->config->get($name, $default);
-	}
-
-	/**
-	 * @param string     $context    event originator
-	 * @param object     $item       data to be deleted
-	 * @param JRegistry  $params     item parameters
-	 * @param int        $limitstart data offset or paginator
-	 */
-	static public function onContentAfterTitle($context, $item, $params, $limitstart=0)
-	{
-	}
-
-	/**
-	 * @param string     $context    event originator
-	 * @param object     $item       data to be deleted
-	 * @param JRegistry  $params     item parameters
-	 * @param int        $limitstart data offset or paginator
-	 */
-	static public function onContentBeforeDisplay($context, $item, $params, $limitstart=0)
-	{
-	}
-
-	/**
-	 * @param string     $context    event originator
-	 * @param object     $item       data to be deleted
-	 * @param JRegistry  $params     item parameters
-	 * @param int        $limitstart data offset or paginator
-	 */
-	static public function onContentAfterDisplay($context, $item, $params, $limitstart=0)
-	{
 	}
 
 }
