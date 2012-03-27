@@ -12,25 +12,10 @@
  * and is misused to clean the alias for use as a class name of list items */
 JLoader::register('SearchHelper', JPATH_ADMINISTRATOR .'/components/com_search/helpers/search.php');
 
-/** Register the CustomTheme Class */
-JLoader::register('CustomTheme', dirname(__FILE__) . '/theme.php');
+/** Load the CustomTheme Class */
+require_once dirname(__FILE__) . '/theme.php';
 
-/**
- * Proxy for the onBeforeCompileHead event because the Dispatcher only
- * allows function or class-based observers and insists on instatiating
- * the given 'class' for unknown reasons.
- */
-function ConstructHelperBeforeCompileHead()
-{
-	ConstructTemplateHelper::getInstance()->onBeforeCompileHead();
-}
-
-function ConstructHelperAfterRender()
-{
-	ConstructTemplateHelper::getInstance()->onAfterRender();
-}
-
-class ConstructWidgets
+class ElementsWidgets
 {
 	static public function better($old, $new)
 	{
@@ -83,9 +68,10 @@ class ConstructTemplateHelper
 		$this->doc  = JFactory::getDocument();
 		$this->tmpl = JFactory::getApplication()->getTemplate(true);
 
-		if ($this->tmpl->params->get('headCleanup')) {
-			require_once dirname(__FILE__) .'/renderer/header.php';
-			JLoader::register('JDocumentRendererHead', dirname(__FILE__) .'/renderer/header.php');
+		if (defined('DEVELOPER_MACHINE') && $this->tmpl->params->get('headCleanup'))
+		{
+			/** Cleanup Document Head */
+			require_once JPATH_THEMES . '/construc2/x~incubator/elements/renderer/head.php';
 		}
 
 		// remove this nonsense
@@ -120,8 +106,6 @@ class ConstructTemplateHelper
 
 			// register as event handler (anything after onContentPrepare)
 			$dispatcher = JDispatcher::getInstance();
-			$dispatcher->register('onBeforeCompileHead', 'ConstructHelperBeforeCompileHead');
-			$dispatcher->register('onAfterRender', 'ConstructHelperAfterRender');
 		}
 
 		if (null === self::$helper->theme)
@@ -143,7 +127,7 @@ class ConstructTemplateHelper
 
 		if ($front !== null) return $front;
 		$jmenu = JFactory::getApplication()->getMenu();
-		$front = ( $jmenu->getActive() == $jmenu->getDefault() );
+		$front = ( $jmenu->getActive() == $jmenu->getDefault(JFactory::getLanguage()->getTag()) );
 
 		return $front;
 	}
@@ -598,34 +582,37 @@ class ConstructTemplateHelper
 		$css = array_unique($css);
 
 		$html = array();
-		foreach (JModuleHelper::getModules($position) as $_module)
-		{
-			if (in_array($_module->name, $this->config['allow_empty']))
-			{
-				if (self::isEmpty($content)) {
-					continue;
-				}
-			}
 
-			// find @stylename encoded in moduleclass_sfx
-			$mparams = json_decode($_module->params);
-			if (isset($mparams->moduleclass_sfx) && strpos($mparams->moduleclass_sfx, '@') !== false)
+		foreach (JModuleHelper::getModules($position) as $module)
+		{
+			// find encoded @stylename in moduleclass_sfx
+			$sfx = strpos(str_replace('"moduleclass_sfx":""', '', $module->params), '"moduleclass_sfx"');
+			if ($sfx !== false && strpos($module->params, '@', $sfx) !== false)
 			{
+				$mparams = json_decode($module->params);
 				$style = preg_grep('/^@([a-z]+)/', explode(' ', $mparams->moduleclass_sfx));
 				$attribs['style'] = str_replace('@', '', implode(' ', $style));
 
 				// put everything else back
 				$mparams->moduleclass_sfx = trim(str_replace($style, '', $mparams->moduleclass_sfx));
-				$_module->params = json_encode($mparams);
+				$module->params = json_encode($mparams);
 			}
 
-			$content = JModuleHelper::renderModule($_module, $attribs);
+			// render first
+			$content = JModuleHelper::renderModule($module, $attribs);
 
 			// this crap doesn't belong here
-			$content = $this->_choppInlineCrap($content, $_module->module);
+			$content = $this->_choppInlineCrap($content, $module->module);
 
-			$prefixes['before'][] = $_module->module;
-			$prefixes['after'][]  = $_module->module;
+if (!$module->showtitle || !array_key_exists($module->name, $this->config['allow_empty']))
+{
+	if (self::isEmpty($content)) {
+		continue;
+	}
+}
+
+			$prefixes['before'][] = $module->module;
+			$prefixes['after'][]  = $module->module;
 			if ($chunk = $this->theme->getChunk('module', $prefixes['before']) )
 			{
 				$html[] = str_replace(
@@ -862,28 +849,6 @@ class ConstructTemplateHelper
 	/**@#- */
 
 	/**
-	 * Event handler "onBeforeCompileHead" to fix crappy head elements and
-	 * standardize order. Also groups any UA-specific entries for browser
-	 * emulators from Redmond to get them all into one place.
-	 *
-	 * @return bool true - since this is a "event handler"
-	 *
-	 * @uses buildHead(), sortScripts(), renderHead()
-	 */
-	public function onBeforeCompileHead()
-	{
-		if (isset($this->theme)) {
-			$theme = $this->theme->build();
-		}
-
-		$this->buildHead();
-		$this->sortScripts();
-		$this->renderHead();
-
-		return true;
-	}
-
-	/**
 	 * Applies all supplemental, browser-specific head elements to the document,
 	 * taking other items added else into Joomla's document into account.
 	 *
@@ -892,26 +857,11 @@ class ConstructTemplateHelper
 	 *
 	 * @todo move to "head renderer" class
 	 */
-	protected function buildHead()
+	public function buildHead()
 	{
 		$head = $this->doc->getHeadData();
+
 		$tmpl_url = JURI::base(true) . '/templates/'. $this->tmpl->template;
-
-		// flip and reorder entries
-		$head['metaTags']['standard']['author'] = $head['metaTags']['standard']['rights'];
-
-		// cleanup (non-standard) stuff
-		unset($head['metaTags']['standard']['copyright']);
-		unset($head['metaTags']['standard']['rights']);
-		unset($head['metaTags']['standard']['title']);
-		unset($head['metaTags']['standard']['description']);
-
-		$this->addMetaData('X-UA-Compatible', 'IE=Edge,chrome=1', null, true);
-		//$this->addMetaData('description', $desc);
-
-		// Change generator tag
-		$this->doc->setGenerator(null);
-		$this->addMetaData('generator', trim($this->tmpl->params->get('setGeneratorTag', self::NAME)));
 
 		// Google Chrome Frame
 		if (!$this->edit_mode) {
@@ -1015,7 +965,13 @@ class ConstructTemplateHelper
 		}
 
 		// put back what's left
+		if (!$this->tmpl->params->get('headCleanup')) {
+			$this->sortScripts($head);
+		}
+
 		$this->doc->setHeadData($head);
+
+		$this->renderHead();
 
 		return $this;
 	}
@@ -1038,11 +994,8 @@ class ConstructTemplateHelper
 	 * @todo make this mess a decorator for other libs
 	 * @todo handle scripts version conflicts loaded elsewhere
 	 */
-	protected function sortScripts()
+	protected function sortScripts($head)
 	{
-		if (!$this->tmpl->params->get('headCleanup')) {
-			return $this;
-		}
 
 		// matter of concerns
 		static $libs = array(
@@ -1056,8 +1009,6 @@ class ConstructTemplateHelper
 					'code.jquery.com' 		=> array('jquery'=>'/jquery-(\d\.\d\.\d)' , ),
 					'cdnjs.cloudflare.com'	=> array('jquery'=>'/jquery/(\d\.\d\.\d)/', 'mootools'=>'/mootools/(\d\.\d\.\d)/'),
 				);
-
-		$head = $this->doc->getHeadData();
 
 		// Remove MooTools if set to do so.
 		$loadMoo	= $this->tmpl->params->get('loadMoo');
@@ -1113,13 +1064,17 @@ class ConstructTemplateHelper
 			unset($head['scripts'][$src]);
 		}
 
-		// put everything back
-		$this->doc->setHeadData($head);
-
 		return $this;
 	}
 
 	/**
+	 * Optimize the order of styles and scripts.
+
+The following external CSS files were included after an external JavaScript file in the document head.
+To ensure CSS files are downloaded in parallel, always include external CSS before external JavaScript.
+Inline script block was found in the head between an external CSS file and another resource.
+To allow parallel downloading, move the inline script before the external CSS file, or after the next resource.
+
 	 * @return ConstructTemplateHelper for fluid interface
 	 *
 	 * @see buildHead(), sortScripts()
@@ -1159,6 +1114,14 @@ class ConstructTemplateHelper
 				}
 			}
 
+			// inline style
+			if (isset($groups['style']) && count($groups['style'])) {
+				$head['custom'][] = '<style type="text/css">';
+				foreach ($groups['style'] as $stuff) {
+				}
+				$head['custom'][] = '</style>';
+			}
+
 			// scripts
 			if (isset($groups['scripts']) && count($groups['scripts'])) {
 				foreach (array('cdn', 'media', 'templates', 'scripts') as $sect) {
@@ -1185,14 +1148,6 @@ class ConstructTemplateHelper
 				$head['custom'][] = '</script>';
 			}
 
-			// inline style
-			if (isset($groups['style']) && count($groups['style'])) {
-				$head['custom'][] = '<style type="text/css">';
-				foreach ($groups['style'] as $stuff) {
-				}
-				$head['custom'][] = '</style>';
-			}
-
 			if ($ua != self::UA) $head['custom'][] = '<![endif]-->';
 		}
 
@@ -1200,10 +1155,6 @@ class ConstructTemplateHelper
 		$this->doc->setHeadData($head);
 
 		return $this;
-	}
-
-	public static function onAfterRender()
-	{
 	}
 
 	/**

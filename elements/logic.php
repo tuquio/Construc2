@@ -13,7 +13,8 @@
 /** Register the ConstructTemplateHelper Class */
 JLoader::register('ConstructTemplateHelper', dirname(__FILE__) . '/helper.php');
 
-$templateHelper = ConstructTemplateHelper::getInstance();
+$templateHelper	= ConstructTemplateHelper::getInstance();
+$theme			= $templateHelper->getTheme();
 
 /** @var $app JSite To enable use of site configuration */
 $app 		= JFactory::getApplication();
