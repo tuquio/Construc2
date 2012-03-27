@@ -872,10 +872,6 @@ class ConstructTemplateHelper
 	 */
 	public function onBeforeCompileHead()
 	{
-		if (isset($this->theme)) {
-			$theme = $this->theme->build();
-		}
-
 		$this->buildHead();
 		$this->sortScripts();
 		$this->renderHead();
