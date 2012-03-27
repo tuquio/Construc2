@@ -13,7 +13,7 @@ JLoader::register('DateWidgets', __FILE__);
 /**
  * JHtmlIcon clones as offerend and used by com_content.
  */
-class DateWidgets extends ConstructWidgets
+class DateWidgets extends ElementsWidgets
 {
 	/**
 	 * To set the $elt name only, but preseve (todays) default and date format use:

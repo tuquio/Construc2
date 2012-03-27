@@ -51,7 +51,7 @@ class CustomTheme
 	 * @ignore
 	 * @var array defaults
 	 */
-	protected $_config = array(
+	protected $_defaults = array(
 				'title'=>'Default',
 				'version'=>'',
 				'layouts'=>array(),
@@ -72,7 +72,7 @@ class CustomTheme
 	/**
 	 * @see setChunks()
 	 */
-	static $chunks = array('header', 'footer', 'aside', 'nav', 'section', 'article');
+	static $chunks = array('meta', 'header', 'footer', 'aside', 'nav', 'section', 'article');
 
 	protected function __construct(ConstructTemplateHelper $helper)
 	{
@@ -98,7 +98,7 @@ class CustomTheme
 		$this->path = JPATH_THEMES .'/'. $tmpl->template .'/themes/'. $this->name . '.php';
 		$this->url  = JUri::root(true) .'/templates/'. $tmpl->template .'/themes';
 
-		$this->config = new JObject($this->_config);
+		$this->config = new JObject($this->_defaults);
 
 		if (is_file($this->path))
 		{
@@ -124,7 +124,7 @@ class CustomTheme
 	}
 
 	/**
-	 * @return ConstructTemplateHelper
+	 * @return CustomTheme
 	 */
 	public static function getInstance(ConstructTemplateHelper $helper)
 	{
@@ -136,30 +136,52 @@ class CustomTheme
 		return self::$theme;
 	}
 
-	public function build()
+	/**
+	 * @return CustomTheme
+	 */
+	public function build(JDocument $document)
 	{
-		$helper = ConstructTemplateHelper::getInstance();
+		$head = $document->getHeadData();
+		$buffer = '';
 
-		foreach ($this->config->get('scripts', array()) as $key => $line)
+		if (count($head['metaTags']))
 		{
-			list($ua, $src) = explode(',', $line);
-			settype($ua, 'int');
-
-			if (0 == $ua) {
-				continue;
-			}
-			else if ($ua == 4) {
-				$ua = 'IE';
-			}
-			else if ($ua >= 6 && $ua <=9) {
-				$ua = 'IE '.$ua;
-			}
-			else {
-				$ua = '';
-			}
-
-			$helper->addScript($src, $ua);
+			$buffer .= ElementRenderer::getInstance('meta')->build($head);
 		}
+
+		if (count($head['link']))
+		{
+			$buffer .= ElementRenderer::getInstance('link')->build($head, 'link');
+		}
+
+		if (count($head['style']))
+		{	// from an HTML perspective this is equivalent to <link>
+			$buffer .= ElementRenderer::getInstance('link')->build($head, 'style');
+		}
+
+		if (count($head['styleSheets']))
+		{
+			$buffer .= ElementRenderer::getInstance('styles')->build($head);
+		}
+
+		if (count($head['script']))
+		{
+			$buffer .= ElementRenderer::getInstance('script')->build($head);
+		}
+
+		if (count($head['scripts']))
+		{
+			$buffer .= ElementRenderer::getInstance('scripts')->build($head);
+		}
+
+		if (count($head['custom']))
+		{
+			$buffer .= ElementRenderer::getInstance('custom')->build($head);
+		}
+
+		self::$chunks['meta'] = $buffer;
+
+		return $this;
 	}
 
 	/**
@@ -225,7 +247,7 @@ class CustomTheme
 			return JFile::read(self::$html[$name .'_path']);
 		}
 
-		return false;
+		return $this;
 	}
 
 	/**
@@ -289,6 +311,7 @@ class CustomTheme
 				self::$chunks = array_merge(self::$chunks, $chunks);
 			}
 		}
+		return $this;
 	}
 
 	public function getChunk($name, $suffixes = null)

@@ -48,7 +48,7 @@ foreach ($list as $item)
 		if (BannerHelper::isImage($imageurl))
 		{
 			$alt   = $item->params->get('alt');
-			// this parameter is only availabe for ConstructWidgets
+			// this parameter is only availabe for ElementsWidgets
 			$title = $item->params->get('title', '');
 			$css   = '';
 
