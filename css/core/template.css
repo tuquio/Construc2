@@ -8,11 +8,6 @@
 .page-head {margin:0;text-align:left}
 .content-main {position:relative}
 
-.column-group .mod:first-child {margin-top: 0}
-
-.fluid-media img, .fluid-media object, .fluid-media video {max-width:100%}
-.fluid-media img {-ms-interpolation-mode:bicubic}
-
 h1,.H1, .page-titile {font-size:2.0em}
 h2,.H2 {font-size:1.7em}
 h3,.H3 {font-size:1.4em}
