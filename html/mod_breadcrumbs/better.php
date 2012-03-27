@@ -1,4 +1,4 @@
-<?php
+<?php defined('_JEXEC') or die;
 /**
  * A better mod_breadcrumbs override
  *
@@ -9,47 +9,51 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-// no direct access
-defined('_JEXEC') or die;
-
-// nothing to do (active = home + don't show home + don't show first)
+// nothing to do if: home + don't show home + don't show first)
 if ($count == 0) {
 	$content = '';
 	return;
 }
 
-?>
-<div id="breadcrumbs" class="line breadcrumbs <?php echo $moduleclass_sfx ?>">
-<?php
+?><div id="breadcrumbs" class="menu breadcrumbs <?php echo $moduleclass_sfx ?>"><?php
 if ($count > 1 && $params->get('showHere', 1)) {
 	echo '<span class="mi first showHere">' .JText::_('MOD_BREADCRUMBS_HERE').'</span>';
 }
 
-for ($i = 0; $i < $count; $i++) {
-	$css = 'mi ';
-	$css .= isset($list[$i]->alias) ? $list[$i]->alias : '';
+for ($i = 0; $i < $count; $i++)
+{
+	$css   = isset($list[$i]->alias) ? $list[$i]->alias : '';
+	$label = '<span class="mi '. $css .'">'. $list[$i]->name .'</span>';
+
 	if ($i < $count - 1)
 	{
 		if (!empty($list[$i]->link))
 		{
-			echo '<a class="pathway ', $css ,'" href="', $list[$i]->link, '"><span class="mi">', $list[$i]->name, '</span></a>';
+			echo '<a class="mi pathway ', $css ,'" href="', $list[$i]->link, '">', $label, '</a>';
+			if ($i < $count - 2) {
+				echo '</span>';
+			}
 		} else {
-			echo '<span class="', $css ,'">', $list[$i]->name, '</span>';
+			echo $label;
 		}
 
 		// If not the last item in the breadcrumbs add the separator
 		if ($i < $count - 2) {
-			echo '<span class="sep">', $separator, '</span>';
+			echo '<span class="bc-item"><span class="sep">', $separator, '</span>';
 		}
 	}
 	else if ($params->get('showLast', 1))
 	{
-		$css = 'active last';
-		if ($i > 0) {
-			echo '<span class="sep">', $separator, '</span>';
+		$css .= ' active last';
+
+		if ($i == 0) {
+			if ($params->get('showHome')) {
+				echo '<a class="mi pathway ', $css ,'" href="', $list[$i]->link, '">', $label, '</a>';
+			} else {
+				echo $label;
+			}
 		}
-		echo '<span class="', $css ,'">', $list[$i]->name, '</span>';
 	}
 }
 
-?></div>
+?></div><?php

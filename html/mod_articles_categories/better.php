@@ -36,22 +36,24 @@ defined('_JEXEC') or die;
 
 JLoader::load('ContentLayoutHelper');
 
-function treeWalker($list, &$tree, $level=0)
-{
-	foreach ($list as $item)
+if (!function_exists('treeWalker')) {
+	function treeWalker($list, &$tree, $level=0)
 	{
-		foreach ($item->getPath() as $slug)
+		foreach ($list as $item)
 		{
-			$ar  = explode(':', $slug);
-			$pid = array_shift($ar);
-			$tree['pids'][$pid][$item->id] = $item->id;
-		}
+			foreach ($item->getPath() as $slug)
+			{
+				$ar  = explode(':', $slug);
+				$pid = array_shift($ar);
+				$tree['pids'][$pid][$item->id] = $item->id;
+			}
 
-		if ($item->hasChildren()) {
-			treeWalker($item->getChildren(), $tree, $item->level);
+			if ($item->hasChildren()) {
+				treeWalker($item->getChildren(), $tree, $item->level);
+			}
 		}
+		return $tree;
 	}
-	return $tree;
 }
 
 $tree = array('pids'=>array());

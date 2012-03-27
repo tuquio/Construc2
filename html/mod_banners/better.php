@@ -14,7 +14,7 @@ if (count($list) == 0) {
 }
 
 require_once JPATH_ROOT . '/components/com_banners/helpers/banner.php';
-$baseurl = JURI::base();
+$baseurl = JURI::base(true);
 
 ?><div class="bannergroup"><?php
 if ($headerText) { echo $headerText; }

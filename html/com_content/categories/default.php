@@ -1,12 +1,10 @@
-<?php
-defined('_JEXEC') or die;
+<?php defined('_JEXEC') or die;
 
-JHtml::addIncludePath(JPATH_COMPONENT_SITE .'/helpers');
-
+// JHtml::addIncludePath(JPATH_COMPONENT_SITE .'/helpers');
 JLoader::register('ContentLayoutHelper', JPATH_THEMES . '/construc2/html/com_content/_shared/helper.php');
 
 ?>
-	<section class="categories-list">
+	<section class="line categories-list">
 <?php if ($this->params->get('show_page_heading')) { ?>
 	<h1 class="H1 page-title"><?php echo $this->escape($this->params->get('page_heading')) ?></h1>
 <?php }
@@ -28,7 +26,9 @@ JLoader::register('ContentLayoutHelper', JPATH_THEMES . '/construc2/html/com_con
 
 	if (count($this->items[$this->parent->id]) > 0 && $this->maxLevelcat != 0)
 	{
+		$this->cat_level = 0;
 		echo $this->loadTemplate('items');
 	}
+	unset($level);
 ?>
 	</section>

@@ -1,24 +1,44 @@
-<?php defined('_JEXEC') or die; ?>
-<ul class="menu categories"><?php
+<?php defined('_JEXEC') or die;
+
+$item_params     = null;
+$this->cat_level += 1;
+
+?><ul class="menu category <?php echo 'level-',$this->cat_level,' ', ContentLayoutHelper::getCssAlias($this->parent, false) ?>"><?php
 foreach ($this->items[$this->parent->id] as $id => $item)
 {
-	if ($this->params->get('show_empty_categories_cat') || $item->numitems || count($item->getChildren()))
+	// let's use it. for some reason this is always ''
+	$item->childrennumitems = count($item->getChildren());
+
+	if ($this->params->get('show_empty_categories_cat') || $item->numitems || $item->childrennumitems)
 	{
-	?><li class="mi"><a href="<?php
-		echo JRoute::_(ContentHelperRoute::getCategoryRoute($item->id))
-		?>" class="mi"><span class="mi item-title"><?php echo $this->escape($item->title) ?></span></a>
+		if (($descImage = $this->params->get('show_description_image')))
+		{
+			$item_params = json_decode($item->params);
+			$descImage = (isset($item_params) && !empty($item_params->image)) ? $item_params->image : false;
+		}
+
+	?>
+
+	<li class="mi <?php echo ($descImage ? 'has-image ' : '') , ($item->childrennumitems ? 'has-items ' : '') , ContentLayoutHelper::getCssAlias($item, false) ?>">
+	<a class="mi" href="<?php	echo JRoute::_(ContentHelperRoute::getCategoryRoute($item->id)) ?>
+	"><span class="mi item-title"><?php echo $this->escape($item->title) ?></span></a>
+
 <?php
 		if ($this->params->get('show_subcat_desc_cat') == 1)
 		{
-			if ($item->description) { ?>
-			<div class="line category-desc"><?php echo JHtml::_('content.prepare', $item->description) ?></div>
-<?php 		}
+			if ($descImage) {
+				echo '<figure class="category"><img src="', $descImage ,'" class="thumb" alt="" /></figure>';
+			}
+
+			if (trim($item->description))
+			{
+	?><div class="category-desc"><?php echo JHtml::_('content.prepare', $item->description); ?></div><?php
+			}
 		}
 
 		if ($this->params->get('show_cat_num_articles_cat') == 1) { ?>
 	<p class="article-info">
-	<strong><?php echo JText::_('COM_CONTENT_NUM_ITEMS') ?></strong>
-	<span><?php echo $item->getNumItems(true) ?></span>
+	<strong><?php echo JText::_('COM_CONTENT_NUM_ITEMS') ?></strong><span><?php echo $item->getNumItems(true) ?></span>
 	</p><?php
 		}
 
@@ -36,7 +56,8 @@ foreach ($this->items[$this->parent->id] as $id => $item)
 			$this->maxLevelcat += 1;
 		}
 	?></li><?php
+
 	}
+
 }
-?>
-</ul>
+?></ul>
