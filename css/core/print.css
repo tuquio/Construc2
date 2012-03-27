@@ -5,7 +5,7 @@
  */
 @media screen,print {
 	/* generated content */
-	#logo a:after, #footer a:after, 
+	#logo a:after, #page-foot a:after, 
 	#dummy { content:""; display:none; }
 
 	.actionsmenu,
