@@ -1,5 +1,7 @@
 <?php defined('_JEXEC') or die;
 /**
+ * Provides a list of Web Fonts.
+ *
  * @package     Construc2
  * @subpackage  Elements
  * @copyright   (C) 2010, 2011 Matt Thomas | Joomla Engineering. All rights reserved.
@@ -7,7 +9,7 @@
  */
 
 /**
- * Provides a list of Google Web Fonts.
+ * Provides a list of Web Fonts.
  * @since 1.0
  */
 class JFormFieldGooglewebfont extends JFormFieldList

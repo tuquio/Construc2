@@ -1,5 +1,7 @@
 <?php defined('_JEXEC') or die;
 /**
+ * Provides a list of jQuery versions.
+ *
  * @package     Construc2
  * @subpackage  Elements
  * @copyright   (C) 2010, 2011 Matt Thomas | Joomla Engineering. All rights reserved.
@@ -8,7 +10,7 @@
  */
 
 /**
- * Provides a list of jQuery versions
+ * Provides a list of jQuery versions.
  */
 class JFormFieldJqueryversion extends JFormFieldList
 {
