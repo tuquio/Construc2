@@ -1,12 +1,12 @@
-<?php
+<?php defined('_JEXEC') or die;
 /**
  * Better Menu Helper.
  *
  * @package     Templates
- * @subpackage  Construc2
+ * @subpackage  HTML
  * @author      WebMechanic http://webmechanic.biz
- * @copyright   (C) 2012 WebMechanic
- * @license     GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
+ * @copyright   (C)2011-2012 WebMechanic. All right reserved.
+ * @license     GNU GPL v2 or later
  */
 
 /* SearchHelper knows about the (enhanced) stop words list in xx_XXLocalise
