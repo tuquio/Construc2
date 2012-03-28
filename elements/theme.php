@@ -142,44 +142,43 @@ class CustomTheme
 	public function build(JDocument $document)
 	{
 		$head = $document->getHeadData();
-		$buffer = '';
+
+		self::$chunks['meta'] = '';
 
 		if (count($head['metaTags']))
 		{
-			$buffer .= ElementRenderer::getInstance('meta')->build($head);
+			self::$chunks['meta'] .= ElementRenderer::getInstance('meta')->build($head);
 		}
 
 		if (count($head['link']))
 		{
-			$buffer .= ElementRenderer::getInstance('link')->build($head, 'link');
+			self::$chunks['meta'] .= ElementRenderer::getInstance('link')->build($head, 'link');
 		}
 
 		if (count($head['style']))
 		{	// from an HTML perspective this is equivalent to <link>
-			$buffer .= ElementRenderer::getInstance('link')->build($head, 'style');
+			self::$chunks['meta'] .= ElementRenderer::getInstance('link')->build($head, 'style');
 		}
 
 		if (count($head['styleSheets']))
 		{
-			$buffer .= ElementRenderer::getInstance('styles')->build($head);
+			self::$chunks['meta'] .= ElementRenderer::getInstance('styles')->build($head);
 		}
 
 		if (count($head['script']))
 		{
-			$buffer .= ElementRenderer::getInstance('script')->build($head);
+			self::$chunks['meta'] .= ElementRenderer::getInstance('script')->build($head);
 		}
 
 		if (count($head['scripts']))
 		{
-			$buffer .= ElementRenderer::getInstance('scripts')->build($head);
+			self::$chunks['meta'] .= ElementRenderer::getInstance('scripts')->build($head);
 		}
 
 		if (count($head['custom']))
 		{
-			$buffer .= ElementRenderer::getInstance('custom')->build($head);
+			self::$chunks['meta'] .= ElementRenderer::getInstance('custom')->build($head);
 		}
-
-		self::$chunks['meta'] = $buffer;
 
 		return $this;
 	}
