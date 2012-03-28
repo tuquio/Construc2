@@ -8,7 +8,7 @@ if ($params->get('backgroundimage')) {
 	$cls[]  = 'has-image';
 	$attr[] = 'style="background-image:url('. $params->get('backgroundimage') .')"';
 }
-$attr[] = implode(' ', $cls);
+$attr[] = ' class="'.implode(' ', $cls) .'"';
 
 if (empty($module->content)) {
 	$module->content = '&nbsp;';

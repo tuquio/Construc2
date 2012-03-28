@@ -1210,6 +1210,9 @@ To allow parallel downloading, move the inline script before the external CSS fi
 	 */
 	static public function isEmpty(&$markup, $by='')
 	{
+		#FIXME
+		return false;
+
 		// decode entities, keep meta + embeds, then remove "white-space"
 		$blank = preg_replace('#[\r\n\s\t\h\v\f]+#', '',
 					strip_tags(html_entity_decode($markup), '<audio><canvas><embed><iframe><img><math><object><svg><video><command><script><style>')
@@ -1397,4 +1400,3 @@ To allow parallel downloading, move the inline script before the external CSS fi
 	}
 
 }
-
