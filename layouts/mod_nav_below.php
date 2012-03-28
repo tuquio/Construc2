@@ -12,12 +12,6 @@ $modcount = $templateHelper->numModules('nav-below');
 
 $style	= 'raw';
 
-$chunks = array(
-		'module_before' => '<div id="{position}" class="{class}">',
-		'module_after'  => '</div>'
-		);
-$templateHelper->getTheme()->setChunks($chunks, true);
-
 /*
  * if you want to make use of the CSS3 :empty() selector,
  * keep these PHP tags tight close to the HTML markup or a

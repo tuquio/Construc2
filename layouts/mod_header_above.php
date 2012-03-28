@@ -10,12 +10,6 @@
  * @copyright   (C) 2011-2012 WebMechanic http://webmechanic.biz. All rights reserved.
  * @license     GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
-$chunks = array(
-		'module_before' => '<div id="{position}" class="{class}">',
-		'module_after'  => '</div>'
-		);
-
-$templateHelper->getTheme()->setChunks($chunks, true);
 
 /* All module output is captured in a single buffer, 'header-above'.
  * This will concatenate ALL active modules as if they were placed in

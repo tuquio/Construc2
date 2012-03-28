@@ -116,8 +116,10 @@ class CustomTheme
 
 		// @see ConstructTemplateHelper::renderModules()
 		$chunks = array(
-					'unit_before' => '<div class="{class}">',
-					'unit_after'  => '</div>'
+					'module_before'	=> '<div id="{position}" class="{class}">',
+					'module_after'	=> '</div>',
+					'unit_before'	=> '<div class="{class}">',
+					'unit_after'	=> '</div>'
 				);
 
 		$this->setChunks($chunks);
@@ -143,12 +145,16 @@ class CustomTheme
 	{
 		$head = $document->getHeadData();
 
-		self::$chunks['meta'] = '';
+		self::$chunks['meta'] = !defined('DEVELOPER_MACHINE') ? '' : '<!-- Construc2 -->';
 
 		if (count($head['metaTags']))
 		{
 			self::$chunks['meta'] .= ElementRenderer::getInstance('meta')->build($head);
 		}
+
+		// stub for IE getting onhalt if first CSS is loaded via CC
+		// @link http://webforscher.wordpress.com/2010/05/20/ie-6-slowing-down-ie-8/
+		self::$chunks['meta'] .= PHP_EOL.'<!--[if IE]><![endif]-->';
 
 		if (count($head['link']))
 		{
@@ -178,6 +184,10 @@ class CustomTheme
 		if (count($head['custom']))
 		{
 			self::$chunks['meta'] .= ElementRenderer::getInstance('custom')->build($head);
+		}
+
+		if (defined('DEVELOPER_MACHINE')) {
+			self::$chunks['meta'] .= PHP_EOL.'<!-- /Construc2 -->';;
 		}
 
 		return $this;

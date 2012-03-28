@@ -11,11 +11,6 @@
 $modcount = $templateHelper->numModules('footer-above');
 
 $style	= null; // null is essentially the same as 'raw'
-$chunks = array(
-		'module_before' => '<div id="{position}" class="{class}">',
-		'module_after'  => '</div>'
-		);
-$templateHelper->getTheme()->setChunks($chunks, true);
 
 /*
  * if you want to make use of the CSS3 :empty() selector,
