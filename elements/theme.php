@@ -72,7 +72,7 @@ class CustomTheme
 	/**
 	 * @see setChunks()
 	 */
-	static $chunks = array('meta', 'header', 'footer', 'aside', 'nav', 'section', 'article');
+	static $chunks = array('meta'=>'');
 
 	protected function __construct(ConstructTemplateHelper $helper)
 	{
@@ -323,18 +323,28 @@ class CustomTheme
 		return $this;
 	}
 
-	public function getChunk($name, $suffixes = null)
+	public function getChunks()
+	{
+		return self::$chunks;
+	}
+
+	public function setChunk($name, $chunk)
+	{
+		self::$chunks[$chunk] = $chunk;
+	}
+
+	public function getChunk($name, $affixes = null)
 	{
 		$chunks = array($name);
-		if (is_string($suffixes)) {
-			$chunks = array($name, $suffixes, $name .' '. $suffixes);
+		if (is_string($affixes)) {
+			$chunks = array($name, $affixes, $name .' '. $affixes);
 		}
-		elseif (is_array($suffixes)) {
+		elseif (is_array($affixes)) {
 			$chunks = array();
-			foreach ($suffixes as $suffix) {
-				$chunks[] = trim($name .'_'. $suffix);
+			foreach ($affixes as $affix) {
+				$chunks[] = trim($name .'_'. $affix);
 				$chunks[] = trim($name);
-				$chunks[] = trim($suffix);
+				$chunks[] = trim($affix);
 			}
 		}
 
