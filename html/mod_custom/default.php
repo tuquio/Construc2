@@ -13,6 +13,5 @@ $attr[] = ' class="'.implode(' ', $cls) .'"';
 if (empty($module->content)) {
 	$module->content = '&nbsp;';
 }
-FB::info($module, $moduleclass_sfx);
 ?>
 <div <?php echo implode(' ', $attr) ?>><?php echo $module->content ?></div>
