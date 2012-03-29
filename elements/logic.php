@@ -103,9 +103,6 @@ if ($app->getCfg('debug') && $app->input->get('tpos', 0, 'bool')) {
 // physical width of the device to make width work in media-queries as expected
 $templateHelper->element('meta')->set('viewport', 'width=device-width,initial-scale=1.0');
 
-// Typography (protocol relative URLs)
-//#FIXME $templateHelper->webFonts();
-
 // Style sheets
 if ($ssiIncludes) {
 	$printMode = $app->input->get('print');

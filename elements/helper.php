@@ -33,7 +33,6 @@ class ConstructTemplateHelper
 	const NAME         = 'Construc2';
 	const MAX_MODULES  = 4;
 	const MAX_COLUMNS  = 4;
-	const MAX_WEBFONTS = 3;
 	const UA           = 'ALL';
 
 	/** @var $layouts array List of template layout files */
@@ -466,11 +465,11 @@ class ConstructTemplateHelper
 		return $this->layouts;
 	}
 
-	public function addFeature($feature, $options=array())
+	public function addFeature($feature, $data=null)
 	{
-		if (isset($this->config['features'][$feature]))
+		if (!isset($this->config['features'][$feature]))
 		{
-
+			$this->config['features'][$feature] = $data;
 		}
 
 		return $this;
@@ -1270,31 +1269,6 @@ To allow parallel downloading, move the inline script before the external CSS fi
 		return empty($blank);
 	}
 
-	/**
-	 * Generates CSS links for Google Webfonts.
-	 *
-	 * @return ConstructTemplateHelper for fluid interface
-	 */
-	public function webFonts()
-	{
-		$params = $this->tmpl->params;
-
-		for ($i=1; $i <= self::MAX_WEBFONTS; $i++)
-		{
-			$font = $params->def('googleWebFont'.$i);
-			if ($font)
-			{
-				$fontSize    = trim($params->def('googleWebFontSize'.$i));
-				$fontTargets = trim($params->def('googleWebFontTargets'.$i));
-				if (empty($fontSize) || empty($fontTargets)) {
-					continue;
-				}
-				$this->element('link')->set('//fonts.googleapis.com/css?family='.$font);
-			}
-		}
-
-		return $this;
-	}
 
 	/**
 	 * Returns a config value.
@@ -1342,21 +1316,6 @@ To allow parallel downloading, move the inline script before the external CSS fi
 		$this->config = $default;
 	}
 
-	protected function _applySubst($key, $name, $type=null)
-	{
-		if (!isset($this->config['subst'][$key])) {
-			return $this;
-		}
-		$from = array('{name}');
-		$to   = array($name);
-		if (!empty($type)) {
-			$from = array('{type}');
-			$to   = array($type);
-		}
-
-		$this->config['subst'][$key] = str_replace($from, $to, $this->config['subst'][$key]);
-	}
-
 	/**
 	 * Return the current theme instance.
 	 *
@@ -1394,7 +1353,7 @@ To allow parallel downloading, move the inline script before the external CSS fi
 	 *
 	 * @todo fix "IEMobile" "(IE 7)&!(IEMobile)" "(IE 8)&!(IEMobile)" "(gte IE 9)|(gt IEMobile 7)"
 	 */
-	protected function _makeRoom($group, &$uagent, $filler=array())
+	private function _makeRoom($group, &$uagent, $filler=array())
 	{
 		settype($uagent, 'string');
 
@@ -1413,7 +1372,7 @@ To allow parallel downloading, move the inline script before the external CSS fi
 		return $this;
 	}
 
-	protected function _tuckUrl($url, $type='link')
+	private function _tuckUrl($url, $type='link')
 	{
 		static $root;
 
@@ -1451,6 +1410,21 @@ To allow parallel downloading, move the inline script before the external CSS fi
 		return $url;
 	}
 
+	private function _applySubst($key, $name, $type=null)
+	{
+		if (!isset($this->config['subst'][$key])) {
+			return $this;
+		}
+		$from = array('{name}');
+		$to   = array($name);
+		if (!empty($type)) {
+			$from = array('{type}');
+			$to   = array($type);
+		}
+
+		$this->config['subst'][$key] = str_replace($from, $to, $this->config['subst'][$key]);
+	}
+
 	/**
 	 * Some Modules and Plugins, incl. the "Core" don't use the JDocumentHTML API
 	 * to add scripts and styles to the HEAD element.
@@ -1458,7 +1432,7 @@ To allow parallel downloading, move the inline script before the external CSS fi
 	 * @param  string  $content  Some markup
 	 * @param  string  $culprit  A string that identifies the content originator
 	 */
-	protected function _choppInlineCrap($content, $culprit = '')
+	private function _choppInlineCrap($content, $culprit = '')
 	{
 		// <script></script> $script[1] = attribs $script[2] = code
 		if (preg_match_all('#<script(.*)>(.*)</script>#siU', $content, $m))

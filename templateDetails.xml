@@ -107,7 +107,7 @@
 					<option value="1">JYes</option>
 					<option value="0">JNo</option>
 				</field>
-<!-- 
+<!--
 				<field name="loadMooSrc" type="cdnlist" members="mootools" default="ajax.googleapis.com" label="TPL_CONSTRUC2_MOOSRC_LABEL" description="TPL_CONSTRUC2_MOOSRC_DESC" />
  -->
 				<field name="loadModal" type="radio" default="1" label="TPL_CONSTRUC2_LOAD_MODAL" description="TPL_CONSTRUC2_LOAD_MODAL_DESC">
@@ -142,7 +142,7 @@
 					<option value="0">JNo</option>
 				</field>
 			</fieldset>
-<!-- 
+<!--
 			<!** stub for themes to plug-in optional parameters **>
 			<fieldset name="theme">
 				<field name="theme_note" type="spacer" label="Custom_Theme_Parameters" description="Custom_Theme_Parameters_Desc" class="tpl-theme" />
@@ -178,6 +178,7 @@
 		<filename>modal.php</filename>
 		<filename>offline.php</filename>
 		<filename>README.md</filename>
+		<filename>template_thumbnail.png</filename>
 	</files>
 
 	<languages>
@@ -186,7 +187,7 @@
 		<language tag="de-DE">language/de-DE/de-DE.tpl_construc2.ini</language>
 		<language tag="de-DE">language/de-DE/de-DE.tpl_construc2.sys.ini</language>
 	</languages>
-	
+
 	<updateservers>
 		<server type="extension">http://joomla.webmechanic.biz/tpl/construc2.xml</server>
 	</updateservers>
