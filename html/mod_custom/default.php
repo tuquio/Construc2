@@ -2,7 +2,7 @@
 
 $attr = array('id="custom-'. $module->id .'"');
 $cls  = array('custom');
-if (!empty($moduleclass_sfx)) $css[] = $moduleclass_sfx;
+if (!empty($moduleclass_sfx)) $cls[] = $moduleclass_sfx;
 
 if ($params->get('backgroundimage')) {
 	$cls[]  = 'has-image';
@@ -13,5 +13,6 @@ $attr[] = ' class="'.implode(' ', $cls) .'"';
 if (empty($module->content)) {
 	$module->content = '&nbsp;';
 }
+FB::info($module, $moduleclass_sfx);
 ?>
 <div <?php echo implode(' ', $attr) ?>><?php echo $module->content ?></div>
