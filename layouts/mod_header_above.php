@@ -38,7 +38,7 @@ if ($headerAboveCount[4]) {
 //       which getCapture() can't tell apart!!
 $modsize = $templateHelper->getCapture($group, true);
 
-if ($modsize) { ?><div id="header-above" class="line above count-<?php echo $headerAboveCount[0] ?>"><div class="above-inner"><?php }
+if ($modsize) { ?><div id="header-above" class="line above" data-modules="<?php echo $headerAboveCount[0] ?>"><div class="above-inner"><?php }
 
 	// get the big blob of all the modules in header-above-1 to header-above-6
 	echo $templateHelper->getCapture($group);
@@ -51,5 +51,5 @@ if ($modsize) { ?></div></div><?php }
  */
 
 //cleanup
-unset($style, $modsize, $chunks);
+unset($style, $modsize);
 

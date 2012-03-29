@@ -27,10 +27,12 @@ class CustomTheme
 	 * Theme Properties
 	 * @see getConfig()
 	 */
-	/** @var $name string */
+	/** @var $name string lowercase */
 	protected $name    = 'default';
 	/** @var $title string */
-	protected $title   = 'Default';
+	protected $title = 'Default';
+	/** @var $description string */
+	protected $description = 'Default Theme';
 	/** @var $version string */
 	protected $version = '0.1.0';
 	/** @var $author string */
@@ -41,27 +43,14 @@ class CustomTheme
 	protected $url     = '';
 	/**#- */
 
+	/** @var $tmpl_url string */
+	public $tmpl_url = '';
+
 	/**
-	 * @var $config JObject
+	 * @var $config JRegistry
 	 * @see getConfig()
 	 */
 	protected $config;
-
-	/**
-	 * @ignore
-	 * @var array defaults
-	 */
-	protected $_defaults = array(
-				'title'=>'Default',
-				'version'=>'',
-				'layouts'=>array(),
-				'cdn'=>array(),
-				'scripts'=>array(),
-				'nuke_scripts'=>array(),
-				'nuke_styles'=>array(),
-				'styleswitcher'=>array(),
-				'fontscaler'=>array(),
-				);
 
 	/**
 	 * @staticvar array chunks from the static html file(s) *
@@ -90,15 +79,11 @@ class CustomTheme
 		}
 		$this->name = $theme;
 
-		// use "default" == 'template.css"
-		if ((int) $theme == -1) {
-			$helper->addLink('template.css');
-		}
+		$this->path     = JPATH_THEMES .'/'. $tmpl->template .'/themes/'. $this->name . '.php';
+		$this->tmpl_url = JUri::root(true) .'/templates/'. $tmpl->template;
+		$this->url      = $this->tmpl_url .'/themes';
 
-		$this->path = JPATH_THEMES .'/'. $tmpl->template .'/themes/'. $this->name . '.php';
-		$this->url  = JUri::root(true) .'/templates/'. $tmpl->template .'/themes';
-
-		$this->config = new JObject($this->_defaults);
+		$this->config = new JRegistry();
 
 		if (is_file($this->path))
 		{
@@ -108,11 +93,11 @@ class CustomTheme
 				break;
 			}
 
-			$this->title   = $config['title'];
-			$this->version = $config['version'];
-
-			$this->config->setProperties($config);
+			$this->config->loadArray($config);
 		}
+
+		$this->title   = $this->config->get('title');
+		$this->version = $this->config->get('version');
 
 		// @see ConstructTemplateHelper::renderModules()
 		$chunks = array(
@@ -123,6 +108,9 @@ class CustomTheme
 				);
 
 		$this->setChunks($chunks);
+
+		/** Document Head */
+		require_once JPATH_THEMES . '/construc2/x~incubator/elements/renderer/head.php';
 	}
 
 	/**
@@ -139,58 +127,26 @@ class CustomTheme
 	}
 
 	/**
-	 * @return CustomTheme
+	 * @return string
 	 */
 	public function build(JDocument $document)
 	{
+		// does anyone know what $head['link'] is for? skipping...
 		$head = $document->getHeadData();
 
-		self::$chunks['meta'] = !defined('DEVELOPER_MACHINE') ? '' : '<!-- Construc2 -->';
+		self::$chunks['meta']['head']    = ElementRenderer::getInstance('head')->build($head);
+		self::$chunks['meta']['meta']    = ElementRenderer::getInstance('meta')->build($head['metaTags']);
 
-		if (count($head['metaTags']))
-		{
-			self::$chunks['meta'] .= ElementRenderer::getInstance('meta')->build($head);
-		}
+		// from an HTML perspective this is equivalent to <link>
+		self::$chunks['meta']['link']    = ElementRenderer::getInstance('link')->build($head['style'], 'style');
+		self::$chunks['meta']['styles']  = ElementRenderer::getInstance('styles')->build($head['styleSheets']);
 
-		// stub for IE getting onhalt if first CSS is loaded via CC
-		// @link http://webforscher.wordpress.com/2010/05/20/ie-6-slowing-down-ie-8/
-		self::$chunks['meta'] .= PHP_EOL.'<!--[if IE]><![endif]-->';
+		self::$chunks['meta']['script']  = ElementRenderer::getInstance('script')->build($head['script']);
+		self::$chunks['meta']['scripts'] = ElementRenderer::getInstance('scripts')->build($head['scripts']);
 
-		if (count($head['link']))
-		{
-			self::$chunks['meta'] .= ElementRenderer::getInstance('link')->build($head, 'link');
-		}
+		self::$chunks['meta']['custom']	 = ElementRenderer::getInstance('custom')->build($head['custom']);
 
-		if (count($head['style']))
-		{	// from an HTML perspective this is equivalent to <link>
-			self::$chunks['meta'] .= ElementRenderer::getInstance('link')->build($head, 'style');
-		}
-
-		if (count($head['styleSheets']))
-		{
-			self::$chunks['meta'] .= ElementRenderer::getInstance('styles')->build($head);
-		}
-
-		if (count($head['script']))
-		{
-			self::$chunks['meta'] .= ElementRenderer::getInstance('script')->build($head);
-		}
-
-		if (count($head['scripts']))
-		{
-			self::$chunks['meta'] .= ElementRenderer::getInstance('scripts')->build($head);
-		}
-
-		if (count($head['custom']))
-		{
-			self::$chunks['meta'] .= ElementRenderer::getInstance('custom')->build($head);
-		}
-
-		if (defined('DEVELOPER_MACHINE')) {
-			self::$chunks['meta'] .= PHP_EOL.'<!-- /Construc2 -->';;
-		}
-
-		return $this;
+		return implode(PHP_EOL, self::$chunks['meta']);
 	}
 
 	/**
@@ -337,7 +293,7 @@ class CustomTheme
 	{
 		$chunks = array($name);
 		if (is_string($affixes)) {
-			$chunks = array($name, $affixes, $name .' '. $affixes);
+			$chunks = array($name, $affixes, $name .'_'. $affixes);
 		}
 		elseif (is_array($affixes)) {
 			$chunks = array();
@@ -360,7 +316,19 @@ class CustomTheme
 
 	public function getConfig($name, $default=null)
 	{
+		if (null === $name) {
+			return $this->config;
+		}
 		return $this->config->get($name, $default);
+	}
+
+	public function get($key, $default=null)
+	{
+		if (isset($this->$key))
+		{
+			return $this->$key;
+		}
+		return $default;
 	}
 
 }

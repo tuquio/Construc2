@@ -17,7 +17,7 @@ $style	= null; // null is essentially the same as 'raw'
  * keep these PHP tags tight close to the HTML markup or a
  * single white space may render your styles useless.
  */
-if ($modcount) : ?><footer id="footer-above" class="line below count-<?php echo $footerAboveCount[0] ?>"><div class="above-inner"><?php endif;
+if ($modcount) : ?><footer id="footer-above" class="line below" data-modules="<?php echo $footerAboveCount[0] ?>"><div class="above-inner"><?php endif;
 
 if ($footerAboveCount[1]) {
 	$templateHelper->renderModules('footer-above-1', $style, array());
@@ -35,5 +35,5 @@ if ($footerAboveCount[4]) {
 if ($modcount) : ?></div></footer><?php endif;
 
 //cleanup
-unset($style, $modcount, $chunks);
+unset($style, $modcount);
 

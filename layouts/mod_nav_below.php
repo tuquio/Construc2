@@ -17,7 +17,7 @@ $style	= 'raw';
  * keep these PHP tags tight close to the HTML markup or a
  * single white space may render your styles useless.
  */
-if ($modcount) : ?><div id="nav-below" class="line below count-<?php echo $navBelowCount[0] ?>"><div class="below-inner"><?php endif;
+if ($modcount) : ?><div id="nav-below" class="line below" data-modules="<?php echo $navBelowCount[0] ?>"><div class="below-inner"><?php endif;
 
 if ($modcount > 1 && $navBelowCount[1]) {
 	$templateHelper->renderModules('nav-below-1', $style);
@@ -35,5 +35,5 @@ if ($modcount > 4 && $navBelowCount[4]) {
 if ($modcount) : ?></div></div><?php endif;
 
 //cleanup
-unset($style, $modcount, $chunks);
+unset($style, $modcount);
 

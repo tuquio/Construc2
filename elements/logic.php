@@ -14,7 +14,6 @@
 JLoader::register('ConstructTemplateHelper', dirname(__FILE__) . '/helper.php');
 
 $templateHelper	= ConstructTemplateHelper::getInstance();
-$theme			= $templateHelper->getTheme();
 
 /** @var $app JSite To enable use of site configuration */
 $app 		= JFactory::getApplication();
@@ -37,13 +36,6 @@ if (($cssTheme + 1) == 0) $cssTheme = false;
 
 // some editor form requested, needs mo' styles, and less modules
 $editMode = $templateHelper->isEditMode();
-
-if ($app->getCfg('debug') && ($cts = $app->input->get('cts')) ) {
-	$cts = basename($cts, '.css');
-	if (is_file(JPATH_THEMES .'/'. $this->template . '/themes/'. $cts .'.css')) {
-		$cssTheme = $cts;
-	}
-}
 
 // all things different in edit mode
 if ($editMode) {
@@ -109,20 +101,15 @@ if ($app->getCfg('debug') && $app->input->get('tpos', 0, 'bool')) {
 // Custom tags
 // tell mobile devices to treat the viewport as being the same width as the
 // physical width of the device to make width work in media-queries as expected
-$this->setMetaData('viewport', 'width=device-width,initial-scale=1.0');
-
-// Transparent favicon
-if (is_file(JPATH_THEMES .'/'. $this->template .'/favicon.png')) {
-	$templateHelper->addLink($tmpl_url.'/favicon.png', 'image/png', 'icon');
-}
+$templateHelper->element('meta')->set('viewport', 'width=device-width,initial-scale=1.0');
 
 // Typography (protocol relative URLs)
-$templateHelper->webFonts();
+//#FIXME $templateHelper->webFonts();
 
 // Style sheets
 if ($ssiIncludes) {
 	$printMode = $app->input->get('print');
-	$templateHelper->addLink($tmpl_url.'/css/construc2.styles?rtl='. ($this->direction == 'rtl') .'&em='. $editMode .'&pm='.$printMode);
+	$templateHelper->element('link')->set($tmpl_url.'/css/construc2.styles?rtl='. ($this->direction == 'rtl') .'&em='. $editMode .'&pm='.$printMode);
 
 	// a 'filelist' param returns -1 for 'none'
 	$ssiTheme = $this->params->get('ssiTheme');
@@ -130,43 +117,43 @@ if ($ssiIncludes) {
 		$ssiTheme = false;
 	}
 	if ($ssiTheme) {
-		$templateHelper->addLink($tmpl_url.'/themes/'.$ssiTheme .'?rtl='. ($this->direction == 'rtl') .'&em='. $editMode .'&pm='.$printMode);
+		$templateHelper->element('link')->set($tmpl_url.'/themes/'.$ssiTheme .'?rtl='. ($this->direction == 'rtl') .'&em='. $editMode .'&pm='.$printMode);
 	}
 }
 else {
-	$templateHelper->addLink($tmpl_url.'/css/core/base.css');
-	$templateHelper->addLink($tmpl_url.'/css/core/oocss.css');
-	$templateHelper->addLink($tmpl_url.'/css/core/template.css');
+	$templateHelper->element('link')->set($tmpl_url.'/css/core/base.css');
+	$templateHelper->element('link')->set($tmpl_url.'/css/core/oocss.css');
+	$templateHelper->element('link')->set($tmpl_url.'/css/core/template.css');
 
 	if ($this->direction == 'rtl') {
-		$templateHelper->addLink($tmpl_url.'/css/core/rtl.css');
+		$templateHelper->element('link')->set($tmpl_url.'/css/core/rtl.css');
 	}
 
 	// "task based" stuff
 	if ($editMode) {
-		$templateHelper->addLink($tmpl_url.'/css/core/edit-form.css');
+		$templateHelper->element('link')->set($tmpl_url.'/css/core/edit-form.css');
 	}
 
 	if ($cssTheme) {
-		$templateHelper->addLink($tmpl_url.'/themes/'.$cssTheme);
+		$templateHelper->element('link')->set($tmpl_url.'/themes/'.$cssTheme);
 	}
 }
 
 /* Preview Module Positions with index.php?tp=1 */
 if ($app->get('input')->get('tp', 0, 'bool') && JComponentHelper::getParams('com_templates')->get('template_positions_display')) {
-	$templateHelper->addLink($tmpl_url.'/css/core/tp.css');
+	$templateHelper->element('link')->set($tmpl_url.'/css/core/tp.css');
 }
 
 // Style sheet switcher
 if ($enableSwitcher) {
-	$templateHelper->addLink($tmpl_url.'/css/core/diagnostic.css', null, array('title'=>'diagnostic'), 'alternate stylesheet');
+	$templateHelper->element('link')->set($tmpl_url.'/css/core/diagnostic.css', 'alternate stylesheet', array('title'=>'diagnostic'));
 	// $templateHelper->addScript($tmpl_url.'/js/styleswitch.min.js');
-	$templateHelper->addScript($tmpl_url.'/js/src/styleswitch.js');
+	$templateHelper->element('script')->set($tmpl_url.'/js/src/styleswitch.js');
 }
 
 // Lea Verou's -prefix-free
 if ($this->params->get('prefixfree')) {
-	$templateHelper->addScript($tmpl_url.'/js/prefixfree.min.js');
+	$templateHelper->element('script')->set($tmpl_url.'/js/prefixfree.min.js');
 }
 
 // HTML5 cache manifest (not rendered by default in the <html> element)
@@ -179,12 +166,6 @@ if ((bool) $this->params->get('html5manifest')) {
 	}
 } else {
 	$cache_manifest = '';
-}
-
-/* Shim files and MSIE Fixes */
-// html5 shim
-if ($this->params->get('html5shim')) {
-	$templateHelper->addScript($tmpl_url.'/js/html5.js');
 }
 
 /* .eof */

@@ -52,10 +52,10 @@ class ConstructTemplateHelper
 	public static $helper;
 
 	/** @var $config array */
-	protected $config = array('cdn'=>array('@default'=>''));
+	protected $config = array('cdn'=>array('@default'=>''), 'features'=>array());
 
 	/** @var $theme CustomTheme */
-	protected $theme = null;
+	public $theme;
 
 	/** @var $head array */
 	static protected $head = array();
@@ -68,19 +68,10 @@ class ConstructTemplateHelper
 		$this->doc  = JFactory::getDocument();
 		$this->tmpl = JFactory::getApplication()->getTemplate(true);
 
-		if (defined('DEVELOPER_MACHINE') && $this->tmpl->params->get('headCleanup'))
-		{
-			/** Cleanup Document Head */
-			require_once JPATH_THEMES . '/construc2/x~incubator/elements/renderer/head.php';
-		}
-
 		// remove this nonsense
 		$this->doc->setTab('');
 
-		// fake ini file
-		if (is_file(dirname(__FILE__) .'/settings.php')) {
-			$this->config = parse_ini_file(dirname(__FILE__) .'/settings.php', true);
-		}
+		$this->loadConfig();
 
 		// some edit form requested?
 		// - needs refinement and maybe some config to enforce it
@@ -111,6 +102,7 @@ class ConstructTemplateHelper
 		if (null === self::$helper->theme)
 		{
 			self::$helper->theme = CustomTheme::getInstance(self::$helper);
+			self::$helper->_applySubst('theme', self::$helper->theme->get('name'));
 		}
 
 		return self::$helper;
@@ -250,6 +242,19 @@ class ConstructTemplateHelper
 		$alias = implode(' ', $words);
 
 		return trim($alias);
+	}
+
+	/**
+	 * Tells whether the .mod class from OOCSS should be applied.
+	 *
+	 * @param  string  $position
+	 * @return boolean
+	 *
+	 * @todo IMPLEMENT $position conditions
+	 */
+	public function moduleStyle($position)
+	{
+		return (bool) $this->tmpl->params->get('modOocss', 0);
 	}
 
 	// @todo refactor to use JStringXXX if that comes available
@@ -461,6 +466,26 @@ class ConstructTemplateHelper
 		return $this->layouts;
 	}
 
+	public function addFeature($feature, $options=array())
+	{
+		if (isset($this->config['features'][$feature]))
+		{
+
+		}
+
+		return $this;
+	}
+
+	public function getFeature($feature)
+	{
+		if (isset($this->config['features'][$feature]))
+		{
+			return $this->config['features'][$feature];
+		}
+
+		return null;
+	}
+
 	/**
 	 * Counts and returns the amount of active Modules in the given position $group.
 	 *
@@ -470,7 +495,8 @@ class ConstructTemplateHelper
 	 * @return array|null
 	 * @see numModules(), renderModules()
 	 * @uses JDocumentHTML::countModules();
-	 * @todo  fund a more flexible way to count 'column-X' split into 'group-alpha/beta'
+	 *
+	 * @todo find a more flexible way to count 'column-X' split into 'group-alpha/beta'
 	 */
 	public function getModulesCount($group, $max = self::MAX_MODULES)
 	{
@@ -490,7 +516,6 @@ class ConstructTemplateHelper
 
 		for ($i = 1; $i <= $max; $i += 1) {
 			$modules[$i] = $this->doc->countModules($group .'-'. $i);
-	//		$modules[$i] = &JModuleHelper::getModules($group .'-'. $i);
 		}
 
 		$i = array_sum($modules);
@@ -541,27 +566,24 @@ class ConstructTemplateHelper
 		}
 
 		$attribs['name'] = $position;
-		($style) ? $attribs['style'] = $style : true;
+
+		if (!array_key_exists('style', $attribs)) {
+			$attribs['style'] = $style;
+		}
 
 		$css = array();
-		$prefixes = array(
-				'before' => array('before'),
-				'after'  => array('after')
-				);
+		$wrapper = array();
 
-		// no layout override?
+		// disable ".unit" auto columns?
 		if (!array_key_exists('autocols', $attribs)) {
-			$attribs['autocols'] = $this->tmpl->params->get('modOocss', 0);
+			//#FIXME honor exclusion list for positions
+			$attribs['autocols'] = $this->moduleStyle($position);
 		}
 
 		settype($attribs['autocols'], 'bool');
 
 		if ($attribs['autocols'] !== false)
 		{
-			$prefixes['before'][] = 'unit_before';
-			$prefixes['after'][]  = 'unit_after';
-
-
 			if ( $group != false ) {
 				$modules = $this->getModulesCount($group);
 				$n = $modules[0];
@@ -570,31 +592,33 @@ class ConstructTemplateHelper
 			}
 
 			if ( $n > 0 ) {
-				$attribs['oocss'] = '';
+				unset($attribs['oocss']);
 				$css[] = 'unit size1of'.$n;
 			}
 			unset($attribs['autocols']);
 		}
 		else {
-			$css[] = 'mod';
+			if ($this->moduleStyle($position)) {
+				$css[] = 'mod';
+			}
 		}
 
 		$css = array_unique($css);
-
 		$html = array();
-
 		foreach (JModuleHelper::getModules($position) as $module)
 		{
-			// find encoded @stylename in moduleclass_sfx
+			// find encoded @chromename in moduleclass_sfx
 			$sfx = strpos(str_replace('"moduleclass_sfx":""', '', $module->params), '"moduleclass_sfx"');
 			if ($sfx !== false && strpos($module->params, '@', $sfx) !== false)
 			{
 				$mparams = json_decode($module->params);
-				$style = preg_grep('/^@([a-z]+)/', explode(' ', $mparams->moduleclass_sfx));
-				$attribs['style'] = str_replace('@', '', implode(' ', $style));
+				$chrome  = preg_grep('/^@([a-z]+)/', explode(' ', $mparams->moduleclass_sfx));
+
+				// per module setting takes precedence
+				$attribs['style'] = str_replace('@', '', implode(' ', $chrome));
 
 				// put everything else back
-				$mparams->moduleclass_sfx = trim(str_replace($style, '', $mparams->moduleclass_sfx));
+				$mparams->moduleclass_sfx = trim(str_replace($chrome, '', $mparams->moduleclass_sfx));
 				$module->params = json_encode($mparams);
 			}
 
@@ -604,16 +628,11 @@ class ConstructTemplateHelper
 			// this crap doesn't belong here
 			$content = $this->_choppInlineCrap($content, $module->module);
 
-if (!$module->showtitle || !array_key_exists($module->name, $this->config['allow_empty']))
-{
-	if (self::isEmpty($content)) {
-		continue;
-	}
-}
+#	if (self::isEmpty($content)) {
+#		continue;
+#	}
 
-			$prefixes['before'][] = $module->module;
-			$prefixes['after'][]  = $module->module;
-			if ($chunk = $this->theme->getChunk('module', $prefixes['before']) )
+			if ( ($chunk = $this->theme->getChunk('module', array('before', $module->name))) )
 			{
 				$html[] = str_replace(
 							array('{position}', '{class}'),
@@ -624,7 +643,8 @@ if (!$module->showtitle || !array_key_exists($module->name, $this->config['allow
 
 			$html[] = $content;
 
-			if ($chunk = $this->theme->getChunk('module', $prefixes['after']) ) {
+			if ( ($chunk = $this->theme->getChunk('module', array('after', $module->name))) )
+			{
 				$html[] = $chunk;
 			}
 		}
@@ -655,6 +675,20 @@ if (!$module->showtitle || !array_key_exists($module->name, $this->config['allow
 		return $this->theme->getCapture($name, $checkonly);
 	}
 
+	/**
+	 * @param  string  $type HEAD element name
+	 * @return ElementRenderer instance of requested type.
+	 */
+	public function element($type)
+	{
+		try {
+			return ElementRenderer::getInstance($type);
+		}
+		catch (Exception $e) {
+			return;
+		}
+	}
+
 	/**@#+
 	 * Add browser specific ressources, typically for MSIE in which case a
 	 * conditional comment (CC) based on $uagent is added to group output.
@@ -677,8 +711,9 @@ if (!$module->showtitle || !array_key_exists($module->name, $this->config['allow
 	 * @see renderHead()
 	 */
 
+
 	/**
-	 * Adds a <link> Element für stylesheets, feeds, favicons etc.
+	 * Adds a <link> Element for stylesheets, feeds, favicons etc.
 	 *
 	 * The mime type for (alternative) styles and icons is enforced.
 	 *
@@ -690,7 +725,7 @@ if (!$module->showtitle || !array_key_exists($module->name, $this->config['allow
 	 * @return ConstructTemplateHelper for fluid interface
 	 * @see renderHead(), $links
 	 */
-	public function addLink($href, $uagent=self::UA, $attribs=array(), $rel='stylesheet')
+	public function _addLink($href, $uagent=self::UA, $attribs=array(), $rel='stylesheet')
 	{
 		static $favicon;
 
@@ -760,6 +795,13 @@ if (!$module->showtitle || !array_key_exists($module->name, $this->config['allow
 	 */
 	public function addMetaData($name, $content, $uagent=self::UA, $http_equiv=false)
 	{
+		if ($http_equiv) {
+			$this->element('meta')->httpEquiv($name, $content);
+		} else {
+			$this->element('meta')->set($name, $content);
+		}
+		return $this;
+
 		$this->_makeRoom('meta', $uagent);
 
 		// store
@@ -778,18 +820,21 @@ if (!$module->showtitle || !array_key_exists($module->name, $this->config['allow
 	 * @return ConstructTemplateHelper for fluid interface
 	 * @see renderHead(), $script
 	 */
-	public function addScript($url, $uagent=self::UA, $attribs=array())
+	public function addScript($href, $uagent=self::UA, $attribs=array())
 	{
+		$this->element('script')->set($href, $attribs, $uagent);
+		return $this;
+
 		$this->_makeRoom('scripts', $uagent, array('cdn'=>array(), 'media'=>array(), 'templates'=>array(), 'scripts'=>array()));
 
-		$url = $this->_tuckUrl($url);
+		$href = $this->_tuckUrl($href);
 		$location = 'scripts';
 
-		if (strpos(" {$url}", 'http') >= 1 || strpos(" {$url}", '//') >= 1) {
+		if (strpos(" {$href}", 'http') >= 1 || strpos(" {$href}", '//') >= 1) {
 			$location = 'cdn';
 		}
 
-		if (preg_match('#(media|templates)/system/#', $url, $match)) {
+		if (preg_match('#(media|templates)/system/#', $href, $match)) {
 			$location = $match[1];
 		}
 
@@ -803,7 +848,7 @@ if (!$module->showtitle || !array_key_exists($module->name, $this->config['allow
 		}
 
 		// store
-		self::$head["{$uagent}"]['scripts'][$location][$url] = JArrayHelper::toString($attribs);
+		self::$head["{$uagent}"]['scripts'][$location][$href] = JArrayHelper::toString($attribs);
 
 		return $this;
 	}
@@ -817,12 +862,15 @@ if (!$module->showtitle || !array_key_exists($module->name, $this->config['allow
 	 */
 	public function addScriptDeclaration($content, $uagent=self::UA)
 	{
+		$this->element('scripts')->set($content, null, $uagent);
+		return $this;
+
 		$this->_makeRoom('script', $uagent);
 
 		// flatten
 		$script = (is_array($content) ? implode(PHP_EOL, $content) : $content);
 		// de-XHTMLize inline <script> created by modules
-		$script = str_replace(array('<![CDATA[', ']]>',"//\n"), '', $script);
+		$script = str_replace(array('<![CDATA[', ']]>',"//\r\n","//\n"), '', $script);
 
 		self::$head["{$uagent}"]['script'][] = $script;
 
@@ -917,15 +965,17 @@ if (!$module->showtitle || !array_key_exists($module->name, $this->config['allow
 					break;
 
 				case 'links':
+					$elt = $this->element('link');
 					foreach ($stuff as $key => $data) {
-						$this->addLink($key, null, $data['attribs'], $data['relation']);
+						$elt->set($key, $data['relation'], $data['attribs']);
 					}
 					unset($head[$group]);
 					break;
 
 				case 'styleSheets':
+					$elt = $this->element('link');
 					foreach ($stuff as $key => $data) {
-						$this->addLink($key, null, $data);
+						$elt->set($key, 'stylesheet', $data);
 					}
 					unset($head[$group]);
 					break;
@@ -1034,7 +1084,7 @@ if (!$module->showtitle || !array_key_exists($module->name, $this->config['allow
 		else {
 			// Load the MooTools JavaScript Library
 			JHtml::_('behavior.framework');
-			if ($loadModal) {
+			if ((bool)$this->tmpl->params->get('loadModal', 0)) {
 				// Enable modal pop-ups
 				JHtml::_('behavior.modal');
 			}
@@ -1239,7 +1289,7 @@ To allow parallel downloading, move the inline script before the external CSS fi
 				if (empty($fontSize) || empty($fontTargets)) {
 					continue;
 				}
-				$this->addLink('//fonts.googleapis.com/css?family='.$font);
+				$this->element('link')->set('//fonts.googleapis.com/css?family='.$font);
 			}
 		}
 
@@ -1255,10 +1305,56 @@ To allow parallel downloading, move the inline script before the external CSS fi
 	 */
 	public function getConfig($key, $default='')
 	{
+		if (null === $key) {
+			return $this->config;
+		}
+
 		if ( array_key_exists($key, $this->config) ) {
 			return $this->config[$key];
 		}
-		return "$default";
+
+		return $default;
+	}
+
+	protected function loadConfig()
+	{
+		$default = array();
+
+		// fake ini file
+		if (is_file(dirname(__FILE__) .'/settings.php')) {
+			$config  = parse_ini_file(dirname(__FILE__) .'/settings.php', true);
+			$default = array_merge_recursive($default, $config);
+		}
+
+		foreach ($default['subst'] as $k => $v)
+		{
+			settype($default['subst'][$k], 'string');
+			$default['subst'][$k] = str_replace(
+							array('{root}','{template}','{theme}','{media}'),
+							array(JURI::root(true),
+									$default['subst']['template'],
+									$default['subst']['theme'],
+									$default['subst']['media'],
+								),
+							$v);
+		}
+
+		$this->config = $default;
+	}
+
+	protected function _applySubst($key, $name, $type=null)
+	{
+		if (!isset($this->config['subst'][$key])) {
+			return $this;
+		}
+		$from = array('{name}');
+		$to   = array($name);
+		if (!empty($type)) {
+			$from = array('{type}');
+			$to   = array($type);
+		}
+
+		$this->config['subst'][$key] = str_replace($from, $to, $this->config['subst'][$key]);
 	}
 
 	/**
@@ -1396,7 +1492,7 @@ To allow parallel downloading, move the inline script before the external CSS fi
 			}
 		}
 
-		return $content;
+		return trim($content);
 	}
 
 }

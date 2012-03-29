@@ -28,8 +28,8 @@ function modChrome_chtml( $module, &$params, &$attribs )
 {
 	static $ooobj = array('mod'=>false,'complex'=>false,'pop'=>false,'bubble'=>false);
 
-	// don't render empty modules, "whitelist" for mod_custom and mod_banner
-#	if (ConstructTemplateHelper::isEmpty($module->content)) return;
+	// don't render empty modules
+	if (ConstructTemplateHelper::isEmpty($module->content)) return;
 
 	$css	= array();
 	$oocss  = null;
@@ -118,14 +118,8 @@ function modChrome_mod( $module, &$params, &$attribs )
 {
 	static $toggle = 0;
 
-	// don't render empty modules, "whitelist" for mod_custom and mod_banner
-#	if (ConstructTemplateHelper::isEmpty($module->content)) return;
-
-	if (array_key_exists('oocss', $attribs)) {
-		$attribs['oocss'] = 'mod '. $attribs['oocss'];
-	} else {
-		$attribs['oocss'] = 'mod';
-	}
+	// don't render empty modules
+	if (ConstructTemplateHelper::isEmpty($module->content)) return;
 
 	if (array_key_exists('toggle', $attribs)) {
 		$params->set('moduleclass_sfx', ($toggle % 2 ? 'even' : 'odd'));
@@ -207,7 +201,7 @@ function modChrome_bubble( $module, &$params, &$attribs )
  */
 function modChrome_withevent( $module, &$params, &$attribs )
 {
-	// don't render empty modules, "whitelist" for mod_custom and mod_banner
+	// don't render empty modules
 	if (ConstructTemplateHelper::isEmpty($module->content)) return;
 
 	$module->content = JHtml::_('content.prepare', $module->content, $params);
@@ -223,7 +217,7 @@ function modChrome_withevent( $module, &$params, &$attribs )
  */
 function modChrome_raw( $module, &$params, &$attribs )
 {
-	// don't render empty modules, "whitelist" for mod_custom and mod_banner
+	// don't render empty modules
 	if (ConstructTemplateHelper::isEmpty($module->content)) return;
 
 	if ($module->showtitle) {
