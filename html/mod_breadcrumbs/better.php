@@ -16,39 +16,39 @@ if ($count == 0) {
 }
 
 ?><div class="menu breadcrumbs <?php echo $moduleclass_sfx ?>"><?php
-if ($count > 1 && $params->get('showHere', 1)) {
-	echo '<span class="mi first here">' .JText::_('MOD_BREADCRUMBS_HERE').'</span>';
+
+if ($params->get('showHere', 0)) {
+	echo '<strong class="bc-item first here">' .JText::_('MOD_BREADCRUMBS_HERE').'</strong>';
 }
 
-for ($i = 0; $i < $count; $i++)
+for ($i = 0; $i < $count; $i += 1)
 {
-	$css   = isset($list[$i]->alias) ? ' '.$list[$i]->alias : '';
-	if ($i == 0) $css .= ' first';
-	if ($i == $count - 1) $css .= ' last';
-
-	$label = '<span class="mi'. $css .'">'. $list[$i]->name .'</span>';
-
-	if ($i < $count - 1)
-	{
-		if (!empty($list[$i]->link))
-		{
-			echo '<a class="mi pathway ', $css ,'" href="', $list[$i]->link, '">', $label, '</a>';
-		} else {
-			echo $label;
-		}
-
-		// If not the last item in the breadcrumbs add the separator
-		if ($i < $count - 2) {
-			echo '<span class="bc-item"><span class="sep">', $separator, '</span>';
-		}
+	if ($i > 0 && !empty($list[$i]->link)) {
+		$css = explode('/', $list[$i]->link);
+		$css = array_pop($css);
+		$list[$i]->css = preg_replace('/^\d+\-/', '', $css);
 	}
 	else {
-		if ($i == 0 && $params->get('showHome')) {
-			echo '<a class="mi pathway active" href="', $list[$i]->link, '">', $label, '</a>';
+		$list[$i]->css = ($i == 0) ? 'home' : '';
+	}
+
+	$crumb = '<span class="mi">'. $list[$i]->name .'</span>';
+
+	if (!empty($list[$i]->link)) {
+		$crumb = '<a class="mi '. $list[$i]->css .'" href="'. $list[$i]->link. '">'. $crumb .'</a>';
+	}
+
+	if ($i == 0 && $params->get('showHome'))
+	{
+		echo $crumb;
+	}
+	else {
+		if ($i < $count - 1 || $params->get('showLast')) {
+			echo '<span class="pathway"><span class="sep">'. $separator .'</span>';
+			$crumb .= '</span>';
 		}
-		if ($params->get('showLast', 1)) {
-			echo '<span class="bc-item active"><span class="sep">', $separator, '</span>'.$label;
-		}
+
+		echo $crumb;
 	}
 }
 
