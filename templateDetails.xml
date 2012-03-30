@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE extension>
-<extension version="2.5" type="template" client="site" method="upgrade" >
+<extension version="2.5" type="template" client="site" method="upgrade">
 	<name>Construc2</name>
 	<creationDate>2011-06-20</creationDate>
 	<author>WebMechanic</author>
@@ -8,7 +8,7 @@
 	<authorUrl>http://joomla.webmechanic.biz</authorUrl>
 	<copyright>Copyright (C)2011-2012 WebMechanic. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
-	<version>1.9.13</version>
+	<version>1.10.0-beta</version>
 	<description>TPL_CONSTRUC2_DESCRIPTION</description>
 	<credits><![CDATA[Inspired by "Construct Community", Matt Thomas, Joomla Engineering. See CREDITS.php]]></credits>
 
@@ -56,14 +56,14 @@
 	<config>
 		<fields name="params">
 			<fieldset name="general" addfieldpath="/templates/construc2/elements" >
-				<field name="customStyleSheet" type="filelist" default=""
+				<field name="theme" type="filelist" default=""
 						label="TPL_CONSTRUC2_CUSTOM_STYLE_SHEET_LABEL"
 						description="TPL_CONSTRUC2_CUSTOM_STYLE_SHEET_DESC"
 						directory="templates/construc2/themes"
 						filter="\.css"
 						exclude="(template|editor|tinymce|codemirror|jce|ie\d+|test.+|x~.+)\.css"
 					/>
-				<field name="ssiIncludes" type="radio" default="0" label="TPL_CONSTRUC2_ENABLE_APACHESSI_LABEL" description="TPL_CONSTRUC2_ENABLE_APACHESSI_DESC">
+				<field name="ssiIncludes" type="radio" default="0" label="TPL_CONSTRUC2_APACHESSI_LABEL" description="TPL_CONSTRUC2_APACHESSI_DESC">
 					<option value="1">JYes</option>
 					<option value="0">JNo</option>
 				</field>
@@ -80,25 +80,15 @@
 			</fieldset>
 
 			<fieldset name="features">
-				<field name="setGeneratorTag" type="text" default="" label="TPL_CONSTRUC2_CUSTOM_GENERATOR_TAG" description="TPL_CONSTRUC2_CUSTOM_GENERATOR_TAG_DESC" size="56" />
-				<field name="enableSwitcher" type="radio" default="0" label="TPL_CONSTRUC2_ENABLE_SWITCHER_LABEL" description="TPL_CONSTRUC2_ENABLE_SWITCHER_DESC">
+				<field name="setGeneratorTag" type="text" default="" label="TPL_CONSTRUC2_METAGENERATOR" description="TPL_CONSTRUC2_METAGENERATOR_DESC" size="56" />
+				<field name="styleswitcher" type="radio" default="0" label="TPL_CONSTRUC2_STYLESWITCHER_LABEL" description="TPL_CONSTRUC2_STYLESWITCHER_DESC">
 					<option value="1">JShow</option>
 					<option value="0">JHide</option>
 				</field>
-				<field name="showDiagnostics" type="radio" default="0" label="TPL_CONSTRUC2_ENABLE_DIAGNOSTICS_LABEL" description="TPL_CONSTRUC2_ENABLE_DIAGNOSTICS_DESC">
+				
+				<field name="diagnostics" type="radio" default="0" label="TPL_CONSTRUC2_DIAGNOSTICS_LABEL" description="TPL_CONSTRUC2_DIAGNOSTICS_DESC">
 					<option value="1">JShow</option>
 					<option value="0">JHide</option>
-				</field>
-				<field name="showDateContainer" type="radio" default="0" label="TPL_CONSTRUC2_ENABLE_DATECONTAINER_LABEL" description="TPL_CONSTRUC2_ENABLE_DATECONTAINER_DESC">
-					<option value="1">JShow</option>
-					<option value="0">JHide</option>
-				</field>
-				<field name="dateFormat" type="list" default="4" label="TPL_CONSTRUC2_DATEFORMAT_LABEL" description="TPL_CONSTRUC2_DATEFORMAT_DESC">
-					<option value="" >DATE_FORMAT_LC</option>
-					<option value="1">DATE_FORMAT_LC1</option>
-					<option value="2">DATE_FORMAT_LC2</option>
-					<option value="3">DATE_FORMAT_LC3</option>
-					<option value="4">DATE_FORMAT_LC4</option>
 				</field>
 			</fieldset>
 
@@ -127,18 +117,6 @@
 			<fieldset name="compat" description="TPL_CONSTRUC2_COMPAT_DESC">
 				<field name="html5shim" type="radio" default="1" label="TPL_CONSTRUC2_HTML5_LABEL" description="TPL_CONSTRUC2_HTML5_DESC">
 					<option value="1">JYes</option>
-					<option value="0">JNo</option>
-				</field>
-				<field name="html5manifest" type="radio" default="0" label="TPL_CONSTRUC2_ENABLE_HTML5MANIFEST_LABEL" description="TPL_CONSTRUC2_ENABLE_HTML5MANIFEST_DESC">
-					<option value="1">JYes</option>
-					<option value="0">JNo</option>
-				</field>
-				<field name="prefixfree" type="radio" default="0" label="TPL_CONSTRUC2_PREFIXFREE_LABEL" description="TPL_CONSTRUC2_PREFIXFREE_DESC">
-					<option value="1">JYes</option>
-					<option value="0">JNo</option>
-				</field>
-				<field name="loadGcf" type="radio" default="0" label="TPL_CONSTRUC2_CHROME_FRAME_LABEL" description="TPL_CONSTRUC2_CHROME_FRAME_DESC">
-					<option value="1.0.2">JYes</option><!-- field value = version number-->
 					<option value="0">JNo</option>
 				</field>
 			</fieldset>
