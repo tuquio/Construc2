@@ -15,9 +15,9 @@
  */
 defined('_JEXEC') or die;
 
-/* @var $app JSite */
-
-ConstructTemplateHelper::getInstance()->addLink('templates/construc2/css/core/forms.css');
+if (class_exists('ConstructTemplateHelper', false)) {
+	ConstructTemplateHelper::getInstance()->setFeature('forms');
+}
 
 ?>
 <?php if ($type == 'logout') { ?>
