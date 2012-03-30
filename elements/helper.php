@@ -465,24 +465,22 @@ class ConstructTemplateHelper
 		return $this->layouts;
 	}
 
-	public function addFeature($feature, $data=null)
+	/**
+	 * Proxy for CustomTheme::addFeature()
+	 *
+	 * To remove/disable a feature, use CustomTheme
+	 *
+	 * @param  string  $feature A feature name
+	 * @param  mixed   $data    TRUE enable said $feature.
+	 *
+	 * @uses CustomTheme::addFeature()
+	 *
+	 * @return ConstructTemplateHelper for fluid interface
+	 */
+	public function addFeature($feature, $data=true)
 	{
-		if (!isset($this->config['features'][$feature]))
-		{
-			$this->config['features'][$feature] = $data;
-		}
-
+		$this->theme->addFeature($feature, $data);
 		return $this;
-	}
-
-	public function getFeature($feature)
-	{
-		if (isset($this->config['features'][$feature]))
-		{
-			return $this->config['features'][$feature];
-		}
-
-		return null;
 	}
 
 	/**

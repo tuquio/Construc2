@@ -13,10 +13,11 @@
 /** Register the ConstructTemplateHelper Class */
 JLoader::register('ConstructTemplateHelper', dirname(__FILE__) . '/helper.php');
 
+/** @var $templateHelper ConstructTemplateHelper */
 $templateHelper	= ConstructTemplateHelper::getInstance();
 
 /** @var $app JSite To enable use of site configuration */
-$app 		= JFactory::getApplication();
+$app 	= JFactory::getApplication();
 
 /** @var $base_url string Get the base URL of the website */
 $base_url 	= JURI::base(true) . '/';
@@ -33,6 +34,9 @@ $ssiIncludes		= (bool) $this->params->get('ssiIncludes', 0);
 
 // a 'filelist' param returns -1 for 'none'
 if (($cssTheme + 1) == 0) $cssTheme = false;
+
+$templateHelper->addFeature('core', $cssTheme);
+$templateHelper->addFeature('ssi', $ssiIncludes);
 
 // some editor form requested, needs mo' styles, and less modules
 $editMode = $templateHelper->isEditMode();
@@ -104,8 +108,8 @@ if ($app->getCfg('debug') && $app->input->get('tpos', 0, 'bool')) {
 $templateHelper->element('meta')->set('viewport', 'width=device-width,initial-scale=1.0');
 
 // Style sheets
+$printMode = $app->input->get('print');
 if ($ssiIncludes) {
-	$printMode = $app->input->get('print');
 	$templateHelper->element('link')->set($tmpl_url.'/css/construc2.styles?rtl='. ($this->direction == 'rtl') .'&em='. $editMode .'&pm='.$printMode);
 
 	// a 'filelist' param returns -1 for 'none'
@@ -117,40 +121,33 @@ if ($ssiIncludes) {
 		$templateHelper->element('link')->set($tmpl_url.'/themes/'.$ssiTheme .'?rtl='. ($this->direction == 'rtl') .'&em='. $editMode .'&pm='.$printMode);
 	}
 }
-else {
-	$templateHelper->element('link')->set($tmpl_url.'/css/core/base.css');
-	$templateHelper->element('link')->set($tmpl_url.'/css/core/oocss.css');
-	$templateHelper->element('link')->set($tmpl_url.'/css/core/template.css');
 
-	if ($this->direction == 'rtl') {
-		$templateHelper->element('link')->set($tmpl_url.'/css/core/rtl.css');
-	}
+if ($this->direction == 'rtl') {
+	$templateHelper->addFeature('rtl');
+}
 
-	// "task based" stuff
-	if ($editMode) {
-		$templateHelper->element('link')->set($tmpl_url.'/css/core/edit-form.css');
-	}
+if ($editMode) {
+	$templateHelper->addFeature('editor');
+}
 
-	if ($cssTheme) {
-		$templateHelper->element('link')->set($tmpl_url.'/themes/'.$cssTheme);
-	}
+if ($printMode) {
+	$templateHelper->addFeature('print');
 }
 
 /* Preview Module Positions with index.php?tp=1 */
 if ($app->get('input')->get('tp', 0, 'bool') && JComponentHelper::getParams('com_templates')->get('template_positions_display')) {
-	$templateHelper->element('link')->set($tmpl_url.'/css/core/tp.css');
+	$templateHelper->addFeature('tp');
 }
 
 // Style sheet switcher
 if ($enableSwitcher) {
-	$templateHelper->element('link')->set($tmpl_url.'/css/core/diagnostic.css', 'alternate stylesheet', array('title'=>'diagnostic'));
-	// $templateHelper->addScript($tmpl_url.'/js/styleswitch.min.js');
-	$templateHelper->element('script')->set($tmpl_url.'/js/src/styleswitch.js');
+	$templateHelper->addFeature('diagnostic');
+	$templateHelper->addFeature('styleswitch');
 }
 
 // Lea Verou's -prefix-free
 if ($this->params->get('prefixfree')) {
-	$templateHelper->element('script')->set($tmpl_url.'/js/prefixfree.min.js');
+	$templateHelper->addFeature('css3');
 }
 
 // HTML5 cache manifest (not rendered by default in the <html> element)

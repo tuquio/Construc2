@@ -63,6 +63,11 @@ class CustomTheme
 	 */
 	static $chunks = array('meta'=>'');
 
+	/**
+	 * @see addFeature(), getFeatures()
+	 */
+	protected $features = array('core'=>false, 'ssi'=>false);
+
 	protected function __construct(ConstructTemplateHelper $helper)
 	{
 		$tmpl   = $helper->getTemplate();
@@ -312,6 +317,120 @@ class CustomTheme
 		}
 
 		return false;
+	}
+
+	/**
+	 * Adds a "feature" to the frontend theme which typically involves
+	 * loading scripts and styles.
+	 *
+	 * @param  string  $feature A feature name from theme config
+	 * @param  mixed   $data    Some data or FALSE to remove feature
+	 * @return
+	 *
+	 * @uses CustomTheme::addFeature()
+	 *
+	 * @todo pick URLs + attribs from settings.php [features]
+	 * @todo resolve dependencies
+	 */
+	public function addFeature($feature, $data=null)
+	{
+		$feature = strtolower($feature);
+
+		if (false === $data) {
+			//#FIXME resolve dependencies
+			unset($this->features[$feature]);
+			return;
+		}
+
+		$css = $js = array();
+		switch ($feature)
+		{
+			case 'core':
+				// core stylesheets
+				$css[] = $this->tmpl_url.'/css/core/base.css';
+				$css[] = $this->tmpl_url.'/css/core/oocss.css';
+				$css[] = $this->tmpl_url.'/css/core/template.css';
+				break;
+
+			case 'ssi':
+				// Apache SSI based .styles and .scripts
+				$css[] = $this->tmpl_url.'/css/construc2.styles?v=2';
+				$css[] = $this->tmpl_url.'/themes/'. $this->name . '.styles?v=2';
+				break;
+
+			case 'rtl':
+				// right to left support
+				if ($this->features['core']) {
+					$css[] = $this->tmpl_url . '/css/core/rtl.css';
+				}
+				break;
+
+			case 'editor':
+				// WYSIWYG editor styles
+				if ($this->features['core']) {
+					$css[] = $this->tmpl_url . '/css/core/forms.css';
+					$css[] = $this->tmpl_url . '/css/core/edit-form.css';
+				}
+				break;
+
+			case 'print':
+				// print preview
+				$css[] = $this->tmpl_url . '/css/core/print.css';
+				break;
+
+			case 'tp':
+				// template position preview
+				if ($this->features['core']) {
+					$css[] = $this->tmpl_url . '/css/core/tp.css';
+				}
+				break;
+
+			case 'css3':
+				// Lea Verou's -prefix-free
+				$js[] = $this->tmpl_url . '/js/prefixfree.min.js';
+				break;
+
+			case 'diagnostic':
+				//#FIXME title needed, 'alternate stylesheet'
+				// diagnostic stylesheet(s)
+				$css[] = $this->tmpl_url . '/css/core/diagnostic.css';
+				$js[] = '';
+				break;
+
+			case 'styleswitch':
+				// style switcher (JS based)
+				$js[] = $this->tmpl_url . '/js/switcher.min.js';
+				break;
+
+			default:
+				//#FIXME resolve dependencies
+				$this->features[$feature] = $data;
+		}
+
+		if ( count($css) ) {
+			$this->features[$feature]['link'] = $css;
+			$link = ElementRenderer::getInstance('link');
+			foreach ($css as $url) {
+				$link->set($url);
+			}
+		}
+
+		if ( count($js) ) {
+			$this->features[$feature]['script'] = $js;
+			$script = ElementRenderer::getInstance('script');
+			foreach ($js as $url) {
+				$script->set($url);
+			}
+		}
+
+		return $this;
+	}
+
+	// $type ~ style, script, html, ... ?
+	public function getFeatures($type=null)
+	{
+		//#FIXME resolve dependencies
+		return $this->features;
 	}
 
 	public function getConfig($name, $default=null)

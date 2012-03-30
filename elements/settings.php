@@ -83,3 +83,15 @@ date	= 1
 	; -----
 	; module types
 custom	= 1
+
+[features]
+	; -----
+	; stuff to be added on demand.
+	; JS+CSS urls w/ optional {subst} keys
+	; for dependencies use {features.feature-name}
+
+form	= "{core.css}/forms.css"
+editor	= "{features.form},{core.css}/edit-form.css"
+
+
+
