@@ -115,7 +115,7 @@ class CustomTheme
 		$this->setChunks($chunks);
 
 		/** Document Head */
-		require_once JPATH_THEMES . '/construc2/x~incubator/elements/renderer/head.php';
+		require_once dirname(__FILE__) . '/renderer/head.php';
 	}
 
 	/**
