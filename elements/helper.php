@@ -479,25 +479,30 @@ class ConstructTemplateHelper
 	}
 
 	/**
-	 * Proxy for CustomTheme::addFeature()
+	 * Proxy for CustomTheme::setFeature() enable/disable a feature.
 	 *
-	 * To remove/disable a feature, use CustomTheme
+	 * <b>NOTE</b>: This interface will cast $data to a boolen, enabling
+	 * the feature by default. Widgets and Features that requiren extra
+	 * data should be assigned via {@link CustomTheme::setFeature()}.
 	 *
-	 * @param  string  $feature A feature name
-	 * @param  mixed   $data    TRUE enable said $feature.
+	 * @param  string  $feature  A feature name
+	 * @param  boolean $enable   enable/disable said $feature.
 	 *
-	 * @uses CustomTheme::addFeature()
+	 * @uses CustomTheme::setFeature()
 	 *
 	 * @return ConstructTemplateHelper for fluid interface
 	 */
-	public function addFeature($feature, $data=true)
+	public function setFeature($feature, $enable = true)
 	{
-		$this->theme->addFeature($feature, $data);
+		$this->theme->setFeature($feature, (bool) $enable);
 		return $this;
 	}
 
 	/**
 	 * Counts and returns the amount of active Modules in the given position $group.
+	 *
+	 * If "debug" mode, the number of modules and groups is equal to MAX_MODULES
+	 * and MAX_COLUMNS
 	 *
 	 * @param string  $group
 	 * @param integer $max   default self::MAX_MODULES
@@ -638,8 +643,15 @@ class ConstructTemplateHelper
 				$module->params = json_encode($mparams);
 			}
 
-			// render first
-			$content = JModuleHelper::renderModule($module, $attribs);
+			// is this as "widget" shortcut, i.e. using a custom module?
+			if (isset($attribs['style']) && $this->theme->getFeature($attribs['style']))
+			{
+				$content = $this->theme->renderFeature($attribs['style'], array('module'=>&$module));
+			}
+			else {
+				// render module
+				$content = JModuleHelper::renderModule($module, $attribs);
+			}
 
 			// this crap doesn't belong here
 			$content = $this->_choppInlineCrap($content, $module->module);
@@ -784,23 +796,6 @@ class ConstructTemplateHelper
 	}
 
 	/**
-	 * @param string $html   valid html element to be placed inside <head>
-	 * @param mixed  $uagent
-	 *
-	 * @return ConstructTemplateHelper for fluid interface
-	 * @see renderHead(), $custom
-	 */
-	public function addCustomTag($html, $uagent=self::UA)
-	{
-		$this->_makeRoom('custom', $uagent);
-
-		// store
-		self::$head["{$uagent}"]['custom'][] = $html;
-
-		return $this;
-	}
-
-	/**
 	 * @param string $name     name attribute of the meta element
 	 * @param string $content  content attribute
 	 * @param mixed  $uagent
@@ -923,24 +918,11 @@ class ConstructTemplateHelper
 	 */
 	public function buildHead()
 	{
+return $this;
+
 		$head = $this->doc->getHeadData();
 
 		$tmpl_url = JURI::base(true) . '/templates/'. $this->tmpl->template;
-
-		// Google Chrome Frame
-		if (!$this->edit_mode) {
-			// if set, contains the version number, i.e '1.0.2'
-			$cgf = $this->tmpl->params->get('loadGcf');
-			if ((float)$cgf > 1.0) {
-				$this->addScript('//ajax.googleapis.com/ajax/libs/chrome-frame/'. $cgf .'/CFInstall.min.js',
-						'lt IE 9',
-						array('defer'=>true, 'onload'=>'var e=document.createElement("DIV");if(e && CFInstall){e.id="gcf_placeholder";e.style.zIndex="9999";CFInstall.check({node:"gcf_placeholder"});}')
-						);
-			}
-		}
-
-		// JSON shim
-		$jsonShim = '(function(W,D,src) {if (W.JSON) return;var a=D.createElement("script");var b=D.getElementsByTagName("script")[0];a.src=src;a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b);})(window,document,"'. $tmpl_url .'/js/json2.min.js");';
 
 		// Remove MooTools if set to do so.
 		$loadModal	= (bool) $this->tmpl->params->def('loadModal', 0);
@@ -1470,12 +1452,12 @@ To allow parallel downloading, move the inline script before the external CSS fi
 
 				$found = false;
 				if (isset($arr['src'])) {
-					$this->addScript($arr['src'], 'BODY', $arr);
+					$this->element('script')->set($arr['src'], $arr, 'BODY');
 					$found = true;
 				}
 				// not type or a type pointing to a script language
 				else if (!isset($arr['type']) || (isset($arr['type']) && strpos($arr['type'], 'script') )) {
-					$this->addScriptDeclaration($m[2][$i], 'BODY');
+					$this->element('scripts')->set($m[2][$i], null, 'BODY');
 					$found = true;
 				}
 

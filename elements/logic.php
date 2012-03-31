@@ -25,42 +25,64 @@ $base_url 	= JURI::base(true) . '/';
 /** @var $tmpl_url string Define relative shortcut for current template directory */
 $tmpl_url 	= $base_url. 'templates/'. $this->template;
 
-/* Define some shortcuts */
-$enableSwitcher 	= (bool) $this->params->get('enableSwitcher');
-$showDiagnostics 	= (bool) $this->params->get('showDiagnostics');
-
-$cssTheme			=		 $this->params->get('customStyleSheet');
-$ssiIncludes		= (bool) $this->params->get('ssiIncludes', 0);
-
-// a 'filelist' param returns -1 for 'none'
-if (($cssTheme + 1) == 0) $cssTheme = false;
-
-$templateHelper->addFeature('core', $cssTheme);
-$templateHelper->addFeature('ssi', $ssiIncludes);
+/* Define some shortcuts :: for BC the 1.9.x params are used as defaults */
+$ssiIncludes	= (bool) $this->params->get('ssiIncludes'  , false);
+$showSwitcher 	= (bool) $this->params->get('styleswitcher', $this->params->get('enableSwitcher', false)); #FIXME remove BC param
+$showFontscaler	= (bool) $this->params->get('fontscaler'   , false);
 
 // some editor form requested, needs mo' styles, and less modules
 $editMode = $templateHelper->isEditMode();
 
+// a 'filelist' param returns -1 for 'none'
+$templateHelper->setFeature('ssi'  , $ssiIncludes);
+$templateHelper->setFeature('rtl'  , ($this->direction == 'rtl'));
+$templateHelper->setFeature('edit' , $editMode);
+$templateHelper->setFeature('print', $app->input->get('print', 0));
+
+// Preview Module Positions with index.php?tp=1
+if ($app->get('input')->get('tp', 0, 'bool')) {
+	$templateHelper->setFeature('tp', JComponentHelper::getParams('com_templates')->get('template_positions_display', 0));
+}
+
+// JSON2 support for oldIEs
+$templateHelper->setFeature('standards.json');
+// Google Chrome Frame Install for oldIEs
+$templateHelper->setFeature('standards.cfinstall', $this->params->get('cfinstall', $this->params->get('loadGcf', false))); #FIXME remove BC param
+// BrowserChoice.com Popup or Redirect
+$templateHelper->setFeature('standards.browserchoice', $this->params->get('browserchoice', false));
+// Lea Verou's -prefix-free
+$templateHelper->setFeature('standards.prefixfree', $this->params->get('prefixfree', false));
+
 // all things different in edit mode
-if ($editMode) {
-	$enableSwitcher = $showDiagnostics = false;
-}
+$templateHelper->setFeature('styleswitch', ($showSwitcher && !$editMode));
+$templateHelper->setFeature('fontscaler', ($showFontscaler && !$editMode));
 
-if ($showDiagnostics) {
-	$jmenu = $app->getMenu();
-	$amenu = $jmenu->getActive();
+// Custom tags
+// tell mobile devices to treat the viewport as being the same width as the
+// physical width of the device to make width work in media-queries as expected
+$templateHelper->element('meta')->set('viewport', 'width=device-width,initial-scale=1.0');
 
-	$currentComponent = $amenu->component;
-	$catId = $itemId = $articleId = '';
-	if ($amenu->component == 'com_content') {
-		$itemId 	= $amenu->id;
-		if (isset($amenu->query['id'])) {
-			$articleId = $amenu->query['id'];
-		}
+/**
+ * Some "global" variables for use within Page Layouts
+ */
+
+// HTML5 cache manifest (not rendered by default in the <html> element)
+// triggers "This website (xxx) is asking to store data on your computer for offline use" in browsers
+if ((bool) $this->params->get('html5manifest', false)) {
+	if ($this->direction == 'rtl') {
+		$cache_manifest = ' manifest="'.$tmpl_url.'/'.$this->template.'_rtl.manifest"';
+	} else {
+		$cache_manifest = ' manifest="'.$tmpl_url.'/'.$this->template.'.manifest"';
 	}
+} else {
+	$cache_manifest = '';
 }
 
-/* Count and Seed Module Position Groups */
+/* Count and Seed Module Position Groups
+ * NOTE! In debug mode values are set to their respective maximum
+ * @see ConstructTemplateHelper::MAX_MODULES
+ * @see ConstructTemplateHelper::MAX_COLUMNS
+ */
 $headerAboveCount	= $templateHelper->getModulesCount('header-above');
 $headerBelowCount	= $templateHelper->getModulesCount('header-below');
 $navBelowCount		= $templateHelper->getModulesCount('nav-below');
@@ -90,76 +112,5 @@ if (!$editMode) {
 	$columnLayout = array_unique($columnLayout);
 }
 $columnLayout = trim(implode(' ', $columnLayout));
-
-/* Debug Template Positions */
-// max out amount of positions and columns
-if ($app->getCfg('debug') && $app->input->get('tpos', 0, 'bool')) {
-	$headerAboveCount  = $headerBelowCount  = $navBelowCount    =
-	$contentAboveCount = $contentBelowCount = $footerAboveCount = range(0, ConstructTemplateHelper::MAX_MODULES, 1);
-
-	$columnGroupCount = range(0, ConstructTemplateHelper::MAX_COLUMNS, 1);
-	$columnGroupAlphaCount = $columnGroupBetaCount = ($columnGroupCount > 1) ? floor($columnGroupCount / 2) : $columnGroupCount;
-}
-
-/* HEAD Elements */
-// Custom tags
-// tell mobile devices to treat the viewport as being the same width as the
-// physical width of the device to make width work in media-queries as expected
-$templateHelper->element('meta')->set('viewport', 'width=device-width,initial-scale=1.0');
-
-// Style sheets
-$printMode = $app->input->get('print');
-if ($ssiIncludes) {
-	$templateHelper->element('link')->set($tmpl_url.'/css/construc2.styles?rtl='. ($this->direction == 'rtl') .'&em='. $editMode .'&pm='.$printMode);
-
-	// a 'filelist' param returns -1 for 'none'
-	$ssiTheme = $this->params->get('ssiTheme');
-	if (($ssiTheme + 1) == 0) {
-		$ssiTheme = false;
-	}
-	if ($ssiTheme) {
-		$templateHelper->element('link')->set($tmpl_url.'/themes/'.$ssiTheme .'?rtl='. ($this->direction == 'rtl') .'&em='. $editMode .'&pm='.$printMode);
-	}
-}
-
-if ($this->direction == 'rtl') {
-	$templateHelper->addFeature('rtl');
-}
-
-if ($editMode) {
-	$templateHelper->addFeature('editor');
-}
-
-if ($printMode) {
-	$templateHelper->addFeature('print');
-}
-
-/* Preview Module Positions with index.php?tp=1 */
-if ($app->get('input')->get('tp', 0, 'bool') && JComponentHelper::getParams('com_templates')->get('template_positions_display')) {
-	$templateHelper->addFeature('tp');
-}
-
-// Style sheet switcher
-if ($enableSwitcher) {
-	$templateHelper->addFeature('diagnostic');
-	$templateHelper->addFeature('styleswitch');
-}
-
-// Lea Verou's -prefix-free
-if ($this->params->get('prefixfree')) {
-	$templateHelper->addFeature('css3');
-}
-
-// HTML5 cache manifest (not rendered by default in the <html> element)
-// triggers "This website (xxx) is asking to store data on your computer for offline use" in browsers
-if ((bool) $this->params->get('html5manifest')) {
-	if ($this->direction == 'rtl') {
-		$cache_manifest = ' manifest="'.$tmpl_url.'/'.$this->template.'_rtl.manifest"';
-	} else {
-		$cache_manifest = ' manifest="'.$tmpl_url.'/'.$this->template.'.manifest"';
-	}
-} else {
-	$cache_manifest = '';
-}
 
 /* .eof */
