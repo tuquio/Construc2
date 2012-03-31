@@ -5,10 +5,11 @@
  * modChrome_chtml is the working horse the other "styles" proxy to after
  * setting different class attributes.
  *
- * @package     Templates
- * @subpackage  Construc2
- * @copyright   (C)2011-2012 WebMechanic
- * @license     GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
+ * @package     Template
+ * @subpackage  Overrides
+ * @author		WebMechanic http://webmechanic.biz
+ * @copyright	(C) 2011-2012 WebMechanic. All rights reserved.
+ * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
 
 /**
@@ -27,9 +28,6 @@
 function modChrome_chtml( $module, &$params, &$attribs )
 {
 	static $ooobj = array('mod'=>false,'complex'=>false,'pop'=>false,'bubble'=>false);
-
-	// don't render empty modules, "whitelist" for mod_custom and mod_banner
-#	if (ConstructTemplateHelper::isEmpty($module->content)) return;
 
 	$css	= array();
 	$oocss  = null;
@@ -118,15 +116,6 @@ function modChrome_mod( $module, &$params, &$attribs )
 {
 	static $toggle = 0;
 
-	// don't render empty modules, "whitelist" for mod_custom and mod_banner
-#	if (ConstructTemplateHelper::isEmpty($module->content)) return;
-
-	if (array_key_exists('oocss', $attribs)) {
-		$attribs['oocss'] = 'mod '. $attribs['oocss'];
-	} else {
-		$attribs['oocss'] = 'mod';
-	}
-
 	if (array_key_exists('toggle', $attribs)) {
 		$params->set('moduleclass_sfx', ($toggle % 2 ? 'even' : 'odd'));
 		$toggle++;
@@ -207,9 +196,6 @@ function modChrome_bubble( $module, &$params, &$attribs )
  */
 function modChrome_withevent( $module, &$params, &$attribs )
 {
-	// don't render empty modules, "whitelist" for mod_custom and mod_banner
-	if (ConstructTemplateHelper::isEmpty($module->content)) return;
-
 	$module->content = JHtml::_('content.prepare', $module->content, $params);
 }
 
@@ -223,9 +209,6 @@ function modChrome_withevent( $module, &$params, &$attribs )
  */
 function modChrome_raw( $module, &$params, &$attribs )
 {
-	// don't render empty modules, "whitelist" for mod_custom and mod_banner
-	if (ConstructTemplateHelper::isEmpty($module->content)) return;
-
 	if ($module->showtitle) {
 		$level = isset($attribs['level']) ? (int) $attribs['level'] : 3;
 		$css   = 'H'.$level;
