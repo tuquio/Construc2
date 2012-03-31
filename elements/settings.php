@@ -41,23 +41,16 @@ column-2=0
 column-3=0
 column-4=0
 
-[styleswitcher]
-	; JS-based styleswitcher
-@enabled	= 0
-
-	; Replace or add to default switches? 0=no, 1=yes
-@replace	= 1
-
+[styleswitch]
 	; Defaults than can be REPLACED with theme config files
 	; Values are list labels run thru JText for translation
 	; and best added to "xx-XX.override.ini"
 @default	= normal
-normal		= TPL_CONSTRUC2_STYLE_NORMAL_MODE
-wireframe	= TPL_CONSTRUC2_STYLE_WIREFRAME_MODE
-diagnostic	= TPL_CONSTRUC2_STYLE_DIAGNOSTIC_MODE
+normal		= Widget_Styleswitch_Normal
+wireframe	= Widget_Styleswitch_Wireframe
+diagnostic	= Widget_Styleswitch_Diagnostic
 
 [fontscaler]
-@enabled	= 0
 	; -----
 	; Font scaling
 larger		= "Huge Font"
@@ -65,11 +58,6 @@ large		= "Large Font"
 @default	= "Default Font"
 small		= "Small Font"
 smaller		= "Tiny Font"
-
-[widgets]
-	; -----
-	; HTML Widgets supplied/activated by theme
-date	= 1
 
 [allow_empty]
 	; -----

@@ -29,9 +29,9 @@ $base_url 	= JURI::base(true) . '/';
 $tmpl_url 	= $base_url. 'templates/'. $this->template;
 
 /* Define some shortcuts :: for BC the 1.9.x params are used as defaults */
-$ssiIncludes	= (bool) $this->params->get('ssiIncludes'  , false);
-$showSwitcher 	= (bool) $this->params->get('styleswitcher', $this->params->get('enableSwitcher', false)); #FIXME remove BC param
-$showFontscaler	= (bool) $this->params->get('fontscaler'   , false);
+$ssiIncludes	= (bool) $this->params->get('ssiIncludes', false);
+$showSwitcher 	= (bool) $this->params->get('styleswitch', $this->params->get('enableSwitcher', false)); #FIXME remove BC param
+$showFontscaler	= (bool) $this->params->get('fontscaler' , false);
 
 // some editor form requested, needs mo' styles, and less modules
 $editMode = $templateHelper->isEditMode();
@@ -50,15 +50,20 @@ if ($app->get('input')->get('tp', 0, 'bool')) {
 // JSON2 support for oldIEs
 $templateHelper->feature('standards.json');
 // Google Chrome Frame Install for oldIEs
-$templateHelper->feature('standards.cfinstall', $this->params->get('cfinstall', $this->params->get('loadGcf', false))); #FIXME remove BC param
-// BrowserChoice.com Popup or Redirect
-$templateHelper->feature('standards.browserchoice', $this->params->get('browserchoice', false));
+$templateHelper->feature('msie.cfinstall', $this->params->get('msieCfinstall', $this->params->get('loadGcf', false))); #FIXME remove BC param
 // Lea Verou's -prefix-free
 $templateHelper->feature('standards.prefixfree', $this->params->get('prefixfree', false));
 
 // all things different in edit mode
 $templateHelper->widget('styleswitch', ($showSwitcher && !$editMode));
 $templateHelper->widget('fontscaler', ($showFontscaler && !$editMode));
+
+// kick imagetoolbar, MSThemeCompatible
+$templateHelper->feature('msie.bho', $this->params->get('msieBho', false));
+// BrowserChoice.com Popup or Redirect
+$templateHelper->feature('msie.browserchoice', $this->params->get('msieBrowserchoice', false));
+// BrowserChoice.com Popup or Redirect
+$templateHelper->feature('msie.browserchoice', $this->params->get('browserchoice', false));
 
 // tell mobile devices to treat the viewport as being the same width as the
 // physical width of the device to make width work in media-queries as expected

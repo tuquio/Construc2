@@ -43,7 +43,6 @@ class ElementRendererHead extends ElementRendererAbstract implements IElementRen
 	/**
 	 * Sets charset, base and title to preceeed anything else.
 	 *
-	 * @link http://h5bp.com/i/378  X-UA-Compatible
 	 * @todo  add "<link rel="dns-prefetch" href="//cdn.foo.bar">" if CDN are configured
 	 */
 	public function init()
@@ -52,7 +51,6 @@ class ElementRendererHead extends ElementRendererAbstract implements IElementRen
 
 		// prevents refetching
 		$this->data['charset'] = '<meta charset="utf-8">';
-		$this->data['X-UA-Compatible'] = '<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">';
 
 		$base  = $document->getBase();
 		$trail = ((bool)JFactory::getConfig()->get('sef_suffix', 0)) ? '' : '/';
@@ -116,9 +114,6 @@ class ElementRendererMeta extends ElementRendererAbstract
 		unset($standard['copyright']);
 		unset($standard['title']);
 
-		// kick some MSIE weirdness
-		$this->httpEquiv('imagetoolbar', 'no');
-		$this->httpEquiv('MSThemeCompatible', 'no');
 		// and prevent it from blocking itself
 		// @link http://webforscher.wordpress.com/2010/05/20/ie-6-slowing-down-ie-8/
 		$this->data[] = '<!--[if IE]><![endif]-->';
