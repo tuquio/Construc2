@@ -1,12 +1,10 @@
 <?php defined('_JEXEC') or die;
 /**
- * A better mod_breadcrumbs override
- *
  * @package     Template
- * @subpackage  HTML
- * @author      WebMechanic http://webmechanic.biz
- * @copyright   Copyright (C)2005 - 2011 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ * @subpackage  Overrides
+ * @author		WebMechanic http://webmechanic.biz
+ * @copyright	(C) 2011-2012 WebMechanic. All rights reserved.
+ * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
 
 // nothing to do if: home + don't show home + don't show first)
@@ -16,45 +14,39 @@ if ($count == 0) {
 }
 
 ?><div class="menu breadcrumbs <?php echo $moduleclass_sfx ?>"><?php
-if ($count > 1 && $params->get('showHere', 1)) {
-	echo '<span class="mi first showHere">' .JText::_('MOD_BREADCRUMBS_HERE').'</span>';
+
+if ($params->get('showHere', 0)) {
+	echo '<strong class="bc-item first here">' .JText::_('MOD_BREADCRUMBS_HERE').'</strong>';
 }
 
-for ($i = 0; $i < $count; $i++)
+for ($i = 0; $i < $count; $i += 1)
 {
-	$css   = isset($list[$i]->alias) ? ' '.$list[$i]->alias : '';
-	if ($i == 0) $css .= ' first';
-
-	$label = '<span class="mi'. $css .'">'. $list[$i]->name .'</span>';
-
-	if ($i < $count - 1)
-	{
-		if (!empty($list[$i]->link))
-		{
-			echo '<a class="mi pathway ', $css ,'" href="', $list[$i]->link, '">', $label, '</a>';
-			if ($i < $count - 2) {
-				echo '</span>';
-			}
-		} else {
-			echo $label;
-		}
-
-		// If not the last item in the breadcrumbs add the separator
-		if ($i < $count - 2) {
-			echo '<span class="bc-item"><span class="sep">', $separator, '</span>';
-		}
+	if ($i > 0 && !empty($list[$i]->link)) {
+		$css = explode('/', $list[$i]->link);
+		$css = array_pop($css);
+		$list[$i]->css = preg_replace('/^\d+\-/', '', $css);
 	}
-	else if ($params->get('showLast', 1))
-	{
-		$css .= ' active last';
+	else {
+		$list[$i]->css = ($i == 0) ? 'home' : '';
+	}
 
-		if ($i == 0) {
-			if ($params->get('showHome')) {
-				echo '<a class="mi pathway ', $css ,'" href="', $list[$i]->link, '">', $label, '</a>';
-			} else {
-				echo $label;
-			}
+	$crumb = '<span class="mi">'. $list[$i]->name .'</span>';
+
+	if (!empty($list[$i]->link)) {
+		$crumb = '<a class="mi '. $list[$i]->css .'" href="'. $list[$i]->link. '">'. $crumb .'</a>';
+	}
+
+	if ($i == 0 && $params->get('showHome'))
+	{
+		echo $crumb;
+	}
+	else {
+		if ($i < $count - 1 || $params->get('showLast')) {
+			echo '<span class="pathway"><span class="sep">'. $separator .'</span>';
+			$crumb .= '</span>';
 		}
+
+		echo $crumb;
 	}
 }
 
