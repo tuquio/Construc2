@@ -1,12 +1,10 @@
 <?php defined('_JEXEC') or die;
 /**
- * "Imports" set in better.php
- *
- * $_ccid			cat_id from request
- * $_alang			application language
- * $item_heading	parameter
- * $show_children	parameter
- * $max_level		parameter
+ * @package     Template
+ * @subpackage  Overrides
+ * @author		WebMechanic http://webmechanic.biz
+ * @copyright	(C) 2011-2012 WebMechanic. All rights reserved.
+ * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
 
 foreach ($list as $item)
