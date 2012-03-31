@@ -8,10 +8,6 @@
  * @license     GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
 
-/** Register some Widget Classes */
-#	JLoader::register('ContentWidgets', WMPATH_ELEMENTS . '/widgets/content.php');
-#	JLoader::register('BehaviorWidgets', WMPATH_ELEMENTS . '/widgets/behavior.php');
-
 /**
  * CustomTheme Base Class.
  */
@@ -106,7 +102,7 @@ class CustomTheme
 
 		// @see ConstructTemplateHelper::renderModules()
 		$chunks = array(
-					'module_before'	=> '<div id="{position}" class="{class}">',
+					'module_before'	=> '<div id="{position}{name}" class="{class}">',
 					'module_after'	=> '</div>',
 					'unit_before'	=> '<div class="{class}">',
 					'unit_after'	=> '</div>'
@@ -139,17 +135,17 @@ class CustomTheme
 		// does anyone know what $head['link'] is for? skipping...
 		$head = $document->getHeadData();
 
-		self::$chunks['meta']['head']    = ElementRendererAbstract::getInstance('head')->init($head);
-		self::$chunks['meta']['meta']    = ElementRendererAbstract::getInstance('meta')->build($head['metaTags']);
+		self::$chunks['meta']['renderer.head']    = ElementRendererAbstract::getInstance('renderer.head')->init($head);
+		self::$chunks['meta']['renderer.meta']    = ElementRendererAbstract::getInstance('renderer.meta')->build($head['metaTags']);
 
 		// from an HTML perspective this is equivalent to <link>
-		self::$chunks['meta']['link']    = ElementRendererAbstract::getInstance('link')->build($head['style']);
-		self::$chunks['meta']['styles']  = ElementRendererAbstract::getInstance('styles')->build($head['styleSheets']);
+		self::$chunks['meta']['renderer.link']    = ElementRendererAbstract::getInstance('renderer.link')->build($head['style']);
+		self::$chunks['meta']['renderer.styles']  = ElementRendererAbstract::getInstance('renderer.styles')->build($head['styleSheets']);
 
-		self::$chunks['meta']['script']  = ElementRendererAbstract::getInstance('script')->build($head['script']);
-		self::$chunks['meta']['scripts'] = ElementRendererAbstract::getInstance('scripts')->build($head['scripts']);
+		self::$chunks['meta']['renderer.script']  = ElementRendererAbstract::getInstance('renderer.script')->build($head['script']);
+		self::$chunks['meta']['renderer.scripts'] = ElementRendererAbstract::getInstance('renderer.scripts')->build($head['scripts']);
 
-		self::$chunks['meta']['custom']	 = ElementRendererAbstract::getInstance('custom')->build($head['custom']);
+		self::$chunks['meta']['renderer.custom']  = ElementRendererAbstract::getInstance('renderer.custom')->build($head['custom']);
 
 		return implode('', self::$chunks['meta']);
 	}
@@ -324,7 +320,7 @@ class CustomTheme
 	 * loading scripts and styles.
 	 *
 	 * @param  string  $feature A feature name from theme config
-	 * @param  mixed   $data    Some data or FALSE to remove feature
+	 * @param  mixed   $data    Some data or FALSE to disable a feature at runtime
 	 * @return
 	 *
 	 * @uses CustomTheme::setFeature()
@@ -341,27 +337,17 @@ class CustomTheme
 
 		$feature = strtolower($feature);
 
-		$css = $js = array();
-
 		switch ($feature)
 		{
-			case 'print': // print preview
-			case 'tp': // template position preview
+			case 'feature.print': // print preview
+			case 'feature.tp':    // template position preview
 				if ( isset($this->features['core']) ) {
-					$css[$feature] = '{tmpl.css}/core/'.$feature.'.css';
+					$this->features[$feature]['link'] = '{tmpl.css}/core/'.$feature.'.css';
 				}
 				break;
 
 			default:
 				$this->features[$feature] = $this->renderFeature($feature, $data);
-		}
-
-		if ( count($css) ) {
-			$this->features[$feature]['link'] = $css;
-		}
-
-		if ( count($js) ) {
-			$this->features[$feature]['script'] = $js;
 		}
 
 		return $this;
@@ -390,35 +376,32 @@ class CustomTheme
 			return $data;
 		}
 
-		$handler = $callback = $feature = '';
-
 		if (is_array($data)) {
 			if (isset($data['module'])) {
 				// parse $data['module']->content, ie {fontscaler}
+if (defined('DEVELOPER_MACHINE')) {
+	FB::log($data, __FUNCTION__."($name) CUSTOM MODULE?");
+}
 			}
 		}
 
-		$handler = strtolower($name);
-		if (strpos($name, '.') >= 1) {
-			list($handler, $callback) = explode('.', $name);
-		}
-
-		$pathname = WMPATH_FEATURE .'/'. $handler .'.php';
+		// [feature|widget].class[.method]
+		$parts = explode('.', $name);
 
 		try
 		{
-			include_once $pathname;
-			$feature = ElementRendererAbstract::getInstance($handler, $data);
+			$method  = isset($parts[2]) ? $parts[2] : false;
 
-			if ($callback) {
-				$this->features[$name] = $feature->{$callback}();
+			$feature = ElementRendererAbstract::getInstance($parts[0].'.'.$parts[1], $data);
+
+			if ($method) {
+				$this->features[$name] = $feature->{$method}($data);
 			} else {
-				$this->features[$name] = $feature->render();
+				$this->features[$name] = $feature->render($data);
 			}
 
 		} catch (Exception $e) {
 			$this->features[$name] = $e;
-			return $e->getMessage();
 		}
 
 		return $this->features[$name];

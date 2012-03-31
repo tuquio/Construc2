@@ -9,11 +9,8 @@
  */
 define('WMPATH_TEMPLATE', JPATH_THEMES . '/construc2');
 define('WMPATH_ELEMENTS', WMPATH_TEMPLATE  . '/elements');
-define('WMPATH_FEATURE' , WMPATH_TEMPLATE  . '/x~incubator/elements/features');
 
 JLoader::register('ElementRendererAbstract', WMPATH_ELEMENTS . '/renderer/abstract.php');
-JLoader::register('ElementsFeature', WMPATH_ELEMENTS . '/feature.php');
-#	JLoader::register('ElementsWidget', WMPATH_ELEMENTS . '/widget.php');
 
 /* SearchHelper knows about the (enhanced) stop words list in xx_XXLocalise
  * and is misused to clean the alias for use as a class name of list items */
@@ -22,22 +19,12 @@ JLoader::register('SearchHelper', JPATH_ADMINISTRATOR .'/components/com_search/h
 /** Load the CustomTheme Class */
 require_once WMPATH_ELEMENTS . '/theme.php';
 
-class ElementsWidgets
-{
-	static public function better($old, $new)
-	{
-		JHtml::unregister($old);
-		JHtml::register($old, $new);
-	}
-}
-
 /**
  * Construc2 Template Main class.
  * @since 1.0
  */
 class ConstructTemplateHelper
 {
-	const NAME         = 'Construc2';
 	const MAX_MODULES  = 4;
 	const MAX_COLUMNS  = 4;
 	const UA           = 'ALL';
@@ -82,20 +69,23 @@ class ConstructTemplateHelper
 
 		$this->loadConfig();
 
+		$app = JFactory::getApplication();
+
 		// some edit form requested?
 		// - needs refinement and maybe some config to enforce it
-		$request  = new JInput();
-		$this->edit_mode = in_array($request->get('layout'), array('edit','form'))
-						|| in_array($request->get('view'), array('form'))
-						|| in_array($request->get('option'), array('com_media'))
+		$this->edit_mode = in_array($app->input->get('layout'), array('edit','form'))
+						|| in_array($app->input->get('view'), array('form'))
+						|| in_array($app->input->get('option'), array('com_media'))
 						;
 
-		$app = JFactory::getApplication();
 		$this->debug = $app->getCfg('debug') && $app->input->get('tpos', 0, 'bool');
 
 		$this->addLayout('index')
 			->addLayout('component')
 			->addLayout('modal');
+
+		spl_autoload_register(array('ConstructTemplateHelper', 'autoload'));
+
 	}
 
 	/**
@@ -106,9 +96,6 @@ class ConstructTemplateHelper
 		if (!self::$helper)
 		{
 			self::$helper = new self();
-
-			// register as event handler (anything after onContentPrepare)
-			$dispatcher = JDispatcher::getInstance();
 		}
 
 		if (null === self::$helper->theme)
@@ -118,6 +105,27 @@ class ConstructTemplateHelper
 		}
 
 		return self::$helper;
+	}
+
+	static protected function autoload($class)
+	{
+		if ($class[0] == 'J' || $class[0] == 'K') {return;}
+
+		$parts = preg_split('/(?<=[a-z])(?=[A-Z])/x', $class);
+
+		// i.e. WMPATH_ELEMENTS, WMPATH_FEATURES, WMPATH_WIDGETS
+		if (!defined('WMPATH_'.strtoupper($parts[0]).'S')) {
+			return;
+		}
+		$parts[0]  = constant('WMPATH_'.strtoupper($parts[0]).'S');
+		// i.e. feature, widget, renderer
+		$parts[1]  = strtolower($parts[1]);
+		// inflection suxx
+		$parts[1] .= ($parts[1] == 'renderer') ? '' : 's';
+		// filename
+		$parts[2]  = strtolower($parts[2]) . '.php';
+
+		include_once implode('/', $parts);
 	}
 
 	/**
@@ -478,7 +486,7 @@ class ConstructTemplateHelper
 		return $this->layouts;
 	}
 
-	/**
+	/**@#+
 	 * Proxy for CustomTheme::setFeature() enable/disable a feature.
 	 *
 	 * <b>NOTE</b>: This interface will cast $data to a boolen, enabling
@@ -492,11 +500,32 @@ class ConstructTemplateHelper
 	 *
 	 * @return ConstructTemplateHelper for fluid interface
 	 */
-	public function setFeature($feature, $enable = true)
+	public function feature($feature, $enable = true)
 	{
-		$this->theme->setFeature($feature, (bool) $enable);
-		return $this;
+		return $this->theme->setFeature('feature.'. $feature, (bool) $enable);
 	}
+
+	public function widget($widget, $enable = true)
+	{
+		return $this->theme->setFeature('widget.'. $widget, (bool) $enable);
+	}
+
+	/**
+	 * @param  string  $type HEAD element name
+	 * @return ElementRenderer instance of requested type.
+	 */
+	public function element($type)
+	{
+		try {
+			return ElementRendererAbstract::getInstance('renderer.'. $type);
+		}
+		catch (Exception $e) {
+			return;
+		}
+	}
+
+
+	/**@#- */
 
 	/**
 	 * Counts and returns the amount of active Modules in the given position $group.
@@ -663,8 +692,8 @@ class ConstructTemplateHelper
 			if ( ($chunk = $this->theme->getChunk('module', array('before', $module->name))) )
 			{
 				$html[] = str_replace(
-							array('{position}', '{class}'),
-							array($position, implode(' ', $css)),
+							array('{position}', '{name}', '{class}'),
+							array($position, $module->name, implode(' ', $css)),
 							$chunk
 							);
 			}
@@ -704,56 +733,9 @@ class ConstructTemplateHelper
 	}
 
 	/**
-	 * @param  string  $type HEAD element name
-	 * @return ElementRenderer instance of requested type.
+	 * @deprecated
 	 */
-	public function element($type)
-	{
-		try {
-			return ElementRendererAbstract::getInstance($type);
-		}
-		catch (Exception $e) {
-			return;
-		}
-	}
-
-	/**@#+
-	 * Add browser specific ressources, typically for MSIE in which case a
-	 * conditional comment (CC) based on $uagent is added to group output.
-	 *
-	 * The interface is modeled after JDocument[Html] but not API compliant.
-	 * Most optional arguments in the JDOcument interface related to mime types
-	 * have been removed and standardized because we're dealing with HTML only
-	 * and mime types are limited anyway.
-	 *
-	 * $uagent
-	 *  - IE 		= any MSIE with support for CC
-	 *  - IE 6		= MSIE 6 only
-	 *  - !IE 6		= all but MSIE 6
-	 *  - lt IE 9	= MSIE 5 - MSIE 8
-	 *  - lte IE 9	= MSIE 5 - MSIE 9
-	 *  - gt IE 6	= MSIE 7 - MSIE 9
-	 *  - gte IE 9	= MSIE 9
-	 *	- IEMobile	= MSIE 7 - MSIE 9 on smart phones
-	 *
-	 * @see renderHead()
-	 */
-
-
-	/**
-	 * Adds a <link> Element for stylesheets, feeds, favicons etc.
-	 *
-	 * The mime type for (alternative) styles and icons is enforced.
-	 *
-	 * @param string $href      the links href URL
-	 * @param string $relation  link relation, e.g. "stylesheet"
-	 * @param mixed  $uagent
-	 * @param array  $attribs   optional attributes as associative array
-	 *
-	 * @return ConstructTemplateHelper for fluid interface
-	 * @see renderHead(), $links
-	 */
-	public function _addLink($href, $uagent=self::UA, $attribs=array(), $rel='stylesheet')
+	private function _addLink($href, $uagent=self::UA, $attribs=array(), $rel='stylesheet')
 	{
 		static $favicon;
 
@@ -796,15 +778,9 @@ class ConstructTemplateHelper
 	}
 
 	/**
-	 * @param string $name     name attribute of the meta element
-	 * @param string $content  content attribute
-	 * @param mixed  $uagent
-	 * @param bool   $http_equiv
-	 *
-	 * @return ConstructTemplateHelper for fluid interface
-	 * @see renderHead(), $metaTags
+	 * @deprecated
 	 */
-	public function addMetaData($name, $content, $uagent=self::UA, $http_equiv=false)
+	private function _addMetaData($name, $content, $uagent=self::UA, $http_equiv=false)
 	{
 		if ($http_equiv) {
 			$this->element('meta')->httpEquiv($name, $content);
@@ -812,26 +788,12 @@ class ConstructTemplateHelper
 			$this->element('meta')->set($name, $content);
 		}
 		return $this;
-
-		$this->_makeRoom('meta', $uagent);
-
-		// store
-		$type = $http_equiv ? 'http-equiv' : 'name';
-		self::$head["{$uagent}"]['meta'][$name] = JArrayHelper::toString(array($type=>$name, 'content'=>$content));
-
-		return $this;
 	}
 
 	/**
-	 * @param string $url      a script URL
-	 * @param mixed  $uagent
-	 * @param bool   $defer    if true,adds the defer attribute
-	 * @param array  $attribs  optional attributes as associative array
-	 *
-	 * @return ConstructTemplateHelper for fluid interface
-	 * @see renderHead(), $script
+	 * @deprecated
 	 */
-	public function addScript($href, $uagent=self::UA, $attribs=array())
+	private function _addScript($href, $uagent=self::UA, $attribs=array())
 	{
 		$this->element('script')->set($href, $attribs, $uagent);
 		return $this;
@@ -865,13 +827,9 @@ class ConstructTemplateHelper
 	}
 
 	/**
-	 * @param string $content the script content
-	 * @param mixed  $uagent
-	 *
-	 * @return ConstructTemplateHelper for fluid interface
-	 * @see renderHead(), $scripts
+	 * @deprecated
 	 */
-	public function addScriptDeclaration($content, $uagent=self::UA)
+	private function _addScriptDeclaration($content, $uagent=self::UA)
 	{
 		$this->element('scripts')->set($content, null, $uagent);
 		return $this;
@@ -884,25 +842,22 @@ class ConstructTemplateHelper
 		$script = str_replace(array('<![CDATA[', ']]>',"//\r\n","//\n"), '', $script);
 
 		self::$head["{$uagent}"]['script'][] = $script;
-
-		return $this;
 	}
 
 	/**
-	 * @param string $content
-	 * @param mixed  $uagent
-	 *
-	 * @return ConstructTemplateHelper for fluid interface
-	 * @see renderHead(), $style
+	 * @deprecated
 	 */
-	public function addStyle($content, $uagent=self::UA)
+	private function _addStyle($content, $uagent=self::UA)
 	{
+		$this->element('styles')->set($content, null, $uagent);
+
+		return $this;
+
 		$this->_makeRoom('style', $uagent);
 
 		// store
 		self::$head["{$uagent}"]['style'][] = str_replace(PHP_EOL, ' ', (is_array($content) ? implode(PHP_EOL, $content) : $content) );
 
-		return $this;
 	}
 
 	/**@#- */

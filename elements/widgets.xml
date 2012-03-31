@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<widgets version="2.0" type="template">
+<extension version="2.5" type="template" group="widgets" client="site" method="upgrade">
 	<config>
 		<fields name="params">
 		<!--
-		Third Party Widgets should plug into the "widgets" parameter group.
-
+		Most Widgets would plug into the "widgets" parameter group.
 		Possible panel groups to plug into:
 			> widgets   : add or generate visual output
 			> javascript: add or mess with javascript files and scripts
 			> standards : provide SHims or other means of webstandards compatibility
 		 -->
 			<fieldset name="widgets" addfieldpath="/templates/construc2/elements" >
-				<field name="widgetDate" type="feature" default="0" label="TPL_CONSTRUC2_ENABLE_DATECONTAINER_LABEL" description="TPL_CONSTRUC2_ENABLE_DATECONTAINER_DESC">
+				<field name="widgetDate" type="feature" default="0" label="TPL_CONSTRUC2_DATECONTAINER_LABEL" description="TPL_CONSTRUC2_DATECONTAINER_DESC">
 					<option value="1">JShow</option>
 					<option value="0">JHide</option>
 				</field>
@@ -30,4 +29,4 @@
 		<server type="extension">http://joomla.webmechanic.biz/tpl/addons.xml?widgets</server>
 	</updateservers>
 
-</widgets>
+</extension>

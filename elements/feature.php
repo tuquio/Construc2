@@ -1,6 +1,19 @@
 <?php
+/**
+ * Features Abstract Class.
+ *
+ * @package     Construc2
+ * @subpackage  Features
+ * @copyright   (C)2012 WebMechanic. All rights reserved.
+ * @license     GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
+ */
 
-class ElementsFeature extends ElementRendererAbstract
+define('WMPATH_FEATURE' , WMPATH_ELEMENTS .'/features');
+
+/** Register Standard Feature Classes */
+JLoader::register('ElementFeatureBehavior', WMPATH_FEATURE . '/behavior.php');
+
+class ElementFeature extends ElementRendererAbstract
 {
 	/**
 	 * Overloading ElementRendererAbstract::getInstance()
@@ -9,7 +22,9 @@ class ElementsFeature extends ElementRendererAbstract
 	{
 		if (!isset(self::$elements[$type]))
 		{
-			$class = __CLASS__ . ucfirst($type);
+			$class = 'ElementFeature' . ucfirst($type);
+			require_once WMPATH_FEATURE .'/'. $type . '.php';
+
 			self::$elements[$type] = new $class($attribs);
 			self::$elements[$type]->init();
 		}
@@ -18,35 +33,40 @@ class ElementsFeature extends ElementRendererAbstract
 	}
 
 	/**
-	 * Dynamic script loader.
+	 * Dynamic script loader using a self executing function.
 	 *
-	 * The $condition can be as simple as a JavaScript snippet to test
+	 *	<code>(function(W,D,src) {
+	 *         your prerun code;
+	 *         script loader code;
+	 *         })(window,document,"script.js");</code>
+	 *
+	 * The $prerun can be as simple as a JavaScript snippet to test
 	 * a client feature and "return", i.e. to test if the JSON object
 	 * is available and if so avoid a request for the "json.js" shiv
 	 * passed with the $href parameter:
 	 *
 	 * 	<code>$this->loader('{tmpl.js}/json2.min.js', 'if (W.JSON) {return;}');</code>
 	 *
-	 * If $condition is an array it may contain the following keys:
+	 * If $prerun is an array it may contain the following keys:
 	 * - run :  a JS statement to run before requesting the $href
 	 * 			Should call "return" to cancel the request.
 	 * - msie:  a conditional comment selector for MSIE 'lt IE 8'
 	 *
 	 * @param  string        $href  The script to load, may contain {subst.keys}
-	 * @param  string|array  $condition see method comments
+	 * @param  string|array  $prerun see method comments
 	 */
-	public function loader($href, $condition='')
+	public function loader($href, $prerun='')
 	{
-		if (is_array($condition)) {
+		if (is_array($prerun)) {
 			//#FIXME check properties
 		}
 
-		return	'(function(D,src) {'
-				.	$condition
+		return	'(function(W,D,src) {'
+				.	$prerun
 				.	';var a=D.createElement("script");'
 				.	'var b=D.getElementsByTagName("script")[0];'
 				.	'a.src=src;a.async=true;a.type="text/javascript";'
-				.	'b.parentNode.insertBefore(a,b);})(document,"'. self::subst($href) .'");';
+				.	'b.parentNode.insertBefore(a,b);})(window,document,"'. self::subst($href) .'");';
 	}
 
 	protected function hasFeature($name)
@@ -82,21 +102,21 @@ class ElementsFeature extends ElementRendererAbstract
 		if ($type == 'link')
 		{
 			settype($data['rel'], 'string');
-			ElementRendererAbstract::getInstance($type)->set($data['href'], $data['rel'], $data, $ua);
+			ElementRendererAbstract::getInstance('renderer.'. $type)->set($data['href'], $data['rel'], $data, $ua);
 		}
 		else if ($type == 'script')
 		{
-			ElementRendererAbstract::getInstance($type)->set($data['src'], $data, $ua);
+			ElementRendererAbstract::getInstance('renderer.'. $type)->set($data['src'], $data, $ua);
 		}
 		else if ($type == 'styles')
 		{
 			// in this case it better be a string ;)
-			ElementRendererAbstract::getInstance($type)->set($this->name, (string) $data, $ua);
+			ElementRendererAbstract::getInstance('renderer.'. $type)->set($this->name, (string) $data, $ua);
 		}
 		else if ($type == 'scripts')
 		{
 			// in this case it better be a string ;)
-			ElementRendererAbstract::getInstance($type)->set((string) $data, null, $ua);
+			ElementRendererAbstract::getInstance('renderer.'. $type)->set((string) $data, null, $ua);
 		}
 
 	}

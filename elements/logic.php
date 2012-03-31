@@ -1,14 +1,17 @@
 <?php defined('_JEXEC') or die;
 /**
+ * Construc2 Template Bootstrap
+ *
  * @package     Construc2
- * @subpackage  Elements
- * @copyright	(C) 2011-2012 WebMechanic. All rights reserved.
- * @author		(C) 2010, 2011 Matt Thomas | Joomla Engineering. All rights reserved.
- * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
+ * @subpackage  Engine
+ * @copyright   (C) 2011-2012 WebMechanic. All rights reserved.
+ * @license     GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  *
  * @return JDocumentHtml
  * @uses JSite, JFactory, JURI
  */
+
+error_reporting(E_ALL | E_STRICT);
 
 /** Register the ConstructTemplateHelper Class */
 JLoader::register('ConstructTemplateHelper', dirname(__FILE__) . '/helper.php');
@@ -34,32 +37,32 @@ $showFontscaler	= (bool) $this->params->get('fontscaler'   , false);
 $editMode = $templateHelper->isEditMode();
 
 // a 'filelist' param returns -1 for 'none'
-$templateHelper->setFeature('ssi'  , $ssiIncludes);
-$templateHelper->setFeature('rtl'  , ($this->direction == 'rtl'));
-$templateHelper->setFeature('edit' , $editMode);
-$templateHelper->setFeature('print', $app->input->get('print', 0));
+$templateHelper->feature('ssi'  , $ssiIncludes);
+$templateHelper->feature('rtl'  , ($this->direction == 'rtl'));
+$templateHelper->feature('edit' , $editMode);
+$templateHelper->feature('print', $app->input->get('print', 0));
 
 // Preview Module Positions with index.php?tp=1
 if ($app->get('input')->get('tp', 0, 'bool')) {
-	$templateHelper->setFeature('tp', JComponentHelper::getParams('com_templates')->get('template_positions_display', 0));
+	$templateHelper->feature('tp', JComponentHelper::getParams('com_templates')->get('template_positions_display', 0));
 }
 
 // JSON2 support for oldIEs
-$templateHelper->setFeature('standards.json');
+$templateHelper->feature('standards.json');
 // Google Chrome Frame Install for oldIEs
-$templateHelper->setFeature('standards.cfinstall', $this->params->get('cfinstall', $this->params->get('loadGcf', false))); #FIXME remove BC param
+$templateHelper->feature('standards.cfinstall', $this->params->get('cfinstall', $this->params->get('loadGcf', false))); #FIXME remove BC param
 // BrowserChoice.com Popup or Redirect
-$templateHelper->setFeature('standards.browserchoice', $this->params->get('browserchoice', false));
+$templateHelper->feature('standards.browserchoice', $this->params->get('browserchoice', false));
 // Lea Verou's -prefix-free
-$templateHelper->setFeature('standards.prefixfree', $this->params->get('prefixfree', false));
+$templateHelper->feature('standards.prefixfree', $this->params->get('prefixfree', false));
 
 // all things different in edit mode
-$templateHelper->setFeature('styleswitch', ($showSwitcher && !$editMode));
-$templateHelper->setFeature('fontscaler', ($showFontscaler && !$editMode));
+$templateHelper->widget('styleswitch', ($showSwitcher && !$editMode));
+$templateHelper->widget('fontscaler', ($showFontscaler && !$editMode));
 
-// Custom tags
 // tell mobile devices to treat the viewport as being the same width as the
 // physical width of the device to make width work in media-queries as expected
+// @link http://h5bp.com/viewport
 $templateHelper->element('meta')->set('viewport', 'width=device-width,initial-scale=1.0');
 
 /**
