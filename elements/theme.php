@@ -9,8 +9,8 @@
  */
 
 /** Register some Widget Classes */
-#	JLoader::register('ContentWidgets', dirname(__FILE__) . '/widgets/content.php');
-#	JLoader::register('BehaviorWidgets', dirname(__FILE__) . '/widgets/behavior.php');
+#	JLoader::register('ContentWidgets', WMPATH_ELEMENTS . '/widgets/content.php');
+#	JLoader::register('BehaviorWidgets', WMPATH_ELEMENTS . '/widgets/behavior.php');
 
 /**
  * CustomTheme Base Class.
@@ -64,9 +64,9 @@ class CustomTheme
 	static $chunks = array('meta'=>'');
 
 	/**
-	 * @see addFeature(), getFeatures()
+	 * @see setFeature(), getFeatures(), dropFeatures(), renderFeatures()
 	 */
-	protected $features = array('core'=>false, 'ssi'=>false);
+	protected $features = array();
 
 	protected function __construct(ConstructTemplateHelper $helper)
 	{
@@ -80,7 +80,7 @@ class CustomTheme
 			$theme = basename($tmpl->params->get('ssiTheme'), '.styles');
 		}
 		else {
-			$theme = basename($tmpl->params->get('customStyleSheet'), '.css');
+			$theme = basename($tmpl->params->get('theme', $tmpl->params->get('customStyleSheet')), '.css'); #FIXME remove BC param
 		}
 		$this->name = $theme;
 
@@ -115,7 +115,7 @@ class CustomTheme
 		$this->setChunks($chunks);
 
 		/** Document Head */
-		require_once dirname(__FILE__) . '/renderer/head.php';
+		require_once WMPATH_ELEMENTS . '/renderer/head.php';
 	}
 
 	/**
@@ -139,19 +139,19 @@ class CustomTheme
 		// does anyone know what $head['link'] is for? skipping...
 		$head = $document->getHeadData();
 
-		self::$chunks['meta']['head']    = ElementRenderer::getInstance('head')->build($head);
-		self::$chunks['meta']['meta']    = ElementRenderer::getInstance('meta')->build($head['metaTags']);
+		self::$chunks['meta']['head']    = ElementRendererAbstract::getInstance('head')->init($head);
+		self::$chunks['meta']['meta']    = ElementRendererAbstract::getInstance('meta')->build($head['metaTags']);
 
 		// from an HTML perspective this is equivalent to <link>
-		self::$chunks['meta']['link']    = ElementRenderer::getInstance('link')->build($head['style'], 'style');
-		self::$chunks['meta']['styles']  = ElementRenderer::getInstance('styles')->build($head['styleSheets']);
+		self::$chunks['meta']['link']    = ElementRendererAbstract::getInstance('link')->build($head['style']);
+		self::$chunks['meta']['styles']  = ElementRendererAbstract::getInstance('styles')->build($head['styleSheets']);
 
-		self::$chunks['meta']['script']  = ElementRenderer::getInstance('script')->build($head['script']);
-		self::$chunks['meta']['scripts'] = ElementRenderer::getInstance('scripts')->build($head['scripts']);
+		self::$chunks['meta']['script']  = ElementRendererAbstract::getInstance('script')->build($head['script']);
+		self::$chunks['meta']['scripts'] = ElementRendererAbstract::getInstance('scripts')->build($head['scripts']);
 
-		self::$chunks['meta']['custom']	 = ElementRenderer::getInstance('custom')->build($head['custom']);
+		self::$chunks['meta']['custom']	 = ElementRendererAbstract::getInstance('custom')->build($head['custom']);
 
-		return implode(PHP_EOL, self::$chunks['meta']);
+		return implode('', self::$chunks['meta']);
 	}
 
 	/**
@@ -327,110 +327,101 @@ class CustomTheme
 	 * @param  mixed   $data    Some data or FALSE to remove feature
 	 * @return
 	 *
-	 * @uses CustomTheme::addFeature()
+	 * @uses CustomTheme::setFeature()
 	 *
 	 * @todo pick URLs + attribs from settings.php [features]
+	 *
 	 * @todo resolve dependencies
 	 */
-	public function addFeature($feature, $data=null)
+	public function setFeature($feature, $data)
 	{
+#		if ($data === false) {
+#			return $this;
+#		}
+
 		$feature = strtolower($feature);
 
-		if (false === $data) {
-			//#FIXME resolve dependencies
-			unset($this->features[$feature]);
-			return;
-		}
-
 		$css = $js = array();
+
 		switch ($feature)
 		{
-			case 'core':
-				// core stylesheets
-				$css[] = $this->tmpl_url.'/css/core/base.css';
-				$css[] = $this->tmpl_url.'/css/core/oocss.css';
-				$css[] = $this->tmpl_url.'/css/core/template.css';
-				break;
-
-			case 'ssi':
-				// Apache SSI based .styles and .scripts
-				$css[] = $this->tmpl_url.'/css/construc2.styles?v=2';
-				$css[] = $this->tmpl_url.'/themes/'. $this->name . '.styles?v=2';
-				break;
-
-			case 'rtl':
-				// right to left support
-				if ($this->features['core']) {
-					$css[] = $this->tmpl_url . '/css/core/rtl.css';
+			case 'print': // print preview
+			case 'tp': // template position preview
+				if ( isset($this->features['core']) ) {
+					$css[$feature] = '{tmpl.css}/core/'.$feature.'.css';
 				}
-				break;
-
-			case 'editor':
-				// WYSIWYG editor styles
-				if ($this->features['core']) {
-					$css[] = $this->tmpl_url . '/css/core/forms.css';
-					$css[] = $this->tmpl_url . '/css/core/edit-form.css';
-				}
-				break;
-
-			case 'print':
-				// print preview
-				$css[] = $this->tmpl_url . '/css/core/print.css';
-				break;
-
-			case 'tp':
-				// template position preview
-				if ($this->features['core']) {
-					$css[] = $this->tmpl_url . '/css/core/tp.css';
-				}
-				break;
-
-			case 'css3':
-				// Lea Verou's -prefix-free
-				$js[] = $this->tmpl_url . '/js/prefixfree.min.js';
-				break;
-
-			case 'diagnostic':
-				//#FIXME title needed, 'alternate stylesheet'
-				// diagnostic stylesheet(s)
-				$css[] = $this->tmpl_url . '/css/core/diagnostic.css';
-				$js[] = '';
-				break;
-
-			case 'styleswitch':
-				// style switcher (JS based)
-				$js[] = $this->tmpl_url . '/js/switcher.min.js';
 				break;
 
 			default:
-				//#FIXME resolve dependencies
-				$this->features[$feature] = $data;
+				$this->features[$feature] = $this->renderFeature($feature, $data);
 		}
 
 		if ( count($css) ) {
 			$this->features[$feature]['link'] = $css;
-			$link = ElementRenderer::getInstance('link');
-			foreach ($css as $url) {
-				$link->set($url);
-			}
 		}
 
 		if ( count($js) ) {
 			$this->features[$feature]['script'] = $js;
-			$script = ElementRenderer::getInstance('script');
-			foreach ($js as $url) {
-				$script->set($url);
-			}
 		}
 
 		return $this;
 	}
 
-	// $type ~ style, script, html, ... ?
-	public function getFeatures($type=null)
+	public function getFeature($name)
 	{
-		//#FIXME resolve dependencies
-		return $this->features;
+		if (isset($this->features[$name])) {
+			return $this->features[$name];
+		}
+	}
+
+	public function getFeatures($names_only = false)
+	{
+		return $names_only == false ? $this->features : array_keys($this->features);
+	}
+
+	protected function dropFeature($name)
+	{
+
+	}
+
+	protected function renderFeature($name, $data=null)
+	{
+		if (isset($this->features[$name]) && (false == (bool)$this->features[$name])) {
+			return $data;
+		}
+
+		$handler = $callback = $feature = '';
+
+		if (is_array($data)) {
+			if (isset($data['module'])) {
+				// parse $data['module']->content, ie {fontscaler}
+			}
+		}
+
+		$handler = strtolower($name);
+		if (strpos($name, '.') >= 1) {
+			list($handler, $callback) = explode('.', $name);
+		}
+
+		$pathname = WMPATH_FEATURE .'/'. $handler .'.php';
+
+		try
+		{
+			include_once $pathname;
+			$feature = ElementRendererAbstract::getInstance($handler, $data);
+
+			if ($callback) {
+				$this->features[$name] = $feature->{$callback}();
+			} else {
+				$this->features[$name] = $feature->render();
+			}
+
+		} catch (Exception $e) {
+			$this->features[$name] = $e;
+			return $e->getMessage();
+		}
+
+		return $this->features[$name];
 	}
 
 	public function getConfig($name, $default=null)
