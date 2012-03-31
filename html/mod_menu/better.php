@@ -1,4 +1,4 @@
-<?php
+<?php defined('_JEXEC') or die;
 /**
  * A better mod_menu override
  *
@@ -21,7 +21,7 @@
  *					->params in JSON format
  *	$attribs		assoc array with all attributes from <jdoc:load .../>
  *
- *	$params 		JRegistry version of $Module->params
+ *	$params 		JRegistry version of $module->params
  * 	$class_sfx		value of that module parameter
  *	$showAll		integer value of that menu item paramater: 0|1 show subitems
  *
@@ -42,14 +42,11 @@
  *					of this layout and return any other 'content'. utterly weired...
  *
  * @package     Template
- * @subpackage  HTML
- * @author      WebMechanic http://webmechanic.biz
- * @copyright   (C)2011-2012 WebMechanic.
- * @copyright   (C)2005 - 2011 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ * @subpackage  Overrides
+ * @author		WebMechanic http://webmechanic.biz
+ * @copyright	(C) 2011-2012 WebMechanic. All rights reserved.
+ * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
-// No direct access.
-defined('_JEXEC') or die;
 
 JLoader::register('BetterMenuHelper', dirname(__FILE__) . '/_helper.php');
 

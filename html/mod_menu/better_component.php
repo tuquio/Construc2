@@ -1,15 +1,11 @@
-<?php
+<?php defined('_JEXEC') or die;
 /**
- * A better mod_menu override for component links.
- *
  * @package     Template
- * @subpackage  HTML
- * @author      WebMechanic http://webmechanic.biz
- * @copyright   Copyright (C)2011-2012 WebMechanic. All rights reserved.
- * @copyright   Copyright (C) 2005 - 2011 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ * @subpackage  Overrides
+ * @author		WebMechanic http://webmechanic.biz
+ * @copyright	(C) 2011-2012 WebMechanic. All rights reserved.
+ * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
-defined('_JEXEC') or die;
 
 // lang switch, as usual we have a web-unfriendly format
 $lang  = explode('-', $item->language);
