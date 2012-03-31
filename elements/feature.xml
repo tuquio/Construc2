@@ -2,6 +2,9 @@
 <extension version="2.5" type="template" group="features" client="site" method="upgrade">
 	<config>
 		<fields name="params">
+		<!-- core functions for Construc2 and things with technical merit -->
+		<fieldset name="general" addfieldpath="/templates/construc2/elements" />
+
 		<!-- 
 		Most Features would plug into the "features" parameter group.
 		Possible panel groups to plug into:
@@ -12,32 +15,40 @@
 			> maintenance: callbacks for the Backend Maintenance Plugin
 		 -->
 
-		 <!-- core functions for Construc2 and things with technical merit -->
-			<fieldset name="general" addfieldpath="/templates/construc2/elements" >
-			</fieldset>
-
 		<!-- the win and doubt group for almost anything -->
 			<fieldset name="features">
-				<field name="html5manifest" type="feature" default="0" label="TPL_CONSTRUC2_HTML5MANIFEST_LABEL" description="TPL_CONSTRUC2_HTML5MANIFEST_DESC">
+				<field type="feature" name="diagnostics" default="0" label="TPL_CONSTRUC2_DIAGNOSTICS_LABEL" description="TPL_CONSTRUC2_DIAGNOSTICS_DESC">
+					<option value="1">JShow</option>
+					<option value="0">JHide</option>
+				</field>
+			</fieldset>
+
+			<fieldset name="standards">
+				<field type="feature" name="prefixfree" default="0" label="TPL_CONSTRUC2_PREFIXFREE_LABEL" description="TPL_CONSTRUC2_PREFIXFREE_DESC">
+					<option value="1">JYes</option>
+					<option value="0">JNo</option>
+				</field>
+			</fieldset>
+				
+			<fieldset name="quirks">
+				<field type="feature" handler="msie" name="msieBho" default="0" label="Feature_Msie_Bho_Label" description="Feature_Msie_Bho_Label">
+					<option value="1">JYes</option>
+					<option value="0">JNo</option>
+				</field>
+				<field type="feature" handler="msie" name="msieBrowserchoice" default="0" label="Feature_Msie_Browserchoice_Label" description="Feature_Msie_Browserchoice_Desc">
+					<option value="1">JYes</option>
+					<option value="0">JNo</option>
+				</field>
+				<field type="feature" handler="msie" name="msieCfinstall" default="0" label="Feature_Msie_Cfinstall_Label" description="Feature_Msie_Cfinstall_Label">
+					<option value="1">JYes</option>
+					<option value="0">JNo</option>
+				</field>
+				<field type="feature" handler="msie" name="msieEdge" default="0" label="Feature_Msie_Edge_Label" description="Feature_Msie_Edge_Label">
 					<option value="1">JYes</option>
 					<option value="0">JNo</option>
 				</field>
 			</fieldset>
 
-			<fieldset name="standards" description="TPL_CONSTRUC2_STANDARDS_DESC">
-				<field name="prefixfree" type="feature" default="0" label="TPL_CONSTRUC2_PREFIXFREE_LABEL" description="TPL_CONSTRUC2_PREFIXFREE_DESC">
-					<option value="1">JYes</option>
-					<option value="0">JNo</option>
-				</field>
-				<field name="cfinstall" type="feature" default="0" label="TPL_CONSTRUC2_CFINSTALL_LABEL" description="TPL_CONSTRUC2_CFINSTALL_DESC">
-					<option value="1">JYes</option>
-					<option value="0">JNo</option>
-				</field>
-				<field name="browserchoice" type="feature" default="0" label="TPL_CONSTRUC2_BROWSERCHOICE_LABEL" description="TPL_CONSTRUC2_BROWSERCHOICE_DESC">
-					<option value="1">JYes</option>
-					<option value="0">JNo</option>
-				</field>
-			</fieldset>
 		</fields>
 	</config>
 
@@ -45,4 +56,4 @@
 		<server type="extension">http://joomla.webmechanic.biz/tpl/addons.xml?features</server>
 	</updateservers>
 
-</features>
+</extension>

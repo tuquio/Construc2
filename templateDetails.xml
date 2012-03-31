@@ -81,14 +81,9 @@
 
 			<fieldset name="features">
 				<field name="setGeneratorTag" type="text" default="" label="TPL_CONSTRUC2_METAGENERATOR" description="TPL_CONSTRUC2_METAGENERATOR_DESC" size="56" />
-				<field name="styleswitcher" type="radio" default="0" label="TPL_CONSTRUC2_STYLESWITCHER_LABEL" description="TPL_CONSTRUC2_STYLESWITCHER_DESC">
-					<option value="1">JShow</option>
-					<option value="0">JHide</option>
-				</field>
-				
-				<field name="diagnostics" type="radio" default="0" label="TPL_CONSTRUC2_DIAGNOSTICS_LABEL" description="TPL_CONSTRUC2_DIAGNOSTICS_DESC">
-					<option value="1">JShow</option>
-					<option value="0">JHide</option>
+				<field type="list" name="html5manifest" default="0" label="TPL_CONSTRUC2_HTML5MANIFEST_LABEL" description="TPL_CONSTRUC2_HTML5MANIFEST_DESC">
+					<option value="1">JYes</option>
+					<option value="0">JNo</option>
 				</field>
 			</fieldset>
 

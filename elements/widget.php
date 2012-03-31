@@ -20,3 +20,50 @@ class ElementWidget extends ElementFeature
 		JHtml::register($old, $new);
 	}
 }
+
+class JFormFieldWidget extends JFormField
+{
+	protected $type = 'WIdget';
+
+	public function __construct($form = null)
+	{
+		parent::__construct($form);
+	}
+
+	protected function getInput()
+	{
+		$html = '';
+
+		return $html;
+	}
+
+	/**@#+
+	 * Proxies for logging and debugging
+	 * @ignore
+	 */
+	protected function getFieldName($fieldName)
+	{
+		return parent::getFieldName($fieldName);
+	}
+
+	protected function getId($fieldId, $fieldName)
+	{
+		return parent::getId($fieldId, $fieldName);
+	}
+
+	protected function getTitle()
+	{
+		return parent::getTitle();
+	}
+
+	protected function getLabel()
+	{
+		return parent::getLabel();
+	}
+
+	protected function getName($fieldName)
+	{
+		return parent::getName($fieldName);
+	}
+	/**@#- */
+}
