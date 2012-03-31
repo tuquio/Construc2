@@ -1,6 +1,12 @@
-<?php
-defined('_JEXEC') or die;
-/* REQUIRES the 'ContentLayoutHelper' class to be registered in the main blog.php Layout */
+<?php defined('_JEXEC') or die;
+/**
+ * REQUIRES the 'ContentLayoutHelper' class to be registered in the main blog.php Layout
+ * @package     Template
+ * @subpackage  Overrides
+ * @author		WebMechanic http://webmechanic.biz
+ * @copyright	(C) 2011-2012 WebMechanic. All rights reserved.
+ * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
+ */
 ?>
 	<aside id="more" class="items-more">
 		<header><h2 class="H3"><?php echo JText::_('COM_CONTENT_MORE_ARTICLES') ?></h2></header>

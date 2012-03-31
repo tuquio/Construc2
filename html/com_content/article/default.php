@@ -1,17 +1,12 @@
 <?php defined('_JEXEC') or die;
+/**
+ * @package     Template
+ * @subpackage  Overrides
+ * @author		WebMechanic http://webmechanic.biz
+ * @copyright	(C) 2011-2012 WebMechanic. All rights reserved.
+ * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
+ */
 /*
-	ContentViewArticle properties
-	item
-	params
-	print
-	state			JObject
-	document
-	user			JUser
-	baseurl
-	pageclass_sfx
-	_name _models _basePath _defaultModel _layout _layoutExt _layoutTemplate
-	_path _template _output _escape _charset _errors
-
 This layout separates $introtext and $fulltext, however Content Plugins only
 work on the combined $text property, hence we need to reconstuct these parts.
 Page and item navigation as well as page numbering make things a bit trickier...

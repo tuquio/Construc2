@@ -2,8 +2,8 @@
 /**
  * Content Layout Helper used in blog and list views.
  *
- * @package     Templates
- * @subpackage  Construc2
+ * @package     Template
+ * @subpackage  Overrides
  * @author      WebMechanic http://webmechanic.biz
  * @copyright   (C) 2012 WebMechanic
  * @license     GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
@@ -71,12 +71,56 @@ class ContentLayoutHelper
 	 */
 	static public function getCssAlias($item, $parent = true)
 	{
-		return ConstructTemplateHelper::getInstance()->getCssAlias($item, $parent);
+		if (class_exists('ConstructTemplateHelper', false)) {
+			return ConstructTemplateHelper::getInstance()->getCssAlias($item, $parent);
+		}
+
+		$A = array();
+
+		// menuish item?
+		if (isset($item->type) && $parent) {
+			$A[] = $item->type;
+			if (isset($item->query['option'])) {
+				$A[] = str_replace('_', '-', $item->query['option']);
+			}
+			if (isset($item->query['view'])) {
+				$A[] = $item->query['view'];
+			}
+			if (isset($item->query['layout'])) {
+				$A[] = $item->query['layout'];
+			}
+		}
+
+		if ($item instanceof JCategoryNode) {
+			list($tmp, $A[]) = explode(':', $item->slug);
+			$A[] = 'cid-' . $item->id;
+		} else {
+			if (isset($item->catid)) {
+				$A[] = 'cid-'.$item->catid;
+			}
+			$A[] = 'item-' . $item->id;
+		}
+
+		if (isset($item->category_alias)) {
+			$A[] = $item->category_alias;
+		}
+		if (isset($item->alias)) {
+			$A[] = $item->alias;
+		}
+
+		$words = array_unique( array_merge($C, $A) );
+		$alias = implode(' ', $words);
+
+		return trim($alias);
+
 	}
 
 	static public function isEmpty(&$content)
 	{
-		return ConstructTemplateHelper::getInstance()->isEmpty($content);
+		static $keepers = '<audio><canvas><embed><hr><iframe><img><math><noscript><object><param><svg><video><command><script><style>';
+		// decode entities, keep meta + embeds, then remove "white-space"
+		$blank = preg_replace('#[\r\n\s\t\h\v\f]+#', '', strip_tags(html_entity_decode($markup), $keepers));
+		return empty($blank);
 	}
 
 	/*@todo delegate to Widget Class */

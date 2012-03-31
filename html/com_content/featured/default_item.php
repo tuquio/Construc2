@@ -1,5 +1,11 @@
-<?php
-defined('_JEXEC') or die;
+<?php defined('_JEXEC') or die;
+/**
+ * @package     Template
+ * @subpackage  Overrides
+ * @author		WebMechanic http://webmechanic.biz
+ * @copyright	(C) 2011-2012 WebMechanic. All rights reserved.
+ * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
+ */
 
 $params		= $this->item->params;
 $showLabels	= ($params->get('show_author') || $params->get('show_category' ) || $params->get('show_parent_category'));
