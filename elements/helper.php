@@ -7,13 +7,20 @@
  * @copyright	(C)2012 WebMechanic. All rights reserved.
  * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
+define('WMPATH_TEMPLATE', JPATH_THEMES . '/construc2');
+define('WMPATH_ELEMENTS', WMPATH_TEMPLATE  . '/elements');
+define('WMPATH_FEATURE' , WMPATH_TEMPLATE  . '/x~incubator/elements/features');
+
+JLoader::register('ElementRendererAbstract', WMPATH_ELEMENTS . '/renderer/abstract.php');
+JLoader::register('ElementsFeature', WMPATH_ELEMENTS . '/feature.php');
+#	JLoader::register('ElementsWidget', WMPATH_ELEMENTS . '/widget.php');
 
 /* SearchHelper knows about the (enhanced) stop words list in xx_XXLocalise
  * and is misused to clean the alias for use as a class name of list items */
 JLoader::register('SearchHelper', JPATH_ADMINISTRATOR .'/components/com_search/helpers/search.php');
 
 /** Load the CustomTheme Class */
-require_once dirname(__FILE__) . '/theme.php';
+require_once WMPATH_ELEMENTS . '/theme.php';
 
 class ElementsWidgets
 {
@@ -47,6 +54,9 @@ class ConstructTemplateHelper
 	/** @var $edit_mode boolean */
 	protected $edit_mode = false;
 
+	/** @var $debug boolean */
+	protected $debug = false;
+
 	/** @var $helper ConstructTemplateHelper instance of self */
 	public static $helper;
 
@@ -79,6 +89,9 @@ class ConstructTemplateHelper
 						|| in_array($request->get('view'), array('form'))
 						|| in_array($request->get('option'), array('com_media'))
 						;
+
+		$app = JFactory::getApplication();
+		$this->debug = $app->getCfg('debug') && $app->input->get('tpos', 0, 'bool');
 
 		$this->addLayout('index')
 			->addLayout('component')
@@ -1293,8 +1306,8 @@ To allow parallel downloading, move the inline script before the external CSS fi
 		$default = array();
 
 		// fake ini file
-		if (is_file(dirname(__FILE__) .'/settings.php')) {
-			$config  = parse_ini_file(dirname(__FILE__) .'/settings.php', true);
+		if (is_file(WMPATH_ELEMENTS .'/settings.php')) {
+			$config  = parse_ini_file(WMPATH_ELEMENTS .'/settings.php', true);
 			$default = array_merge_recursive($default, $config);
 		}
 

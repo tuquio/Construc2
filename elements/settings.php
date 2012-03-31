@@ -30,18 +30,10 @@ media		= "{root}/media/system"
 images		= "{root}/images"
 template	= "{root}/templates/construc2"
 theme		= "{template}/themes/{name}"
-
 tmpl.css	= "{template}/css"
-core.css	= "{template}/css/core"
-
+tmpl.js		= "{template}/js"
 system.css	= "{media}/css"
 system.js	= "{media}/js"
-
-	; "deprecated" - extension should use the media folder
-module.css	= "{root}/modules/{name}/css"
-module.js	= "{root}/modules/{name}/js"
-plugin.css	= "{root}/plugins/{type}/{name}/css"
-plugin.js	= "{root}/plugins/{type}/{name}/js"
 
 [autocols]
 column-1=0
@@ -60,9 +52,9 @@ column-4=0
 	; Values are list labels run thru JText for translation
 	; and best added to "xx-XX.override.ini"
 @default	= normal
-wireframe	= TPL_CONSTRUC2_STYLE_WIREFRAME
-diagnostic	= TPL_CONSTRUC2_STYLE_DIAGNOSTIC_MODE
 normal		= TPL_CONSTRUC2_STYLE_NORMAL_MODE
+wireframe	= TPL_CONSTRUC2_STYLE_WIREFRAME_MODE
+diagnostic	= TPL_CONSTRUC2_STYLE_DIAGNOSTIC_MODE
 
 [fontscaler]
 @enabled	= 0
@@ -83,15 +75,4 @@ date	= 1
 	; -----
 	; module types
 custom	= 1
-
-[features]
-	; -----
-	; stuff to be added on demand.
-	; JS+CSS urls w/ optional {subst} keys
-	; for dependencies use {features.feature-name}
-
-form	= "{core.css}/forms.css"
-editor	= "{features.form},{core.css}/edit-form.css"
-
-
 

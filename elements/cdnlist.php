@@ -27,8 +27,8 @@ class JFormFieldCdnlist extends JFormFieldList
 	{
 		$options = $config = array();
 
-		if (is_file(dirname(__FILE__) .'/settings.php')) {
-			$config = parse_ini_file(dirname(__FILE__) .'/settings.php', true);
+		if (is_file(WMPATH_ELEMENTS .'/settings.php')) {
+			$config = parse_ini_file(WMPATH_ELEMENTS .'/settings.php', true);
 		}
 		settype($config['cdn'], 'array');
 
