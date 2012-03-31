@@ -4,9 +4,10 @@
  *
  * @package     Construc2
  * @subpackage  Renderer
- * @copyright	(C)2012 WebMechanic. All rights reserved.
- * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
+ * @copyright   (C)2012 WebMechanic. All rights reserved.
+ * @license     GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
+
 JLoader::register('JDocumentRendererToe', WMPATH_ELEMENTS .'/renderer/toe.php');
 
 /**
@@ -42,9 +43,10 @@ class ElementRendererHead extends ElementRendererAbstract implements IElementRen
 	/**
 	 * Sets charset, base and title to preceeed anything else.
 	 *
+	 * @link http://h5bp.com/i/378  X-UA-Compatible
 	 * @todo  add "<link rel="dns-prefetch" href="//cdn.foo.bar">" if CDN are configured
 	 */
-	public function init(array &$data)
+	public function init()
 	{
 		$document = JFactory::getDocument();
 
@@ -67,7 +69,25 @@ class ElementRendererHead extends ElementRendererAbstract implements IElementRen
 	}
 
 	public function build(array &$data, $options=null) {return $this;}
-	public function set($key, $value, $ua=null) {return $this;}
+
+	/**
+	 * Sets the value/data for the designated $key of this element.
+	 *
+	 * Use $ua to add browser specific ressources, typically for MSIE
+	 * in which case a conditional comment (CC) based on $uagent is added
+	 * to group output.
+	 *
+	 * $uagent
+	 * - IE 		= any MSIE with support for CC
+	 * - IE 6		= MSIE 6 only
+	 * - !IE 6		= all but MSIE 6
+	 * - lt IE 9	= MSIE 5 - MSIE 8
+	 * - lte IE 9	= MSIE 5 - MSIE 9
+	 * - gt IE 6	= MSIE 7 - MSIE 9
+	 * - gte IE 9	= MSIE 9
+	 * - IEMobile	= MSIE 7 - MSIE 9 on smart phones
+	 */
+	public function set($key, $value, $uagent=null) {return $this;}
 }
 
 /**
@@ -287,12 +307,12 @@ class ElementRendererScripts extends ElementRendererAbstract
 	{
 		$this->scripts += 1;
 
-		if (strpos($script, '[CDATA[') > 1) {
+		if (strpos($script, '[CDATA[') >= 2) {
 			$this->_dexhtmlize($script);
 		}
 
 		$e = 'e'.$this->scripts;
-		$this->data[$this->scripts] = 'try {'. $script .'} catch('.$e.') {if("console" in window){console.log('.$e.');}}';
+		$this->data[$this->scripts] = 'try {'. $script .'} catch('.$e.') {if(\'console\' in window){console.log('.$e.');}}';
 
 		return $this;
 	}

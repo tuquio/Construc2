@@ -108,7 +108,7 @@
 				<field name="loadjQuery" type="jqueryversion" default="" label="TPL_CONSTRUC2_LOAD_JQUERY_LABEL" description="TPL_CONSTRUC2_LOAD_JQUERY_DESC" />
 				<field name="loadjQuerySrc" type="cdnlist" members="jquery" default="ajax.googleapis.com" label="TPL_CONSTRUC2_JQUERYSRC_LABEL" description="TPL_CONSTRUC2_JQUERYSRC_DESC" />
 
-				<field name="headCleanup" type="radio" default="0" label="TPL_CONSTRUC2_ENABLE_HEADCLEANUP_LABEL" description="TPL_CONSTRUC2_ENABLE_HEADCLEANUP_DESC">
+				<field name="headCleanup" type="radio" default="0" label="TPL_CONSTRUC2_HEADCLEANUP_LABEL" description="TPL_CONSTRUC2_HEADCLEANUP_DESC">
 					<option value="1">JYes</option>
 					<option value="0">JNo</option>
 				</field>

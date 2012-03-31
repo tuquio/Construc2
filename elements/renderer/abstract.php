@@ -8,12 +8,14 @@
  * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
 
+JLoader::register('ElementFeature', WMPATH_ELEMENTS . '/feature.php');
+JLoader::register('ElementWidget' , WMPATH_ELEMENTS . '/widget.php');
+
 /**
  * Element Renderer Interface
  */
 interface IElementRenderer
 {
-
 	public function build(array &$data, $options=null);
 	public function set($key, $value, $ua=null);
 }
@@ -27,9 +29,7 @@ abstract class ElementRendererAbstract
 
 	protected $attribs = array();
 	protected $name;
-
 	protected $data = array();
-
 	protected static $elements = array();
 
 	/** API compliance with {@link JDocumentRenderer} */
@@ -37,7 +37,7 @@ abstract class ElementRendererAbstract
 	{
 		if (!isset($this->name))
 		{
-			FB::warn(get_class($this), 'MISSING NAME!');
+			if (defined('DEVELOPER_MACHINE')) {FB::warn(get_class($this), 'MISSING NAME!');}
 			preg_match('/([A-Z]+[a-z]+)$/', get_class($this), $parts);
 			$this->name  = strtolower($parts[1]);
 		}
@@ -51,7 +51,14 @@ abstract class ElementRendererAbstract
 	{
 		if (!isset(self::$elements[$type]))
 		{
-			$class = __CLASS__ . ucfirst($type);
+			// BC
+			if (strpos($type, '.') === false) {
+				$type = 'renderer.'. $type;
+			}
+			$parts = explode('.', $type);
+
+			$class = 'Element'. ucfirst($parts[0]) . ucfirst($parts[1]);
+
 			self::$elements[$type] = new $class($attribs);
 			self::$elements[$type]->init();
 		}
@@ -60,26 +67,6 @@ abstract class ElementRendererAbstract
 	}
 
 	protected function init() {return $this;}
-
-	public function __toString()
-	{
-		$output = '';
-
-		foreach (array_keys($this->data) as $key) {
-			if (is_array($this->data[$key])) {
-				$output .= implode(PHP_EOL, $this->data[$key]) . PHP_EOL;
-			} else {
-				$output .= $this->data[$key] . PHP_EOL;
-			}
-		}
-
-		return $output;
-	}
-
-	public function __toArray()
-	{
-		return $this->data;
-	}
 
 	/**
 	 * Parse substitution {keys} into their full URL equivalent.
@@ -99,6 +86,26 @@ abstract class ElementRendererAbstract
 		}
 
 		return $url;
+	}
+
+	public function __toString()
+	{
+		$output = '';
+
+		foreach (array_keys($this->data) as $key) {
+			if (is_array($this->data[$key])) {
+				$output .= implode(PHP_EOL, $this->data[$key]) . PHP_EOL;
+			} else {
+				$output .= $this->data[$key] . PHP_EOL;
+			}
+		}
+
+		return $output;
+	}
+
+	public function __toArray()
+	{
+		return $this->data;
 	}
 }
 
