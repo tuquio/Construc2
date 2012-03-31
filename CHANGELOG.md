@@ -1,5 +1,6 @@
 
 1.10.0-beta
+===========
 ** Parameter changes: YOU MUST REVIEW the template style parameters!**
 
 * customStyleSheet:  theme -- Theme CSS file

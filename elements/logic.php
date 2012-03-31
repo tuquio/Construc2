@@ -20,7 +20,7 @@ JLoader::register('ConstructTemplateHelper', dirname(__FILE__) . '/helper.php');
 $templateHelper	= ConstructTemplateHelper::getInstance();
 
 /** @var $app JSite To enable use of site configuration */
-$app 	= JFactory::getApplication();
+$app		= JFactory::getApplication();
 
 /** @var $base_url string Get the base URL of the website */
 $base_url 	= JURI::base(true) . '/';
@@ -28,16 +28,31 @@ $base_url 	= JURI::base(true) . '/';
 /** @var $tmpl_url string Define relative shortcut for current template directory */
 $tmpl_url 	= $base_url. 'templates/'. $this->template;
 
-/* Define some shortcuts :: for BC the 1.9.x params are used as defaults */
-$ssiIncludes	= (bool) $this->params->get('ssiIncludes', false);
-$showSwitcher 	= (bool) $this->params->get('styleswitch', $this->params->get('enableSwitcher', false)); #FIXME remove BC param
-$showFontscaler	= (bool) $this->params->get('fontscaler' , false);
-
 // some editor form requested, needs mo' styles, and less modules
 $editMode = $templateHelper->isEditMode();
 
+/*
+ * META
+ */
+// X-UA-Compatible E=Edge,chrome=1
+$templateHelper->feature('msie.edge', $this->params->get('msieEdge', false));
+
+// kick imagetoolbar, MSThemeCompatible
+$templateHelper->feature('msie.bho', $this->params->get('msieBho', false));
+
+// BrowserChoice.com Popup or Redirect
+$templateHelper->feature('msie.browserchoice', $this->params->get('msieBrowserchoice', false));
+
+// tell mobile devices to treat the viewport as being the same width as the
+// physical width of the device to make width work in media-queries as expected
+// @link http://h5bp.com/viewport
+$templateHelper->element('meta')->set('viewport', 'width=device-width,initial-scale=1.0');
+
+/*
+ * STYLE
+ */
 // a 'filelist' param returns -1 for 'none'
-$templateHelper->feature('ssi'  , $ssiIncludes);
+$templateHelper->feature('ssi'  , $this->params->get('ssiIncludes', false));
 $templateHelper->feature('rtl'  , ($this->direction == 'rtl'));
 $templateHelper->feature('edit' , $editMode);
 $templateHelper->feature('print', $app->input->get('print', 0));
@@ -47,28 +62,25 @@ if ($app->get('input')->get('tp', 0, 'bool')) {
 	$templateHelper->feature('tp', JComponentHelper::getParams('com_templates')->get('template_positions_display', 0));
 }
 
+/*
+ * SCRIPT
+ */
 // JSON2 support for oldIEs
 $templateHelper->feature('standards.json');
-// Google Chrome Frame Install for oldIEs
-$templateHelper->feature('msie.cfinstall', $this->params->get('msieCfinstall', $this->params->get('loadGcf', false))); #FIXME remove BC param
+
 // Lea Verou's -prefix-free
 $templateHelper->feature('standards.prefixfree', $this->params->get('prefixfree', false));
 
-// all things different in edit mode
-$templateHelper->widget('styleswitch', ($showSwitcher && !$editMode));
-$templateHelper->widget('fontscaler', ($showFontscaler && !$editMode));
+// Google Chrome Frame Install for oldIEs
+$templateHelper->feature('msie.cfinstall', $this->params->get('msieCfinstall', $this->params->get('loadGcf', false)));
 
-// kick imagetoolbar, MSThemeCompatible
-$templateHelper->feature('msie.bho', $this->params->get('msieBho', false));
-// BrowserChoice.com Popup or Redirect
-$templateHelper->feature('msie.browserchoice', $this->params->get('msieBrowserchoice', false));
-// BrowserChoice.com Popup or Redirect
-$templateHelper->feature('msie.browserchoice', $this->params->get('browserchoice', false));
+// Style switcher (JS based)
+#FIXME $showSwitcher 	= (bool) $this->params->get('styleswitch', $this->params->get('enableSwitcher', false));
+#FIXME $templateHelper->widget('styleswitch', ($showSwitcher & $editMode));
 
-// tell mobile devices to treat the viewport as being the same width as the
-// physical width of the device to make width work in media-queries as expected
-// @link http://h5bp.com/viewport
-$templateHelper->element('meta')->set('viewport', 'width=device-width,initial-scale=1.0');
+// CSS Powered Fontscale (JS triggered)
+#FIXME $showFontscaler	= (bool) $this->params->get('fontscaler' , false);
+#FIXME $templateHelper->widget('fontscaler', ($showFontscaler & $editMode));
 
 /**
  * Some "global" variables for use within Page Layouts
