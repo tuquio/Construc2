@@ -8,12 +8,11 @@
  * @copyright   (C)2012 WebMechanic. All rights reserved.
  * @license     GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
-JLoader::register('DateWidgets', __FILE__);
 
 /**
  * JHtmlIcon clones as offerend and used by com_content.
  */
-class DateWidgets extends ElementsWidgets
+class ElementWidgetDate extends ElementWidget
 {
 	/**
 	 * To set the $elt name only, but preseve (todays) default and date format use:
