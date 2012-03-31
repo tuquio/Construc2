@@ -598,17 +598,10 @@ class ConstructTemplateHelper
 		$css = array_unique($css);
 
 		$html = array();
-		foreach (JModuleHelper::getModules($position) as $_module)
+		foreach (JModuleHelper::getModules($position) as $module)
 		{
-			if (in_array($_module->name, $this->config['allow_empty']))
-			{
-				if (self::isEmpty($content)) {
-					continue;
-				}
-			}
-
 			// find @stylename encoded in moduleclass_sfx
-			$mparams = json_decode($_module->params);
+			$mparams = json_decode($module->params);
 			if (isset($mparams->moduleclass_sfx) && strpos($mparams->moduleclass_sfx, '@') !== false)
 			{
 				$style = preg_grep('/^@([a-z]+)/', explode(' ', $mparams->moduleclass_sfx));
@@ -616,16 +609,16 @@ class ConstructTemplateHelper
 
 				// put everything else back
 				$mparams->moduleclass_sfx = trim(str_replace($style, '', $mparams->moduleclass_sfx));
-				$_module->params = json_encode($mparams);
+				$module->params = json_encode($mparams);
 			}
 
-			$content = JModuleHelper::renderModule($_module, $attribs);
+			$content = JModuleHelper::renderModule($module, $attribs);
 
 			// this crap doesn't belong here
-			$content = $this->_choppInlineCrap($content, $_module->module);
+			$content = $this->_choppInlineCrap($content, $module->module);
 
-			$prefixes['before'][] = $_module->module;
-			$prefixes['after'][]  = $_module->module;
+			$prefixes['before'][] = $module->module;
+			$prefixes['after'][]  = $module->module;
 			if ($chunk = $this->theme->getChunk('module', $prefixes['before']) )
 			{
 				$html[] = str_replace(
@@ -1243,26 +1236,6 @@ class ConstructTemplateHelper
 			echo implode(PHP_EOL, $cc), PHP_EOL;
 		}
 		if ($flap % 2 == 0) echo '<!--[if IE]></div><![endif]-->', PHP_EOL;
-	}
-
-	/**
-	 * Find if the $markup contains "content".
-	 * Allows the Module Chrome to decide if it's worth adding more stuff to nothing.
-	 * Allows the Layouts to avoid spitting out empty container.
-	 *
-	 * The following elements are considered "non empty" content:
-	 * audio, canvas, embed, iframe, img, math, object, svg, video, command, script, style
-	 *
-	 * @param  string  $markup
-	 * @return bool
-	 */
-	static public function isEmpty(&$markup, $by='')
-	{
-		// decode entities, keep meta + embeds, then remove "white-space"
-		$blank = preg_replace('#[\r\n\s\t\h\v\f]+#', '',
-					strip_tags(html_entity_decode($markup), '<audio><canvas><embed><iframe><img><math><object><svg><video><command><script><style>')
-					);
-		return empty($blank);
 	}
 
 	/**
