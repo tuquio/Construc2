@@ -108,7 +108,7 @@ class ContentLayoutHelper
 			$A[] = $item->alias;
 		}
 
-		$words = array_unique( array_merge($C, $A) );
+		$words = array_unique($A);
 		$alias = implode(' ', $words);
 
 		return trim($alias);
@@ -119,7 +119,7 @@ class ContentLayoutHelper
 	{
 		static $keepers = '<audio><canvas><embed><hr><iframe><img><math><noscript><object><param><svg><video><command><script><style>';
 		// decode entities, keep meta + embeds, then remove "white-space"
-		$blank = preg_replace('#[\r\n\s\t\h\v\f]+#', '', strip_tags(html_entity_decode($markup), $keepers));
+		$blank = preg_replace('#[\r\n\s\t\h\v\f]+#', '', strip_tags(html_entity_decode($content), $keepers));
 		return empty($blank);
 	}
 
