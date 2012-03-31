@@ -314,10 +314,10 @@ class ConstructTemplateHelper
 	 * category id or article id.
 	 *
 	 * Use the second parameter $scope for fine grained overrides
-	 * - 'index'     in  /layouts/            using  {$customStyle}-index.php
-	 * - 'component' in  /layouts/component/  using  {$currentComponent}.php
-	 * - 'category'  in  /layouts/category/   using  category-{$categoryId}.php
-	 * - 'article'   in  /layouts/article/    using  article-{$articleId}.php
+	 * - 'index'     in  /layouts/            using  {$themename}-index.php
+	 * - 'component' in  /layouts/component/  using  {$option}.php
+	 * - 'category'  in  /layouts/category/   using  category-{$cat_id}.php
+	 * - 'article'   in  /layouts/article/    using  article-{$article_id}.php
 	 *
 	 * @param string $basename required basename of the layout file (no suffix)
 	 * @param string $scope    optional scope, 'component', 'category', or 'article'
@@ -407,7 +407,7 @@ class ConstructTemplateHelper
 	 * <code>
 	 * $helper->addLayout('index')
 	 *     ->addLayout($themeName, 'index')
-	 *     ->addLayout($currentComponent, 'component')
+	 *     ->addLayout($option, 'component')
 	 *     ->addLayout($categoryId, 'category');
 	 * </code>
 	 * See {@link addLayout()} for more details on conditions and rules.
@@ -510,14 +510,18 @@ class ConstructTemplateHelper
 	 */
 	public function getModulesCount($group, $max = self::MAX_MODULES)
 	{
-		if (isset($this->groupcount[$group])) {
-			return $this->groupcount[$group];
-		}
-
 		settype($max, 'int');
 		// #FIXME colums are only 2 per group 'alpha' and 'beta'
 		if ($group =='column') {
-			$max = 4;
+			$max = self::MAX_COLUMNS;
+		}
+
+		if ($this->debug) {
+			$this->groupcount[$group] = ($group =='column') ? self::MAX_COLUMNS : self::MAX_MODULES;
+		}
+
+		if (isset($this->groupcount[$group])) {
+			return $this->groupcount[$group];
 		}
 
 		if ($max < 1) $max = 1;
@@ -566,7 +570,7 @@ class ConstructTemplateHelper
 	 */
 	public function renderModules($position, $style=null, $attribs=array())
 	{
-		if ($this->edit_mode) {
+		if ($this->isEditMode()) {
 			return $this;
 		}
 
@@ -575,14 +579,23 @@ class ConstructTemplateHelper
 			$group = substr($position, 0, $pos);
 		}
 
+		if ( $group != false ) {
+			$modules = $this->getModulesCount($group);
+			$n = $modules[0];
+		} else {
+			$n = $this->doc->countModules($position);
+		}
+
+		/* nothing there? get outta here */
+		if ( $n == 0 ) {
+			return $this;
+		}
+
 		$attribs['name'] = $position;
 
 		if (!array_key_exists('style', $attribs)) {
 			$attribs['style'] = $style;
 		}
-
-		$css = array();
-		$wrapper = array();
 
 		// disable ".unit" auto columns?
 		if (!array_key_exists('autocols', $attribs)) {
@@ -590,17 +603,10 @@ class ConstructTemplateHelper
 			$attribs['autocols'] = $this->moduleStyle($position);
 		}
 
+		$css = array();
 		settype($attribs['autocols'], 'bool');
-
 		if ($attribs['autocols'] !== false)
 		{
-			if ( $group != false ) {
-				$modules = $this->getModulesCount($group);
-				$n = $modules[0];
-			} else {
-				$n = $this->doc->countModules($position);
-			}
-
 			if ( $n > 0 ) {
 				unset($attribs['oocss']);
 				$css[] = 'unit size1of'.$n;
@@ -692,7 +698,7 @@ class ConstructTemplateHelper
 	public function element($type)
 	{
 		try {
-			return ElementRenderer::getInstance($type);
+			return ElementRendererAbstract::getInstance($type);
 		}
 		catch (Exception $e) {
 			return;
@@ -1075,7 +1081,7 @@ class ConstructTemplateHelper
 		$loadJQuery	= $this->tmpl->params->get('loadjQuery');
 
 		// however ...
-		if ($this->edit_mode)
+		if ($this->isEditMode())
 		{
 			$loadMoo = true;
 			$loadJQuery	= false;
@@ -1270,12 +1276,14 @@ To allow parallel downloading, move the inline script before the external CSS fi
 	 */
 	static public function isEmpty(&$markup, $by='')
 	{
+		static $keepers = '<audio><canvas><embed><hr><iframe><img><math><noscript><object><param><svg><video><command><script><style>';
+
 		#FIXME
 		return false;
 
 		// decode entities, keep meta + embeds, then remove "white-space"
 		$blank = preg_replace('#[\r\n\s\t\h\v\f]+#', '',
-					strip_tags(html_entity_decode($markup), '<audio><canvas><embed><iframe><img><math><object><svg><video><command><script><style>')
+					strip_tags(html_entity_decode($markup), $keepers)
 					);
 		return empty($blank);
 	}
