@@ -25,14 +25,6 @@
 		<h1 id="logo"><a class="site-link" href="<?php echo $this->baseurl ?>/"><span class="site-name"><?php echo $app->getCfg('sitename');?></span></a></h1>
 <?php if ($this->countModules('header')) : $templateHelper->renderModules('header', 'raw'); endif; ?>
 
-		<?php if ($enableSwitcher) : ?>
-		<ul id="styleswitcher" class="menu style-switcher">
-			<li class="mi switcher wireframe"  data-style="wireframe"><?php echo JText::_('TPL_CONSTRUC2_STYLE_WIREFRAME') ?></li>
-			<li class="mi switcher diagnostic" data-style="diagnostic"><?php echo JText::_('TPL_CONSTRUC2_STYLE_DIAGNOSTIC_MODE') ?></li>
-			<li class="mi switcher normal"     data-style="normal"><?php echo JText::_('TPL_CONSTRUC2_STYLE_NORMAL_MODE') ?></li>
-		</ul>
-		<?php endif; ?>
-
 		</div><!-- .page-head -->
 
 		<div id="body-container" class="line <?php echo $templateHelper->getPageAlias() ?>">
@@ -79,11 +71,13 @@
 <?php endif; ?>
 <?php $templateHelper->renderModules('footer', 'raw'); ?>
 	</div></footer><!-- end footer -->
+
 <?php
 if ($this->countModules('debug')) : $templateHelper->renderModules('debug', 'raw'); endif;
 if ($this->countModules('analytics')) : $templateHelper->renderModules('analytics', 'raw'); endif;
 
 ConstructTemplateHelper::msieSwatter();
 ?>
+<?php if (defined('JOSHUA')) { ?><jdoc:include type="toe" tic="tac" name="index" /><?php } ?>
 	</body>
 </html>
