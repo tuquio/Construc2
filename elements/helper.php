@@ -795,11 +795,13 @@ class ConstructTemplateHelper
 		}
 
 		unset($attribs['src']);
+		unset($attribs['mime']);
+		$attribs['type'] = 'text/javascript';
 
-		if (isset($attribs['defer']) && $attribs['defer'] == false) {
+		if (array_key_exists('defer', $attribs) && $attribs['defer'] == false) {
 			unset($attribs['defer']);
 		}
-		if (isset($attribs['async']) && $attribs['async'] == false) {
+		if (array_key_exists('async', $attribs) && $attribs['async'] == false) {
 			unset($attribs['async']);
 		}
 
@@ -891,11 +893,14 @@ class ConstructTemplateHelper
 		unset($head['metaTags']['standard']['description']);
 
 		$this->addMetaData('X-UA-Compatible', 'IE=Edge,chrome=1', null, true);
-		//$this->addMetaData('description', $desc);
 
 		// Change generator tag
 		$this->doc->setGenerator(null);
 		$this->addMetaData('generator', trim($this->tmpl->params->get('setGeneratorTag', self::NAME)));
+
+		// tell mobile devices to treat the viewport as being the same width as the
+		// physical width of the device to make width work in media-queries as expected
+		$this->addMetaData('viewport', 'width=device-width,initial-scale=1.0');
 
 		// Google Chrome Frame
 		if (!$this->edit_mode) {
@@ -910,19 +915,17 @@ class ConstructTemplateHelper
 		}
 
 		// JSON shim
-		$jsonShim = '(function(W,D,src) {if (W.JSON) return;var a=D.createElement("script");var b=D.getElementsByTagName("script")[0];a.src=src;a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b);})(window,document,"'. $tmpl_url .'/js/json2.min.js");';
+		$this->addScriptDeclaration('(function(W,D,src) {if (W.JSON) return;var a=D.createElement("script");var b=D.getElementsByTagName("script")[0];a.src=src;a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b);})(window,document,"'. $tmpl_url .'/js/json2.min.js");');
 
 		// Remove MooTools if set to do so.
 		$loadModal	= (bool) $this->tmpl->params->def('loadModal', 0);
-		$loadMoo	= $this->tmpl->params->def('loadMoo', $loadModal);
+		$loadMoo	= (int) $this->tmpl->params->def('loadMoo', $loadModal);
 
 		// wrap already present noConflict() placed elsewhere
-		if ((bool) $this->tmpl->params->get('loadjQuery')) {
+		if ((bool) $this->tmpl->params->def('loadjQuery', '')) {
 			$noconflict = array();
-			$loadModal	= (bool) $this->tmpl->params->get('loadModal');
-			$loadMoo	= $this->tmpl->params->get('loadMoo', $loadModal);
 
-			if (!$loadMoo) {
+			if ($loadMoo == 0) {
 				$noconflict[] = 'if(window.jQuery){window.addEvent=function(n,f){console.log(\'addEvent \',n,f);var $$=jQuery;if(n=="domready"||n=="load"){jQuery(document).ready(f);}};}';
 			}
 
@@ -933,7 +936,9 @@ class ConstructTemplateHelper
 				}
 			}
 			$this->addScriptDeclaration($noconflict);
+			unset($noconflict);
 		}
+
 
 		foreach ($head as $group => $stuff)
 		{
@@ -944,55 +949,61 @@ class ConstructTemplateHelper
 				case 'metaTags':
 					// let '' be but move "normal" away so it appears below <title>
 					foreach ($stuff['standard'] as $key => $data) {
-						$this->addMetaData($key, $data);
+						unset($head[$group][$key]);
+						if (!empty($data)) {
+							$this->addMetaData($key, $data);
+						}
 					}
-					$head[$group]['standard'] = array();
 					break;
 
 				case 'links':
 					foreach ($stuff as $key => $data) {
+						unset($head[$group][$key]);
 						$this->addLink($key, null, $data['attribs'], $data['relation']);
 					}
-					$head[$group] = array();
 					break;
 
 				case 'styleSheets':
 					foreach ($stuff as $key => $data) {
+						unset($head[$group][$key]);
 						$this->addLink($key, null, $data);
 					}
-					unset($head[$group]);
 					break;
 
 				case 'style':
 					foreach ($stuff as $key => $data) {
+						unset($head[$group][$key]);
 						$this->addStyle($data);
 					}
-					$head[$group] = array();
 					break;
 
 				case 'scripts':
 					// cleanup, remove dupes, make rel. URLs
-					$scripts = array();
 					foreach ($stuff as $key => $data) {
+						if (strpos($key, '/caption') || ($loadMoo == 0)) {
+							$head[$group][$key] = array('mime'=>'text/x-construc2','defer'=>true,'async'=>'');
+							continue;
+						}
+						unset($head[$group][$key]);
+
 						$url = parse_url($key);
 						if (!isset($url['scheme'])) {
 							$key = ltrim($key, '/');
 						}
 						$rel = str_replace(JURI::root(), '/', $key);
-						$scripts[$rel] = $data;
+						$this->addScript($rel, self::UA, $data);
 					}
-
 					$head[$group] = array();
-					if (count($scripts)) {
-						$head[$group] = $scripts;
-					}
 					break;
 
 				case 'script':
 					foreach ($stuff as $key => $data) {
+						$head[$group][$key] = '//;';
+						if (strpos($data, 'JCaption')) {
+							continue;
+						}
 						$this->addScriptDeclaration($data);
 					}
-					$head[$group] = array();
 					break;
 			}
 		}
@@ -1043,9 +1054,9 @@ class ConstructTemplateHelper
 		$head = $this->doc->getHeadData();
 
 		// Remove MooTools if set to do so.
-		$loadMoo	= $this->tmpl->params->get('loadMoo');
-		$loadModal	= $this->tmpl->params->get('loadModal');
-		$loadJQuery	= $this->tmpl->params->get('loadjQuery');
+		$loadMoo	= (int)  $this->tmpl->params->get('loadMoo');
+		$loadModal	= (bool) $this->tmpl->params->get('loadModal');
+		$loadJQuery	= (bool) $this->tmpl->params->get('loadjQuery');
 
 		// however ...
 		if ($this->edit_mode)
@@ -1054,15 +1065,19 @@ class ConstructTemplateHelper
 			$loadJQuery	= false;
 		}
 
-		if ($loadMoo == false)
+		if ($loadMoo == 0)
 		{
-			// without MooTools we must drop all but core.js
-			$moos = preg_grep('#/media/system/js(\/(?!core))#', array_keys($head['scripts']));
+			// drop it all
+			$moos = preg_grep('#media/system/js/(.*)$#', array_keys($head['scripts']));
 			if (count($moos) > 0) {
 				foreach ($moos as $src) {
 					unset($head['scripts'][$src]);
 				}
+				if (count($head['scripts']) == 0) {
+					$head['scripts'][JURI::root(true) . 'media/system/js/core.js'] = array('mime'=>'text/javascript','defer'=>'','async'=>'');
+				}
 			}
+			$this->doc->setHeadData($head);
 		}
 		else {
 			// Load the MooTools JavaScript Library
@@ -1161,11 +1176,9 @@ class ConstructTemplateHelper
 			if (isset($groups['script']) && count($groups['script'])) {
 				$head['custom'][] = '<script type="text/javascript">';
 				// scripts safe
-				$head['custom'][] = 'try {';
 				foreach ($groups['script'] as $stuff) {
-					$head['custom'][] = $stuff;
+					$head['custom'][] = 'try {'. $stuff. '} catch(e) {};';
 				}
-				$head['custom'][] = '} catch(e) {};';
 				$head['custom'][] = '</script>';
 			}
 

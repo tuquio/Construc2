@@ -26,6 +26,17 @@ Plugin 'pagebreak' if activated via "Shared Options" in Artikel Manager paramete
 	- show_pagination: 0|1|2 ~ hide|show|auto
 	Page numbers settings
 	- show_pagination_results: 1
+
+$images stdClass(
+		image_intro:	'images/sampledata/fruitshop/apple.jpg',
+		float_intro:	'right',	left|none|''
+		image_intro_alt:'Apples',
+		image_intro_caption:'An image of apples',
+		image_fulltext:'',
+		float_fulltext:'',
+		image_fulltext_alt:'',
+		image_fulltext_caption:''
+		)
 */
 
 JLoader::register('ContentLayoutHelper', JPATH_THEMES . '/construc2/html/com_content/_shared/helper.php');

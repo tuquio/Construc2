@@ -105,10 +105,6 @@ if ($app->getCfg('debug') && $app->input->get('tpos', 0, 'bool')) {
 }
 
 /* HEAD Elements */
-// Custom tags
-// tell mobile devices to treat the viewport as being the same width as the
-// physical width of the device to make width work in media-queries as expected
-$this->setMetaData('viewport', 'width=device-width,initial-scale=1.0');
 
 // Transparent favicon
 if (is_file(JPATH_THEMES .'/'. $this->template .'/favicon.png')) {
