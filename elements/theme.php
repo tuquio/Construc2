@@ -151,32 +151,6 @@ class CustomTheme
 		return self::$theme;
 	}
 
-	public function build()
-	{
-		$helper = ConstructTemplateHelper::getInstance();
-
-		foreach ($this->config->get('scripts', array()) as $key => $line)
-		{
-			list($ua, $src) = explode(',', $line);
-			settype($ua, 'int');
-
-			if (0 == $ua) {
-				continue;
-			}
-			else if ($ua == 4) {
-				$ua = 'IE';
-			}
-			else if ($ua >= 6 && $ua <=9) {
-				$ua = 'IE '.$ua;
-			}
-			else {
-				$ua = '';
-			}
-
-			$helper->addScript($src, $ua);
-		}
-	}
-
 	/**
 	 * Will load the static html files registered for the given $layout and add
 	 * their "chunks" for later inclusion and processing.

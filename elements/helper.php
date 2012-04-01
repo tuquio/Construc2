@@ -83,11 +83,6 @@ class ConstructTemplateHelper
 		$this->doc  = JFactory::getDocument();
 		$this->tmpl = JFactory::getApplication()->getTemplate(true);
 
-		if ($this->tmpl->params->get('headCleanup')) {
-			require_once dirname(__FILE__) .'/renderer/header.php';
-			JLoader::register('JDocumentRendererHead', dirname(__FILE__) .'/renderer/header.php');
-		}
-
 		// remove this nonsense
 		$this->doc->setTab('');
 
@@ -865,10 +860,6 @@ class ConstructTemplateHelper
 	 */
 	public function onBeforeCompileHead()
 	{
-		if (isset($this->theme)) {
-			$theme = $this->theme->build();
-		}
-
 		$this->buildHead();
 		$this->sortScripts();
 		$this->renderHead();
@@ -955,14 +946,14 @@ class ConstructTemplateHelper
 					foreach ($stuff['standard'] as $key => $data) {
 						$this->addMetaData($key, $data);
 					}
-					unset($head[$group]['standard']);
+					$head[$group]['standard'] = array();
 					break;
 
 				case 'links':
 					foreach ($stuff as $key => $data) {
 						$this->addLink($key, null, $data['attribs'], $data['relation']);
 					}
-					unset($head[$group]);
+					$head[$group] = array();
 					break;
 
 				case 'styleSheets':
@@ -976,7 +967,7 @@ class ConstructTemplateHelper
 					foreach ($stuff as $key => $data) {
 						$this->addStyle($data);
 					}
-					unset($head[$group]);
+					$head[$group] = array();
 					break;
 
 				case 'scripts':
@@ -1001,7 +992,7 @@ class ConstructTemplateHelper
 					foreach ($stuff as $key => $data) {
 						$this->addScriptDeclaration($data);
 					}
-					unset($head[$group]);
+					$head[$group] = array();
 					break;
 			}
 		}
@@ -1053,6 +1044,7 @@ class ConstructTemplateHelper
 
 		// Remove MooTools if set to do so.
 		$loadMoo	= $this->tmpl->params->get('loadMoo');
+		$loadModal	= $this->tmpl->params->get('loadModal');
 		$loadJQuery	= $this->tmpl->params->get('loadjQuery');
 
 		// however ...
