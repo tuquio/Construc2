@@ -8,11 +8,6 @@
 .page-head {margin:0;text-align:left}
 .content-main {position:relative}
 
-.column-group .mod:first-child {margin-top: 0}
-
-.fluid-media img, .fluid-media object, .fluid-media video {max-width:100%}
-.fluid-media img {-ms-interpolation-mode:bicubic}
-
 h1,.H1, .page-titile {font-size:2.0em}
 h2,.H2 {font-size:1.7em}
 h3,.H3 {font-size:1.4em}
@@ -60,6 +55,15 @@ li.mi .mi {vertical-align:inherit}
 /* =generic classes and effects */
 .rounded,.outline {border-radius:10px;padding:5px;margin:5px}
 .outline {border:1px solid #ccc}
+
+/* =Hide from both screenreaders and browsers: h5bp.com/u */
+.hidden { display: none !important; visibility: hidden; }
+/* Hide only visually, but have it available for screenreaders: h5bp.com/v */
+.visuallyhidden { border: 0; clip: rect(0 0 0 0); height: 1px; margin: -1px; overflow: hidden; padding: 0; position: absolute; width: 1px; }
+/* Extends the .visuallyhidden class to allow the element to be focusable when navigated to via the keyboard: h5bp.com/p */
+.visuallyhidden.focusable:active, .visuallyhidden.focusable:focus { clip: auto; height: auto; margin: 0; overflow: visible; position: static; width: auto; }
+/* Hide visually and from screenreaders, but maintain layout */
+.invisible { visibility: hidden; }
 
 /* =font colors should be as abstract as possible.
  * This allows us using any skins we like without modifying classes

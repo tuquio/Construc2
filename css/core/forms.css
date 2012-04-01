@@ -1,6 +1,6 @@
 /*!
  * forms.css
- * @version 1.9.8 06.03.2012
+ * @version 1.9.13 29.03.2012
  * @license WTFPL
  */
 fieldset fieldset {margin:0;padding:0;border:none}
@@ -24,4 +24,7 @@ input:focus:invalid, textarea:focus:invalid {border-color:#c20000} /* ~ .negativ
 input.invalid, textarea.invalid {border-color:#c20000} /* ~ .negative */
 label.invalid {color:#c20000;font-weight:bold} /* ~ .negative */
 button {font-weight:bold;padding:0.5ex 2ex}
+/* gecko bug */
+button:focus{outline-width:1px; outline-style:dotted}
+button::-moz-focus-inner{padding:0;border:0} 
 /* .eof */

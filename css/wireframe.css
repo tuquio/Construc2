@@ -1,0 +1,14 @@
+/*!
+ * wireframe.css
+ * @version		1.0.0
+ * @copyright   (c)2012 WebMechanic.biz
+ */
+
+*[class]			{outline:thin solid hsla(45,0%,20%,.5)}
+*[id]				{outline:thin solid hsla(45,0%,20%,.25);min-height:10px}
+*[class~="line"]	{outline-color: hsla( 30,80%,50%,.8)}
+*[class~="above"]	{outline-color: hsla( 60,80%,50%,.5)}
+*[class~="below"]	{outline-color: hsla( 90,80%,50%,.5)}
+*[class~="mod"]		{outline-color: hsla(120,80%,50%,.8)}
+
+img {opacity:0.2}
