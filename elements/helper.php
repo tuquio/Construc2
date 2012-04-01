@@ -1027,7 +1027,7 @@ return $this;
 		if ($loadMoo == false)
 		{
 			// without MooTools we must drop all but core.js
-			$moos = preg_grep('#/media/system/js(\/(?!core))#', array_keys($head['scripts']));
+			$moos = preg_grep('#media/system/js(\/(?!core))#', array_keys($head['scripts']));
 			if (count($moos) > 0) {
 				foreach ($moos as $src) {
 					unset($head['scripts'][$src]);
