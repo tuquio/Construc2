@@ -35,7 +35,7 @@ foreach($urlarray as $url)
 
 	// some shortcutz
 	$link   = htmlspecialchars($url[0]);
-	$label  = htmlspecialchars($url[1] ? $url[1] : $link);
+	$label  = htmlspecialchars(($url[1] ? $url[1] : $link), ENT_QUOTES, 'UTF-8');
 	$target = $url[2];
 	$id     = $url[3];
 
