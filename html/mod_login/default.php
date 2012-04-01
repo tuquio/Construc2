@@ -1,23 +1,16 @@
-<?php
+<?php defined('_JEXEC') or die;
 /**
- * Custom Override for mod_login form and support menu links.
- *
  * Local variables:
  * $type	: 'login|logout'
  * $return	: redirect URL (or empty = stay on same page after login)
  * $user	: JUser object
  *
- * @package		Templates
- * @subpackage  Construc2
+ * @package     Template
+ * @subpackage  Overrides
  * @author		WebMechanic http://webmechanic.biz
- * @copyright	(C) 2011 WebMechanic. All rights reserved.
+ * @copyright	(C) 2011-2012 WebMechanic. All rights reserved.
  * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
-defined('_JEXEC') or die;
-
-if (class_exists('ConstructTemplateHelper', false)) {
-	ConstructTemplateHelper::getInstance()->setFeature('forms');
-}
 
 ?>
 <?php if ($type == 'logout') { ?>

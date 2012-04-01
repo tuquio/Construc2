@@ -1,12 +1,10 @@
 <?php defined('_JEXEC') or die;
 /**
- * A better mod_menu override for external URLs and "unknown" types.
- *
  * @package     Template
- * @subpackage  HTML
- * @author      WebMechanic http://webmechanic.biz
- * @copyright   (C)2011-2012 WebMechanic. All right reserved.
- * @license     GNU GPL v2 or later
+ * @subpackage  Overrides
+ * @author		WebMechanic http://webmechanic.biz
+ * @copyright	(C) 2011-2012 WebMechanic. All rights reserved.
+ * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
 
 $class = $item->anchor_css   ? 'class="mi '.$item->anchor_css.'"' : 'class="mi"';

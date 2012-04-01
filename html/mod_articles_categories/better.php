@@ -1,4 +1,4 @@
-<?php
+<?php defined('_JEXEC') or die;
 /**
  * A better article category menu override.
  * This overrides creates a menu as one would expect and only
@@ -26,13 +26,11 @@
  *					of this layout and return any other 'content'. utterly weired...
  *
  * @package     Template
- * @subpackage  HTML
- * @author      WebMechanic http://webmechanic.biz
- * @copyright   Copyright (C)2011 WebMechanic. All rights reserved.
- * @copyright   Copyright (C)2005 - 2011 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ * @subpackage  Overrides
+ * @author		WebMechanic http://webmechanic.biz
+ * @copyright	(C) 2011-2012 WebMechanic. All rights reserved.
+ * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
-defined('_JEXEC') or die;
 
 JLoader::load('ContentLayoutHelper');
 

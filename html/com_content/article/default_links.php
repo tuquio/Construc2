@@ -1,4 +1,11 @@
 <?php defined('_JEXEC') or die;
+/**
+ * @package     Template
+ * @subpackage  Overrides
+ * @author		WebMechanic http://webmechanic.biz
+ * @copyright	(C) 2011-2012 WebMechanic. All rights reserved.
+ * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
+ */
 
 // Create shortcut
 $urls = json_decode($this->item->urls);
@@ -28,7 +35,7 @@ foreach($urlarray as $url)
 
 	// some shortcutz
 	$link   = htmlspecialchars($url[0]);
-	$label  = htmlspecialchars($url[1] ? $url[1] : $link);
+	$label  = htmlspecialchars(($url[1] ? $url[1] : $link), ENT_QUOTES, 'UTF-8');
 	$target = $url[2];
 	$id     = $url[3];
 

@@ -1,4 +1,11 @@
 <?php defined('_JEXEC') or die;
+/**
+ * @package     Template
+ * @subpackage  Overrides
+ * @author		WebMechanic http://webmechanic.biz
+ * @copyright	(C) 2011-2012 WebMechanic. All rights reserved.
+ * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
+ */
 
 // JHtml::addIncludePath(JPATH_COMPONENT_SITE .'/helpers');
 JLoader::register('ContentLayoutHelper', JPATH_THEMES . '/construc2/html/com_content/_shared/helper.php');

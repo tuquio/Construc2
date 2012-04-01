@@ -42,10 +42,10 @@
  *					of this layout and return any other 'content'. utterly weired...
  *
  * @package     Template
- * @subpackage  HTML
- * @author      WebMechanic http://webmechanic.biz
- * @copyright   (C)2011-2012 WebMechanic. All right reserved.
- * @license     GNU GPL v2 or later
+ * @subpackage  Overrides
+ * @author		WebMechanic http://webmechanic.biz
+ * @copyright	(C) 2011-2012 WebMechanic. All rights reserved.
+ * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
 
 JLoader::register('BetterMenuHelper', dirname(__FILE__) . '/_helper.php');

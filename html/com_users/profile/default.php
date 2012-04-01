@@ -6,9 +6,9 @@
  * using semantic classes to allow very granular styling.
  * Any ordering in the "profile.xml" oder "user.xml" field definitions are ignored!
  *
- * @package		Templates
- * @subpackage  Construc2.Overrides
- * @copyright	(C) 2011 WebMechanic. All rights reserved.
+ * @package     Template
+ * @subpackage  Overrides
+ * @copyright	(C) 2011-2012 WebMechanic. All rights reserved.
  * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  *
  * @todo        Allow reordering of address fields based on country

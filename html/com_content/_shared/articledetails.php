@@ -8,8 +8,8 @@
  * any of which also set the variables $showLabels, $showMeta, and $showDates
  * depending on the associated params.
  *
- * @package     Templates
- * @subpackage  Construc2
+ * @package     Template
+ * @subpackage  Overrides
  * @author      WebMechanic http://webmechanic.biz
  * @copyright   (C) 2012 WebMechanic
  * @license     GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html

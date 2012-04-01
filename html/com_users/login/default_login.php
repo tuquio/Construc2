@@ -2,10 +2,10 @@
 /**
  * Custom Override for com_users.login
  *
- * @package		Templates
- * @subpackage  Construc2
+ * @package     Template
+ * @subpackage  Overrides
  * @author		WebMechanic http://webmechanic.biz
- * @copyright	(C) 2011 WebMechanic. All rights reserved.
+ * @copyright	(C) 2011-2012 WebMechanic. All rights reserved.
  * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
 defined('_JEXEC') or die;
