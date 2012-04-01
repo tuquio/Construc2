@@ -111,7 +111,7 @@
 <!--
 				<field name="loadMooSrc" type="cdnlist" members="mootools" default="ajax.googleapis.com" label="TPL_CONSTRUC2_MOOSRC_LABEL" description="TPL_CONSTRUC2_MOOSRC_DESC" />
  -->
-				<field name="loadModal" type="radio" default="1" label="TPL_CONSTRUC2_LOAD_MODAL" description="TPL_CONSTRUC2_LOAD_MODAL_DESC">
+				<field name="loadModal" type="radio" default="0" label="TPL_CONSTRUC2_LOAD_MODAL" description="TPL_CONSTRUC2_LOAD_MODAL_DESC">
 					<option value="1">JYes</option>
 					<option value="0">JNo</option>
 				</field>
