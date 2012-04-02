@@ -10,22 +10,37 @@
 /* keeps oldIEs away */
 @media screen and (min-width:320px)
 {
-	/* =widgets */
-	summary::-webkit-details-marker {color:#888}
-	
 	/* just colors, base.css cares for the rest */
 	*::-moz-selection {background-color:#444;color:#fff}
-	*::selection      {background-color:#444;color:#fff}
 
 	#content:target .fulltext p:first-of-type {
-		-moz-animation: moz-readmore 3s;
-		-webkit-animation: webkit-readmore 3s;
+		-moz-animation: readmore 3s;
 	}
-	
-	@-moz-keyframes moz-readmore {
-		from, 100% { background-color:#fff; }
+
+	@-moz-keyframes readmore {
+		from, 100% { background-color:red; }
 		50% { background-color: floralwhite; }
 	}
+}
+
+@media screen and (min-width:320px)
+{
+	/* =widgets */
+	summary::-webkit-details-marker {color:#888}
+
+	#content:target .fulltext p:first-of-type {
+		-webkit-animation: readmore 3s;
+	}
+
+	@-webkit-keyframes readmore {
+		from, 100% { background-color:red; }
+		50% { background-color: floralwhite; }
+	}
+}
+
+@media screen and (min-width:320px)
+{
+	*::selection  {background-color:#444;color:#fff}
 
 	/* =gradients */
 	.meta ,

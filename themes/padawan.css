@@ -6,12 +6,79 @@
  * IE7: no-generatedcontent no-flexbox no-canvas no-touch no-rgba no-hsla no-borderimage no-csscolumns no-cssgradients no-csstransitions no-svg no-inlinesvg
  * OE8:    generatedcontent no-...
  */
-@import url(//fonts.googleapis.com/css?family=Ubuntu+Condensed);
-@import url(//fonts.googleapis.com/css?family=Kristi);
+@import url(http://fonts.googleapis.com/css?family=Ubuntu+Condensed);
+@import url(http://fonts.googleapis.com/css?family=Kristi);
 @import url(padawan_light.css) screen,projection;
 @import url(padawan_light_fx.css) screen,projection;
 
 body {min-width:900px;max-width:94%;margin:0 auto}
+
+/* popup modal */
+@media screen {
+	body.com_media, body.modal,
+	body.com_media #body-container	,
+	body.modal     #body-container	,
+	body.com_media .page-foot		,
+	body.modal     .page-foot		{min-width:0;max-width:750px}	
+	body.com_media .content-container,
+	body.modal     .content-container {margin-top:0}
+	.body-overlayed #sbox-window.shadow		{padding:2px}
+	.body-overlayed #sbox-content.sbox-content-iframe	{overflow:auto}
+}
+
+header, footer	{clear:both}
+
+.page-head {}
+.page-foot {}
+
+#page-head		{}
+#logo   		{margin:15px auto 15px 5%;font-size:450%;display:inline-block}
+.site-link {}
+.site-name {}
+
+nav, .breadcrumbs	{margin-bottom:10px}
+#mainmenu {}
+.mainmenu {}
+#breadcrumbs {}
+.breadcrumbs {}
+#mod-breadcrumbs {}
+
+#to-page-top		{position:absolute;right:10px;text-align:right}
+#diagnostics		{position:absolute;right:10px;top:20px;max-width:90px}
+#diagnostics li		{padding:0;margin:0;line-height:1}
+#system-message-container {display:none;position:absolute;right:0;top:-3.25em;min-width:50%;max-width:75%;opacity:.95}
+
+/* =column layouts */
+#body-container	,
+header.above	,
+header.below	{margin:0 auto}
+
+@media screen {
+	.content-main	{width:auto}
+
+	/* default [ [main|alpha] beta] */
+	.column-group 	{width:25%;float:left}
+	.group-alpha	{}
+	.group-beta		{}
+
+	/* 2col [  main  | beta] */
+	.main-beta .content-main {width:75%;float:left}
+
+	/* 3col [ [alpha|main] beta] */
+	.alpha-main-beta .group-beta   {width:23%}
+	.alpha-main-beta .content-main {float:left;width:77%}
+	.alpha-main-beta .group-alpha  {width:30%}
+	.alpha-main-beta section.component {float:right;width:70%}
+}
+
+.page-foot	{margin:0 auto}
+.items-more .links,
+	.foot-inner	    {
+ -webkit-column-count:2;-webkit-column-gap:10px;
+	-moz-column-count:2;   -moz-column-gap:10px;
+		 column-count:2;		column-gap:10px;
+}
+
 
 /* template param override (#body-container,#header-above 100%) */
 @media screen and (max-width:1039px) {
@@ -29,35 +96,7 @@ body {min-width:900px;max-width:94%;margin:0 auto}
 }
 */
 
-/* popup modal */
-@media screen {
-	body.com_media, body.modal,
-	body.com_media #body-container	,
-	body.modal     #body-container	,
-	body.com_media .page-foot		,
-	body.modal     .page-foot		{min-width:0;max-width:750px}	
-	body.com_media .content-container,
-	body.modal     .content-container {margin-top:0}
-	.body-overlayed #sbox-window.shadow		{padding:2px}
-	.body-overlayed #sbox-content.sbox-content-iframe	{overflow:auto}
-}
-
-.page-head {}
-.page-foot {}
-
-#header			{height:100px}
-#logo   		{font-size:450%;display:inline-block}
-.site-link {}
-.site-name {}
-
-nav, .breadcrumbs	{margin-bottom:10px}
-#mainmenu {}
-#breadcrumbs {}
-
-#to-page-top		{position:absolute;right:10px;text-align:right}
-#diagnostics		{position:absolute;right:10px;top:20px;max-width:90px}
-#diagnostics li		{padding:0;margin:0;line-height:1}
-
+/* = typography stuff */
 h1,h2,h3,h4,h5,h6	{line-height:normal}
 
 h1,h2,h3,h4,h5,h6	,
@@ -76,40 +115,8 @@ p:only-child 		{margin-bottom:0}
 
 blockquote 			{padding:1ex;margin:0 3em;}
 
-button 				{padding:0.2ex 2ex}
-
 table.data th.clip	,
 .column-group .hd	{text-overflow:ellipsis;-ms-text-overflow:ellipsis;-o-text-overflow:ellipsis}
-
-/* =column layout [[20|60]20] */
-#body-container	,
-header.above	,
-header.below	{margin:0 auto}
-
-@media screen {
-	.content-main	{width:auto}
-	.column-group 	{width:25%}
-	.group-alpha	{float:left}
-	.group-beta		{float:left}
-
-	/* 2col [  main  | beta] */
-	.main-beta .content-main {width:75%;float:left}
-
-	/* 3col [ [alpha|main] beta] */
-	.alpha-main-beta .group-beta   {width:23%}
-	.alpha-main-beta .content-main {float:left;width:77%}
-	.alpha-main-beta .group-alpha  {width:30%}
-	.alpha-main-beta section.component {float:right;width:70%}
-}
-
-.page-foot	{margin:0 auto}
-.foot-inner	{
- -webkit-column-count:2;-webkit-column-gap:10px;
-	-moz-column-count:2;   -moz-column-gap:10px;
-		 column-count:2;		column-gap:10px;
-}
-
-#system-message-container {display:none;position:absolute;right:0;top:-3.25em;min-width:50%;max-width:75%;opacity:.95}
 
 /*
  * =columns context
@@ -117,8 +124,7 @@ header.below	{margin:0 auto}
 .column-group fieldset		{padding:5px;margin:0}
 .column-group h3,
 .column-group .H3			{margin-bottom:0;padding:0}
-
-.column-group .notice .inner {padding:1ex 1em}
+.column-group .mod:first-child {margin-top:0}
 
 /*
  * =contents
@@ -129,7 +135,6 @@ header.below	{margin:0 auto}
 .blog article		,
 .item-page			,
 .items-more			{padding:10px;margin-bottom:10px}
-.items-more .links	{-webkit-columns:2;-moz-columns:2;-ms-columns:2;columns:2}
 
 /* 
  * misc components 
@@ -224,28 +229,36 @@ blockquote p {-webkit-hyphens:none;-moz-hyphens:none;hyphens:none}
 .blog .unit .introtext		{min-height:250px}
 .category-desc img.catimg {}
 
-figure img					{max-width:100%;height:auto}
-.portrait					{text-align:center}
+figure.portrait				{height:245px;width:auto;max-width:100%}
 
 /*
  * =modules / forms
  */
-.column-group .inner 		{padding:5px}
 .column-group fieldset		{border:none;outline:none}
 .column-group dl			{margin:0;padding:0}
 .column-group div.button	{text-align:center}
-
-.mod-login ul				{margin-left:10px;padding-left:.7em}
 
 .column-group fieldset dt	,
 .column-group fieldset dd	,
 .column-group .inputbox 	{display:block;margin-left:0;width:100%}
 
-/* @todo test with multiple banners in a single bannergroup, using table-row and table-cell */
+.mod-login ul				{margin-left:10px;padding-left:.7em}
+
+/* @todo test with multiple banners in a single banner group, using table-row and table-cell */
 .mod-banner {}
 .bannergroup 				{vertical-align:top;text-align:center}
 .banneritem					{margin-left:auto;margin-right:auto}
 .banneritem img 			{display:inline-block}
+
+/* =customs */
+.column-group .portrait {
+    border: 5px solid #fff;
+    height: 235px;
+    width: 180px;
+    margin: 0 auto 10px auto;
+    outline: 1px solid #ddd;
+	background-size: 100% auto;
+}
 
 /* =mod_search / mod_finder - align with mainmenu and li paddings */
 .mainnavi form 				{position:absolute;right:2px;top:0.5ex}
@@ -285,7 +298,7 @@ nav.page-toc					{padding-top:1ex;padding-left:.6em;margin-left:1em} /* aka #art
 .has-actions nav.page-toc 		{margin-right:20px}
 
 /* align with menu items */
-.breadcrumbs a.mi		,
+.breadcrumbs span.mi	,
 .breadcrumbs .active	{padding:0.25ex 0.6em}
 
 .has-toc .actionsmenu	{position:absolute;float:none;margin-right:0;right:0}
@@ -297,7 +310,6 @@ nav.page-toc					{padding-top:1ex;padding-left:.6em;margin-left:1em} /* aka #art
 /* fly-out 'title' as icon label - offset .right by .actionsmenu:width */
 .actionsmenu .icon a:before 		{font-size:.8em;margin-right:1ex;padding:.2ex 1ex;position:absolute;right:20px}
 .actionsmenu .icon:hover a:before	{content:attr(title);white-space:pre}
-
 
 .skiplinks a.mi					{text-decoration: underline}
 .skiplinks .cat-title:before	{content:'\A0('}
@@ -355,13 +367,17 @@ summary:focus + * {}
  */
 #aii {margin-top:0}
 
-.satire .introtext p:not(:first-of-type),
-.satire .fulltext  p:not(:first-of-type) {text-indent:1em}
-.tierische-geschichte .introtext p:not(:first-of-type),
-.tierische-geschichte .fulltext  p:not(:first-of-type) {text-indent:1em}
+.item-page.stories .introtext p:first-of-type {text-indent:0}
+.item-page.stories .introtext p ,
+.item-page.stories .fulltext  p {text-indent:1em; margin-bottom:0}
 
-.tierische-geschichte article p:first-of-type img {float:right;margin-left:10px;max-width:40%;position:relative;z-index:10}
-.tierische-geschichte article ~ img:first-child {margin:0 0 5px 1em}
+.category-desc img:first-of-type		,
+.stories .introtext img:first-of-type	,
+.stories .introtext img:first-of-type	{float:right;margin-left:10px;position:relative;z-index:10}
+
+.category-desc img:first-of-type		{max-width:48%;margin:0 1%}
+.stories .introtext img:first-of-type 	,
+.stories .introtext img:first-of-type 	{max-width:48%;margin:0 0 5px 1em}
 
 .kunstwerke .introtext img,
 .kunstwerke .fulltext  img	{margin-bottom:.6em}

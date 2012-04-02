@@ -1,29 +1,33 @@
 ;<?php return; ?>
-
 	; -----
-	; Global Theme Configuration: Padawan
+	; Custom Theme Configuration: Padawan
 	; -----
 
-title		= "Padawan"
-author		= "WebMechanic"
-version		= "2.0.0"
-copyright	= "(c)2012 WebMechanic.biz"
+name		= "Padawan"
+title		= "Padawan Theme"
+description	= "Frontend Theme kyrhia.com"
+homepage	= "http://webmechanic.biz"
 license		= "CC BY-NC-ND"
-url			= "http://webmechanic.biz"
+authors		= "WebMechanic,ct@webmechanic.biz,http://joomla.webmechanic.biz"
+version		= "2.0.0"
+require		= ""
 
 ; -----
 [layouts]
-	; Page level layouts:
-	; unique_name=category|article|blog
+	; Page level template layouts:
+	; unique_name = category|article|blog|featured
 	;
-	; 	~ layouts/category.php		used for all category views
-	; 	~ layouts/article.php		used for all article views
-	; 	~ layouts/blog.php			used for all blog views
-	; 	~ layouts/featured.php		used for a view named 'featured'
+	; 		~ layouts/category.php		used for all category views
+	; 		~ layouts/article.php		used for all article views
+	; 		~ layouts/blog.php			used for all blog views
+	; 		~ layouts/featured.php		used for a view named 'featured'
 	;
-	; Item level layouts:
-	; hitchhiker= 42,article		used for article with ID 42
-	; legacy	= 62,category		used for category with ID 62
+	; Item level template layouts:
+	; hitchhiker= 42,article
+	; legacy	= 62,category
+	;
+	; 		~ layouts/article-42.php	used for category with ID 62
+	; 		~ layouts/category-62.php	used for article with ID 42
 
 ; -----
 [cdn]
@@ -35,12 +39,14 @@ cdn1.kyrhia-schindler.de	= 1,jquery,mootols
 
 ; -----
 [scripts]
-	; All-time scripts ADDED if SSI powered .scripts don't work for you.
-	; Filenames are relative to the ./themes folder
+	; Scripts to be ADDED if SSI powered .scripts don't work
+	; for your and für scripts targeting MSIE only.
+
+	; File paths are relative to the ./themes folder!
 	; keyname=N,filename.js
 	;   N	meaning
 	;   0	disabled
-	;   1	all browsers
+	;   1	all browsers (~ "enabled")
 	;  2-5	reserved
 	;	4	all IE
 	;   6	IE 6 only
@@ -58,7 +64,7 @@ modernizr=4,modernizr.95863.js
 	;
 	;	keyname = "/canonical/url/to/style.css"
 	;
-	; !! FOR MOOTOOLS AND JQUERY USE THE TEMPLATE ADMIN !!
+	; !! FOR MOOTOOLS AND JQUERY CONTROL USE THE TEMPLATE ADMIN !!
 	;
 caption.js = "/media/system/js/caption(.*).js"
 
@@ -72,11 +78,11 @@ caption.js = "/media/system/js/caption(.*).js"
 finder.css = "/media/com_finder/css/finder.css"
 
 ; -----
-[styleswitcher]
-	; Replacing default switches
+[styleswitch]
+	; Replacing default stylesheet switches
 	; Values are list labels found in 'xx-XX.override.ini'
 
-diagnostic	= TPL_CONSTRUC2_STYLE_DIAGNOSTIC_MODE
+diagnostic	= Widget_Styleswitch_Diagnostic
 	; Color schemes
 @default	= "Padawan Light"
 contrast	= "High Contrast"

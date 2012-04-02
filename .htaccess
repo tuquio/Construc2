@@ -1,0 +1,88 @@
+## -----------------------------------------------------
+# Supplemental .htaccess file for Construc2
+#
+# Rename this file to .htaccess and keep it in this folder
+#   OR OTHERWISE
+# copy what you need into your existing .htaccess file.
+#
+# @version  1.9.14
+# @license  WTFPL 2.0
+## -----------------------------------------------------
+
+## {{ -----------------------------------------------------
+## -- 'Apache SSI' combine multiple files into one and if the
+## -- DEFLATE filter is enabled will compress the output in one go.
+
+## -- Example: concatenates 2 .js files into one
+## -- Create 'jq-171-ui-1818.scripts' (versioning for proxy caches) and add
+##
+##	  <!--#include file="/media/jquery/jquery-1.7.1.min.js" -->
+##	  <!--#include file="/media/jquery/jquery-ui-1.8.18.min.js" -->
+
+	AddCharset utf-8 .styles .scripts
+
+	AddHandler server-parsed .styles
+	AddType text/css .styles
+
+	AddHandler server-parsed .scripts
+	AddType text/javascript .scripts
+## ----------------------------------------------------- }}
+
+
+## {{ --------------------------------------------------
+## -- Enable output compression elsehere in your .htaccess:
+
+	AddOutputFilterByType DEFLATE text/css text/javascript
+
+## ----------------------------------------------------- }}
+
+
+## {{ --------------------------------------------------
+## -- Block direct access to these files
+<FilesMatch "\.(ini|xml)$">
+	Order   allow,deny
+	Deny    from all
+	Satisfy all
+</FilesMatch>
+## ---------------------------------------------------- }}
+
+
+## {{ -----------------------------------------------------
+## -- Cheap and simple UA string browser sniffer
+
+<IfModule mod_setenvif.c>
+## -- Version numbers, from generic to specific
+	BrowserMatch "Version/(\d+)"	UA_VER=$1
+
+	BrowserMatch "Presto/(\d+)"		UAGENT=op UA_NAME=opera
+	BrowserMatch "Gecko/(\d+)"		UAGENT=mz UA_NAME=mozilla
+	BrowserMatch "Chrome/(\d+)"		UAGENT=cr UA_NAME=chrome UA_VER=$1
+	BrowserMatch "Safari/(\d+)"		UAGENT=sf UA_NAME=chrome
+	BrowserMatch "MSIE (\d+)"		UAGENT=ie UA_NAME=msie UA_VER=$1
+
+	BrowserMatchNoCase "firefox/(\d)" UA_VER=$1
+	BrowserMatchNoCase "(presto|webkit).*\sversion/(\d+)" UA_VER=$2
+
+	BrowserMatch "Trident/"		UA_VER=8
+	BrowserMatch "Trident/3"	UA_VER=7 UA_TYPE=mob
+	BrowserMatch "Trident/5"	UA_VER=9
+	BrowserMatch "Trident/6"	UA_VER=10
+
+## -- Render Engines
+	BrowserMatchNoCase (apple|chrome|webkit)	UA_ENGINE=WebKit UA_NAME=$1
+	BrowserMatchNoCase (msie|opera|gecko)		UA_ENGINE=$1
+	BrowserMatchNoCase (trident|presto)			UA_ENGINE=$1
+	BrowserMatchNoCase chromeframe				UAGENT=cr UA_NAME=chrome UA_GCF=1
+
+## -- Operating systems
+	BrowserMatchNoCase windows|win 		UA_OS=win UA_TYPE=gui
+	BrowserMatchNoCase inux|freebsd 	UA_OS=lin UA_TYPE=gui
+	BrowserMatchNoCase mac|ppc|powerpc 	UA_OS=mac UA_TYPE=gui
+	BrowserMatchNoCase i(phone|pod|pad) UA_OS=ios UA_TYPE=mob
+	BrowserMatchNoCase (nintendo|webos)	UA_OS=$1  UA_TYPE=mob
+
+	BrowserMatch "Windows (CE|Phone)"	UA_TYPE=mob
+	BrowserMatch "IEMobile.?(\d+)"		UA_TYPE=mob UAGENT=ie UA_NAME=msie UA_VER=$1
+</IfModule>
+
+## ----------------------------------------------------- }}
