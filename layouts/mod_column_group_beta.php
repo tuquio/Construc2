@@ -14,7 +14,7 @@
  * keep these PHP tags tight close to the HTML markup or a
  * single white space may render your styles useless.
  */
-?><div id="group-beta" class="column-group group-beta" data-modules="<?php echo $columnGroupBetaCount ?>"><?php
+?><aside id="group-beta" class="column-group group-beta" data-modules="<?php echo $columnGroupBetaCount ?>"><?php
 
 if ($columnGroupCount[3]) {
 	$templateHelper->renderModules('column-3', 'mod', array('toggle'=>'odd,even', 'autocols'=>0));
@@ -23,4 +23,4 @@ if ($columnGroupCount[4]) {
 	$templateHelper->renderModules('column-4', 'mod', array('toggle'=>'odd,even', 'autocols'=>0));
 }
 
-?></div><?php
+?></aside><?php

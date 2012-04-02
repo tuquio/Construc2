@@ -52,8 +52,10 @@ class ElementFeature extends ElementRendererAbstract
 	 * 			Should call "return" to cancel the request.
 	 * - msie:  a conditional comment selector for MSIE 'lt IE 8'
 	 *
+	 * @see yepnope()
 	 * @param  string        $href  The script to load, may contain {subst.keys}
 	 * @param  string|array  $prerun see method comments
+	 * @return string
 	 */
 	public function loader($href, $prerun='')
 	{
@@ -69,16 +71,27 @@ class ElementFeature extends ElementRendererAbstract
 				.	'b.parentNode.insertBefore(a,b);})(window,document,"'. self::subst($href) .'");';
 	}
 
+	/**
+	 * Interface to utilize yepnope.js for advanced conditional script and
+	 * css loading.
+	 *
+	 * @link http://yepnopejs.com/
+	 * @see loader()
+	 */
+	public function yepnope()
+	{
+
+	}
+
+	/**
+	 * Checks whether the named feature is enabled.
+	 *
+	 * @param  string $name feature to test
+	 * @return boolean true if feature is enabled, false otherwise
+	 */
 	protected function hasFeature($name)
 	{
-		static $features = array();
-
-		if (isset($features[$name])) {
-			return $features[$name];
-		}
-
-		$features[$name] = ConstructTemplateHelper::getInstance()->getTheme()->getFeature($name);
-		return $features[$name];
+		return ConstructTemplateHelper::getInstance()->getTheme()->getFeature($name);
 	}
 
 	public function build(array &$data, $options=null) {}

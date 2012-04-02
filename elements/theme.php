@@ -90,11 +90,9 @@ class CustomTheme
 		{
 			// fake ini file
 			$config = parse_ini_file($this->path, true);
-			if (!$config || count($config) == 0) {
-				break;
+			if ($config || count($config) > 0) {
+				$this->config->loadArray($config);
 			}
-
-			$this->config->loadArray($config);
 		}
 
 		$this->title   = $this->config->get('title');
@@ -222,14 +220,13 @@ class CustomTheme
 	 *
 	 * @param  string  $name     buffer name, usually a template position or a "chunk" of the theme
 	 * @param  string  $content  the content to store
-	 * @param  array   $options  RESERVED
 	 *
 	 * @return CustomTheme
 	 * @see loadStaticHtml(), getStaticHtml()
 	 *
 	 * @todo implement caching
 	 */
-	public function setCapture($name, $content, $options = array())
+	public function setCapture($name, $content)
 	{
 		$buffer = is_array($content) ? trim(implode('', $content)) : trim($content);
 
@@ -335,12 +332,14 @@ class CustomTheme
 #			return $this;
 #		}
 
-		$feature = strtolower($feature);
+		list($handler, $feature) = explode('.', strtolower($feature));
+
+FB::log("$handler @ $feature:".(int)$data);
 
 		switch ($feature)
 		{
-			case 'feature.print': // print preview
-			case 'feature.tp':    // template position preview
+			case 'print': // print preview
+			case 'tp':    // template position preview
 				if ( isset($this->features['core']) ) {
 					$this->features[$feature]['link'] = '{tmpl.css}/core/'.$feature.'.css';
 				}
@@ -370,7 +369,14 @@ class CustomTheme
 
 	}
 
-	protected function renderFeature($name, $data=null)
+	protected function loadFeatures($theme = null)
+	{
+		if (null == $theme) {
+			$theme = $this->name;
+		}
+	}
+
+	public function renderFeature($name, $data=null)
 	{
 		if (isset($this->features[$name]) && (false == (bool)$this->features[$name])) {
 			return $data;
