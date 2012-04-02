@@ -7,3 +7,5 @@
 # customizations #
 #############
 themes/*.styles
+themes/.htaccess
+
