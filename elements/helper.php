@@ -32,7 +32,7 @@ class ConstructTemplateHelper
 	/** @var $layouts array List of template layout files */
 	protected $layouts = array();
 
-	/** @var $doc JDocumentHTML instance */
+	/** @var $doc JDocumentHtml instance */
 	protected $doc;
 
 	/** @var $tmpl object Template name + params */
@@ -55,6 +55,9 @@ class ConstructTemplateHelper
 
 	/** @var $head array */
 	static protected $head = array();
+
+	/** @var $groupcount array */
+	static protected $groupcount = array();
 
 	/**
 	 * Use {@link getInstance()} to instantiate.
@@ -129,17 +132,23 @@ class ConstructTemplateHelper
 	}
 
 	/**
-	 * Returns the view name if the currentpage represents the default "homepage"
-	 * of the website.
+	 * Returns the view name if the current page represents the
+	 * default "homepage" of the website.
+	 *
 	 * @return string  View name or empty string if NOT homepage
+	 * @static bool $front
 	 */
 	static public function isHomePage()
 	{
-		static $front;
+		static $front = null;
 
 		if ($front !== null) return $front;
+
 		$jmenu = JFactory::getApplication()->getMenu();
 		$front = ( $jmenu->getActive() == $jmenu->getDefault(JFactory::getLanguage()->getTag()) );
+		if ($front) {
+			$front = $jmenu->getActive()->query['view'];
+		}
 
 		return $front;
 	}
@@ -164,8 +173,8 @@ class ConstructTemplateHelper
 
 		if ($alias[$parent] !== null) return $alias[$parent];
 
-		if (($v = self::isHomePage()) ) {
-			$alias[$parent] = trim('home '.$v, ' 01');
+		if ( ($v = self::isHomePage()) ) {
+			$alias[$parent] = trim('home '.$v);
 			return $alias[$parent];
 		}
 
@@ -185,7 +194,7 @@ class ConstructTemplateHelper
 	 * Attempts to create a nice alias from the $item to use in the class
 	 * attribute to apply item and category based styles.
 	 * If $item is a menu[ish] item, also includes type, view and layout.
-	 * If $item is an article, parent and category aliases (if available)
+	 * If $item is an article its parent and category aliases (if available)
 	 * will be included.
 	 * Category and item IDs appear as cat-N and item-N respectively.
 	 *
@@ -196,37 +205,29 @@ class ConstructTemplateHelper
 	 */
 	public function getCssAlias($item, $parent = false)
 	{
-		$C = array();
+		$C = array('');
 		// menu item?
-		if (isset($item->type) && $parent) {
-			$C[] = $item->type;
+		//	$C[] = $item->type;
+		if (isset($item->query) && $parent) {
 			if (isset($item->query['option'])) {
-				$C[] = str_replace('_', '-', $item->query['option']);
+				$C[key($C)] .= substr($item->query['option'], strpos($item->query['option'], '_')+1);
 			}
 			if (isset($item->query['view'])) {
-				$C[] = $item->query['view'];
-			}
-			if (isset($item->query['layout'])) {
-				$C[] = $item->query['layout'];
+				$C[key($C)] .= '-'.$item->query['view'];
 			}
 		}
-
-		if ($item instanceof JCategoryNode) {
-			list($tmp, $C[]) = explode(':', $item->slug);
-			$C[] = 'cid-' . $item->id;
-		} else {
-			if (isset($item->catid)) {
-				$C[] = 'cid-'.$item->catid;
-			}
-			$C[] = 'item-' . $item->id;
+		if (isset($item->query['layout'])) {
+			$C[] = $item->query['layout'];
 		}
 
 		$A = array();
-		if (isset($item->parent_route)) {
-			$A[] = substr($item->parent_route, 0, strpos($item->parent_route, '/'));
-		}
-		if (isset($item->parent_alias)) {
-			$A[] = $item->parent_alias;
+		if ($parent) {
+			if (isset($item->parent_alias)) {
+				$A[] = $item->parent_alias;
+			}
+			else if (isset($item->parent_route)) {
+				$A[] = substr($item->parent_route, 0, strpos($item->parent_route, '/'));
+			}
 		}
 		if (isset($item->category_alias)) {
 			$A[] = $item->category_alias;
@@ -238,17 +239,18 @@ class ConstructTemplateHelper
 		$alias = '';
 		foreach ((array)$A as $k => $ali)
 		{
+			$ali = trim($ali, '-');
+
 			// single word
 			if (strpos($ali, '-') === false) continue;
 			// short enough
 			if (strlen($ali) <= 20) continue;
+
 			// split and sanitize
 			$alias = JStringNormalise::toSpaceSeparated($ali);
-
 			$words = explode(' ', $alias);
 			if (count($words) > 1) {
-				$ignore = JFactory::getLanguage()->getIgnoredSearchWords();
-				$ali = array_diff($words, $ignore);
+				$ali = array_diff($words, JFactory::getLanguage()->getIgnoredSearchWords());
 				if (isset($item->language)) {
 					$alias = $this->_inflectAlias($ali, $item->language);
 				} else {
@@ -256,6 +258,16 @@ class ConstructTemplateHelper
 				}
 			}
 			$A[$k] = $alias;
+		}
+
+		if ($item instanceof JCategoryNode) {
+			list($tmp, $C[]) = explode(':', $item->slug);
+			$C[] = 'cid-' . $item->id;
+		} else {
+			if (isset($item->catid)) {
+				$C[] = 'cid-'.$item->catid;
+			}
+			$C[] = 'item-' . $item->id;
 		}
 
 		$words = array_unique( array_merge($C, $A) );
@@ -280,7 +292,11 @@ class ConstructTemplateHelper
 	// @todo refactor to use JStringXXX if that comes available
 	protected function _inflectAlias(&$aliases, $language = null)
 	{
-		static $locale;
+		static $locale, $inflect = true;
+
+		if (!$inflect) {
+			return $aliases;
+		}
 
 		if (!isset($locale)) {
 			// need this to find the default language
@@ -311,6 +327,9 @@ class ConstructTemplateHelper
 				foreach ($aliases as $i => $alias) {
 					$aliases[$i] = en_GBLocalise::inflect($alias, false);
 				}
+			}
+			else {
+				$inflect = false;
 			}
 		}
 
@@ -492,7 +511,9 @@ class ConstructTemplateHelper
 	 * <b>NOTE</b>: This interface will cast $data to a boolen, enabling
 	 * the feature by default. Widgets and Features that requiren extra
 	 * data should be assigned via {@link CustomTheme::setFeature()}.
-	 *
+	 */
+
+	/**
 	 * @param  string  $feature  A feature name
 	 * @param  boolean $enable   enable/disable said $feature.
 	 *
@@ -505,6 +526,14 @@ class ConstructTemplateHelper
 		return $this->theme->setFeature('feature.'. $feature, (bool) $enable);
 	}
 
+	/**
+	 * @param  string  $widget   A feature name
+	 * @param  boolean $enable   enable/disable said $feature.
+	 *
+	 * @uses CustomTheme::setFeature()
+	 *
+	 * @return ConstructTemplateHelper for fluid interface
+	 */
 	public function widget($widget, $enable = true)
 	{
 		return $this->theme->setFeature('widget.'. $widget, (bool) $enable);
@@ -545,17 +574,17 @@ class ConstructTemplateHelper
 	public function getModulesCount($group, $max = self::MAX_MODULES)
 	{
 		settype($max, 'int');
-		// #FIXME colums are only 2 per group 'alpha' and 'beta'
+		// #FIXME columns are only 2 per group 'alpha' and 'beta'
 		if ($group =='column') {
 			$max = self::MAX_COLUMNS;
 		}
 
 		if ($this->debug) {
-			$this->groupcount[$group] = ($group =='column') ? self::MAX_COLUMNS : self::MAX_MODULES;
+			self::$groupcount[$group] = ($group =='column') ? self::MAX_COLUMNS : self::MAX_MODULES;
 		}
 
-		if (isset($this->groupcount[$group])) {
-			return $this->groupcount[$group];
+		if (isset(self::$groupcount[$group])) {
+			return self::$groupcount[$group];
 		}
 
 		if ($max < 1) $max = 1;
@@ -572,17 +601,17 @@ class ConstructTemplateHelper
 		}
 
 		$modules[0] = $i;
-		$this->groupcount[$group] = $modules;
+		self::$groupcount[$group] = $modules;
 
 		// #FIXME special treatment for alpha/beta groups if $group='column'
 		if ($group =='column') {
-			$this->groupcount['group-alpha']	= $modules[1] + $modules[2];
-			$this->groupcount['column-1']		= $modules[1];
-			$this->groupcount['column-2']		= $modules[2];
+			self::$groupcount['group-alpha']	= $modules[1] + $modules[2];
+			self::$groupcount['column-1']		= $modules[1];
+			self::$groupcount['column-2']		= $modules[2];
 
-			$this->groupcount['group-beta']		= $modules[3] + $modules[4];
-			$this->groupcount['column-3']		= $modules[3];
-			$this->groupcount['column-4']		= $modules[4];
+			self::$groupcount['group-beta']		= $modules[3] + $modules[4];
+			self::$groupcount['column-3']		= $modules[3];
+			self::$groupcount['column-4']		= $modules[4];
 		}
 
 		return $modules;
@@ -590,7 +619,7 @@ class ConstructTemplateHelper
 
 	public function numModules($group)
 	{
-		return isset($this->groupcount[$group]) ? $this->groupcount[$group] : 0;
+		return isset(self::$groupcount[$group]) ? self::$groupcount[$group] : 0;
 	}
 
 	/**
