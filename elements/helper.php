@@ -720,9 +720,10 @@ class ConstructTemplateHelper
 
 			if ( ($chunk = $this->theme->getChunk('module', array('before', $module->name))) )
 			{
+				$name = ($position != $module->name) ? ' '.$module->name : '';
 				$html[] = str_replace(
 							array('{position}', '{name}', '{class}'),
-							array($position, $module->name, implode(' ', $css)),
+							array($position, $name, implode(' ', $css)),
 							$chunk
 							);
 			}
