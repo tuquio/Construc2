@@ -112,7 +112,6 @@ class ElementRendererMeta extends ElementRendererAbstract
 	public function build(array &$data, $options=null)
 	{
 		$standard  = &$data['metaTags']['standard'];
-		$httpEquiv = &$data['metaTags']['http-equiv'];
 
 		// remap to standards
 		$this->set('author', @$standard['rights']);
@@ -131,12 +130,18 @@ class ElementRendererMeta extends ElementRendererAbstract
 		return $this;
 	}
 
+	/**
+	 * @param      $name
+	 * @param      $content
+	 * @param null $ua
+	 * @return ElementRendererMeta
+	 */
 	public function set($name, $content, $ua=null)
 	{
 		if (isset($this->data[$name])) return $this;
 
 		if (is_array($content)) {
-			$content = JArrayHelper::toString($array,'=', '"');
+			$content = JArrayHelper::toString($content, '=', '"');
 		}
 
 		if ($name == null && $content) {
@@ -149,6 +154,12 @@ class ElementRendererMeta extends ElementRendererAbstract
 		return $this;
 	}
 
+	/**
+	 * @param      $name
+	 * @param      $content
+	 * @param null $ua
+	 * @return ElementRendererMeta
+	 */
 	public function httpEquiv($name, $content, $ua=null)
 	{
 		if (isset($this->data[$name])) return $this;

@@ -358,6 +358,10 @@ class CustomTheme
 		return $this;
 	}
 
+	/**
+	 * @param $name
+	 * @return ElementRendererAbstract or NULL
+	 */
 	public function getFeature($name)
 	{
 		if (isset($this->features[$name])) {
@@ -365,23 +369,40 @@ class CustomTheme
 		}
 	}
 
+	/**
+	 * @param bool $names_only
+	 * @return array
+	 */
 	public function getFeatures($names_only = false)
 	{
 		return $names_only == false ? $this->features : array_keys($this->features);
 	}
 
+	/**
+	 * @param $name
+	 */
 	protected function dropFeature($name)
 	{
 
 	}
 
+	/**
+	 * @param string $theme
+	 * @return ElementRendererAbstract or NULL
+	 */
 	protected function loadFeatures($theme = null)
 	{
 		if (null == $theme) {
 			$theme = $this->name;
 		}
+		return $this;
 	}
 
+	/**
+	 * @param      $feature
+	 * @param null $data
+	 * @return string A rendered feature.
+	 */
 	public function renderFeature($feature, $data=null)
 	{
 		if (array_key_exists($feature, $this->features) && (false === (bool)$this->features[$feature])) {
@@ -407,7 +428,7 @@ if (defined('DEVELOPER_MACHINE')) {
 			if ($method) {
 				$this->features[$feature] = $handler->{$method}($data);
 			} else {
-				$this->features[$feature] = $handler->render($data);
+				$this->features[$feature] = $handler->build($data);
 			}
 
 		} catch (Exception $e) {
