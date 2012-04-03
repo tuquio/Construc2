@@ -66,6 +66,11 @@ class ElementRendererHead extends ElementRendererAbstract implements IElementRen
 		return $this;
 	}
 
+	/**
+	 * @param array $data
+	 * @param null  $options
+	 * @return ElementRendererHead
+	 */
 	public function build(array &$data, $options=null) {return $this;}
 
 	/**
@@ -99,6 +104,11 @@ class ElementRendererMeta extends ElementRendererAbstract
 {
 	protected $name = 'meta';
 
+	/**
+	 * @param array $data
+	 * @param null  $options
+	 * @return ElementRendererMeta
+	 */
 	public function build(array &$data, $options=null)
 	{
 		$standard  = &$data['metaTags']['standard'];

@@ -47,6 +47,13 @@ abstract class ElementRendererAbstract
 		}
 	}
 
+	/**
+	 * @static
+	 * @param      $type
+	 * @param null $attribs
+	 *
+	 * @return ElementRendererAbstract
+	 */
 	public static function getInstance($type, $attribs=null)
 	{
 		if (!isset(self::$elements[$type]))
@@ -66,6 +73,9 @@ abstract class ElementRendererAbstract
 		return self::$elements[$type];
 	}
 
+	/**
+	 * @return ElementRendererAbstract
+	 */
 	protected function init() {return $this;}
 
 	/**
@@ -88,6 +98,12 @@ abstract class ElementRendererAbstract
 		return $url;
 	}
 
+	/**
+	 * The __toString() method allows a class to decide how it will
+	 * react when it is treated like a string.
+	 *
+	 * @return string A rendering of the $data keys and values.
+	 */
 	public function __toString()
 	{
 		$output = '';
@@ -103,6 +119,12 @@ abstract class ElementRendererAbstract
 		return $output;
 	}
 
+	/**
+	 * The __toArray() method allows a class to decide how it will
+	 * react when it is treated like an array.
+	 *
+	 * @return array Same as $data
+	 */
 	public function __toArray()
 	{
 		return $this->data;

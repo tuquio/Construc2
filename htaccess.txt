@@ -42,7 +42,7 @@ DirectoryIndex index.php /index.php
 
 ## {{ --------------------------------------------------
 ## -- Block direct access to these files
-<FilesMatch "\.(php|ini|xml)$">
+<FilesMatch "!\.(css|js|png|jp?eg|gif)$">
 	Order   allow,deny
 	Deny    from all
 	Satisfy all
@@ -50,11 +50,10 @@ DirectoryIndex index.php /index.php
 ## ---------------------------------------------------- }}
 
 
-## {{ -----------------------------------------------------
-## -- Cheap and simple UA string browser sniffer
-
+## {{ ----------------------------------------------------
+#  cheap and simple UA string browser sniffer
 <IfModule mod_setenvif.c>
-## -- Version numbers, from generic to specific
+# -- Version numbers, from generic to specific
 	BrowserMatch "Version/(\d+)"	UA_VER=$1
 
 	BrowserMatch "Presto/(\d+)"		UAGENT=op UA_NAME=opera
@@ -71,21 +70,20 @@ DirectoryIndex index.php /index.php
 	BrowserMatch "Trident/5"	UA_VER=9
 	BrowserMatch "Trident/6"	UA_VER=10
 
-## -- Render Engines
+# -- Render Engines
 	BrowserMatchNoCase (apple|chrome|webkit)	UA_ENGINE=WebKit UA_NAME=$1
 	BrowserMatchNoCase (msie|opera|gecko)		UA_ENGINE=$1
 	BrowserMatchNoCase (trident|presto)			UA_ENGINE=$1
-	BrowserMatchNoCase chromeframe				UAGENT=cr UA_NAME=chrome UA_GCF=1
+	BrowserMatchNoCase chromeframe				UA_ENGINE=WebKit UAGENT=cr UA_NAME=chrome UA_GCF=1
 
-## -- Operating systems
-	BrowserMatchNoCase windows|win 		UA_OS=win UA_TYPE=gui
-	BrowserMatchNoCase inux|freebsd 	UA_OS=lin UA_TYPE=gui
-	BrowserMatchNoCase mac|ppc|powerpc 	UA_OS=mac UA_TYPE=gui
+# -- Operating systems
+	BrowserMatchNoCase windows|win 		UA_OS=win
+	BrowserMatchNoCase inux|freebsd 	UA_OS=lin
+	BrowserMatchNoCase mac|ppc|powerpc 	UA_OS=mac
 	BrowserMatchNoCase i(phone|pod|pad) UA_OS=ios UA_TYPE=mob
 	BrowserMatchNoCase (nintendo|webos)	UA_OS=$1  UA_TYPE=mob
 
 	BrowserMatch "Windows (CE|Phone)"	UA_TYPE=mob
 	BrowserMatch "IEMobile.?(\d+)"		UA_TYPE=mob UAGENT=ie UA_NAME=msie UA_VER=$1
 </IfModule>
-
-## ----------------------------------------------------- }}
+## ---------------------------------------------------- }}
