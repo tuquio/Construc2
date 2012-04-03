@@ -16,8 +16,39 @@ JLoader::register('ElementWidget' , WMPATH_ELEMENTS . '/widget.php');
  */
 interface IElementRenderer
 {
+
+	/**
+	 * @abstract
+	 * @param array $data
+	 * @param mixed $options
+	 * @return ElementRendererAbstract Concrete instance of subclass.
+	 */
 	public function build(array &$data, $options=null);
-	public function set($key, $value, $ua=null);
+
+	/**
+	 * Sets the value/data for the designated $key of this element.
+	 *
+	 * Use $uagent to add browser specific resources, typically for MSIE
+	 * in which case a conditional comment (CC) based on $uagent is added
+	 * to group output.
+	 *
+	 * MSIE CC $uagent examples:
+	 * - IE         = any MSIE with support for CC
+	 * - IE 6       = MSIE 6 only
+	 * - !IE 6      = all but MSIE 6
+	 * - lt IE 9    = MSIE 5 - MSIE 8
+	 * - lte IE 9   = MSIE 5 - MSIE 9
+	 * - gt IE 6    = MSIE 7 - MSIE 9
+	 * - gte IE 9   = MSIE 9
+	 * - IEMobile   = MSIE 7 - MSIE 9 on smart phones
+	 *
+	 * @abstract
+	 * @param string $key
+	 * @param mixed  $value
+	 * @param string $ua
+	 * @return ElementRendererAbstract Concrete instance of subclass.
+	 */
+	public function set($key, $value, $uagent=null);
 }
 
 /**
@@ -32,7 +63,9 @@ abstract class ElementRendererAbstract
 	protected $data = array();
 	protected static $elements = array();
 
-	/** API compliance with {@link JDocumentRenderer} */
+	/**
+	 * @param mixed $attribs
+	 */
 	protected function __construct($attribs=null)
 	{
 		if (!isset($this->name))
@@ -45,6 +78,8 @@ abstract class ElementRendererAbstract
 		if (is_array($attribs)) {
 			$this->attribs = $attribs;
 		}
+
+		$this->init();
 	}
 
 	/**
@@ -58,7 +93,6 @@ abstract class ElementRendererAbstract
 	{
 		if (!isset(self::$elements[$type]))
 		{
-			// BC
 			if (strpos($type, '.') === false) {
 				$type = 'renderer.'. $type;
 			}
@@ -67,7 +101,6 @@ abstract class ElementRendererAbstract
 			$class = 'Element'. ucfirst($parts[0]) . ucfirst($parts[1]);
 
 			self::$elements[$type] = new $class($attribs);
-			self::$elements[$type]->init();
 		}
 
 		return self::$elements[$type];

@@ -9,16 +9,17 @@
  * @license     GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
 
-class JDocumentRendererToe extends ElementRendererAbstract
+class JDocumentRendererToe extends ElementRendererAbstract implements IElementRenderer
 {
 	protected $name = 'toe';
 	/** @var CustomTheme $theme */
 	protected $theme;
 
 	/**
-	 * @param       $name
-	 * @param array $params
-	 * @param null  $content
+	 * For API compliance with {@link JDocumentRenderer}
+	 * @param string $name      The name of the element to render
+	 * @param array  $params    Array of values
+	 * @param null   $content   Override the output of the renderer
 	 * @return string
 	 */
 	public function render($name, $params = array (), $content = null)
@@ -30,31 +31,31 @@ class JDocumentRendererToe extends ElementRendererAbstract
 			return '';
 		}
 
-		@include dirname() .'/tictac.php';
+		@include dirname(__FILE__) .'/tictac.php';
 
 		return '';
 	}
 
 	/**
-	 * @param \JDocument|null $document For the most part JDocumentHtml
+	 * API compliance with {@link JDocumentRenderer}
+	 * @param \JDocument|null $_document For the most part JDocumentHtml
 	 */
-	public function __construct(JDocument $document)
+	public function __construct(JDocument $_document)
 	{
-		$this->_doc  = $document;
+		parent::__construct($_document);
+
+		$this->_doc  = $_document;
 		$this->theme = ConstructTemplateHelper::getInstance()->getTheme();
 	}
 
 	/**
-	 * @param array $data
-	 * @param null  $options
+	 * @inherit
 	 * @return JDocumentRendererToe
 	 */
 	public function build(array &$data, $options=null) {return $this;}
 
 	/**
-	 * @param      $key
-	 * @param      $value
-	 * @param null $ua
+	 * @inherit
 	 * @return JDocumentRendererToe
 	 */
 	public function set($key, $value, $ua=null) {return $this;}
