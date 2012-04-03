@@ -135,7 +135,7 @@ class CustomTheme
 		// does anyone know what $head['link'] is for? skipping...
 		$head = $document->getHeadData();
 
-		self::$chunks['meta']['renderer.head']    = ElementRendererAbstract::getInstance('renderer.head')->init($head);
+		self::$chunks['meta']['renderer.head']    = ElementRendererAbstract::getInstance('renderer.head')->build($head);
 		self::$chunks['meta']['renderer.meta']    = ElementRendererAbstract::getInstance('renderer.meta')->build($head['metaTags']);
 
 		// from an HTML perspective this is equivalent to <link>
@@ -280,7 +280,7 @@ class CustomTheme
 				break;
 
 			default:
-				$this->features[$feature] = $this->renderFeature($feature, $data);
+				$this->features[$feature] = $data;
 		}
 
 		return $this;
