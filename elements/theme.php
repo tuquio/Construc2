@@ -313,35 +313,41 @@ class CustomTheme
 	}
 
 	/**
-	 * Adds a "feature" to the frontend theme which typically involves
+	 * Adds a "feature" or "widget" to the frontend theme which typically involves
 	 * loading scripts and styles.
+	 * Examples:
+	 * - feature.msie.edge :        ElementFeatureMsie::edge()
+	 * - feature.standards.json :   ElementFeatureStandards::json()
+	 * - widget.fontscaler :        ElementWidgetFontscaler()
+	 * - widget.styleswitch :       ElementWidgetStyleswitch()
 	 *
-	 * @param  string  $feature A feature name from theme config
+	 * @param  string  $feature A fully qualified feature or widget identified.
 	 * @param  mixed   $data    Some data or FALSE to disable a feature at runtime
 	 * @return
 	 *
 	 * @uses CustomTheme::setFeature()
-	 *
-	 * @todo pick URLs + attribs from settings.php [features]
-	 *
-	 * @todo resolve dependencies
 	 */
 	public function setFeature($feature, $data)
 	{
-#		if ($data === false) {
-#			return $this;
-#		}
-
-		list($handler, $feature) = explode('.', strtolower($feature));
-
-FB::log("$handler @ $feature:".(int)$data);
+		if ($data === false) {
+			return $this;
+		}
 
 		switch ($feature)
 		{
-			case 'print': // print preview
-			case 'tp':    // template position preview
+			case 'feature.print': // print preview
+			case 'feature.tp':    // template position preview
+			case 'feature.l10n':  // data uri flags
+			case 'feature.rtl':   // right to left scripts
 				if ( isset($this->features['core']) ) {
 					$this->features[$feature]['link'] = '{tmpl.css}/core/'.$feature.'.css';
+				}
+				break;
+
+			case 'feature.edit': // frontend editing
+				if ( isset($this->features['core']) ) {
+					$this->features[$feature]['link'] = '{tmpl.css}/core/forms.css';
+					$this->features[$feature]['link'] = '{tmpl.css}/core/edit-form.css';
 				}
 				break;
 
@@ -376,9 +382,9 @@ FB::log("$handler @ $feature:".(int)$data);
 		}
 	}
 
-	public function renderFeature($name, $data=null)
+	public function renderFeature($feature, $data=null)
 	{
-		if (isset($this->features[$name]) && (false == (bool)$this->features[$name])) {
+		if (array_key_exists($feature, $this->features) && (false === (bool)$this->features[$feature])) {
 			return $data;
 		}
 
@@ -386,31 +392,30 @@ FB::log("$handler @ $feature:".(int)$data);
 			if (isset($data['module'])) {
 				// parse $data['module']->content, ie {fontscaler}
 if (defined('DEVELOPER_MACHINE')) {
-	FB::log($data, __FUNCTION__."($name) CUSTOM MODULE?");
+	FB::log($data, __FUNCTION__."($feature) CUSTOM MODULE?");
 }
 			}
 		}
 
 		// [feature|widget].class[.method]
-		$parts = explode('.', $name);
-
+		$parts = explode('.', $feature);
 		try
 		{
 			$method  = isset($parts[2]) ? $parts[2] : false;
 
-			$feature = ElementRendererAbstract::getInstance($parts[0].'.'.$parts[1], $data);
-
+			$handler = ElementRendererAbstract::getInstance($parts[0].'.'.$parts[1], $data);
 			if ($method) {
-				$this->features[$name] = $feature->{$method}($data);
+				$this->features[$feature] = $handler->{$method}($data);
 			} else {
-				$this->features[$name] = $feature->render($data);
+				$this->features[$feature] = $handler->render($data);
 			}
 
 		} catch (Exception $e) {
-			$this->features[$name] = $e;
+			$this->features[$feature] = $e;
 		}
+		FB::log($this->features[$feature], "$feature");
 
-		return $this->features[$name];
+		return $this->features[$feature];
 	}
 
 	public function getConfig($name, $default=null)
