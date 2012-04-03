@@ -1,5 +1,6 @@
 /*!
- * editor.css default styles 
+ * editor.css default styles
+ * @version 1.10.0
  */
 a:link, a:visited {color: #1B57B1;}
 #system-readmore {height:3px; padding:1px 0 0 0; border:1px dotted darkred; border-bottom:1px dashed darkred; margin-bottom:1em;}
@@ -20,7 +21,7 @@ a.ext  {color:#c55}
 .rgt {float:right;margin:.6em 0 1ex .6em}
 .lft {float:left;margin:.6em .6em 1ex 0}
 
-/* message box text (div, p, blockquote, etc.) @see screen.css font colors */
+/* message box text (div, p, blockquote, etc.) @see template.css font colors */
 .warning { padding: 5px; color: #c20000; font-size:1.1em}
 .negative, .error { padding: 5px; color: #c20000;}
 .positive, .message { padding: 5px; color: #fc6c06;}

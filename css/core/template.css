@@ -1,6 +1,6 @@
 /*!
- * screen.css
- * @version 1.9.11 19.03.2012
+ * template.css
+ * @version 1.10.0 03.04.2012
  * @license WTFPL
  */
 
@@ -16,12 +16,12 @@ h5,.H5 {font-size:1.1em}
 h6,.H6 {font-size:1.0em}
 
 /* Gecko+Webkit: undo HTML5 nesting for headings */
-:-moz-any(article,section,hgroup) h1, 
+:-moz-any(article,section,hgroup) h1,
 :-moz-any(article,section,hgroup) .H1,
 :-moz-any(article,section) :-moz-any(article,section,hgroup) h1,
 :-moz-any(article,section) :-moz-any(article,section,hgroup) .H1 {font-size:2.0em}
 
-:-webkit-any(article,section,hgroup) h1, 
+:-webkit-any(article,section,hgroup) h1,
 :-webkit-any(article,section,hgroup) .H1,
 :-webkit-any(article,section) :-webkit-any(article,section,hgroup) h1,
 :-webkit-any(article,section) :-webkit-any(article,section,hgroup) .H1 {font-size:2.0em}
@@ -104,7 +104,7 @@ li.mi .mi {vertical-align:inherit}
 
 @media print {
 	/* generated content */
-	#logo a:after, #page-foot a:after, 
+	#logo a:after, #page-foot a:after,
 	#dummy { content:""; display:none; }
 
 	.actionsmenu,

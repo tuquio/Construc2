@@ -1,9 +1,10 @@
 /**! Construc2 core styles for @media all */
 <!--#include virtual="/templates/construc2/css/core/base.css" -->
 <!--#include virtual="/templates/construc2/css/core/oocss.css" -->
-<!--#include virtual="/templates/construc2/css/core/screen.css" -->
+<!--#include virtual="/templates/construc2/css/core/template.css" -->
 <!--#include virtual="/templates/construc2/css/core/print.css" -->
 <!--#if expr='${QUERY_STRING_UNESCAPED}=/em=1/' -->/* Editor Styles */
+<!--#include virtual="/templates/construc2/css/core/forms.css" -->
 <!--#include virtual="/templates/construc2/css/core/edit-form.css" -->
 <!--#endif-->
 <!--#if expr='${QUERY_STRING_UNESCAPED}=/rtl=1/' -->/* Right To Left scripts */
