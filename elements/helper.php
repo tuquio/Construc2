@@ -7,10 +7,10 @@
  * @copyright	(C)2012 WebMechanic. All rights reserved.
  * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
-define('WMPATH_TEMPLATE', JPATH_THEMES . '/construc2');
-define('WMPATH_ELEMENTS', WMPATH_TEMPLATE  . '/elements');
 
-JLoader::register('ElementRendererAbstract', WMPATH_ELEMENTS . '/renderer/abstract.php');
+define('WMPATH_TEMPLATE', JPATH_THEMES . '/construc2');
+define('WMPATH_THEMES', WMPATH_TEMPLATE . '/themes');
+define('WMPATH_ELEMENTS', WMPATH_TEMPLATE  . '/elements');
 
 /* SearchHelper knows about the (enhanced) stop words list in xx_XXLocalise
  * and is misused to clean the alias for use as a class name of list items */
@@ -66,13 +66,14 @@ class ConstructTemplateHelper
 	{
 		$this->doc  = JFactory::getDocument();
 		$this->tmpl = JFactory::getApplication()->getTemplate(true);
+		$app = JFactory::getApplication();
+
+		spl_autoload_register(array('ConstructTemplateHelper', 'autoload'));
 
 		// remove this nonsense
 		$this->doc->setTab('');
 
 		$this->loadConfig();
-
-		$app = JFactory::getApplication();
 
 		// some edit form requested?
 		// - needs refinement and maybe some config to enforce it
@@ -87,7 +88,6 @@ class ConstructTemplateHelper
 			->addLayout('component')
 			->addLayout('modal');
 
-		spl_autoload_register(array('ConstructTemplateHelper', 'autoload'));
 
 	}
 
@@ -449,7 +449,7 @@ class ConstructTemplateHelper
 	 * 	}
 	 * </code>
 	 *
-	 * @return string  filepath of layout or void if not found
+	 * @return string  file path of layout or void if not found
 	 *
 	 * @todo implement additional magic based on the active menu item
 	 */
@@ -460,8 +460,8 @@ class ConstructTemplateHelper
 		}
 
 		$req	= new JInput();
-		$tmpl	= $req->getCmd('tmpl');
-		$view	= $req->getCmd('view');
+		$tmpl	= $req->get('tmpl');
+		$view	= $req->get('view');
 		$file	= null;
 
 		// override view? (category)
@@ -469,7 +469,7 @@ class ConstructTemplateHelper
 		{
 			$file = $this->layouts[$view.'.php'];
 			// or a layout? (blog, list, form)
-			$layout	= $req->getCmd('layout');
+			$layout	= $req->get('layout');
 			$key  = $view .'-'. $layout .'.php';
 			if (isset($this->layouts[$key]))
 			{
@@ -1336,8 +1336,6 @@ To allow parallel downloading, move the inline script before the external CSS fi
 	 * @param  array  $filler
 	 *
 	 * @return ConstructTemplateHelper for fluid interface
-	 *
-	 * @todo fix "IEMobile" "(IE 7)&!(IEMobile)" "(IE 8)&!(IEMobile)" "(gte IE 9)|(gt IEMobile 7)"
 	 */
 	private function _makeRoom($group, &$uagent, $filler=array())
 	{

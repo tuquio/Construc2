@@ -19,6 +19,16 @@ class ElementWidget extends ElementFeature
 		JHtml::unregister($old);
 		JHtml::register($old, $new);
 	}
+
+	/**
+	 * @see JModelForm::loadForm()
+	 */
+	protected function loadForm()
+	{
+		// Get the form.
+		JForm::addFormPath(WMPATH_WIDGETS . '/forms');
+		JForm::addFieldPath(WMPATH_WIDGETS . '/fields');
+	}
 }
 
 class JFormFieldWidget extends JFormField

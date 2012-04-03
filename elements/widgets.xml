@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE extension>
 <extension version="2.5" type="template" group="widgets" client="site" method="upgrade">
 	<config>
 		<fields name="params">
@@ -28,11 +29,11 @@
 				<field type="widget" name="fontscaler" default="0" label="TPL_CONSTRUC2_FONTSCALER_LABEL" description="TPL_CONSTRUC2_FONTSCALER_DESC">
 					<option value="1">JShow</option>
 					<option value="0">JHide</option>
-				</field>		
+				</field>
 				<field type="widget" name="styleswitch" default="0" label="TPL_CONSTRUC2_STYLESWITCH_LABEL" description="TPL_CONSTRUC2_STYLESWITCH_DESC">
 					<option value="1">JShow</option>
 					<option value="0">JHide</option>
-				</field>		
+				</field>
 			</fieldset>
 		</fields>
 	</config>

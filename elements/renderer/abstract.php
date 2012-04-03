@@ -46,7 +46,10 @@ interface IElementRenderer
 	 * @param string $key
 	 * @param mixed  $value
 	 * @param string $ua
+	 *
 	 * @return ElementRendererAbstract Concrete instance of subclass.
+	 *
+	 * @todo fix "IEMobile" "(IE 7)&!(IEMobile)" "(IE 8)&!(IEMobile)" "(gte IE 9)|(gt IEMobile 7)"
 	 */
 	public function set($key, $value, $uagent=null);
 }

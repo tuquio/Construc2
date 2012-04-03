@@ -24,7 +24,7 @@ class CustomTheme
 	 * @see getConfig()
 	 */
 	/** @var $name string lowercase */
-	protected $name    = 'default';
+	protected $name = 'default';
 	/** @var $title string */
 	protected $title = 'Default';
 	/** @var $description string */
@@ -32,11 +32,11 @@ class CustomTheme
 	/** @var $version string */
 	protected $version = '0.1.0';
 	/** @var $author string */
-	protected $author  = 'WebMechanic';
+	protected $author = 'WebMechanic';
 	/** @var $path string */
-	protected $path    = '';
+	protected $path = '';
 	/** @var $url string */
-	protected $url     = '';
+	protected $url = '';
 	/**#- */
 
 	/** @var $tmpl_url string */
@@ -56,12 +56,12 @@ class CustomTheme
 	/**
 	 * @see setCapture(), getCapture()
 	 */
-	static $html   = array();
+	static $html = array();
 
 	/**
 	 * @see setFeature(), getFeatures(), dropFeatures(), renderFeatures()
 	 */
-	protected $features = array();
+	static $features = array();
 
 	/**
 	 * @param ConstructTemplateHelper $helper
@@ -83,6 +83,7 @@ class CustomTheme
 		$this->name = $theme;
 
 		$this->path     = JPATH_THEMES .'/'. $tmpl->template .'/themes/'. $this->name . '.php';
+		$this->form     = JPATH_THEMES .'/'. $tmpl->template .'/themes/'. $this->name . '.xml';
 		$this->tmpl_url = JUri::root(true) .'/templates/'. $tmpl->template;
 		$this->url      = $this->tmpl_url .'/themes';
 
@@ -134,6 +135,10 @@ class CustomTheme
 	{
 		// does anyone know what $head['link'] is for? skipping...
 		$head = $document->getHeadData();
+
+FB::log($head, 'build');
+FB::log(self::$chunks, 'build $chunks');
+FB::log(array_keys(self::$features), 'build $features');
 
 		self::$chunks['meta']['renderer.head']    = ElementRendererAbstract::getInstance('renderer.head')->build($head);
 		self::$chunks['meta']['renderer.meta']    = ElementRendererAbstract::getInstance('renderer.meta')->build($head['metaTags']);
@@ -267,20 +272,20 @@ class CustomTheme
 			case 'feature.tp':    // template position preview
 			case 'feature.l10n':  // data uri flags
 			case 'feature.rtl':   // right to left scripts
-				if ( isset($this->features['core']) ) {
-					$this->features[$feature]['link'] = '{tmpl.css}/core/'.$feature.'.css';
+				if ( isset(self::$features['core']) ) {
+					self::$features[$feature]['link'] = '{tmpl.css}/core/'.$feature.'.css';
 				}
 				break;
 
 			case 'feature.edit': // frontend editing
-				if ( isset($this->features['core']) ) {
-					$this->features[$feature]['link'] = '{tmpl.css}/core/forms.css';
-					$this->features[$feature]['link'] = '{tmpl.css}/core/edit-form.css';
+				if ( isset(self::$features['core']) ) {
+					self::$features[$feature]['link'] = '{tmpl.css}/core/forms.css';
+					self::$features[$feature]['link'] = '{tmpl.css}/core/edit-form.css';
 				}
 				break;
 
 			default:
-				$this->features[$feature] = $data;
+				self::$features[$feature] = $data;
 		}
 
 		return $this;
@@ -292,8 +297,8 @@ class CustomTheme
 	 */
 	public function getFeature($name)
 	{
-		if (isset($this->features[$name])) {
-			return $this->features[$name];
+		if (isset(self::$features[$name])) {
+			return self::$features[$name];
 		}
 	}
 
@@ -303,7 +308,7 @@ class CustomTheme
 	 */
 	public function getFeatures($names_only = false)
 	{
-		return $names_only == false ? $this->features : array_keys($this->features);
+		return $names_only == false ? self::$features : array_keys(self::$features);
 	}
 
 	/**
@@ -327,13 +332,21 @@ class CustomTheme
 	}
 
 	/**
+	 * @see JModelForm::loadForm()
+	 */
+	protected function loadParams()
+	{
+		// Get the form.
+		JForm::addFormPath(WMPATH_WIDGETS . '/forms');
+	}
+	/**
 	 * @param      $feature
 	 * @param null $data
 	 * @return string A rendered feature.
 	 */
 	public function renderFeature($feature, $data=null)
 	{
-		if (array_key_exists($feature, $this->features) && (false === (bool)$this->features[$feature])) {
+		if (array_key_exists($feature, self::$features) && (false === (bool)self::$features[$feature])) {
 			return $data;
 		}
 
@@ -351,16 +364,16 @@ class CustomTheme
 
 			$handler = ElementRendererAbstract::getInstance($parts[0].'.'.$parts[1], $data);
 			if ($method) {
-				$this->features[$feature] = $handler->{$method}($data);
+				self::$features[$feature] = $handler->{$method}($data);
 			} else {
-				$this->features[$feature] = $handler->build($data);
+				self::$features[$feature] = $handler->build($data);
 			}
 
 		} catch (Exception $e) {
-			$this->features[$feature] = $e;
+			self::$features[$feature] = $e;
 		}
 
-		return $this->features[$feature];
+		return self::$features[$feature];
 	}
 
 	public function getConfig($name, $default=null)
