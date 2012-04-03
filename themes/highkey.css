@@ -94,7 +94,7 @@ header.below	{margin:0 auto}
 	.alpha-main section.component	{width:75%;float:right}
 	.alpha-main .column-group		{float:left}
 	.alpha-main .group-alpha {}
-	
+
 	/* 2col [  main  | beta] */
 	.main-beta .content-main {width:75%;float:left}
 
@@ -356,18 +356,6 @@ summary:focus + * {}
 /*
  * =branding - category and page styles
  */
-#aii {margin-top:0}
-
-.satire .introtext p:not(:first-of-type),
-.satire .fulltext  p:not(:first-of-type) {text-indent:1em}
-.tierische-geschichte .introtext p:not(:first-of-type),
-.tierische-geschichte .fulltext  p:not(:first-of-type) {text-indent:1em}
-
-.tierische-geschichte article p:first-of-type img {float:right;margin-left:10px;max-width:40%;position:relative;z-index:10}
-.tierische-geschichte article ~ img:first-child {margin:0 0 5px 1em}
-
-.kunstwerke .introtext img,
-.kunstwerke .fulltext  img	{margin-bottom:.6em}
 
 /* =supplemental property classes */
 .prel {position:relative} .pabs {position:absolute}
