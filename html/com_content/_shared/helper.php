@@ -134,14 +134,14 @@ class ContentLayoutHelper
 	}
 
 	/**
-	 * Pimp both Article's Table of Contents and Page Navigation inplace to make
+	 * Pimp both Article's Table of Contents and Page Navigation in place to make
 	 * them better. Will replaces the content of $item->toc and $item->pagination.
 	 *
 	 * @param  object  $item The article item object
 	 *
 	 * @return void (sets the toc property)
 	 */
-	static public function betterToc(&$item, $reserved = array())
+	static public function betterToc(&$item)
 	{
 		$item->pagenav = null;
 

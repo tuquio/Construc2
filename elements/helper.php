@@ -75,6 +75,9 @@ class ConstructTemplateHelper
 	/** @var $head array */
 	static protected $head = array();
 
+	/** @var $group_count array */
+	static protected $group_count = array();
+
 	/**
 	 * Use {@link getInstance()} to instantiate.
 	 */
@@ -423,12 +426,12 @@ class ConstructTemplateHelper
 	public function getLayout()
 	{
 		if (count($this->layouts) == 0) {
-			return;
+			return array();
 		}
 
 		$req	= new JInput();
-		$tmpl	= $req->getCmd('tmpl');
-		$view	= $req->getCmd('view');
+		$tmpl	= $req->get('tmpl', 'index');
+		$view	= $req->get('view', 'default');
 		$file	= null;
 
 		// override view? (category)
@@ -436,7 +439,7 @@ class ConstructTemplateHelper
 		{
 			$file = $this->layouts[$view.'.php'];
 			// or a layout? (blog, list, form)
-			$layout	= $req->getCmd('layout');
+			$layout	= $req->get('layout');
 			$key  = $view .'-'. $layout .'.php';
 			if (isset($this->layouts[$key]))
 			{
@@ -448,18 +451,22 @@ class ConstructTemplateHelper
 			$file = $this->layouts[$tmpl .'.php'];
 		}
 
-		if (is_array($file) && JFile::exists($file['path']))
+		if (is_array($file))
 		{
-			return $file;
-		}
-
-		foreach ($this->layouts as $file)
-		{
-			// return first file that exists
-			if (JFile::exists($file['path'])) {
-				return $file;
+			if (!JFile::exists($file['path']))
+			{
+				$file = null;
+				foreach ($this->layouts as $file)
+				{
+					// return first file that exists
+					if (JFile::exists($file['path'])) {
+						break;
+					}
+				}
 			}
 		}
+
+		return $file;
 	}
 
 	/**
@@ -485,8 +492,8 @@ class ConstructTemplateHelper
 	 */
 	public function getModulesCount($group, $max = self::MAX_MODULES)
 	{
-		if (isset($this->groupcount[$group])) {
-			return $this->groupcount[$group];
+		if (isset(self::$group_count[$group])) {
+			return self::$group_count[$group];
 		}
 
 		settype($max, 'int');
@@ -510,17 +517,17 @@ class ConstructTemplateHelper
 		}
 
 		$modules[0] = $i;
-		$this->groupcount[$group] = $modules;
+		self::$group_count[$group] = $modules;
 
 		// #FIXME special treatment for alpha/beta groups if $group='column'
 		if ($group =='column') {
-			$this->groupcount['group-alpha']	= $modules[1] + $modules[2];
-			$this->groupcount['column-1']		= $modules[1];
-			$this->groupcount['column-2']		= $modules[2];
+			self::$group_count['group-alpha']	= $modules[1] + $modules[2];
+			self::$group_count['column-1']		= $modules[1];
+			self::$group_count['column-2']		= $modules[2];
 
-			$this->groupcount['group-beta']		= $modules[3] + $modules[4];
-			$this->groupcount['column-3']		= $modules[3];
-			$this->groupcount['column-4']		= $modules[4];
+			self::$group_count['group-beta']		= $modules[3] + $modules[4];
+			self::$group_count['column-3']		= $modules[3];
+			self::$group_count['column-4']		= $modules[4];
 		}
 
 		return $modules;
@@ -528,7 +535,7 @@ class ConstructTemplateHelper
 
 	public function numModules($group)
 	{
-		return isset($this->groupcount[$group]) ? $this->groupcount[$group] : 0;
+		return isset(self::$group_count[$group]) ? self::$group_count[$group] : 0;
 	}
 
 	/**
@@ -657,11 +664,11 @@ class ConstructTemplateHelper
 	}
 
 	/**@#+
-	 * Add browser specific ressources, typically for MSIE in which case a
+	 * Add browser specific resources, typically for MSIE in which case a
 	 * conditional comment (CC) based on $uagent is added to group output.
 	 *
 	 * The interface is modeled after JDocument[Html] but not API compliant.
-	 * Most optional arguments in the JDOcument interface related to mime types
+	 * Most optional arguments in the JDocument interface related to mime types
 	 * have been removed and standardized because we're dealing with HTML only
 	 * and mime types are limited anyway.
 	 *
@@ -684,9 +691,9 @@ class ConstructTemplateHelper
 	 * The mime type for (alternative) styles and icons is enforced.
 	 *
 	 * @param string $href      the links href URL
-	 * @param string $relation  link relation, e.g. "stylesheet"
 	 * @param mixed  $uagent
 	 * @param array  $attribs   optional attributes as associative array
+	 * @param string $relation  link relation, e.g. "stylesheet"
 	 *
 	 * @return ConstructTemplateHelper for fluid interface
 	 * @see renderHead(), $links
@@ -773,7 +780,6 @@ class ConstructTemplateHelper
 	/**
 	 * @param string $url      a script URL
 	 * @param mixed  $uagent
-	 * @param bool   $defer    if true,adds the defer attribute
 	 * @param array  $attribs  optional attributes as associative array
 	 *
 	 * @return ConstructTemplateHelper for fluid interface

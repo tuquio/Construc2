@@ -95,7 +95,7 @@ function pagination_list_render($list)
  *	 $item->link	: string
  *	 $item->text	: string
  *
- * @param  object  $list
+ * @param  object  $item
  * @return string
  * @see pagination_item_inactive()
  */
@@ -111,7 +111,7 @@ function pagination_item_active($item)
  *	 $item->link	: string
  *	 $item->text	: string
  *
- * @param  object  $list
+ * @param  object  $item
  * @return string
  * @see pagination_item_active()
  */

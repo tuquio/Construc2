@@ -16,11 +16,8 @@ require JPATH_THEMES.'/'.$this->template.'/elements/logic.php';
 
 // Check for alternate index file, load it if it exists, and leave
 if ($alternateIndexFile = $templateHelper->getLayout()) {
-	if ($alternateIndexFile['scope'] == 'html') {
-		require_once JPATH_THEMES.'/'.$this->template.'/layouts/static_html.php';
-	} else {
-		require_once $alternateIndexFile['path'];
-	}
+	// $alternateIndexFile['scope'] == 'html'
+	require_once $alternateIndexFile['path'];
 	return;
 }
 
