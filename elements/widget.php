@@ -7,10 +7,9 @@
  * @copyright   (C)2012 WebMechanic. All rights reserved.
  * @license     GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
-define('WMPATH_WIDGETS' , WMPATH_ELEMENTS .'/widgets');
 
 /** Register Standard Widget Classes */
-JLoader::register('ElementWidgetContent', WMPATH_WIDGETS . '/content.php');
+JLoader::register('ElementWidgetContent', WMPATH_TEMPLATE . '/elements/widgets/content.php');
 
 class ElementWidget extends ElementFeature
 {
@@ -18,6 +17,16 @@ class ElementWidget extends ElementFeature
 	{
 		JHtml::unregister($old);
 		JHtml::register($old, $new);
+	}
+
+	/**
+	 * @see JModelForm::loadForm()
+	 */
+	protected function loadForm()
+	{
+		// Get the form.
+		JForm::addFormPath(WMPATH_TEMPLATE . '/elements/widgets/forms');
+		JForm::addFieldPath(WMPATH_TEMPLATE . '/elements/widgets/fields');
 	}
 }
 

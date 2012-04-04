@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE extension>
 <extension version="2.5" type="template" group="features" client="site" method="upgrade">
 	<config>
 		<fields name="params">
 		<!-- core functions for Construc2 and things with technical merit -->
 		<fieldset name="general" addfieldpath="/templates/construc2/elements" />
 
-		<!-- 
+		<!--
 		Most Features would plug into the "features" parameter group.
 		Possible panel groups to plug into:
 			> general    : core functions and things with technical merit
@@ -29,7 +30,7 @@
 					<option value="0">JNo</option>
 				</field>
 			</fieldset>
-				
+
 			<fieldset name="quirks">
 				<field type="feature" handler="msie" name="msieBho" default="0" label="Feature_Msie_Bho_Label" description="Feature_Msie_Bho_Label">
 					<option value="1">JYes</option>

@@ -8,7 +8,8 @@
  * @license     GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
 
-JLoader::register('JDocumentRendererToe', WMPATH_ELEMENTS .'/renderer/toe.php');
+JLoader::register('ElementRendererAbstract', WMPATH_TEMPLATE . '/elements/renderer/abstract.php');
+JLoader::register('JDocumentRendererToe', WMPATH_TEMPLATE . '/elements/renderer/toe.php');
 
 /**
  * An API compliant clone of {@link JDocumentRenderer} to replace render()
@@ -22,23 +23,27 @@ JLoader::register('JDocumentRendererToe', WMPATH_ELEMENTS .'/renderer/toe.php');
 class ElementRendererHead extends ElementRendererAbstract implements IElementRenderer
 {
 	protected $name = 'head';
-	protected $doc = null;
+	protected $_doc = null;
 
 	/** for API compliance with {@link JDocumentRenderer} */
-	protected $mime = 'text/html';
+	protected $_mime = 'text/html';
 
-	/** for API compliance with {@link JDocumentRendererHead} */
-	public function render($name = null, $attribs = array(), $content = null)
+	/**
+	 * For API compliance with {@link JDocumentRenderer}
+	 * @param string $name      The name of the element to render
+	 * @param array  $params    Array of values
+	 * @param null   $content   Override the output of the renderer
+	 * @return string
+	 */
+	public function render($name = null, $params = array(), $content = null)
 	{
 		JFactory::getApplication()->triggerEvent('onBeforeCompileHead');
 
 		$theme = ConstructTemplateHelper::getInstance()->theme;
+		$theme->build();
 
-		return $theme->build(JFactory::getDocument());
+		return implode('', $theme->getChunk('meta'));
 	}
-
-	/** for API compliance with {@link JDocumentRenderer} */
-	public function getContentType() { return $this->mime; }
 
 	/**
 	 * Sets charset, base and title to preceeed anything else.
@@ -47,43 +52,41 @@ class ElementRendererHead extends ElementRendererAbstract implements IElementRen
 	 */
 	public function init()
 	{
-		$document = JFactory::getDocument();
+		if (!isset($this->_doc)) {
+			$this->_doc = JFactory::getDocument();
+		}
 
 		// prevents refetching
 		$this->data['charset'] = '<meta charset="utf-8">';
 
-		$base  = $document->getBase();
+		$base  = $this->_doc->getBase();
 		$trail = ((bool)JFactory::getConfig()->get('sef_suffix', 0)) ? '' : '/';
 		if (!empty($base)) {
 			$this->data['base'] = '<base href="'. rtrim($base,'/') . $trail .'">';
 		} else {
-			$document->setBase(JURI::current());
+			$this->_doc->setBase(JURI::current());
 			$this->data['base'] = '<base href="'. rtrim(JURI::current(),'/') . $trail .'">';
 		}
 
-		$this->data['title'] = '<title>'. htmlspecialchars(strip_tags($document->getTitle()), ENT_COMPAT, 'UTF-8') .'</title>';
+		$this->data['title'] = '<title>'. htmlspecialchars(strip_tags($this->_doc->getTitle()), ENT_COMPAT, 'UTF-8') .'</title>';
 
 		return $this;
 	}
 
-	public function build(array &$data, $options=null) {return $this;}
+	/**
+	 * @inherit
+	 * @return ElementRendererHead
+	 */
+	public function build(array &$data, $options=null)
+	{
+		FB::log($data, __METHOD__);
+
+		return $this;
+	}
 
 	/**
-	 * Sets the value/data for the designated $key of this element.
-	 *
-	 * Use $ua to add browser specific ressources, typically for MSIE
-	 * in which case a conditional comment (CC) based on $uagent is added
-	 * to group output.
-	 *
-	 * $uagent
-	 * - IE 		= any MSIE with support for CC
-	 * - IE 6		= MSIE 6 only
-	 * - !IE 6		= all but MSIE 6
-	 * - lt IE 9	= MSIE 5 - MSIE 8
-	 * - lte IE 9	= MSIE 5 - MSIE 9
-	 * - gt IE 6	= MSIE 7 - MSIE 9
-	 * - gte IE 9	= MSIE 9
-	 * - IEMobile	= MSIE 7 - MSIE 9 on smart phones
+	 * @inherit
+	 * @return ElementRendererHead
 	 */
 	public function set($key, $value, $uagent=null) {return $this;}
 }
@@ -99,10 +102,16 @@ class ElementRendererMeta extends ElementRendererAbstract
 {
 	protected $name = 'meta';
 
+	/**
+	 * @param array $data
+	 * @param null  $options
+	 * @return ElementRendererMeta
+	 */
 	public function build(array &$data, $options=null)
 	{
-		$standard  = &$data['metaTags']['standard'];
-		$httpEquiv = &$data['metaTags']['http-equiv'];
+		FB::log($data, __METHOD__);
+
+		$standard  = &$data['standard'];
 
 		// remap to standards
 		$this->set('author', @$standard['rights']);
@@ -121,12 +130,18 @@ class ElementRendererMeta extends ElementRendererAbstract
 		return $this;
 	}
 
+	/**
+	 * @param      $name
+	 * @param      $content
+	 * @param null $ua
+	 * @return ElementRendererMeta
+	 */
 	public function set($name, $content, $ua=null)
 	{
 		if (isset($this->data[$name])) return $this;
 
 		if (is_array($content)) {
-			$content = JArrayHelper::toString($array,'=', '"');
+			$content = JArrayHelper::toString($content, '=', '"');
 		}
 
 		if ($name == null && $content) {
@@ -139,6 +154,12 @@ class ElementRendererMeta extends ElementRendererAbstract
 		return $this;
 	}
 
+	/**
+	 * @param      $name
+	 * @param      $content
+	 * @param null $ua
+	 * @return ElementRendererMeta
+	 */
 	public function httpEquiv($name, $content, $ua=null)
 	{
 		if (isset($this->data[$name])) return $this;
@@ -172,7 +193,7 @@ class ElementRendererLink extends ElementRendererAbstract
 	protected $name = 'link';
 
 	/** default MIME type used for URLs */
-	protected $mime = 'text/css';
+	protected $_mime = 'text/css';
 
 	protected function init()
 	{
@@ -338,23 +359,24 @@ class ElementRendererCustom extends ElementRendererAbstract
 	}
 }
 
-/**
- * Stub implementing <jdoc:include type="head" />.
- * The actual work load is performed in ElementRendererHead.
- */
-class JDocumentRendererHead extends ElementRendererHead
+if ( !class_exists('JDocumentRendererHead', false))
 {
-	protected $name = 'head';
-
 	/**
-	 * @param JDocument $document
+	 * Stub implementing <jdoc:include type="head" />.
+	 * The actual work load is performed in ElementRendererHead.
 	 */
-	public function __construct(JDocument $document)
+	class JDocumentRendererHead extends ElementRendererHead
 	{
-		// delegate to parent, as getInstance() won't cut it for this "override"
-		parent::__construct();
+		/**
+		 * @param JDocument $_document
+		 */
+		public function __construct(JDocument $_document)
+		{
+			// delegate to parent, as getInstance() won't cut it for this "override"
+			parent::__construct();
+		}
 
-		// and register this instance here
-		parent::$elements['head'] = $this;
+		/** for API compliance with {@link JDocumentRenderer} */
+		public function getContentType() { return $this->_mime; }
 	}
 }

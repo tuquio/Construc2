@@ -2,9 +2,10 @@
 /**
  * Some workarounds against and features for a family of browser emulator.
  *
- * - browserchoice:  BrowserChoice.com Redirect
- * - edge:  X-UA-Compatible  !! THIS BETTER GOES INTO .htaccess
  * - bho: kick imagetoolbar, MSThemeCompatible
+ * - browserchoice:  BrowserChoice.com Redirect
+ * - cfinstall:  Google Chrome Frame Install for oldIEs
+ * - edge:  X-UA-Compatible  !! THIS BETTER GOES INTO .htaccess
  *
  * @package     Construc2
  * @subpackage  Features
@@ -44,7 +45,7 @@ class ElementFeatureMsie extends ElementRendererMeta
 	 */
 	public function browserchoice()
 	{
-		$this->set('meta', 'refresh', '2;url=http://browserchoice.eu/', 'lt IE 9');
+		$this->set('refresh', '2;url=http://browserchoice.eu/', 'lt IE 9');
 	}
 
 	/**
@@ -53,7 +54,11 @@ class ElementFeatureMsie extends ElementRendererMeta
 	public function cfinstall($version = '1.0.3')
 	{
 		$href    = '//ajax.googleapis.com/ajax/libs/chrome-frame/'. $version .'/CFInstall.min.js';
-		$attribs = array('src'=>$href, 'async'=>true, 'onload'=>'var e=document.createElement("DIV");if(e && CFInstall){e.id="gcf_placeholder";e.style.zIndex="9999";CFInstall.check({node:"gcf_placeholder"});}');
+		$attribs = array(
+					'src'=>$href,
+		            'async'=>true,
+		            'onload'=>'var e=document.createElement("DIV");if(e && CFInstall){e.id="gcf_placeholder";e.style.zIndex="9999";CFInstall.check({node:"gcf_placeholder"});}'
+					);
 
 		$this->set('script', $attribs, 'lt IE 9');
 	}

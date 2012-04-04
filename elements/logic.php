@@ -53,7 +53,7 @@ $templateHelper->element('meta')->set('viewport', 'width=device-width,initial-sc
  */
 // a 'filelist' param returns -1 for 'none'
 $templateHelper->feature('ssi'  , $this->params->get('ssiIncludes', false));
-/* $templateHelper->feature('rtl'  , ($this->direction == 'rtl')); */
+$templateHelper->feature('rtl'  , ($this->direction == 'rtl'));
 $templateHelper->feature('edit' , $editMode);
 $templateHelper->feature('print', $app->input->get('print', 0));
 
