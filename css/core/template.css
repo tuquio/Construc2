@@ -1,6 +1,6 @@
 /*!
  * template.css
- * @version 1.10.0 03.04.2012
+ * @version 1.9.14
  * @license WTFPL
  */
 
@@ -53,7 +53,7 @@ li.mi .mi {vertical-align:inherit}
 .date-weekday, .date-month, .date-day, .date-year {/* intentionally left blank */}
 
 /* =generic classes and effects */
-.rounded, .outline {border-radius:10px;padding:5px;margin:5px}
+.rounded,.outline {border-radius:10px;padding:5px;margin:5px}
 .outline {border:1px solid #ccc}
 
 /* =Hide from both screen readers and browsers: h5bp.com/u */

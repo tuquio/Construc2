@@ -1,4 +1,4 @@
-/**! Construc2 core styles for @media all */
+/**! Construc2 core style assembly for @media all */
 <!--#include virtual="/templates/construc2/css/core/base.css" -->
 <!--#include virtual="/templates/construc2/css/core/oocss.css" -->
 <!--#include virtual="/templates/construc2/css/core/template.css" -->

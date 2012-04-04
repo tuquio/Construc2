@@ -1,10 +1,8 @@
-/*! 
+/*!
  * tp.css Template Positions
- * @version 13.03.2012
- * 
+ * @version 1.9.14
  * @license WTFPL
  */
-
 div.mod-preview {
 	background-color: rgba(255, 255, 255, 0.4);
 	outline: 1px solid #BADA55;
@@ -14,7 +12,6 @@ div.mod-preview {
 	position: relative;
 	width: 100%;
 }
-
 div.mod-preview-info {
 	color: #C55;
 	font-weight: normal;
@@ -27,14 +24,10 @@ div.mod-preview-info {
 	top: 0;
 	z-index: 27;
 }
-
 div.mod-preview-wrapper {
 	background-color: rgba(255, 255, 255, 0.2);
 	overflow: auto;
 	z-index: 27;
 }
-
 .mod-preview .mod-preview-wrapper .mod {margin:0}
-
-
 /* .eof */

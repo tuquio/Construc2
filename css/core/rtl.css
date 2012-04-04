@@ -10,7 +10,7 @@
 #branding {float:right;text-align:right;direction:rtl;}
 #page-head {text-align:right;direction:rtl;}
 #page-foot {text-align:right;direction:rtl;}
-#content-container {padding:0px;margin:0px;text-align:right;direction:rtl;}
+#content-container {padding:0;margin:0;text-align:right;direction:rtl;}
 #content {float:right;}
 .left-main-right #content-main {float:left;text-align:right;direction:rtl;}
 .left-main #content-main {float:left;text-align:right;direction:rtl;}

@@ -1,11 +1,13 @@
 /*!
  * print.css
- * standard print styles are in "template.css" 
- * THIS file is only applicable for component.php in "print preview" mode. 
+ * standard print styles are in "template.css"
+ * THIS file is only applicable for component.php in "print preview" mode.
+ * @version 1.9.14
+ * @license WTFPL
  */
 @media screen,print {
 	/* generated content */
-	#logo a:after, #page-foot a:after, 
+	#logo a:after, #page-foot a:after,
 	#dummy { content:""; display:none; }
 
 	.actionsmenu,
