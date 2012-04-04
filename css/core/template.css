@@ -8,7 +8,7 @@
 .page-head {margin:0;text-align:left}
 .content-main {position:relative}
 
-h1,.H1, .page-titile {font-size:2.0em}
+h1,.H1, .page-title {font-size:2.0em}
 h2,.H2 {font-size:1.7em}
 h3,.H3 {font-size:1.4em}
 h4,.H4, dt.result-title {font-size:1.2em}
@@ -48,22 +48,22 @@ li.mi .mi {vertical-align:inherit}
 .footer .menu, .footer .menu li {display:inline-block;list-style:none;margin:0;padding:0}
 .footer .menu li a, .footer .menu a:visited {font-weight:normal;padding:1px 3px;text-decoration:none}
 
-/* =supplementals */
+/* =supplements */
 .date-container {float:right}
 .date-weekday, .date-month, .date-day, .date-year {/* intentionally left blank */}
 
 /* =generic classes and effects */
-.rounded,.outline {border-radius:10px;padding:5px;margin:5px}
+.rounded, .outline {border-radius:10px;padding:5px;margin:5px}
 .outline {border:1px solid #ccc}
 
-/* =Hide from both screenreaders and browsers: h5bp.com/u */
-.hidden { display: none !important; visibility: hidden; }
-/* Hide only visually, but have it available for screenreaders: h5bp.com/v */
-.visuallyhidden { border: 0; clip: rect(0 0 0 0); height: 1px; margin: -1px; overflow: hidden; padding: 0; position: absolute; width: 1px; }
+/* =Hide from both screen readers and browsers: h5bp.com/u */
+.hidden {display:none !important;visibility:hidden}
+/* Hide only visually, but have it available for screen readers: h5bp.com/v */
+.visuallyhidden {border:0; clip:rect(0 0 0 0);height:1px;margin:-1px;overflow:hidden;padding:0;position:absolute;width:1px}
 /* Extends the .visuallyhidden class to allow the element to be focusable when navigated to via the keyboard: h5bp.com/p */
-.visuallyhidden.focusable:active, .visuallyhidden.focusable:focus { clip: auto; height: auto; margin: 0; overflow: visible; position: static; width: auto; }
-/* Hide visually and from screenreaders, but maintain layout */
-.invisible { visibility: hidden; }
+.visuallyhidden.focusable:active, .visuallyhidden.focusable:focus {clip:auto;height:auto;margin:0;overflow:visible;position:static;width:auto}
+/* Hide visually and from screen readers, but maintain layout */
+.invisible {visibility:hidden}
 
 /* =font colors should be as abstract as possible.
  * This allows us using any skins we like without modifying classes
@@ -111,7 +111,7 @@ li.mi .mi {vertical-align:inherit}
 	.column-group, .content_rating, .content_vote,
 	.noprint, .wgac, #dummy {display:none}
 
-	/* defloat */
+	/* de-float */
 	.content-container .content-main,
 	.content-container .column-group,
 	#dummy {float:none;clear:both;width:auto;}
