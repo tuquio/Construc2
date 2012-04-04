@@ -59,9 +59,7 @@
 				<field name="theme" type="filelist" default=""
 						label="TPL_CONSTRUC2_CUSTOM_STYLE_SHEET_LABEL"
 						description="TPL_CONSTRUC2_CUSTOM_STYLE_SHEET_DESC"
-						directory="templates/construc2/themes"
-						filter="\.css"
-						exclude="(template|editor|tinymce|codemirror|jce|ie\d+|test.+|x~.+)\.css"
+						themetype="css"
 					/>
 				<field name="ssiIncludes" type="radio" default="0" label="TPL_CONSTRUC2_APACHESSI_LABEL" description="TPL_CONSTRUC2_APACHESSI_DESC">
 					<option value="1">JYes</option>
@@ -70,8 +68,7 @@
 				<field name="ssiTheme" type="filelist" default=""
 						label="TPL_CONSTRUC2_SSITHEME_LABEL"
 						description="TPL_CONSTRUC2_SSITHEME_LABEL"
-						directory="templates/construc2/themes"
-						filter="\.styles"
+						themetype="ssi"
 					/>
 				<field name="modOocss" type="radio" default="0" label="TPL_CONSTRUC2_USE_MODOOCSS_LABEL" description="TPL_CONSTRUC2_USE_MODOOCSS_DESC">
 					<option value="1">On</option>
@@ -110,7 +107,7 @@
 				</field>
 			</fieldset>
 
-			<fieldset name="compat" description="TPL_CONSTRUC2_COMPAT_DESC">
+			<fieldset name="compat" description="TPL_CONSTRUC2_STANDARDS_DESC">
 				<field name="html5shim" type="radio" default="1" label="TPL_CONSTRUC2_HTML5_LABEL" description="TPL_CONSTRUC2_HTML5_DESC">
 					<option value="1">JYes</option>
 					<option value="0">JNo</option>
