@@ -63,6 +63,9 @@ class ConstructTemplateHelper
 	/** @var $edit_mode boolean */
 	protected $edit_mode;
 
+	/** @var $debug boolean */
+	protected $debug;
+
 	/** @var $helper ConstructTemplateHelper instance of self */
 	public static $helper;
 
@@ -85,6 +88,7 @@ class ConstructTemplateHelper
 	{
 		$this->doc  = JFactory::getDocument();
 		$this->tmpl = JFactory::getApplication()->getTemplate(true);
+		$app = JFactory::getApplication();
 
 		// remove this nonsense
 		$this->doc->setTab('');
@@ -93,6 +97,8 @@ class ConstructTemplateHelper
 		if (is_file(dirname(__FILE__) .'/settings.php')) {
 			$this->config = parse_ini_file(dirname(__FILE__) .'/settings.php', true);
 		}
+
+		$this->debug = $app->getCfg('debug') && $app->input->get('tpos', 0, 'bool');
 
 		$this->addLayout('index')
 			->addLayout('component')
@@ -259,7 +265,7 @@ class ConstructTemplateHelper
 	 * @param  string  $position
 	 * @return boolean
 	 *
-	 * @todo IMPLEMENT and honoe $position conditions
+	 * @todo IMPLEMENT and honor $position conditions
 	 */
 	public function moduleStyle($position)
 	{
@@ -487,18 +493,23 @@ class ConstructTemplateHelper
 	 * @return array|null
 	 * @see numModules(), renderModules()
 	 * @uses JDocumentHTML::countModules();
-	 * @todo  fund a more flexible way to count 'column-X' split into 'group-alpha/beta'
+	 *
+	 * @todo find a more flexible way to count 'column-X' split into 'group-alpha/beta'
 	 */
 	public function getModulesCount($group, $max = self::MAX_MODULES)
 	{
-		if (isset(self::$group_count[$group])) {
-			return self::$group_count[$group];
-		}
-
 		settype($max, 'int');
 		// #FIXME columns are only 2 per group 'alpha' and 'beta'
 		if ($group =='column') {
-			$max = 4;
+			$max = self::MAX_COLUMNS;
+		}
+
+		if ($this->debug) {
+			self::$group_count[$group] = ($group =='column') ? self::MAX_COLUMNS : self::MAX_MODULES;
+		}
+
+		if (isset(self::$group_count[$group])) {
+			return self::$group_count[$group];
 		}
 
 		if ($max < 1) $max = 1;
@@ -507,7 +518,6 @@ class ConstructTemplateHelper
 
 		for ($i = 1; $i <= $max; $i += 1) {
 			$modules[$i] = $this->doc->countModules($group .'-'. $i);
-	//		$modules[$i] = &JModuleHelper::getModules($group .'-'. $i);
 		}
 
 		$i = array_sum($modules);
@@ -668,40 +678,8 @@ class ConstructTemplateHelper
 		return $this->theme->getCapture($name, $checkonly);
 	}
 
-	/**@#+
-	 * Add browser specific resources, typically for MSIE in which case a
-	 * conditional comment (CC) based on $uagent is added to group output.
-	 *
-	 * The interface is modeled after JDocument[Html] but not API compliant.
-	 * Most optional arguments in the JDocument interface related to mime types
-	 * have been removed and standardized because we're dealing with HTML only
-	 * and mime types are limited anyway.
-	 *
-	 * $uagent
-	 *  - IE 		= any MSIE with support for CC
-	 *  - IE 6		= MSIE 6 only
-	 *  - !IE 6		= all but MSIE 6
-	 *  - lt IE 9	= MSIE 5 - MSIE 8
-	 *  - lte IE 9	= MSIE 5 - MSIE 9
-	 *  - gt IE 6	= MSIE 7 - MSIE 9
-	 *  - gte IE 9	= MSIE 9
-	 *	- IEMobile	= MSIE 7 - MSIE 9 on smart phones
-	 *
-	 * @see renderHead()
-	 */
-
 	/**
-	 * Adds a <link> Element für stylesheets, feeds, favicons etc.
-	 *
-	 * The mime type for (alternative) styles and icons is enforced.
-	 *
-	 * @param string $href      the links href URL
-	 * @param mixed  $uagent
-	 * @param array  $attribs   optional attributes as associative array
-	 * @param string $relation  link relation, e.g. "stylesheet"
-	 *
-	 * @return ConstructTemplateHelper for fluid interface
-	 * @see renderHead(), $links
+	 * @deprecated 1.10.0
 	 */
 	public function addLink($href, $uagent=self::UA, $attribs=array(), $rel='stylesheet')
 	{
@@ -746,11 +724,7 @@ class ConstructTemplateHelper
 	}
 
 	/**
-	 * @param string $html   valid html element to be placed inside <head>
-	 * @param mixed  $uagent
-	 *
-	 * @return ConstructTemplateHelper for fluid interface
-	 * @see renderHead(), $custom
+	 * @deprecated 1.10.0
 	 */
 	public function addCustomTag($html, $uagent=self::UA)
 	{
@@ -763,13 +737,7 @@ class ConstructTemplateHelper
 	}
 
 	/**
-	 * @param string $name     name attribute of the meta element
-	 * @param string $content  content attribute
-	 * @param mixed  $uagent
-	 * @param bool   $http_equiv
-	 *
-	 * @return ConstructTemplateHelper for fluid interface
-	 * @see renderHead(), $metaTags
+	 * @deprecated 1.10.0
 	 */
 	public function addMetaData($name, $content, $uagent=self::UA, $http_equiv=false)
 	{
@@ -783,12 +751,7 @@ class ConstructTemplateHelper
 	}
 
 	/**
-	 * @param string $url      a script URL
-	 * @param mixed  $uagent
-	 * @param array  $attribs  optional attributes as associative array
-	 *
-	 * @return ConstructTemplateHelper for fluid interface
-	 * @see renderHead(), $script
+	 * @deprecated 1.10.0
 	 */
 	public function addScript($url, $uagent=self::UA, $attribs=array())
 	{
@@ -823,11 +786,7 @@ class ConstructTemplateHelper
 	}
 
 	/**
-	 * @param string $content the script content
-	 * @param mixed  $uagent
-	 *
-	 * @return ConstructTemplateHelper for fluid interface
-	 * @see renderHead(), $scripts
+	 * @deprecated 1.10.0
 	 */
 	public function addScriptDeclaration($content, $uagent=self::UA)
 	{
@@ -844,11 +803,7 @@ class ConstructTemplateHelper
 	}
 
 	/**
-	 * @param string $content
-	 * @param mixed  $uagent
-	 *
-	 * @return ConstructTemplateHelper for fluid interface
-	 * @see renderHead(), $style
+	 * @deprecated 1.10.0
 	 */
 	public function addStyle($content, $uagent=self::UA)
 	{
@@ -860,16 +815,8 @@ class ConstructTemplateHelper
 		return $this;
 	}
 
-	/**@#- */
-
 	/**
-	 * Event handler "onBeforeCompileHead" to fix crappy head elements and
-	 * standardize order. Also groups any UA-specific entries for browser
-	 * emulators from Redmond to get them all into one place.
-	 *
-	 * @return bool true - since this is a "event handler"
-	 *
-	 * @uses buildHead(), sortScripts(), renderHead()
+	 * @deprecated 1.10.0
 	 */
 	public function onBeforeCompileHead()
 	{
@@ -881,11 +828,7 @@ class ConstructTemplateHelper
 	}
 
 	/**
-	 * Applies all supplemental, browser-specific head elements to the document,
-	 * taking other items added else into Joomla's document into account.
-	 *
-	 * @return ConstructTemplateHelper for fluid interface
-	 * @see renderHead(), sortScripts()
+	 * @deprecated 1.10.0
 	 */
 	protected function buildHead()
 	{
@@ -1013,8 +956,8 @@ class ConstructTemplateHelper
 				case 'script':
 					foreach ($stuff as $key => $data) {
 						$head[$group][$key] = str_replace(
-										array('new JCaption', "\r\n", "\n", "\t"),
-										array('new Function', '', '', ''),
+										array('new JCaption', "\t"),
+										array('new Function', ''),
 										$data);
 					}
 					break;
@@ -1029,19 +972,7 @@ class ConstructTemplateHelper
 	}
 
 	/**
-	 * Attempts to order the script elements by pushing MooTools and jQuery
-	 * up the stack to avoid conflicts among those libraries.
-	 * Execution depends on the "Sort Styles and Scripts" (headCleanup)
-	 * template parameter to be enabled.
-	 *
-	 * Component views, plugins and modules might use optional jQuery plugins,
-	 * but "our" jQuery loaded during the templare rendering phase will come
-	 * too late for plugins to bind to jQuery.fn.
-	 *
-	 * @return ConstructTemplateHelper for fluid interface
-	 *
-	 * @static $libs array regexps to locate jquery and mootools libraries
-	 * @static $CDN  array assoc array with CDN URLs and version regexps
+	 * @deprecated 1.10.0
 	 */
 	protected function sortScripts()
 	{
@@ -1118,9 +1049,7 @@ class ConstructTemplateHelper
 	}
 
 	/**
-	 * @return ConstructTemplateHelper for fluid interface
-	 *
-	 * @see buildHead(), sortScripts()
+	 * @deprecated 1.10.0
 	 */
 	protected function renderHead()
 	{
