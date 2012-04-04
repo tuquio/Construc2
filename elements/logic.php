@@ -176,10 +176,4 @@ if ((bool) $this->params->get('html5manifest')) {
 	$cache_manifest = '';
 }
 
-/* Shim files and MSIE Fixes */
-// html5 shim
-if ($this->params->get('html5shim')) {
-	$templateHelper->addScript($tmpl_url.'/js/html5.js');
-}
-
 /* .eof */
