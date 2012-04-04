@@ -23,7 +23,6 @@
 <?php if ($headerAboveCount[0]) : include JPATH_THEMES .'/'. $this->template . '/layouts/mod_header_above.php'; endif; ?>
 
 		<h1 id="logo"><a class="site-link" href="<?php echo $this->baseurl ?>/"><span class="site-name"><?php echo $app->getCfg('sitename');?></span></a></h1>
-
 <?php if ($this->countModules('header')) : $templateHelper->renderModules('header', 'raw'); endif; ?>
 
 		<?php if ($enableSwitcher) : ?>
@@ -33,13 +32,15 @@
 			<li class="mi switcher normal"     data-style="normal"><?php echo JText::_('TPL_CONSTRUC2_STYLE_NORMAL_MODE') ?></li>
 		</ul>
 		<?php endif; ?>
+
 		</div><!-- .page-head -->
 
 		<div id="body-container" class="line <?php echo $templateHelper->getPageAlias() ?>">
 <?php if ($headerBelowCount[0]) : include JPATH_THEMES .'/'. $this->template . '/layouts/mod_header_below.php'; endif; ?>
 
 		<?php if ($this->countModules('nav')) : ?>
-			<nav id="nav" class="line mainnavi">
+
+			<nav id="mainnavi" class="line mainnavi">
 			<?php $templateHelper->renderModules('nav'); ?>
 			</nav><!-- #nav .mainnavi-->
 		<?php endif; ?>

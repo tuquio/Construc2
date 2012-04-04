@@ -15,7 +15,7 @@ list($lang, $region) = explode('-', $doc->language);
 $doc_title = $doc->getTitle();
 
 if (!isset($this->error)) {
-	$this->error = JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
+	$this->error = new Exception(JText::_('JERROR_ALERTNOAUTHOR'), 404);
 	$this->debug = false;
 	if ($doc_title == $this->title) {
 		$this->title = JText::_('JERROR_AN_ERROR_HAS_OCCURRED');
@@ -58,6 +58,7 @@ if (!JComponentHelper::isEnabled('com_finder') && !JPluginHelper::isEnabled('fin
 		case 500:
 			$reasons[] = 'JERROR_LAYOUT_ERROR_HAS_OCCURRED_WHILE_PROCESSING_YOUR_REQUEST';
 			$reasons[] = 'JERROR_LAYOUT_REQUESTED_RESOURCE_WAS_NOT_FOUND';
+			$sitesearch = false;
 			break;
 
 		case 404:
@@ -69,7 +70,7 @@ if (!JComponentHelper::isEnabled('com_finder') && !JPluginHelper::isEnabled('fin
 
 		case 403:
 			$reasons[] = 'JERROR_LAYOUT_YOU_HAVE_NO_ACCESS_TO_THIS_PAGE';
-			$reasons[] = 'JERROR_TABLE_BIND_FAILED';
+		//	$reasons[] = 'JERROR_TABLE_BIND_FAILED';
 			break;
 
 		case 401:

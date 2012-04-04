@@ -13,29 +13,42 @@
 	; "Content Delivery Networks" for script libraries
 	; also used for parameter field ./elements/cdnlist.php
 	; You can add/merge/replace entries with a theme config
-@media		= "/media/system"
-@template	= "/templates/padawan/js"
 ajax.googleapis.com			= 1,jquery,mootols
 ajax.aspnetcdn.com			= 0,jquery
 code.jquery.com				= 1,jquery
 cdnjs.cloudflare.com		= 1,jquery,mootols
 
-[link_subst]
+[subst]
 	; -----
 	; LINK url placeholders
 	; addLink('{core}/l10n.css')
-theme		= "{root}/templates/construc2/themes/{name}"
-template	= "{root}/templates/construc2/css"
-core		= "{root}/templates/construc2/css/core"
-system		= "{root}/media/system/css"
-module		= "{root}/modules/{name}/css"
-plugin		= "{root}/plugins/{type}/{name}/css"
+media		= "{root}/media/system"
+images		= "{root}/images"
+template	= "{root}/templates/construc2"
+theme		= "{template}/themes/{name}"
+
+tmpl.css	= "{template}/css"
+core.css	= "{template}/css/core"
+
+system.css	= "{media}/css"
+system.js	= "{media}/js"
+
+	; "deprecated" - extension should use the media folder
+module.css	= "{root}/modules/{name}/css"
+module.js	= "{root}/modules/{name}/js"
+plugin.css	= "{root}/plugins/{type}/{name}/css"
+plugin.js	= "{root}/plugins/{type}/{name}/js"
+
 
 [styleswitcher]
+	; JS-based styleswitcher
 @enabled	= 0
-	; -----
+
+	; Replace or add to default switches? 0=no, 1=yes
+@replace	= 1
+
 	; Defaults than can be REPLACED with theme config files
-	; Values are list labels runthru JText for translation
+	; Values are list labels run thru JText for translation
 	; and best added to "xx-XX.override.ini"
 @default	= normal
 wireframe	= TPL_CONSTRUC2_STYLE_WIREFRAME
