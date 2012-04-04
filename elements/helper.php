@@ -147,15 +147,7 @@ class ConstructTemplateHelper
 	}
 
 	/**
-	 * Liefert den Alias des aktiven Menüeintrag.
-	 * Ist $parent true wird der Alias des aktiven "top level" Eintrags
-	 * geliefert. Gibt es keinen aktiven Eintrag wird "Home" verwendet
-	 * und der Kurzname der aktuellen Komponente ($option), z.B. 'search'.
-	 * Dies ist der Fall bei Verwendung des Suchmoduls oder Querverweisen
-	 * auf Komponenten deren Inhalt(e) nicht über ein Menü erreichbar sind
-	 * (inkl. Kontakte).
-	 *
-	 * @param bool $parent Alias des Elternelements verwenden
+	 * @param  bool  $parent  put parent alias into the mix
 	 * @see JApplication::getMenu() JMenu::getActive()
 	 */
 	public function getPageAlias($parent = false)
@@ -167,7 +159,7 @@ class ConstructTemplateHelper
 		if ($alias[$parent] !== null) return $alias[$parent];
 
 		if (($v = self::isHomePage()) ) {
-			$alias[$parent] = trim('home '.$v, ' 01');
+			$alias[$parent] = trim('home '.$v);
 			return $alias[$parent];
 		}
 
@@ -187,7 +179,7 @@ class ConstructTemplateHelper
 	 * Attempts to create a nice alias from the $item to use in the class
 	 * attribute to apply item and category based styles.
 	 * If $item is a menu[ish] item, also includes type, view and layout.
-	 * If $item is an article, parent and category aliases (if available)
+	 * If $item is an article its parent and category aliases (if available)
 	 * will be included.
 	 * Category and item IDs appear as cat-N and item-N respectively.
 	 *
@@ -198,19 +190,59 @@ class ConstructTemplateHelper
 	 */
 	public function getCssAlias($item, $parent = false)
 	{
-		$C = array();
+		$C = array('');
 		// menu item?
-		if (isset($item->type) && $parent) {
-			$C[] = $item->type;
+		//	$C[] = $item->type;
+		if (isset($item->query) && $parent) {
 			if (isset($item->query['option'])) {
-				$C[] = str_replace('_', '-', $item->query['option']);
+				$C[key($C)] .= substr($item->query['option'], strpos($item->query['option'], '_')+1);
 			}
 			if (isset($item->query['view'])) {
-				$C[] = $item->query['view'];
+				$C[key($C)] .= '-'.$item->query['view'];
 			}
-			if (isset($item->query['layout'])) {
-				$C[] = $item->query['layout'];
+		}
+		if (isset($item->query['layout'])) {
+			$C[] = $item->query['layout'];
+		}
+
+		$A = array();
+		if ($parent) {
+			if (isset($item->parent_alias)) {
+				$A[] = $item->parent_alias;
 			}
+			else if (isset($item->parent_route)) {
+				$A[] = substr($item->parent_route, 0, strpos($item->parent_route, '/'));
+			}
+		}
+		if (isset($item->category_alias)) {
+			$A[] = $item->category_alias;
+		}
+		if (isset($item->alias)) {
+			$A[] = $item->alias;
+		}
+
+		$alias = '';
+		foreach ((array)$A as $k => $ali)
+		{
+			$ali = trim($ali, '-');
+
+			// single word
+			if (strpos($ali, '-') === false) continue;
+			// short enough
+			if (strlen($ali) <= 20) continue;
+
+			// split and sanitize
+			$alias = JStringNormalise::toSpaceSeparated($ali);
+			$words = explode(' ', $alias);
+			if (count($words) > 1) {
+				$ali = array_diff($words, JFactory::getLanguage()->getIgnoredSearchWords());
+				if (isset($item->language)) {
+					$alias = $this->_inflectAlias($ali, $item->language);
+				} else {
+					$alias = $this->_inflectAlias($ali);
+				}
+			}
+			$A[$k] = $alias;
 		}
 
 		if ($item instanceof JCategoryNode) {
@@ -223,47 +255,23 @@ class ConstructTemplateHelper
 			$C[] = 'item-' . $item->id;
 		}
 
-		$A = array();
-		if (isset($item->parent_route)) {
-			$A[] = substr($item->parent_route, 0, strpos($item->parent_route, '/'));
-		}
-		if (isset($item->parent_alias)) {
-			$A[] = $item->parent_alias;
-		}
-		if (isset($item->category_alias)) {
-			$A[] = $item->category_alias;
-		}
-		if (isset($item->alias)) {
-			$A[] = $item->alias;
-		}
-
-		$alias = '';
-		foreach ((array)$A as $k => $ali)
-		{
-			// single word
-			if (strpos($ali, '-') === false) continue;
-			// short enough
-			if (strlen($ali) <= 20) continue;
-			// split and sanitize
-			$alias = JStringNormalise::toSpaceSeparated($ali);
-
-			$words = explode(' ', $alias);
-			if (count($words) > 1) {
-				$ignore = JFactory::getLanguage()->getIgnoredSearchWords();
-				$ali = array_diff($words, $ignore);
-				if (isset($item->language)) {
-					$alias = $this->_inflectAlias($ali, $item->language);
-				} else {
-					$alias = $this->_inflectAlias($ali);
-				}
-			}
-			$A[$k] = $alias;
-		}
-
 		$words = array_unique( array_merge($C, $A) );
 		$alias = implode(' ', $words);
 
 		return trim($alias);
+	}
+
+	/**
+	 * Tells whether the .mod class from OOCSS should be applied.
+	 *
+	 * @param  string  $position
+	 * @return boolean
+	 *
+	 * @todo IMPLEMENT $position conditions
+	 */
+	public function moduleStyle($position)
+	{
+		return (bool) $this->tmpl->params->get('modOocss', 0);
 	}
 
 	// @todo refactor to use JStringXXX if that comes available
@@ -548,8 +556,8 @@ class ConstructTemplateHelper
 	 * @uses CustomTheme::setCapture()
 	 */
 	public function renderModules($position, $style=null, $attribs=array())
-	{
-		if ($this->edit_mode) {
+{
+		if ($this->isEditMode()) {
 			return $this;
 		}
 
@@ -558,81 +566,89 @@ class ConstructTemplateHelper
 			$group = substr($position, 0, $pos);
 		}
 
-		$attribs['name'] = $position;
-		($style) ? $attribs['style'] = $style : true;
-
-		$css = array();
-		$prefixes = array(
-				'before' => array('before'),
-				'after'  => array('after')
-				);
-
-		// no layout override?
-		if (!array_key_exists('autocols', $attribs)) {
-			$attribs['autocols'] = $this->tmpl->params->get('modOocss', 0);
+		if ( $group != false ) {
+			$modules = $this->getModulesCount($group);
+			$n = $modules[0];
+		} else {
+			$n = $this->doc->countModules($position);
 		}
 
-		settype($attribs['autocols'], 'bool');
+		/* nothing there? get outta here */
+		if ( $n == 0 ) {
+			return $this;
+		}
 
+		$attribs['name'] = $position;
+
+		if (!array_key_exists('style', $attribs)) {
+			$attribs['style'] = $style;
+		}
+
+		// disable ".unit" auto columns?
+		if (!array_key_exists('autocols', $attribs)) {
+			//#FIXME honor exclusion list for positions
+			$attribs['autocols'] = $this->moduleStyle($position);
+		}
+
+		$css = array();
+		settype($attribs['autocols'], 'bool');
 		if ($attribs['autocols'] !== false)
 		{
-			$prefixes['before'][] = 'unit_before';
-			$prefixes['after'][]  = 'unit_after';
-
-
-			if ( $group != false ) {
-				$modules = $this->getModulesCount($group);
-				$n = $modules[0];
-			} else {
-				$n = $this->doc->countModules($position);
-			}
-
-			if ( $n > 0 ) {
-				$attribs['oocss'] = '';
+			if ( $n > 1 ) {
+				unset($attribs['oocss']);
 				$css[] = 'unit size1of'.$n;
 			}
 			unset($attribs['autocols']);
 		}
 		else {
-			$css[] = 'mod';
+			if ($this->moduleStyle($position)) {
+				$css[] = 'mod';
+			}
 		}
 
 		$css = array_unique($css);
-
 		$html = array();
 		foreach (JModuleHelper::getModules($position) as $module)
 		{
-			// find @stylename encoded in moduleclass_sfx
-			$mparams = json_decode($module->params);
-			if (isset($mparams->moduleclass_sfx) && strpos($mparams->moduleclass_sfx, '@') !== false)
+			// find encoded @chrome style name in moduleclass_sfx
+			$sfx = strpos(str_replace('"moduleclass_sfx":""', '', $module->params), '"moduleclass_sfx"');
+			if ($sfx !== false && strpos($module->params, '@', $sfx) !== false)
 			{
-				$style = preg_grep('/^@([a-z]+)/', explode(' ', $mparams->moduleclass_sfx));
-				$attribs['style'] = str_replace('@', '', implode(' ', $style));
+				$params = json_decode($module->params);
+				$chrome  = preg_grep('/^@([a-z]+)/', explode(' ', $params->moduleclass_sfx));
+
+				// per module setting takes precedence
+				$attribs['style'] = str_replace('@', '', implode(' ', $chrome));
 
 				// put everything else back
-				$mparams->moduleclass_sfx = trim(str_replace($style, '', $mparams->moduleclass_sfx));
-				$module->params = json_encode($mparams);
+				$params->moduleclass_sfx = trim(str_replace($chrome, '', $params->moduleclass_sfx));
+				$module->params = json_encode($params);
 			}
 
+			// render module
 			$content = JModuleHelper::renderModule($module, $attribs);
 
 			// this crap doesn't belong here
 			$content = $this->_choppInlineCrap($content, $module->module);
 
-			$prefixes['before'][] = $module->module;
-			$prefixes['after'][]  = $module->module;
-			if ($chunk = $this->theme->getChunk('module', $prefixes['before']) )
+			if ( ($chunk = $this->theme->getChunk('module', array('before', $module->name))) )
 			{
+				$name = '-'. $module->name;
+				if ($position == $module->name) {
+					$name  = '';
+					$css[] = $position;
+				}
 				$html[] = str_replace(
-							array('{position}', '{class}'),
-							array($position, implode(' ', $css)),
+							array('{position}', '{name}', '{class}'),
+							array($position, $name, implode(' ', $css)),
 							$chunk
 							);
 			}
 
 			$html[] = $content;
 
-			if ($chunk = $this->theme->getChunk('module', $prefixes['after']) ) {
+			if ( ($chunk = $this->theme->getChunk('module', array('after', $module->name))) )
+			{
 				$html[] = $chunk;
 			}
 		}
@@ -649,7 +665,6 @@ class ConstructTemplateHelper
 
 		return $this;
 	}
-
 	/**
 	 * Proxy for {@link CustomTheme::getCapture()}.
 	 *

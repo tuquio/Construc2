@@ -81,7 +81,7 @@ class CustomTheme
 	/**
 	 * @see setChunks()
 	 */
-	static $chunks = array('meta'=>array());
+	static $chunks = array();
 
 	protected function __construct(ConstructTemplateHelper $helper)
 	{
@@ -123,8 +123,11 @@ class CustomTheme
 
 		// @see ConstructTemplateHelper::renderModules()
 		$chunks = array(
-					'unit_before' => '<div class="{class}">',
-					'unit_after'  => '</div>'
+					'meta'          => '',
+					'module_before'	=> '<div id="{position}{name}" class="{class}">',
+					'module_after'	=> '</div>',
+					'unit_before'	=> '<div class="{class}">',
+					'unit_after'	=> '</div>'
 				);
 
 		$this->setChunks($chunks);
