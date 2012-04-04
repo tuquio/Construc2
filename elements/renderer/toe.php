@@ -24,15 +24,6 @@ class JDocumentRendererToe extends ElementRendererAbstract implements IElementRe
 	 */
 	public function render($name, $params = array (), $content = null)
 	{
-		if (!isset($params['tic'])) {
-			return '';
-		}
-		if ('tac' != $params['tic']) {
-			return '';
-		}
-
-		@include dirname(__FILE__) .'/tictac.php';
-
 		return '';
 	}
 
