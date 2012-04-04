@@ -136,4 +136,3 @@ if ($this->pagination->get('pages.total') > 1 && ($this->params->get('show_pagin
 <?php
 
 JHtml::_('behavior.tooltip');
-JHtml::core();

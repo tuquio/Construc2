@@ -129,15 +129,7 @@ class ConstructTemplateHelper
 	}
 
 	/**
-	 * Liefert den Alias des aktiven Menüeintrag.
-	 * Ist $parent true wird der Alias des aktiven "top level" Eintrags
-	 * geliefert. Gibt es keinen aktiven Eintrag wird "Home" verwendet
-	 * und der Kurzname der aktuellen Komponente ($option), z.B. 'search'.
-	 * Dies ist der Fall bei Verwendung des Suchmoduls oder Querverweisen
-	 * auf Komponenten deren Inhalt(e) nicht über ein Menü erreichbar sind
-	 * (inkl. Kontakte).
-	 *
-	 * @param bool $parent Alias des Elternelements verwenden
+	 * @param  bool  $parent  put parent alias into the mix
 	 * @see JApplication::getMenu() JMenu::getActive()
 	 */
 	public function getPageAlias($parent = false)
