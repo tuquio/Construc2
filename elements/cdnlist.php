@@ -25,11 +25,9 @@ class JFormFieldCdnlist extends JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		$options = $config = array();
+		$options = array();
+		$config  = parse_ini_file(dirname(__FILE__) .'/settings.php', true);
 
-		if (is_file(dirname(__FILE__) .'/settings.php')) {
-			$config = parse_ini_file(dirname(__FILE__) .'/settings.php', true);
-		}
 		settype($config['cdn'], 'array');
 
 		$options[] = JHtml::_('select.option', '', '- Not Loaded -');
