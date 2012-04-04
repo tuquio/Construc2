@@ -25,14 +25,12 @@ class JFormFieldCdnlist extends JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		$options = $config = array();
+		$options = array();
+		$config  = parse_ini_file(WMPATH_TEMPLATE . '/elements/settings.php', true);
 
-		if (is_file(WMPATH_ELEMENTS .'/settings.php')) {
-			$config = parse_ini_file(WMPATH_ELEMENTS .'/settings.php', true);
-		}
 		settype($config['cdn'], 'array');
 
-		$options[] = JHtml::_('select.option', '', '- Not Loaded -');
+		$options[] = JHtml::_('select.option', '', JText::_('Cdnlist_Source_None'));
 		$options[] = JHtml::_('select.option', '@default'	, JText::_('Cdnlist_Source_Default'));
 		$options[] = JHtml::_('select.option', '@media'		, JText::_('Cdnlist_Source_Media'));
 		$options[] = JHtml::_('select.option', '@template'	, JText::_('Cdnlist_Source_Template'));
