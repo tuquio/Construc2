@@ -19,28 +19,34 @@ body {min-width:900px;max-width:94%;margin:0 auto}
 	body.com_media #body-container	,
 	body.modal     #body-container	,
 	body.com_media .page-foot		,
-	body.modal     .page-foot		{min-width:0;max-width:750px}	
+	body.modal     .page-foot		{min-width:0;max-width:750px}
 	body.com_media .content-container,
 	body.modal     .content-container {margin-top:0}
-	.body-overlayed #sbox-window.shadow		{padding:2px}
-	.body-overlayed #sbox-content.sbox-content-iframe	{overflow:auto}
+	.body-overlayed #sbox-window.shadow {padding:2px}
+	.body-overlayed #sbox-content.sbox-content-iframe {overflow:auto}
+}
+
+/* http://dev.w3.org/csswg/css-device-adapt/#the-viewport-rule
+ * OPM 11+
+ */
+@-o-vievport {
+	width: device-width;
 }
 
 header, footer	{clear:both}
 
+#page-head {}
 .page-head {}
+#page-foot 		{margin:0 auto 20px}
 .page-foot {}
 
-#page-head		{}
 #logo   		{margin:15px auto 15px 5%;font-size:450%;display:inline-block}
 .site-link {}
 .site-name {}
 
-nav, .breadcrumbs	{margin-bottom:10px}
+nav, #breadcrumbs	{margin-bottom:10px}
 #mainmenu {}
-.mainmenu {}
 #breadcrumbs {}
-.breadcrumbs {}
 #mod-breadcrumbs {}
 
 #to-page-top		{position:absolute;right:10px;text-align:right}
@@ -58,8 +64,8 @@ header.below	{margin:0 auto}
 
 	/* default [ [main|alpha] beta] */
 	.column-group 	{width:25%;float:left}
-	.group-alpha	{}
-	.group-beta		{}
+	.group-alpha {}
+	.group-beta {}
 
 	/* 2col [  main  | beta] */
 	.main-beta .content-main {width:75%;float:left}
@@ -71,9 +77,7 @@ header.below	{margin:0 auto}
 	.alpha-main-beta section.component {float:right;width:70%}
 }
 
-.page-foot	{margin:0 auto}
-.items-more .links,
-	.foot-inner	    {
+.items-more .links {
  -webkit-column-count:2;-webkit-column-gap:10px;
 	-moz-column-count:2;   -moz-column-gap:10px;
 		 column-count:2;		column-gap:10px;
@@ -90,9 +94,9 @@ header.below	{margin:0 auto}
 	#logo {margin-left:5%}
 }
 
-/* Retina Resolution 
+/* Retina Resolution
 @media only screen and (-webkit-min-device-pixel-ratio: 2) {
-	
+
 }
 */
 
@@ -100,14 +104,7 @@ header.below	{margin:0 auto}
 h1,h2,h3,h4,h5,h6	{line-height:normal}
 
 h1,h2,h3,h4,h5,h6	,
-.mainmenu			,
-.breadcrumbs		,
-menu.categories		{font-family:'Ubuntu Condensed','Trebuchet MS',Arial,sans-serif;text-rendering:optimizelegibility}
-
-.title				{/* a serif font might be nice */}
-.mainmenu			,
-.breadcrumbs		{font-size-adjust:.6}
-menu.categories		{font-size-adjust:.52}
+menu, .hmenu		{font-family:'Ubuntu Condensed','Trebuchet MS',Arial,sans-serif;text-rendering:optimizelegibility}
 
 /* hyphens are tuned off below for some contexts */
 p 					{-webkit-hyphens:auto;-moz-hyphens:auto;hyphens:auto}
@@ -136,8 +133,8 @@ table.data th.clip	,
 .item-page			,
 .items-more			{padding:10px;margin-bottom:10px}
 
-/* 
- * misc components 
+/*
+ * misc components
  */
 section.component > div.search ,
 section.component > div.finder {padding:10px;margin-bottom:10px}
@@ -168,10 +165,10 @@ p.readmore:after	{content:'\2026\A0';display:inline}
 
 /*
  * call-outs and <aside>s flush right within their containing box + reveal their content on :hover
- * - right border matches the inner padding of <article> and provides the hoverable area
+ * - right border matches the inner padding of <article> and provides the hover area
  */
 aside.article		{position:absolute;right:0;top:0;width:auto;height:2em;border-right:10px solid #888}
-.content_rating		, 
+.content_rating		,
 aside.article form	{display:none;position:absolute;width:15em;padding:.2em;min-height:1.6em;right:0;z-index:2707}
 aside.article form	{top:2em}
 
@@ -185,9 +182,9 @@ aside.article:hover .content_rating + form {display:block}
 /* @todo make <details> see padawan/padawan-dark.css
  * the disclosure widget will still be displayed if you don't provide a summary element
  */
-details.meta	{clear:both;padding:1ex .8em;margin-top:10px}
-summary[tabindex] {outline:none} /* with tabindex, ugly outlines are shown*/
-.meta summary	{display:inline;cursor:help}
+details.meta        {clear:both;padding:1ex .8em;margin-top:10px}
+summary[tabindex]   {outline:none} /* with tabindex, ugly outlines are shown */
+.meta summary       {display:inline;cursor:help}
 summary::-webkit-details-marker {font-size:1.2em}
 
 /* toggle article details on hover */
@@ -198,20 +195,20 @@ summary::-webkit-details-marker {font-size:1.2em}
 
 .article-info dt {display:inline}
 .article-info dd {display:inline}
- .article-info .createdby {}
- .article-info .parent-category {}
- .article-info .category {}
- .article-info .hits {}
- .article-info .created {}
- .article-info .modified {}
- .article-info .published {}
+.article-info .createdby {}
+.article-info .parent-category {}
+.article-info .category {}
+.article-info .hits {}
+.article-info .created {}
+.article-info .modified {}
+.article-info .published {}
 
 .items-row .article-info dd.createdby:after {content:" ";display: block;}
 
 /* =category page contents */
 .category-desc {font-size:100%}
 .category-desc blockquote {font:normal 2.25em/1 'Kristi',cursive;text-align:center;text-rendering:optimizelegibility}
-.category-desc blockquote {font-size-adjust:0.5; font-stretch:expanded} /* FF */
+.category-desc blockquote {font-size-adjust:.62;font-stretch:expanded} /* FF */
 blockquote:after {content:attr(title);display:block;margin-top:1em;text-align:right;clear:both;font:normal 12px/1 "Trebuchet MS",Arial,Helvetica,sans-serif}
 
 blockquote p {-webkit-hyphens:none;-moz-hyphens:none;hyphens:none}
@@ -261,19 +258,26 @@ figure.portrait				{height:245px;width:auto;max-width:100%}
 }
 
 /* =mod_search / mod_finder - align with mainmenu and li paddings */
-.mainnavi form 				{position:absolute;right:2px;top:0.5ex}
+.mainnavi form 				{position:absolute;right:2px;top:.5ex}
 .mainnavi div.finder ,
-.mainnavi div.search		{display:inline-block;padding:0.2ex}
+.mainnavi div.search		{display:inline-block;padding:.2ex}
 .mainnavi label.finder ,
 .mainnavi .search > label	{display:inline;padding-right:1em}
 .mainnavi .finder > input ,
 .mainnavi .search > input	{display:inline;width:75%;padding-right:1em}
-.mainnavi .finder a			{position:absolute;display:none;padding:.5ex;text-align:center;width:100%}
+.mainnavi .finder a			{display:none;padding:.5ex 0;text-align:center;width:100%;z-index:27}
+/*
 .mainnavi .finder:hover a	,
 .mainnavi .finder a:focus	,
 .mainnavi .finder a:active	,
 .mainnavi input:focus ~ a	{display:inline-block}
+*/
+.mainnavi input:focus ~ a	{display:inline-block;position:absolute}
+.mainnavi .finder a:active  ,
+.mainnavi .finder a:focus   {display:inline-block;position:absolute;outline:1px dotted}
 div.finder br				{display:none}
+#finder *:active {background:red;color:green}
+#finder *:focus  {background:orange;color:navy}
 
 /*
  * =menus
@@ -283,7 +287,7 @@ div.finder br				{display:none}
 
 .current > a.li	{} /* may contain a nested menu.submenu */
 .active > a.li		{font-weight:bold} /* single item */
-.sep 				{padding:0.25ex}
+.sep 				{padding:.25ex}
 li.mi img			{border:none;box-shadow:none}
 
 /* allow the nested list determine its [default] whitepace at bottom */
@@ -297,9 +301,16 @@ nav.page-toc					{padding-top:1ex;padding-left:.6em;margin-left:1em} /* aka #art
 /* push the whole thing inwards to make room for .actionsmenu:width */
 .has-actions nav.page-toc 		{margin-right:20px}
 
-/* align with menu items */
-.breadcrumbs span.mi	,
-.breadcrumbs .active	{padding:0.25ex 0.6em}
+/* align with mainmenu items which also happens to be a .hmenu */
+.breadcrumbs            {padding-left:.4em;padding-right:.4em}
+.breadcrumbs strong     ,
+.breadcrumbs > span     {display:table-cell}
+.breadcrumbs span.mi    {padding:.2ex .4em}
+.breadcrumbs strong {}
+.breadcrumbs .pathway {}
+
+/* https://developer.mozilla.org/en/CSS/pointer-events
+ * FF3.6+, CR2+, SF4+ (SVG only in IE9+, OP9) */
 
 .has-toc .actionsmenu	{position:absolute;float:none;margin-right:0;right:0}
 .actionsmenu 			{margin-top:-1em;margin-right:-10px;width:20px;opacity:.4}
@@ -348,7 +359,7 @@ menu.categories .parent:hover menu	{height:auto;display:block}
 menu.categories .current > menu		{height:auto;display:block}
 */
 
-menu.loginmenu					{margin-top:0.6ex}
+menu.loginmenu					{margin-top:.6ex}
 .loginmenu span.mi				{padding: 1px 3px;}
 
 /* =misc */
@@ -358,9 +369,10 @@ menu.loginmenu					{margin-top:0.6ex}
 #styleswitcher	{display:none}
 li.switcher 	{display:inline-block;cursor:pointer}
 
-/* =widgets */
-summary:focus {}
-summary:focus + * {}
+/* =widgets
+	summary:focus {}
+	summary:focus + * {}
+*/
 
 /*
  * =branding - category and page styles

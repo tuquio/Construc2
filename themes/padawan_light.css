@@ -20,15 +20,17 @@ section.component > div.finder	,
 .items-more, .item-page			,
 .blog article			{background-color:#fff}
 
-nav, .breadcrumbs		,
+nav, .hmenu,
 .actionsmenu:hover		{background-color:#fff}
 
-.toc-items a.mi:hover	{background-color:rgba(255,255,255,0.8)}
+.toc-items a.mi:hover	{background-color:rgba(255,255,255,.8)}
 .toc-items li.mi		{margin-right:5px} /* compensate inner shadow */
 
 button 					{padding:0.5ex 2ex}
 button:focus 			,
 .inputbox:focus			{background-color:#fff}
+
+.menu a.mi:focus        {background-color:rgba(224,224,224,.6)}
 
 /* fly-out 'title' as icon label */
 .tip-wrap,
@@ -125,7 +127,7 @@ dl.search-results {}
 dt.result-title {}
 
 /* =box shadows */
-@media screen 
+@media screen
 {
 	button					,
 	input.inputbox			{box-shadow: 0px 0px 2px 1px #eee}
@@ -134,13 +136,11 @@ dt.result-title {}
 
 	.button button			,
 	input.inputbox:focus	,
-	.mainnavi		,
-	.breadcrumbs	,
-	nav.pages		,
+	nav.pages				,
 	.pagenav a.mi:hover 	,
 	.pagination li.mi:hover	,
 		.dslt				{box-shadow: 0px 0px 3px 0px #CCC;outline:none}
-		
+
 	/* fly-out 'title' as icon label */
 	.actionsmenu:hover			{box-shadow:-4px 0px 4px rgba(100,100,100,.25)}
 	.actionsmenu .icon a:before	{box-shadow:-4px 3px 3px rgba(100,100,100,.25)}
@@ -152,13 +152,13 @@ dt.result-title {}
 	.fulltext img			,
 		.hbox-ds			{box-shadow:-2px 3px 5px  1px #888}
 	.mainnavi .finder a 	{box-shadow: 0px 4px 9px -7px #888}
-	
+
 	.page-toc, .meta		{box-shadow: 0px 0px 6px  0px #aaa inset}
 
 }
 
 /* =print stuff */
-@media print 
+@media print
 {
 }
 
