@@ -31,7 +31,7 @@ class JFormFieldThemeList extends JFormFieldFileList
 	public function setForm(JForm $form)
 	{
 		parent::setForm($form);
-		CustomTheme::getInstance()->setForm($form);
+		$theme = CustomTheme::getInstance()->setForm($form);
 
 		// document.querySelector('p.tip')
 	}
@@ -47,13 +47,16 @@ class JFormFieldThemeList extends JFormFieldFileList
 
 		if ('ssi' == (string) $this->element['themetype']) {
 			$this->element['filter']  = '\.styles';
-			$this->element['exclude'] = '(template|editor|tinymce|codemirror|jce|ie\d+|test.+|x~.+)\.css';
+			$this->element['exclude'] = '';
 		} else {
 			$this->element['filter']  = '\.css';
-			$this->element['exclude'] = '';
+			$this->element['exclude'] = '(template|editor|tinymce|codemirror|jce|ie\d+|test.+|x~.+)\.css';
 		}
 
 		$options = parent::getOptions();
+		
+		// remove "Use Default" - there is none
+		unset($options[1]);
 
 		return $options;
 	}
