@@ -7,10 +7,14 @@
  * @author		WebMechanic http://webmechanic.biz
  * @copyright	Copyright (C) 2011 WebMechanic http://webmechanic.biz. All rights reserved.
  * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
+ *
+ * @var ConstructTemplateHelper $templateHelper
+ * @var string $cache_manifest
+ * @var string $columnLayout
  */
+!defined('WMPATH_LAYOUTS') && define('WMPATH_LAYOUTS', dirname(__FILE__));
 
 $this->setTitle('Dummy Positions');
-
 ?>
 <html lang="<?php echo $this->language ?>" dir="<?php echo $this->direction ?>">
 <head>
@@ -33,9 +37,9 @@ body.debug .names:after  {text-align:right; content:'Classes: ' attr(class);}
 </style>
 </head>
 <body class="<?php echo $columnLayout ?>">
-<?php ConstructTemplateHelper::msieSwatter() ?>
+<?php ConstructTemplateHelper::msieSwatter(); ?>
 <header class="line above">
-<?php include JPATH_THEMES .'/'. $this->template . '/layouts/mod_header_above.php' ?>
+<?php include WMPATH_LAYOUTS. '/mod_header_above.php' ?>
 </header>
 
 <div id="body-container" class="line">
@@ -50,16 +54,16 @@ You can now safely plumb Modules into any template position, which is the whole 
 </p>
 
 <header class="names line below">
-<?php include JPATH_THEMES .'/'. $this->template . '/layouts/mod_header_below.php' ?>
+<?php include WMPATH_LAYOUTS. '/mod_header_below.php' ?>
 </header>
 
 <div id="nav-below" class="names line nav-below">
-<?php include JPATH_THEMES .'/'. $this->template . '/layouts/mod_nav_below.php' ?>
+<?php include WMPATH_LAYOUTS. '/mod_nav_below.php' ?>
 </div>
 
 <div id="content" class="names line content-main">
 	<div class="names line content-above">
-<?php include JPATH_THEMES .'/'. $this->template . '/layouts/mod_content_above.php' ?>
+<?php include WMPATH_LAYOUTS. '/mod_content_above.php' ?>
 	</div>
 
 	<section class="line component">
@@ -71,24 +75,24 @@ You can now safely plumb Modules into any template position, which is the whole 
 		</article>
 
 	<div class="names line content-below">
-<?php include JPATH_THEMES .'/'. $this->template . '/layouts/mod_content_below.php' ?>
+<?php include WMPATH_LAYOUTS. '/mod_content_below.php' ?>
 	</div>
 	</section>
 
 	<div class="names column-group group-alpha">
-<?php include JPATH_THEMES .'/'. $this->template . '/layouts/mod_column_group_alpha.php' ?>
+<?php include WMPATH_LAYOUTS. '/mod_column_group_alpha.php' ?>
 	</div>
 </div>
 
 <div class="names column-group group-beta">
-<?php include JPATH_THEMES .'/'. $this->template . '/layouts/mod_column_group_beta.php' ?>
+<?php include WMPATH_LAYOUTS. '/mod_column_group_beta.php' ?>
 </div>
 
 <div class="names line footer-above">
-<?php include JPATH_THEMES .'/'. $this->template . '/layouts/mod_footer_above.php' ?>
+<?php include WMPATH_LAYOUTS. '/mod_footer_above.php' ?>
 </div>
 
 </div><!-- end body-container -->
-<?php ConstructTemplateHelper::msieSwatter() ?>
+<?php ConstructTemplateHelper::msieSwatter(); ?>
 </body>
 </html>
