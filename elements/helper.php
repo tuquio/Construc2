@@ -7,17 +7,15 @@
  * @copyright	(C)2012 WebMechanic. All rights reserved.
  * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
+!defined('WMPATH_TEMPLATE') && define('WMPATH_TEMPLATE', dirname(dirname(__FILE__)));
 
-define('WMPATH_TEMPLATE', JPATH_THEMES . '/construc2');
-define('WMPATH_THEMES', WMPATH_TEMPLATE . '/themes');
-define('WMPATH_ELEMENTS', WMPATH_TEMPLATE  . '/elements');
+JLoader::register('ElementRendererAbstract', WMPATH_TEMPLATE . '/elements/renderer/abstract.php');
+JLoader::register('ElementRendererHead', WMPATH_TEMPLATE . '/elements/renderer/head.php');
+JLoader::register('CustomTheme', WMPATH_TEMPLATE . '/elements/theme.php');
 
 /* SearchHelper knows about the (enhanced) stop words list in xx_XXLocalise
  * and is misused to clean the alias for use as a class name of list items */
 JLoader::register('SearchHelper', JPATH_ADMINISTRATOR .'/components/com_search/helpers/search.php');
-
-/** Load the CustomTheme Class */
-require_once WMPATH_ELEMENTS . '/theme.php';
 
 /**
  * Construc2 Template Main class.
@@ -68,8 +66,6 @@ class ConstructTemplateHelper
 		$this->tmpl = JFactory::getApplication()->getTemplate(true);
 		$app = JFactory::getApplication();
 
-		spl_autoload_register(array('ConstructTemplateHelper', 'autoload'));
-
 		// remove this nonsense
 		$this->doc->setTab('');
 
@@ -108,27 +104,6 @@ class ConstructTemplateHelper
 		}
 
 		return self::$helper;
-	}
-
-	static protected function autoload($class)
-	{
-		if ($class[0] == 'J' || $class[0] == 'K') {return;}
-
-		$parts = preg_split('/(?<=[a-z])(?=[A-Z])/x', $class);
-
-		// i.e. WMPATH_ELEMENTS, WMPATH_FEATURES, WMPATH_WIDGETS
-		if (!defined('WMPATH_'.strtoupper($parts[0]).'S')) {
-			return;
-		}
-		$parts[0]  = constant('WMPATH_'.strtoupper($parts[0]).'S');
-		// i.e. feature, widget, renderer
-		$parts[1]  = strtolower($parts[1]);
-		// inflection suxx
-		$parts[1] .= ($parts[1] == 'renderer') ? '' : 's';
-		// filename
-		$parts[2]  = strtolower($parts[2]) . '.php';
-
-		include_once implode('/', $parts);
 	}
 
 	/**
@@ -686,19 +661,19 @@ class ConstructTemplateHelper
 		$html = array();
 		foreach (JModuleHelper::getModules($position) as $module)
 		{
-			// find encoded @chromename in moduleclass_sfx
+			// find encoded @chrome style name in moduleclass_sfx
 			$sfx = strpos(str_replace('"moduleclass_sfx":""', '', $module->params), '"moduleclass_sfx"');
 			if ($sfx !== false && strpos($module->params, '@', $sfx) !== false)
 			{
-				$mparams = json_decode($module->params);
-				$chrome  = preg_grep('/^@([a-z]+)/', explode(' ', $mparams->moduleclass_sfx));
+				$params = json_decode($module->params);
+				$chrome  = preg_grep('/^@([a-z]+)/', explode(' ', $params->moduleclass_sfx));
 
 				// per module setting takes precedence
 				$attribs['style'] = str_replace('@', '', implode(' ', $chrome));
 
 				// put everything else back
-				$mparams->moduleclass_sfx = trim(str_replace($chrome, '', $mparams->moduleclass_sfx));
-				$module->params = json_encode($mparams);
+				$params->moduleclass_sfx = trim(str_replace($chrome, '', $params->moduleclass_sfx));
+				$module->params = json_encode($params);
 			}
 
 			// is this as "widget" shortcut, i.e. using a custom module?
@@ -1281,10 +1256,8 @@ To allow parallel downloading, move the inline script before the external CSS fi
 		$default = array();
 
 		// fake ini file
-		if (is_file(WMPATH_ELEMENTS .'/settings.php')) {
-			$config  = parse_ini_file(WMPATH_ELEMENTS .'/settings.php', true);
-			$default = array_merge_recursive($default, $config);
-		}
+		$config  = parse_ini_file(WMPATH_TEMPLATE . '/elements/settings.php', true);
+		$default = array_merge_recursive($default, $config);
 
 		foreach ($default['subst'] as $k => $v)
 		{

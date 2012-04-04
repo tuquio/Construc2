@@ -25,7 +25,7 @@ class JFormFieldThemeList extends JFormFieldFileList
 	 * Method to attach a JForm object to the field.
 	 *
 	 * @param  JForm  $form  The JForm object to attach to the form field.
-	 * 
+	 *
 	 * @return object The form field object so that the method can be used in a chain.
 	 */
 	public function setForm(JForm $form)
@@ -54,10 +54,6 @@ class JFormFieldThemeList extends JFormFieldFileList
 		}
 
 		$options = parent::getOptions();
-
-		$theme = CustomTheme::getInstance();
-		FB::log($theme, __METHOD__);
-		FB::log($options, __METHOD__);
 
 		return $options;
 	}

@@ -8,7 +8,8 @@
  * @license     GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
 
-JLoader::register('JDocumentRendererToe', WMPATH_ELEMENTS .'/renderer/toe.php');
+JLoader::register('ElementRendererAbstract', WMPATH_TEMPLATE . '/elements/renderer/abstract.php');
+JLoader::register('JDocumentRendererToe', WMPATH_TEMPLATE . '/elements/renderer/toe.php');
 
 /**
  * An API compliant clone of {@link JDocumentRenderer} to replace render()
@@ -39,8 +40,9 @@ class ElementRendererHead extends ElementRendererAbstract implements IElementRen
 		JFactory::getApplication()->triggerEvent('onBeforeCompileHead');
 
 		$theme = ConstructTemplateHelper::getInstance()->theme;
+		$theme->build();
 
-		return $theme->build(JFactory::getDocument());
+		return implode('', $theme->getChunk('meta'));
 	}
 
 	/**
@@ -75,7 +77,12 @@ class ElementRendererHead extends ElementRendererAbstract implements IElementRen
 	 * @inherit
 	 * @return ElementRendererHead
 	 */
-	public function build(array &$data, $options=null) {return $this;}
+	public function build(array &$data, $options=null)
+	{
+		FB::log($data, __METHOD__);
+
+		return $this;
+	}
 
 	/**
 	 * @inherit
@@ -102,7 +109,9 @@ class ElementRendererMeta extends ElementRendererAbstract
 	 */
 	public function build(array &$data, $options=null)
 	{
-		$standard  = &$data['metaTags']['standard'];
+		FB::log($data, __METHOD__);
+
+		$standard  = &$data['standard'];
 
 		// remap to standards
 		$this->set('author', @$standard['rights']);
@@ -350,23 +359,24 @@ class ElementRendererCustom extends ElementRendererAbstract
 	}
 }
 
-/**
- * Stub implementing <jdoc:include type="head" />.
- * The actual work load is performed in ElementRendererHead.
- */
-class JDocumentRendererHead extends ElementRendererHead
+if ( !class_exists('JDocumentRendererHead', false))
 {
-	protected $name = 'head';
-
 	/**
-	 * @param JDocument $_document
+	 * Stub implementing <jdoc:include type="head" />.
+	 * The actual work load is performed in ElementRendererHead.
 	 */
-	public function __construct(JDocument $_document)
+	class JDocumentRendererHead extends ElementRendererHead
 	{
-		// delegate to parent, as getInstance() won't cut it for this "override"
-		parent::__construct();
-	}
+		/**
+		 * @param JDocument $_document
+		 */
+		public function __construct(JDocument $_document)
+		{
+			// delegate to parent, as getInstance() won't cut it for this "override"
+			parent::__construct();
+		}
 
-	/** for API compliance with {@link JDocumentRenderer} */
-	public function getContentType() { return $this->_mime; }
+		/** for API compliance with {@link JDocumentRenderer} */
+		public function getContentType() { return $this->_mime; }
+	}
 }

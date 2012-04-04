@@ -8,8 +8,8 @@
  * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
 
-JLoader::register('ElementFeature', WMPATH_ELEMENTS . '/feature.php');
-JLoader::register('ElementWidget' , WMPATH_ELEMENTS . '/widget.php');
+JLoader::register('ElementFeature', WMPATH_TEMPLATE . '/elements/feature.php');
+JLoader::register('ElementWidget' , WMPATH_TEMPLATE . '/elements/widget.php');
 
 /**
  * Element Renderer Interface
@@ -99,6 +99,8 @@ abstract class ElementRendererAbstract
 			if (strpos($type, '.') === false) {
 				$type = 'renderer.'. $type;
 			}
+
+			self::$elements[$type] = false;
 			$parts = explode('.', $type);
 
 			$class = 'Element'. ucfirst($parts[0]) . ucfirst($parts[1]);

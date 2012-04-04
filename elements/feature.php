@@ -8,10 +8,8 @@
  * @license     GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
 
-define('WMPATH_FEATURE' , WMPATH_ELEMENTS .'/features');
-
 /** Register Standard Feature Classes */
-JLoader::register('ElementFeatureBehavior', WMPATH_FEATURE . '/behavior.php');
+JLoader::register('ElementFeatureBehavior', WMPATH_TEMPLATE . '/elements/features/behavior.php');
 
 class ElementFeature extends ElementRendererAbstract
 {
@@ -23,7 +21,7 @@ class ElementFeature extends ElementRendererAbstract
 		if (!isset(self::$elements[$type]))
 		{
 			$class = 'ElementFeature' . ucfirst($type);
-			require_once WMPATH_FEATURE .'/'. $type . '.php';
+			require_once WMPATH_TEMPLATE . '/elements/features/'. $type . '.php';
 
 			self::$elements[$type] = new $class($attribs);
 			self::$elements[$type]->init();

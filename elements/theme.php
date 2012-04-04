@@ -7,6 +7,16 @@
  * @copyright   (C) 2011-2012 WebMechanic. All rights reserved.
  * @license     GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
+!defined('WMPATH_TEMPLATE') && define('WMPATH_TEMPLATE', dirname(dirname(__FILE__)));
+
+JLoader::register('ElementRendererAbstract', WMPATH_TEMPLATE . '/elements/renderer/abstract.php');
+JLoader::register('ElementRendererHead', WMPATH_TEMPLATE . '/elements/renderer/head.php');
+JLoader::register('ElementRendererMeta', WMPATH_TEMPLATE . '/elements/renderer/head.php');
+JLoader::register('ElementRendererLink', WMPATH_TEMPLATE . '/elements/renderer/head.php');
+JLoader::register('ElementRendererStyles', WMPATH_TEMPLATE . '/elements/renderer/head.php');
+JLoader::register('ElementRendererScript', WMPATH_TEMPLATE . '/elements/renderer/head.php');
+JLoader::register('ElementRendererScripts', WMPATH_TEMPLATE . '/elements/renderer/head.php');
+JLoader::register('ElementRendererCustom', WMPATH_TEMPLATE . '/elements/renderer/head.php');
 
 /**
  * CustomTheme Base Class.
@@ -18,7 +28,6 @@ class CustomTheme
 	 * @see getInstance()
 	 */
 	public static $theme;
-
 	/**#+
 	 * Theme Properties
 	 * @see getConfig()
@@ -63,14 +72,11 @@ class CustomTheme
 	 */
 	static $features = array();
 
-	/**
-	 * @param ConstructTemplateHelper $helper
-	 */
-	protected function __construct(ConstructTemplateHelper $helper)
+	protected function __construct()
 	{
-		$tmpl   = $helper->getTemplate();
+		$tmpl   = JFactory::getApplication()->getTemplate(true);
+	//	spl_autoload_register(array('CustomTheme', 'autoload'));
 
-		$ssi    = false;
 		$theme  = null;
 
 		$ssi = (bool) $tmpl->params->get('ssiIncludes', 0);
@@ -110,35 +116,29 @@ class CustomTheme
 				);
 
 		$this->setChunks($chunks);
-
-		/** @define "JPATH_BASE/templates/construc2/elements" ElementRendererHead */
-		require_once WMPATH_ELEMENTS . '/renderer/head.php';
 	}
 
 	/**
 	 * @return CustomTheme
 	 */
-	public static function getInstance(ConstructTemplateHelper $helper)
+	public static function getInstance()
 	{
-		if (!self::$theme)
-		{
-			self::$theme = new self($helper);
+		if (!self::$theme) {
+			self::$theme = new self();
 		}
-
 		return self::$theme;
 	}
 
 	/**
-	 * @return string
+	 * @return CustomTheme
 	 */
-	public function build(JDocument $document)
+	public function build()
 	{
 		// does anyone know what $head['link'] is for? skipping...
-		$head = $document->getHeadData();
+		$head = JFactory::getDocument()->getHeadData();
 
-FB::log($head, 'build');
-FB::log(self::$chunks, 'build $chunks');
-FB::log(array_keys(self::$features), 'build $features');
+FB::log(self::$chunks, 'CustomTheme::build $chunks');
+FB::log(array_keys(self::$features), 'CustomTheme::build $features');
 
 		self::$chunks['meta']['renderer.head']    = ElementRendererAbstract::getInstance('renderer.head')->build($head);
 		self::$chunks['meta']['renderer.meta']    = ElementRendererAbstract::getInstance('renderer.meta')->build($head['metaTags']);
@@ -152,7 +152,9 @@ FB::log(array_keys(self::$features), 'build $features');
 
 		self::$chunks['meta']['renderer.custom']  = ElementRendererAbstract::getInstance('renderer.custom')->build($head['custom']);
 
-		return implode('', self::$chunks['meta']);
+FB::log($head, 'build');
+
+		return $this;
 	}
 
 	/**
@@ -314,7 +316,7 @@ FB::log(array_keys(self::$features), 'build $features');
 	/**
 	 * @param $name
 	 */
-	protected function dropFeature($name)
+	public function dropFeature($name)
 	{
 
 	}
@@ -323,7 +325,7 @@ FB::log(array_keys(self::$features), 'build $features');
 	 * @param string $theme
 	 * @return ElementRendererAbstract or NULL
 	 */
-	protected function loadFeatures($theme = null)
+	public function loadFeatures($theme = null)
 	{
 		if (null == $theme) {
 			$theme = $this->name;
@@ -334,14 +336,29 @@ FB::log(array_keys(self::$features), 'build $features');
 	/**
 	 * @see JModelForm::loadForm()
 	 */
-	protected function loadParams()
+	public function loadParams()
 	{
 		// Get the form.
-		JForm::addFormPath(WMPATH_WIDGETS . '/forms');
+		JForm::addFormPath(WMPATH_TEMPLATE . '/elements/widgets/forms');
+
+		return $this;
 	}
+
+	public function setForm(JForm $form)
+	{
+		// Get the form.
+		JForm::addFormPath(WMPATH_TEMPLATE . '/elements/widgets/forms');
+
+		$this->jform = $form;
+
+		FB::info($this->jform->getName());
+
+		return $this;
+	}
+
 	/**
 	 * @param      $feature
-	 * @param null $data
+	 * @param null $data    Can be an array with a 'module' reference.
 	 * @return string A rendered feature.
 	 */
 	public function renderFeature($feature, $data=null)
@@ -391,6 +408,28 @@ FB::log(array_keys(self::$features), 'build $features');
 			return $this->$key;
 		}
 		return $default;
+	}
+
+	/**
+	 * @static
+	 * @param $class
+	 * @return void
+	 */
+	static protected function autoload($class)
+	{
+		if ($class[0] == 'J' || $class[0] == 'K') {return;}
+
+		$parts = preg_split('/(?<=[a-z])(?=[A-Z])/x', $class);
+
+		$parts[0] = WMPATH_TEMPLATE .'/'. strtolower($parts[0]) .'s';
+		// i.e. feature, widget, renderer
+		$parts[1] = strtolower($parts[1]);
+		// inflection-ish
+		$parts[1] .= ($parts[1] == 'renderer') ? '' : 's';
+		// filename
+		$parts[2] = strtolower($parts[2]) . '.php';
+FB::warn($parts, 'AUTO LOAD '. $class);
+		include_once implode('/', $parts);
 	}
 
 }
