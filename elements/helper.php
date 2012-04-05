@@ -37,10 +37,10 @@ class ConstructTemplateHelper
 	protected $tmpl;
 
 	/** @var $edit_mode boolean */
-	protected $edit_mode = false;
+	protected $edit_mode;
 
 	/** @var $debug boolean */
-	protected $debug = false;
+	protected $debug;
 
 	/** @var $helper ConstructTemplateHelper instance of self */
 	public static $helper;
@@ -54,8 +54,8 @@ class ConstructTemplateHelper
 	/** @var $head array */
 	static protected $head = array();
 
-	/** @var $groupcount array */
-	static protected $groupcount = array();
+	/** @var $group_count array */
+	static protected $group_count = array();
 
 	/**
 	 * Use {@link getInstance()} to instantiate.
@@ -70,13 +70,6 @@ class ConstructTemplateHelper
 		$this->doc->setTab('');
 
 		$this->loadConfig();
-
-		// some edit form requested?
-		// - needs refinement and maybe some config to enforce it
-		$this->edit_mode = in_array($app->input->get('layout'), array('edit','form'))
-						|| in_array($app->input->get('view'), array('form'))
-						|| in_array($app->input->get('option'), array('com_media'))
-						;
 
 		$this->debug = $app->getCfg('debug') && $app->input->get('tpos', 0, 'bool');
 
@@ -547,11 +540,11 @@ class ConstructTemplateHelper
 		}
 
 		if ($this->debug) {
-			self::$groupcount[$group] = ($group =='column') ? self::MAX_COLUMNS : self::MAX_MODULES;
+			self::$group_count[$group] = ($group =='column') ? self::MAX_COLUMNS : self::MAX_MODULES;
 		}
 
-		if (isset(self::$groupcount[$group])) {
-			return self::$groupcount[$group];
+		if (isset(self::$group_count[$group])) {
+			return self::$group_count[$group];
 		}
 
 		if ($max < 1) $max = 1;
@@ -568,17 +561,17 @@ class ConstructTemplateHelper
 		}
 
 		$modules[0] = $i;
-		self::$groupcount[$group] = $modules;
+		self::$group_count[$group] = $modules;
 
 		// #FIXME special treatment for alpha/beta groups if $group='column'
 		if ($group =='column') {
-			self::$groupcount['group-alpha']	= $modules[1] + $modules[2];
-			self::$groupcount['column-1']		= $modules[1];
-			self::$groupcount['column-2']		= $modules[2];
+			self::$group_count['group-alpha']	= $modules[1] + $modules[2];
+			self::$group_count['column-1']		= $modules[1];
+			self::$group_count['column-2']		= $modules[2];
 
-			self::$groupcount['group-beta']		= $modules[3] + $modules[4];
-			self::$groupcount['column-3']		= $modules[3];
-			self::$groupcount['column-4']		= $modules[4];
+			self::$group_count['group-beta']		= $modules[3] + $modules[4];
+			self::$group_count['column-3']		= $modules[3];
+			self::$group_count['column-4']		= $modules[4];
 		}
 
 		return $modules;
@@ -586,7 +579,7 @@ class ConstructTemplateHelper
 
 	public function numModules($group)
 	{
-		return isset(self::$groupcount[$group]) ? self::$groupcount[$group] : 0;
+		return isset(self::$group_count[$group]) ? self::$group_count[$group] : 0;
 	}
 
 	/**
@@ -637,7 +630,7 @@ class ConstructTemplateHelper
 		settype($attribs['autocols'], 'bool');
 		if ($attribs['autocols'] !== false)
 		{
-			if ( $n > 0 ) {
+			if ( $n > 1 ) {
 				unset($attribs['oocss']);
 				$css[] = 'unit size1of'.$n;
 			}
@@ -734,251 +727,9 @@ class ConstructTemplateHelper
 	}
 
 	/**
-	 * @deprecated
+	 * @deprecated 1.10.0
 	 */
-	private function _addLink($href, $uagent=self::UA, $attribs=array(), $rel='stylesheet')
-	{
-		static $favicon;
-
-		$this->_makeRoom('links', $uagent);
-
-		$href = $this->_tuckUrl($href);
-		$info = pathinfo($href);
-		settype($info['extension'], 'string');
-
-		$rel = strtolower($rel);
-		$attribs['rel'] = $rel;
-
-		// [alternate st]ylesheet
-		if ($info['extension'] == 'css' || strpos($attribs['rel'], 'ylesheet') > 0) {
-			$attribs['type'] = 'text/css';
-			$attribs['id'] = basename($href, '.css') . '-css';
-			unset($attribs['mime']);
-		}
-
-		// [shortcut ]icon type="image/[x-icon|png]"
-		if (strpos($attribs['rel'], 'icon') !== false) {
-			if ($info['extension'] == 'ico') {
-				$attribs['type'] = 'image/x-icon';
-			}
-			else if ($info['extension'] == 'png') {
-				$attribs['type'] = 'image/png';
-			}
-			// a latter icon will replace a former
-			if (isset($favicon)) {
-				unset(self::$head["{$uagent}"]['links'][$favicon]);
-			}
-			$favicon = $href;
-		}
-
-		$attribs = array_filter($attribs);
-
-		self::$head["{$uagent}"]['links'][$href] = JArrayHelper::toString($attribs);
-
-		return $this;
-	}
-
-	/**
-	 * @deprecated
-	 */
-	private function _addMetaData($name, $content, $uagent=self::UA, $http_equiv=false)
-	{
-		if ($http_equiv) {
-			$this->element('meta')->httpEquiv($name, $content);
-		} else {
-			$this->element('meta')->set($name, $content);
-		}
-		return $this;
-	}
-
-	/**
-	 * @deprecated
-	 */
-	private function _addScript($href, $uagent=self::UA, $attribs=array())
-	{
-		$this->element('script')->set($href, $attribs, $uagent);
-		return $this;
-
-		$this->_makeRoom('scripts', $uagent, array('cdn'=>array(), 'media'=>array(), 'templates'=>array(), 'scripts'=>array()));
-
-		$href = $this->_tuckUrl($href);
-		$location = 'scripts';
-
-		if (strpos(" {$href}", 'http') >= 1 || strpos(" {$href}", '//') >= 1) {
-			$location = 'cdn';
-		}
-
-		if (preg_match('#(media|templates)/system/#', $href, $match)) {
-			$location = $match[1];
-		}
-
-		unset($attribs['src']);
-
-		if (isset($attribs['defer']) && $attribs['defer'] == false) {
-			unset($attribs['defer']);
-		}
-		if (isset($attribs['async']) && $attribs['async'] == false) {
-			unset($attribs['async']);
-		}
-
-		// store
-		self::$head["{$uagent}"]['scripts'][$location][$href] = JArrayHelper::toString($attribs);
-
-		return $this;
-	}
-
-	/**
-	 * @deprecated
-	 */
-	private function _addScriptDeclaration($content, $uagent=self::UA)
-	{
-		$this->element('scripts')->set($content, null, $uagent);
-		return $this;
-
-		$this->_makeRoom('script', $uagent);
-
-		// flatten
-		$script = (is_array($content) ? implode(PHP_EOL, $content) : $content);
-		// de-XHTMLize inline <script> created by modules
-		$script = str_replace(array('<![CDATA[', ']]>',"//\r\n","//\n"), '', $script);
-
-		self::$head["{$uagent}"]['script'][] = $script;
-	}
-
-	/**
-	 * @deprecated
-	 */
-	private function _addStyle($content, $uagent=self::UA)
-	{
-		$this->element('styles')->set($content, null, $uagent);
-
-		return $this;
-
-		$this->_makeRoom('style', $uagent);
-
-		// store
-		self::$head["{$uagent}"]['style'][] = str_replace(PHP_EOL, ' ', (is_array($content) ? implode(PHP_EOL, $content) : $content) );
-
-	}
-
-	/**@#- */
-
-	/**
-	 * Applies all supplemental, browser-specific head elements to the document,
-	 * taking other items added else into Joomla's document into account.
-	 *
-	 * @return ConstructTemplateHelper for fluid interface
-	 * @see renderHead(), sortScripts()
-	 *
-	 * @todo move to "head renderer" class
-	 */
-	public function buildHead()
-	{
-return $this;
-
-		$head = $this->doc->getHeadData();
-
-		$tmpl_url = JURI::base(true) . '/templates/'. $this->tmpl->template;
-
-		// Remove MooTools if set to do so.
-		$loadModal	= (bool) $this->tmpl->params->def('loadModal', 0);
-		$loadMoo	= $this->tmpl->params->def('loadMoo', $loadModal);
-
-		// wrap already present noConflict() placed elsewhere
-		if ((bool) $this->tmpl->params->get('loadjQuery')) {
-			$noconflict = array();
-			$loadModal	= (bool) $this->tmpl->params->get('loadModal');
-			$loadMoo	= $this->tmpl->params->get('loadMoo', $loadModal);
-
-			if (!$loadMoo) {
-				$noconflict[] = 'if(window.jQuery){window.addEvent=function(n,f){console.log(\'addEvent \',n,f);var $$=jQuery;if(n=="domready"||n=="load"){jQuery(document).ready(f);}};}';
-			}
-
-			if (isset($head['script']['text/javascript'])) {
-				// replace present calls with empty functions
-				if ( false !== strpos($head['script']['text/javascript'], 'jQuery.noConflict') ) {
-					$noconflict[] = str_replace('jQuery.noConflict', 'new Function', $head['script']['text/javascript']);
-				}
-			}
-			$this->addScriptDeclaration($noconflict);
-		}
-
-		foreach ($head as $group => $stuff)
-		{
-			if (!is_array($stuff)) continue;
-
-			switch ($group)
-			{
-				case 'metaTags':
-					// let '' be but move "normal" away so it appears below <title>
-					foreach ($stuff['standard'] as $key => $data) {
-						if (empty($data)) continue;
-						$this->addMetaData($key, $data);
-					}
-					unset($head[$group]['standard']);
-					break;
-
-				case 'links':
-					$elt = $this->element('link');
-					foreach ($stuff as $key => $data) {
-						$elt->set($key, $data['relation'], $data['attribs']);
-					}
-					unset($head[$group]);
-					break;
-
-				case 'styleSheets':
-					$elt = $this->element('link');
-					foreach ($stuff as $key => $data) {
-						$elt->set($key, 'stylesheet', $data);
-					}
-					unset($head[$group]);
-					break;
-
-				case 'style':
-					foreach ($stuff as $key => $data) {
-						$this->addStyle($data);
-					}
-					unset($head[$group]);
-					break;
-
-				case 'scripts':
-					// cleanup, remove dupes, make rel. URLs
-					$scripts = array();
-					foreach ($stuff as $key => $data) {
-						$url = parse_url($key);
-						if (!isset($url['scheme'])) {
-							$key = ltrim($key, '/');
-						}
-						$rel = str_replace(JURI::root(), '/', $key);
-						$scripts[$rel] = $data;
-					}
-
-					$head[$group] = array();
-					if (count($scripts)) {
-						$head[$group] = $scripts;
-					}
-					break;
-
-				case 'script':
-					foreach ($stuff as $key => $data) {
-						$this->addScriptDeclaration($data);
-					}
-					unset($head[$group]);
-					break;
-			}
-		}
-
-		// put back what's left
-		if (!$this->tmpl->params->get('headCleanup')) {
-			$this->sortScripts($head);
-		}
-
-		$this->doc->setHeadData($head);
-
-		$this->renderHead();
-
-		return $this;
-	}
+	public function buildHead() {return $this;}
 
 	/**
 	 * Attempts to order the script elements by pushing MooTools and jQuery
@@ -1293,6 +1044,16 @@ To allow parallel downloading, move the inline script before the external CSS fi
 
 	public function isEditMode()
 	{
+		if (null == $this->edit_mode) {
+			// some edit form requested?
+			// - needs refinement and maybe some config to enforce it
+			$request  = new JInput();
+			$this->edit_mode = in_array($request->get('layout'), array('edit','form','pagebreak'))
+							|| in_array($request->get('view'), array('form'))
+							|| in_array($request->get('option'), array('com_media'))
+							|| $request->get('e_name')
+							;
+		}
 		return $this->edit_mode;
 	}
 

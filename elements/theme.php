@@ -60,7 +60,7 @@ class CustomTheme
 	/**
 	 * @see setChunks()
 	 */
-	static $chunks = array('meta'=>'');
+	static $chunks = array();
 
 	/**
 	 * @see setCapture(), getCapture()
@@ -109,6 +109,7 @@ class CustomTheme
 
 		// @see ConstructTemplateHelper::renderModules()
 		$chunks = array(
+					'meta'			=> '',
 					'module_before'	=> '<div id="{position}{name}" class="{class}">',
 					'module_after'	=> '</div>',
 					'unit_before'	=> '<div class="{class}">',
