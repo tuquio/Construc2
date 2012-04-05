@@ -7,6 +7,8 @@
  * @author      WebMechanic http://webmechanic.biz
  * @copyright   (C) 2011 WebMechanic
  * @license     GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
+ *
+ * @var ConstructTemplateHelper $templateHelper
  */
 // Load template logic
 require JPATH_THEMES.'/'.$this->template.'/elements/logic.php';
@@ -16,11 +18,8 @@ require JPATH_THEMES.'/'.$this->template.'/elements/logic.php';
 
 // Check for alternate index file, load it if it exists, and leave
 if ($alternateIndexFile = $templateHelper->getLayout()) {
-	if ($alternateIndexFile['scope'] == 'html') {
-		require_once JPATH_THEMES.'/'.$this->template.'/layouts/static_html.php';
-	} else {
-		require_once $alternateIndexFile['path'];
-	}
+	// $alternateIndexFile['scope'] == 'html'
+	require_once $alternateIndexFile['path'];
 	return;
 }
 
