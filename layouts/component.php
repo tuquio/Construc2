@@ -2,15 +2,21 @@
 /**
  * Component page layout.
  *
+	com_content &print=1  &layout=XYZ  &page=[NN]
+	com_media  &view=images  &e_name=jform_articletext
+	com_media  &view=imagesList  &folder=[XYZ]  &asset=NN  &author=NN
+ *
  * @package     Templates
  * @subpackage  Layouts
  * @author		WebMechanic http://webmechanic.biz
  * @copyright	Copyright (C) 2011 WebMechanic http://webmechanic.biz. All rights reserved.
  * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
+ *
+ * @var ConstructTemplateHelper $templateHelper
+ * @var $cache_manifest
  */
-// com_content &print=1  &layout=XYZ  &page=[NN]
-// com_media  &view=images  &e_name=jform_articletext
-// com_media  &view=imagesList  &folder=[XYZ]  &asset=NN  &author=NN
+!defined('WMPATH_LAYOUTS') && define('WMPATH_LAYOUTS', dirname(__FILE__));
+
 $app = JFactory::getApplication();
 ?>
 <html lang="<?php echo $this->language ?>" dir="<?php echo $this->direction ?>" <?php echo $cache_manifest ?>>
@@ -18,7 +24,7 @@ $app = JFactory::getApplication();
 <jdoc:include type="head" />
 </head>
 <body class="main-only component <?php echo $app->input->get('option'), ' ', $app->input->get('print') ? 'print' : $app->input->get('layout') ?>">
-<?php ConstructTemplateHelper::msieSwatter() ?>
+<?php ConstructTemplateHelper::msieSwatter(); ?>
 	<div id="page-top" class="line <?php echo $templateHelper->getPageAlias(true) ?>">
 <?php if($app->input->get('print')) { ?>
 		<div id="page-head" class="line page-head">
