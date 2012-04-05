@@ -9,14 +9,10 @@
 
 	function setActiveStyleSheet(title) {
 		var i, a;
-		console.log('setActiveStyleSheet', title);
+		console.log('switcher.js', 'setActiveStyleSheet', title);
 		for (i = 0; (a = document.getElementsByTagName("link")[i]); i++) {
-			if (a.getAttribute("rel").indexOf("style") != -1
-			    && a.getAttribute("title")) {
-				a.disabled = true;
-				if (a.getAttribute("title") == title) {
-					a.disabled = false;
-				}
+			if (parseInt(a.getAttribute("rel").indexOf("style"), 10) !== -1 && a.getAttribute("title")) {
+				a.disabled = (a.getAttribute("title") === title);
 			}
 		}
 	}
@@ -24,8 +20,7 @@
 	function getActiveStyleSheet() {
 		var i, a;
 		for (i = 0; (a = document.getElementsByTagName("link")[i]); i++) {
-			if (a.getAttribute("rel").indexOf("style") != -1
-			    && a.getAttribute("title") && !a.disabled) {
+			if (parseInt(a.getAttribute("rel").indexOf("style"), 10) !== -1 && a.getAttribute("title") && !a.disabled) {
 				return a.getAttribute("title");
 			}
 		}
@@ -35,9 +30,7 @@
 	function getPreferredStyleSheet() {
 		var i, a;
 		for (i = 0; (a = document.getElementsByTagName("link")[i]); i++) {
-			if (a.getAttribute("rel").indexOf("style") != -1
-			    && a.getAttribute("rel").indexOf("alt") == -1
-			    && a.getAttribute("title")) {
+			if (parseInt(a.getAttribute("rel").indexOf("style"), 10) !== -1 && parseInt(a.getAttribute("rel").indexOf("alt"), 10) === -1 && a.getAttribute("title")) {
 				return a.getAttribute("title");
 			}
 		}
@@ -71,7 +64,7 @@
 	var $ready = function() {
 		var cookie = readCookie("style");
 		var title = cookie ? cookie : getPreferredStyleSheet();
-		console.log(title, cookie);
+		console.log('switcher.js', title, cookie);
 		setActiveStyleSheet(title);
 		if (window.jQuery) {
 			jQuery('#styleswitcher')
@@ -95,8 +88,8 @@
 
 	if (window.jQuery) {
 		// assign via jQuery
-		jQuery('document').ready($ready);
-		jQuery('document').unload($unload);
+		jQuery(document).ready($ready);
+		jQuery(document).unload($unload);
 	} else if (window.addEvent) {
 		// assign via Mootools
 		window.addEvent('domready', $ready);
