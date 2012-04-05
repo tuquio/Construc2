@@ -1,5 +1,4 @@
-@import url("core/base.css");
-@import url("editor.css");
+@import url(editor.css);
 /* add some wiggle room */
 .mceContentBody {font-size:100%; padding:10px;margin:0;}
 /* prevent images from overlapping */

@@ -2,6 +2,7 @@
  * editor.css default styles
  * @version 1.9.14
  */
+@import url(core/base.css);
 a:link, a:visited {color: #1B57B1;}
 #system-readmore {height:3px; padding:1px 0 0 0; border:1px dotted darkred; border-bottom:1px dashed darkred; margin-bottom:1em;}
 #system-readmore:before {content: '[Umbruch]'; display:block; text-align:right; font:normal 10px/normal sans-serif, monospace; color:darkgray;}
@@ -22,7 +23,4 @@ a.ext  {color:#c55}
 .lft {float:left;margin:.6em .6em 1ex 0}
 
 /* message box text (div, p, blockquote, etc.) @see template.css font colors */
-.warning { padding: 5px; color: #c20000; font-size:1.1em}
-.negative, .error { padding: 5px; color: #c20000;}
-.positive, .message { padding: 5px; color: #fc6c06;}
-.tips { padding: 5px; color: #73ab00;}
+p.warning,p.negative,p.error,p.positive,p.message,p.tips {padding-left:.5ex;padding-right:.5ex}
