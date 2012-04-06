@@ -19,7 +19,7 @@ body {min-width:900px;max-width:94%;margin:0 auto}
 	body.com_media #body-container	,
 	body.modal     #body-container	,
 	body.com_media .page-foot		,
-	body.modal     .page-foot		{min-width:0;max-width:750px}
+	body.modal     .page-foot		{min-width:0;max-width:100%}
 	body.com_media .content-container,
 	body.modal     .content-container {margin-top:0}
 	.body-overlayed #sbox-window.shadow {padding:2px}
@@ -105,6 +105,7 @@ h1,h2,h3,h4,h5,h6	{line-height:normal}
 
 h1,h2,h3,h4,h5,h6	,
 menu, .hmenu		{font-family:'Ubuntu Condensed','Trebuchet MS',Arial,sans-serif;text-rendering:optimizelegibility}
+.hmenu				{font-size-adjust:.62}
 
 /* hyphens are tuned off below for some contexts */
 p 					{-webkit-hyphens:auto;-moz-hyphens:auto;hyphens:auto}
@@ -183,7 +184,7 @@ aside.article:hover .content_rating + form {display:block}
  * the disclosure widget will still be displayed if you don't provide a summary element
  */
 details.meta        {clear:both;padding:1ex .8em;margin-top:10px}
-summary[tabindex]   {outline:none} /* with tabindex, ugly outlines are shown */
+summary[tabindex]   {outline:none} /* */
 .meta summary       {display:inline;cursor:help}
 summary::-webkit-details-marker {font-size:1.2em}
 
@@ -257,15 +258,17 @@ figure.portrait				{height:245px;width:auto;max-width:100%}
 	background-size: 100% auto;
 }
 
-/* =mod_search / mod_finder - align with mainmenu and li paddings */
+/* =mod_search / mod_finder - align with mainmenu and li padding */
 .mainnavi form 				{position:absolute;right:2px;top:.5ex}
 .mainnavi div.finder ,
 .mainnavi div.search		{display:inline-block;padding:.2ex}
 .mainnavi label.finder ,
 .mainnavi .search > label	{display:inline;padding-right:1em}
-.mainnavi .finder > input ,
-.mainnavi .search > input	{display:inline;width:75%;padding-right:1em}
+.mainnavi input.inputbox	{display:inline;width:75%;padding-right:1em}
 .mainnavi .finder a			{display:none;padding:.5ex 0;text-align:center;width:100%;z-index:27}
+.mainnavi .finder br		{display:none}
+/* https://developer.mozilla.org/en/CSS/pointer-events
+ * FF3.6+, CR2+, SF4+ (SVG only in IE9+, OP9) */
 /*
 .mainnavi .finder:hover a	,
 .mainnavi .finder a:focus	,
@@ -275,9 +278,8 @@ figure.portrait				{height:245px;width:auto;max-width:100%}
 .mainnavi input:focus ~ a	{display:inline-block;position:absolute}
 .mainnavi .finder a:active  ,
 .mainnavi .finder a:focus   {display:inline-block;position:absolute;outline:1px dotted}
-div.finder br				{display:none}
-#finder *:active {background:red;color:green}
-#finder *:focus  {background:orange;color:navy}
+.mainnavi .finder a:active	{background:red;color:green}
+.mainnavi .finder a:focus	{background:orange;color:navy}
 
 /*
  * =menus
@@ -302,15 +304,12 @@ nav.page-toc					{padding-top:1ex;padding-left:.6em;margin-left:1em} /* aka #art
 .has-actions nav.page-toc 		{margin-right:20px}
 
 /* align with mainmenu items which also happens to be a .hmenu */
-.breadcrumbs            {padding-left:.4em;padding-right:.4em}
-.breadcrumbs strong     ,
-.breadcrumbs > span     {display:table-cell}
+.breadcrumbs .hmenu		{padding-left:.4em;padding-right:.4em}
+.breadcrumbs strong		,
+.breadcrumbs > span		{display:table-cell}
 .breadcrumbs span.mi    {padding:.2ex .4em}
 .breadcrumbs strong {}
 .breadcrumbs .pathway {}
-
-/* https://developer.mozilla.org/en/CSS/pointer-events
- * FF3.6+, CR2+, SF4+ (SVG only in IE9+, OP9) */
 
 .has-toc .actionsmenu	{position:absolute;float:none;margin-right:0;right:0}
 .actionsmenu 			{margin-top:-1em;margin-right:-10px;width:20px;opacity:.4}
