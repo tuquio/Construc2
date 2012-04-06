@@ -9,23 +9,18 @@
  * @license     GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
 
-$style	= 'mod'; // null is essentially the same as 'raw'
-
-?><div id="group-beta" class="column-group group-beta colcount-<?php echo $columnGroupBetaCount ?>"><?php
-
-if ($columnGroupCount[3]) {
-	$templateHelper->renderModules('column-3', $style, array('toggle'=>'odd,even', 'autocols'=>false));
-}
-if ($columnGroupCount[4]) {
-	$templateHelper->renderModules('column-4', $style, array('toggle'=>'odd,even', 'autocols'=>false));
-}
-
-?></div><?php
 /*
  * if you want to make use of the CSS3 :empty() selector,
  * keep these PHP tags tight close to the HTML markup or a
  * single white space may render your styles useless.
  */
+?><aside id="group-beta" class="column-group group-beta" data-modules="<?php echo $columnGroupBetaCount ?>"><?php
 
-//cleanup
-unset($style);
+if ($columnGroupCount[3]) {
+	$templateHelper->renderModules('column-3', 'mod', array('toggle'=>'odd,even', 'autocols'=>0));
+}
+if ($columnGroupCount[4]) {
+	$templateHelper->renderModules('column-4', 'mod', array('toggle'=>'odd,even', 'autocols'=>0));
+}
+
+?></aside><?php

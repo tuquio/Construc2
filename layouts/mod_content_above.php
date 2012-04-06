@@ -10,34 +10,27 @@
  */
 $modcount = $templateHelper->numModules('content-above');
 
-$style	= null; // null is essentially the same as 'raw'
-$chunks = array(
-		'module_before' => '<div id="{position}" class="{class}">',
-		'module_after'  => '</div>'
-		);
-$templateHelper->getTheme()->setChunks($chunks, true);
-
 /*
  * if you want to make use of the CSS3 :empty() selector,
  * keep these PHP tags tight close to the HTML markup or a
  * single white space may render your styles useless.
  */
-if ($modcount) : ?><div id="content-above" class="line above count-<?php echo $contentAboveCount[0] ?>"><div class="above-inner"><?php endif;
+if ($modcount) : ?><div id="content-above" class="line above" data-modules="<?php echo $contentAboveCount[0] ?>"><div class="above-inner"><?php endif;
 
 if ($contentAboveCount[1]) {
-	$templateHelper->renderModules('content-above-1', $style, array());
+	$templateHelper->renderModules('content-above-1');
 }
 if ($contentAboveCount[2]) {
-	$templateHelper->renderModules('content-above-2', $style, array());
+	$templateHelper->renderModules('content-above-2');
 }
 if ($contentAboveCount[3]) {
-	$templateHelper->renderModules('content-above-3', $style, array());
+	$templateHelper->renderModules('content-above-3');
 }
 if ($contentAboveCount[4]) {
-	$templateHelper->renderModules('content-above-4', $style, array());
+	$templateHelper->renderModules('content-above-4');
 }
 
 if ($modcount) : ?></div></div><?php endif;
 
 //cleanup
-unset($style, $modcount, $chunks);
+unset($modcount);

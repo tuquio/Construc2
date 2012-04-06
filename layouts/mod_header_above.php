@@ -10,12 +10,6 @@
  * @copyright   (C) 2011-2012 WebMechanic http://webmechanic.biz. All rights reserved.
  * @license     GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
-$chunks = array(
-		'module_before' => '<div id="{position}" class="{class}">',
-		'module_after'  => '</div>'
-		);
-
-$templateHelper->getTheme()->setChunks($chunks, true);
 
 /* All module output is captured in a single buffer, 'header-above'.
  * This will concatenate ALL active modules as if they were placed in
@@ -44,7 +38,7 @@ if ($headerAboveCount[4]) {
 //       which getCapture() can't tell apart!!
 $modsize = $templateHelper->getCapture($group, true);
 
-if ($modsize) { ?><div id="header-above" class="line above count-<?php echo $headerAboveCount[0] ?>"><div class="above-inner"><?php }
+if ($modsize) { ?><div id="header-above" class="line above" data-modules="<?php echo $headerAboveCount[0] ?>"><div class="above-inner"><?php }
 
 	// get the big blob of all the modules in header-above-1 to header-above-6
 	echo $templateHelper->getCapture($group);
@@ -57,5 +51,5 @@ if ($modsize) { ?></div></div><?php }
  */
 
 //cleanup
-unset($style, $modsize, $chunks);
+unset($style, $modsize);
 
