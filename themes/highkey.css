@@ -112,7 +112,7 @@ header.below	{margin:0 auto}
 		 column-count:2;		column-gap:10px;
 }
 
-#system-message-container {display:none;position:absolute;right:0;top:-3.25em;min-width:50%;max-width:75%;opacity:.95}
+#system-message-container {position:absolute;right:0;top:auto;min-width:50%;max-width:75%;opacity:.95}
 
 /*
  * =columns context
