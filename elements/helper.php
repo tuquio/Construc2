@@ -36,11 +36,11 @@ class ConstructTemplateHelper
 	/** @var $tmpl object Template name + params */
 	protected $tmpl;
 
-	/** @var $edit_mode boolean */
-	protected $edit_mode;
-
-	/** @var $debug boolean */
-	protected $debug;
+	/**
+	 * @var $states a list of request states
+	 * @see hasState()
+	 */
+	static $states = array('debug'=>null,'edit'=>null,'print'=>null,'modal'=>null);
 
 	/** @var $helper ConstructTemplateHelper instance of self */
 	public static $helper;
@@ -64,20 +64,15 @@ class ConstructTemplateHelper
 	{
 		$this->doc  = JFactory::getDocument();
 		$this->tmpl = JFactory::getApplication()->getTemplate(true);
-		$app = JFactory::getApplication();
 
 		// remove this nonsense
 		$this->doc->setTab('');
 
 		$this->loadConfig();
 
-		$this->debug = $app->getCfg('debug') && $app->input->get('tpos', 0, 'bool');
-
 		$this->addLayout('index')
 			->addLayout('component')
 			->addLayout('modal');
-
-
 	}
 
 	/**
@@ -539,7 +534,7 @@ class ConstructTemplateHelper
 			$max = self::MAX_COLUMNS;
 		}
 
-		if ($this->debug) {
+		if ($this->hasState('debug')) {
 			self::$group_count[$group] = ($group =='column') ? self::MAX_COLUMNS : self::MAX_MODULES;
 		}
 
@@ -593,7 +588,7 @@ class ConstructTemplateHelper
 	 */
 	public function renderModules($position, $style=null, $attribs=array())
 	{
-		if ($this->isEditMode()) {
+		if ($this->hasState('edit')) {
 			return $this;
 		}
 
@@ -751,12 +746,6 @@ class ConstructTemplateHelper
 	 */
 	protected function sortScripts($head)
 	{
-
-		// matter of concerns
-		static $libs = array(
-					'jquery'	=> '#/(jquery\.)#',
-					'mootools'	=> '#/(moo\w+[\.\-])#',
-				);
 		// jQuery CDNs: http://docs.jquery.com/Downloading_jQuery#CDN_Hosted_jQuery
 		static $CDN = array(
 					'ajax.googleapis.com'	=> array('jquery'=>'/jquery/(\d\.\d\.\d)/', 'mootools'=>'/mootools/(\d\.\d\.\d)/'),
@@ -770,7 +759,7 @@ class ConstructTemplateHelper
 		$loadJQuery	= $this->tmpl->params->get('loadjQuery');
 
 		// however ...
-		if ($this->isEditMode())
+		if ($this->hasState('edit'))
 		{
 			$loadMoo = true;
 			$loadJQuery	= false;
@@ -927,7 +916,7 @@ To allow parallel downloading, move the inline script before the external CSS fi
 	 * </xmp>
 	 *
 	 * @param int $min default 6, CC's start with MSIE 6
-	 * @param int $max default 6, CC's end with MSIE 9
+	 * @param int $max default 9, CC's end with MSIE 9
 	 */
 	static public function msieSwatter($min=6, $max=9)
 	{
@@ -1042,19 +1031,71 @@ To allow parallel downloading, move the inline script before the external CSS fi
 		return JPATH_THEMES .'/'. $this->tmpl->template .'/layouts';
 	}
 
-	public function isEditMode()
+	/**
+	 * Tells the current document request state to add/suppress external
+	 * resources such as print or edit stylesheets.
+	 *
+	 * @param  string $state a document/request state: edit, print, modal, preview...
+	 * @return bool
+	 */
+	public function hasState($state, $default = false)
 	{
-		if (null == $this->edit_mode) {
-			// some edit form requested?
-			// - needs refinement and maybe some config to enforce it
-			$request  = new JInput();
-			$this->edit_mode = in_array($request->get('layout'), array('edit','form','pagebreak'))
-							|| in_array($request->get('view'), array('form'))
-							|| in_array($request->get('option'), array('com_media'))
-							|| $request->get('e_name')
-							;
+		$state = strtolower($state);
+		if (null === self::$states[$state])
+		{
+			self::$states[$state] = $default;
+			$request = new JInput();
+
+			switch ($state)
+			{
+				case 'edit':
+					self::$states[$state] = (bool) $this->_editState($request);
+					break;
+				case 'print':
+					self::$states[$state] = (bool) $this->_printState($request);
+					break;
+				case 'modal':
+					break;
+				case 'debug':
+					self::$states[$state] = (bool) $this->_debugState($request);
+					break;
+			}
 		}
-		return $this->edit_mode;
+
+		return self::$states[$state];
+	}
+
+	/**
+	 * @return bool true if the document/template is in "edit mode"
+	 */
+	protected function _editState(JInput $request)
+	{
+		return in_array($request->get('layout'), array('edit','form','pagebreak'))
+				|| in_array($request->get('view'), array('form'))
+				|| in_array($request->get('option'), array('com_media'))
+				|| $request->get('e_name');
+	}
+	/**
+	 * @return bool true if the document/template is in "print mode"
+	 */
+	protected function _printState(JInput $request)
+	{
+
+	}
+	/**
+	 * @return bool true if the document/template is in "modal window mode"
+	 */
+	protected function _modalState(JInput $request)
+	{
+
+	}
+	/**
+	 * @return bool true if the document/template is in "debug mode"
+	 */
+	protected function _debugState(JInput $request)
+	{
+		$app = JFactory::getApplication();
+		return $app->getCfg('debug') && $request->get('tpos', 0, 'bool');
 	}
 
 	/**

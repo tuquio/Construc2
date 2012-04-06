@@ -29,7 +29,8 @@ $base_url 	= JURI::base(true) . '/';
 $tmpl_url 	= $base_url. 'templates/'. $this->template;
 
 // some editor form requested, needs mo' styles, and less modules
-$editMode = $templateHelper->isEditMode();
+$editMode  = $templateHelper->hasState('edit');
+$printMode = $templateHelper->hasState('print');
 
 /*
  * META
@@ -55,7 +56,7 @@ $templateHelper->element('meta')->set('viewport', 'width=device-width,initial-sc
 $templateHelper->feature('ssi'  , $this->params->get('ssiIncludes', false));
 $templateHelper->feature('rtl'  , ($this->direction == 'rtl'));
 $templateHelper->feature('edit' , $editMode);
-$templateHelper->feature('print', $app->input->get('print', 0));
+$templateHelper->feature('print', $printMode);
 
 // Preview Module Positions with index.php?tp=1
 if ($app->get('input')->get('tp', 0, 'bool')) {
@@ -73,14 +74,6 @@ $templateHelper->feature('standards.prefixfree', $this->params->get('prefixfree'
 
 // Google Chrome Frame Install for oldIEs
 $templateHelper->feature('msie.cfinstall', $this->params->get('msieCfinstall', $this->params->get('loadGcf', false)));
-
-// Style switcher (JS based)
-#FIXME $showSwitcher 	= (bool) $this->params->get('styleswitch', $this->params->get('enableSwitcher', false));
-#FIXME $templateHelper->widget('styleswitch', ($showSwitcher & $editMode));
-
-// CSS Powered Fontscale (JS triggered)
-#FIXME $showFontscaler	= (bool) $this->params->get('fontscaler' , false);
-#FIXME $templateHelper->widget('fontscaler', ($showFontscaler & $editMode));
 
 /**
  * Some "global" variables for use within Page Layouts
@@ -117,7 +110,7 @@ $columnGroupBetaCount  = $templateHelper->numModules('group-beta');
 
 /* Build Column Layout class */
 $columnLayout = array('main-only');
-if (!$editMode) {
+if (false == $editMode) {
 	# alpha-X-main-beta-Y
 	if ($columnGroupAlphaCount > 0) {
 		$columnLayout = array('alpha-main');
