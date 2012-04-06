@@ -1,10 +1,7 @@
 /*!
- * highkey.css (Frontend Template Layout)
- * @version 15.03.2012
+ * exemplar.css (Frontend Template Layout)
+ * @version 1.9.15
  * @license CC BY-NC 3.0/de
- * FF9+ generatedcontent flexbox canvas touch rgba hsla borderimage csscolumns cssgradients csstransitions svg inlinesvg
- * IE7: no-generatedcontent no-flexbox no-canvas no-touch no-rgba no-hsla no-borderimage no-csscolumns no-cssgradients no-csstransitions no-svg no-inlinesvg
- * OE8:    generatedcontent no-...
  */
 @import url(//fonts.googleapis.com/css?family=Ubuntu+Condensed);
 @import url(//fonts.googleapis.com/css?family=Kristi);
@@ -33,15 +30,12 @@ body {min-width:900px;max-width:94%;margin:0 auto}
 	body.com_media #body-container	,
 	body.modal     #body-container	,
 	body.com_media .page-foot		,
-	body.modal     .page-foot		{min-width:0;max-width:750px}
+	body.modal     .page-foot		{min-width:0;max-width:100%}
 	body.com_media .content-container,
 	body.modal     .content-container {margin-top:0}
-	.body-overlayed #sbox-window.shadow		{padding:2px}
-	.body-overlayed #sbox-content.sbox-content-iframe	{overflow:auto}
+	.body-overlayed #sbox-window.shadow {padding:2px}
+	.body-overlayed #sbox-content.sbox-content-iframe {overflow:auto}
 }
-
-.page-head {clear:both}
-.page-foot {clear:both}
 
 #header			{height:100px}
 #logo   		{font-size:450%;display:inline-block}
@@ -58,28 +52,27 @@ nav, .breadcrumbs	{margin-bottom:10px}
 
 h1,h2,h3,h4,h5,h6	{line-height:normal}
 
+.mainmenu {}
+.breadcrumbs {}
+menu.categories	{}
+
+blockquote 			{padding:1ex;margin:0 3em;}
+button 				{padding:0.2ex 2ex}
+
+/* =type and fonts */
 h1,h2,h3,h4,h5,h6	,
 .mainmenu			,
 .breadcrumbs		,
 menu.categories		{font-family:'Ubuntu Condensed','Trebuchet MS',Arial,sans-serif;text-rendering:optimizelegibility}
 
-.title				{/* a serif font might be nice */}
-.mainmenu			,
-.breadcrumbs		{font-size-adjust:.6}
-menu.categories		{font-size-adjust:.52}
-
-/* hyphens are tuned off below for some contexts */
+/* hyphens can be tuned off below for some contexts */
 p 					{-webkit-hyphens:auto;-moz-hyphens:auto;hyphens:auto}
 p:only-child 		{margin-bottom:0}
-
-blockquote 			{padding:1ex;margin:0 3em;}
-
-button 				{padding:0.2ex 2ex}
 
 table.data th.clip	,
 .column-group .hd	{text-overflow:ellipsis;-ms-text-overflow:ellipsis;-o-text-overflow:ellipsis}
 
-/* =column layout [[20|60]20] */
+/* =column layout */
 #body-container	,
 header.above	,
 header.below	{margin:0 auto}
@@ -90,12 +83,12 @@ header.below	{margin:0 auto}
 	.group-alpha	{float:left}
 	.group-beta		{float:left}
 
-	/* 2col [alpha |  main] */
+	/* 2col [alpha | main ] */
 	.alpha-main section.component	{width:75%;float:right}
 	.alpha-main .column-group		{float:left}
 	.alpha-main .group-alpha {}
 
-	/* 2col [  main  | beta] */
+	/* 2col [ main | beta] */
 	.main-beta .content-main {width:75%;float:left}
 
 	/* 3col [ [alpha|main] beta] */

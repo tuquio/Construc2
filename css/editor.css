@@ -1,7 +1,9 @@
 /*!
  * editor.css default styles
- * @version 1.9.14
+ * @version 1.9.15
+ * @license WTFPL
  */
+@import url("core/base.css");
 a:link, a:visited {color: #1B57B1;}
 #system-readmore {height:3px; padding:1px 0 0 0; border:1px dotted darkred; border-bottom:1px dashed darkred; margin-bottom:1em;}
 #system-readmore:before {content: '[Umbruch]'; display:block; text-align:right; font:normal 10px/normal sans-serif, monospace; color:darkgray;}

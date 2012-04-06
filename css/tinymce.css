@@ -1,4 +1,8 @@
-@import url("core/base.css");
+/*!
+ * tinymce.css default styles
+ * @version 1.9.15
+ * @license WTFPL
+ */
 @import url("editor.css");
 /* add some wiggle room */
 .mceContentBody {font-size:100%; padding:10px;margin:0;}
