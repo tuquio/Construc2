@@ -22,7 +22,7 @@ class ElementFeatureStandards extends ElementFeature
 		$this->set('script', array('src'=>'{tmpl.js}/html5.js', 'async'=>true), 'lt IE 9');
 	}
 
-	// JSON2 support
+	// JSON2 support (also available as of J2.5.4 in /media/com_joomlaupdate)
 	public function json()
 	{
 		$script = $this->loader('{tmpl.js}/json2.min.js', 'if (W.JSON) {return;}');

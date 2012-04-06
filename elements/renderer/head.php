@@ -78,9 +78,7 @@ class ElementRendererHead extends ElementRendererAbstract implements IElementRen
 	 * @return ElementRendererHead
 	 */
 	public function build(array &$data, $options=null)
-	{
-		FB::log($data, __METHOD__);
-
+	{	// FB::log($data, __METHOD__);
 		return $this;
 	}
 
@@ -108,9 +106,7 @@ class ElementRendererMeta extends ElementRendererAbstract
 	 * @return ElementRendererMeta
 	 */
 	public function build(array &$data, $options=null)
-	{
-		FB::log($data, __METHOD__);
-
+	{	// FB::log($data, __METHOD__);
 		$standard  = &$data['standard'];
 
 		// remap to standards

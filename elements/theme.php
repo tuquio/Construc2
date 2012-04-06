@@ -138,8 +138,8 @@ class CustomTheme
 		// does anyone know what $head['link'] is for? skipping...
 		$head = JFactory::getDocument()->getHeadData();
 
-FB::log(self::$chunks, 'CustomTheme::build $chunks');
-FB::log(array_keys(self::$features), 'CustomTheme::build $features');
+// FB::log(self::$chunks, 'CustomTheme::build $chunks');
+// FB::log(array_keys(self::$features), 'CustomTheme::build $features');
 
 		self::$chunks['meta']['renderer.head']    = ElementRendererAbstract::getInstance('renderer.head')->build($head);
 		self::$chunks['meta']['renderer.meta']    = ElementRendererAbstract::getInstance('renderer.meta')->build($head['metaTags']);
@@ -153,7 +153,7 @@ FB::log(array_keys(self::$features), 'CustomTheme::build $features');
 
 		self::$chunks['meta']['renderer.custom']  = ElementRendererAbstract::getInstance('renderer.custom')->build($head['custom']);
 
-FB::log($head, 'build');
+// FB::log($head, 'build');
 
 		return $this;
 	}
