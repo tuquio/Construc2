@@ -1,9 +1,9 @@
 <?php defined('_JEXEC') or die;
 /**
- * Frontpage sample page layout.
+ * Front page sample page layout.
  *
- * @package		Templates
- * @subpackage  Construc2
+ * @package     Templates
+ * @subpackage  Layouts
  * @author		WebMechanic http://webmechanic.biz
  * @copyright	Copyright (C) 2011 WebMechanic http://webmechanic.biz. All rights reserved.
  * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
@@ -16,13 +16,18 @@
 </head>
 
 <body class="<?php echo $columnLayout ?>">
-<?php ConstructTemplateHelper::msieSwatter() ?>
-<?php if ($this->getBuffer('message')) : ?>
-<div class="line"><jdoc:include type="message" /></div>
-<?php endif; ?>
-<div class="line"><jdoc:include type="component" /></div>
-<?php
-ConstructTemplateHelper::msieSwatter();
-?>
+<?php ConstructTemplateHelper::msieSwatter(); ?>
+		<div id="body-container" class="line">
+			<div class="line content-container">
+				<div id="content" class="line content-main">
+
+<?php if ($this->getBuffer('message')) : ?><jdoc:include type="message" /><?php endif; ?>
+<section class="line component">
+<jdoc:include type="component" />
+</section>
+				</div>>
+			</div>>
+		</div>>
+<?php ConstructTemplateHelper::msieSwatter(); ?>
 </body>
 </html>

@@ -23,7 +23,7 @@ $app = JFactory::getApplication();
 <head>
 <jdoc:include type="head" />
 </head>
-<body class="main-only component <?php echo $app->input->get('option'), ' ', $app->input->get('print') ? 'print' : $app->input->get('layout') ?>">
+<body class="<?php echo $columnLayout ?>">
 <?php ConstructTemplateHelper::msieSwatter(); ?>
 	<div id="page-top" class="line <?php echo $templateHelper->getPageAlias(true) ?>">
 <?php if($app->input->get('print')) { ?>

@@ -17,7 +17,7 @@ JLoader::register('CustomTheme', dirname(__FILE__) . '/theme.php');
 
 /**
  * Proxy for the onBeforeCompileHead event because the Dispatcher only
- * allows function or class-based observers and insists on instatiating
+ * allows function or class-based observers and insists on instantiating
  * the given 'class' for unknown reasons.
  */
 function ConstructHelperBeforeCompileHead()
@@ -87,8 +87,7 @@ class ConstructTemplateHelper
 	protected function __construct()
 	{
 		$this->doc  = JFactory::getDocument();
-		$this->tmpl = JFactory::getApplication()->getTemplate(true);
-		$app = JFactory::getApplication();
+		$this->getTemplate();
 
 		// remove this nonsense
 		$this->doc->setTab('');
@@ -98,6 +97,7 @@ class ConstructTemplateHelper
 			$this->config = parse_ini_file(dirname(__FILE__) .'/settings.php', true);
 		}
 
+		$app = JFactory::getApplication();
 		$this->debug = $app->getCfg('debug') && $app->input->get('tpos', 0, 'bool');
 
 		$this->addLayout('index')
@@ -1220,14 +1220,17 @@ class ConstructTemplateHelper
 		return $this->theme;
 	}
 
+	/**
+	 * Return Template meta data and parameters.
+	 * @return object
+	 */
 	public function getTemplate()
 	{
-		return $this->tmpl;
-	}
+		if (!isset($this->tmpl)) {
+			$this->tmpl = JFactory::getApplication()->getTemplate(true);
+		}
 
-	public function getLayoutpath()
-	{
-		return JPATH_THEMES .'/'. $this->tmpl->template .'/layouts';
+		return $this->tmpl;
 	}
 
 	public function isEditMode()

@@ -35,7 +35,8 @@ $ssiIncludes		= (bool) $this->params->get('ssiIncludes', 0);
 if (($cssTheme + 1) == 0) $cssTheme = false;
 
 // some editor form requested, needs mo' styles, and less modules
-$editMode = $templateHelper->isEditMode();
+$editMode  = $templateHelper->isEditMode();
+$printMode = $app->input->get('print', 0, 'int');
 
 if ($app->getCfg('debug') && ($cts = $app->input->get('cts')) ) {
 	$cts = basename($cts, '.css');
@@ -44,19 +45,18 @@ if ($app->getCfg('debug') && ($cts = $app->input->get('cts')) ) {
 	}
 }
 
-// all things different in edit mode
-if ($editMode) {
-	$enableSwitcher = $showDiagnostics = false;
-}
+// all things different in edit and popup mode
+$enableSwitcher  = !$editMode && !$printMode;
+$showDiagnostics = !$editMode && !$printMode;
 
-if ($showDiagnostics) {
+if ($showDiagnostics && $app->input->get('tmpl', 'index') == 'index') {
 	$jmenu = $app->getMenu();
 	$amenu = $jmenu->getActive();
 
 	$currentComponent = $amenu->component;
 	$catId = $itemId = $articleId = '';
 	if ($amenu->component == 'com_content') {
-		$itemId 	= $amenu->id;
+		$itemId = $amenu->id;
 		if (isset($amenu->query['id'])) {
 			$articleId = $amenu->query['id'];
 		}
@@ -78,7 +78,7 @@ $columnGroupBetaCount  = $templateHelper->numModules('group-beta');
 
 /* Build Column Layout class */
 $columnLayout = array('main-only');
-if (!$editMode) {
+if (!$editMode && !$printMode) {
 	# alpha-X-main-beta-Y
 	if ($columnGroupAlphaCount > 0) {
 		$columnLayout = array('alpha-main');
@@ -89,9 +89,14 @@ if (!$editMode) {
 		$columnLayout = array('main-beta');
 	}
 
-	// merge $columnLayout into a string
-	$columnLayout = array_unique($columnLayout);
 }
+
+if ($printMode) {
+	$columnLayout[] = 'print';
+}
+
+// merge $columnLayout into a string
+$columnLayout = array_unique($columnLayout);
 $columnLayout = trim(implode(' ', $columnLayout));
 
 /* Debug Template Positions */
@@ -116,7 +121,6 @@ $templateHelper->webFonts();
 
 // Style sheets
 if ($ssiIncludes) {
-	$printMode = $app->input->get('print');
 	$templateHelper->addLink($tmpl_url.'/css/construc2.styles?rtl='. ($this->direction == 'rtl') .'&em='. $editMode .'&pm='.$printMode);
 
 	// a 'filelist' param returns -1 for 'none'
@@ -156,7 +160,7 @@ if ($app->get('input')->get('tp', 0, 'bool') && JComponentHelper::getParams('com
 if ($enableSwitcher) {
 	$templateHelper->addLink($tmpl_url.'/css/core/diagnostic.css', null, array('title'=>'diagnostic'), 'alternate stylesheet');
 	// $templateHelper->addScript($tmpl_url.'/js/styleswitch.min.js');
-	$templateHelper->addScript($tmpl_url.'/js/src/styleswitch.js');
+	$templateHelper->addScript($tmpl_url.'/js/src/styleswitch.js', null, array('defer'=>true));
 }
 
 // Lea Verou's -prefix-free
