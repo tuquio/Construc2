@@ -1,11 +1,15 @@
 /*!
  * template.css
- * @version 1.9.14
+ * @version 1.9.15
  * @license WTFPL
  */
 
 /* =Layout */
-.page-head {margin:0;text-align:left}
+#page-head {}
+#page-foot {margin:0 auto 2em}
+.page-head ,
+.page-foot {clear:both}
+
 .content-main {position:relative}
 
 h1,.H1, .page-title {font-size:2.0em}
@@ -28,12 +32,12 @@ h6,.H6 {font-size:1.0em}
 
 h3+ul, h3+ol {margin-top:-.3em}
 
+/* "data" tables */
 table.data {border:1px solid #000}
 .data thead {background:#333;color:#fff}
 .data thead a {color:inherit}
 .data tbody tr:hover {background:#dddddd}
 .data td {padding:5px}
-
 /* prevent ugly line-breaks. apply scoped to [thead|tbody|tfoot|tr] with tr.compact */
 .data .compact th {overflow:hidden;text-overflow:ellipsis}
 

@@ -1,6 +1,7 @@
 /*!
  * editor.css default styles
- * @version 1.9.14
+ * @version 1.9.15
+ * @license WTFPL
  */
 @import url(core/base.css);
 a:link, a:visited {color: #1B57B1;}
@@ -22,5 +23,15 @@ a.ext  {color:#c55}
 .rgt {float:right;margin:.6em 0 1ex .6em}
 .lft {float:left;margin:.6em .6em 1ex 0}
 
-/* message box text (div, p, blockquote, etc.) @see template.css font colors */
+/* message box text (div, p, blockquote, etc.)*/
 p.warning,p.negative,p.error,p.positive,p.message,p.tips {padding-left:.5ex;padding-right:.5ex}
+/* =font colors should be as abstract as possible @see template.css font colors */
+.bare {color:#bbb}
+.pale {color:#999}
+.neutral {color:#666}
+.opaque {color:#333}
+.sharp {color:#000}
+.contrast {color:#fff}
+.firm {color:#fc6c06}
+.positive {color:#73ab00}
+.negative {color:#c20000}
