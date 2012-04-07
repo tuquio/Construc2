@@ -19,12 +19,12 @@
  * single white space may render your styles useless.
  */
 ?><aside id="group-beta" class="column-group group-beta" data-modules="<?php echo $columnGroupBetaCount ?>"><?php
+	if ($columnGroupCount[3]) { 
+?><div id="column-3"><?php $templateHelper->renderModules('column-3', 'mod', array('toggle'=>'odd,even', 'autocols'=>0));?></div><?php 
+	}
 
-if ($columnGroupCount[3]) {
-	$templateHelper->renderModules('column-3', 'mod', array('toggle'=>'odd,even', 'autocols'=>0));
-}
-if ($columnGroupCount[4]) {
-	$templateHelper->renderModules('column-4', 'mod', array('toggle'=>'odd,even', 'autocols'=>0));
-}
+	if ($columnGroupCount[4]) { 
+?><div id="column-4"><?php $templateHelper->renderModules('column-4', 'mod', array('toggle'=>'odd,even', 'autocols'=>0));?></div><?php 
+	}
 
 ?></aside><?php

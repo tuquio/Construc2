@@ -20,16 +20,12 @@
  */
 ?><div id="group-alpha" class="column-group group-alpha" data-modules="<?php echo $columnGroupAlphaCount ?>"><?php
 
-	if ($columnGroupCount[1]) { ?>
-<div id="column-1">
-<?php $templateHelper->renderModules('column-1', 'mod', array('toggle'=>'odd,even', 'autocols'=>0)); ?>
-</div>
-<?php }
+	if ($columnGroupCount[1]) { 
+?><div id="column-1"><?php $templateHelper->renderModules('column-1', 'mod', array('toggle'=>'odd,even', 'autocols'=>0)); ?></div><?php 
+	}
 
-	if ($columnGroupCount[2]) { ?>
-<div id="column-2">
-<?php $templateHelper->renderModules('column-2', 'mod', array('toggle'=>'odd,even', 'autocols'=>0)); ?>
-</div>
-<?php }
+	if ($columnGroupCount[2]) { 
+?><div id="column-2"><?php $templateHelper->renderModules('column-2', 'mod', array('toggle'=>'odd,even', 'autocols'=>0)); ?></div><?php 
+	}
 
 ?></div><?php
