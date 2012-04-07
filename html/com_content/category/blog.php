@@ -55,17 +55,17 @@ if ($desc) { ?>
 <?php
 }
 
-$leadingcount = 0;
+$leading_items = 0;
 
 if (!empty($this->lead_items))
 { ?>
 	<section class="line items-leading"><?php
 	foreach ($this->lead_items as $item)
 	{
-		$leadingcount += 1;
+		$leading_items += 1;
 		$this->item = $item;
 ?>
-	<div class="leading-<?php echo $leadingcount ?>">
+	<div class="leading-<?php echo $leading_items ?>">
 	<?php echo $this->loadTemplate('item') ?>
 	</div>
 <?php } ?>
@@ -77,23 +77,33 @@ if (!empty($this->intro_items))
 {
 	settype($this->columns, 'int');
 
-	$unitCss = (count($this->intro_items) > 1) ? 'unit size1of'.$this->columns : '';
+	$intro    = count($this->intro_items);
+	// whether items can be evenly distributed
+	$equalize = ($intro % $this->columns !== 0);
+	$unitCss  = ($intro > 1) ? 'unit size1of'.$this->columns : '';
 
 	foreach ($this->intro_items as $key => $item)
 	{
-		$key = (int)($key - $leadingcount) + 1;
+		$this->item = $item;
+
+		$key = (int)($key - $leading_items) + 1;
 		$col = (($key - 1) % $this->columns) + 1;
 		$row = ceil($key / $this->columns);
 
-		$this->item = $item;
+		$cols = ' cols-'. $this->columns;
+
+		// reset cols and units for last item, allowing it to "stretch" across
+		if ($key == $this->columns && $equalize) {
+			$cols = $unitCss = '';
+		}
 
 		if ($col == 1) { ?>
-	<section class="line items-row cols-<?php echo $this->columns ?>">
+	<section class="line items-row<?php echo $cols ?>">
 <?php 	} ?>
 		<div class="<?php echo $unitCss, ' row-', $row, ' column-', $col, ($unitCss && $col == $this->columns ? ' lastUnit' : '') ?>">
 		<?php echo $this->loadTemplate('item') ?>
 		</div>
-<?php 	if ($col & $this->columns) { ?>
+<?php 	if ($col && $this->columns) { ?>
 	</section><!-- .items-row -->
 <?php	}
 	}
