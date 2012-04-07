@@ -23,7 +23,7 @@ $images		= json_decode($this->item->images);
 $urls		= json_decode($this->item->urls);
 
 ?>
-	<article id="<?php echo $this->item->alias ?>" class="feature <?php echo $showact, ContentLayoutHelper::getCssAlias($this->item), ($this->item->state == 0 ? ' system-unpublished' : '') ?>">
+	<article id="<?php echo $this->item->alias ?>" class="feature <?php echo $showact, ContentLayoutHelper::getCssAlias($this->item) ?>">
 	<header class="article">
 <?php
 if ($params->get('show_title')) { ?>
@@ -64,7 +64,7 @@ if ($actions && $noPrint) {
 <?php
 if ($params->get('show_readmore') && $this->item->readmore)
 {
-	echo ContentLayoutHelper::showReadmore($this->item, $params);
+	echo ContentLayoutHelper::showReadMore($this->item, $params);
 }
 
 if ($showStuff) {

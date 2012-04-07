@@ -25,13 +25,13 @@ $images		= json_decode($this->item->images);
 $urls		= json_decode($this->item->urls);
 
 ?>
-	<article class="article <?php echo $showact, ContentLayoutHelper::getCssAlias($this->item), ($this->item->state == 0 ? ' system-unpublished' : '') ?>">
+	<article class="article <?php echo $showact, ContentLayoutHelper::getCssAlias($this->item) ?>">
 	<header class="article">
 <?php
 if ($params->get('show_title')) { ?>
 	<h2 class="H2 title"><?php
 	if ($params->get('link_titles') && $params->get('access-view')) {
-	?><a href="<?php echo JRoute::_(ContentHelperRoute::getArticleRoute($this->item->slug, $this->item->catid)); ?>#content"><?php
+	?><a href="<?php echo JRoute::_(ContentHelperRoute::getArticleRoute($this->item->id, $this->item->catid)); ?>#content"><?php
 		echo $this->escape($this->item->title);
 	?></a><?php
 	} else {
@@ -65,7 +65,7 @@ if ($actions && $noPrint) {
 	<div class="introtext"><?php echo $this->item->introtext ?></div>
 <?php
 if ($params->get('show_readmore') && $this->item->readmore) {
-	echo ContentLayoutHelper::showReadmore($this->item, $params);
+	echo ContentLayoutHelper::showReadMore($this->item, $params);
 }
 
 if ($showStuff) {

@@ -78,7 +78,7 @@ if ($this->params->get('filter_field') != 'hide') { ?>
 <?php
 	if (in_array($article->access, $this->user->getAuthorisedViewLevels())) { ?>
 	<td class="list-title"><a href="<?php
-		echo JRoute::_(ContentHelperRoute::getArticleRoute($article->slug, $article->catid));
+		echo JRoute::_(ContentHelperRoute::getArticleRoute($article->id, $article->catid));
 		?>"><?php echo $this->escape($article->title) ?></a></td>
 
 <?php 	if ($this->params->get('list_show_date')) { ?>

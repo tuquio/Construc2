@@ -97,15 +97,15 @@ if  (!$this->item->rating)  	{$more['s'][] = 'unrated';}
 	$this->item->fulltext  = trim($ftext);
 
 ?>
-<article id="the-article" class="line item-page <?php echo implode(' ', $more['p']) ,' ', ContentLayoutHelper::getCssAlias($this->item, true), ($this->item->state == 0 ? ' system-unpublished' : '') ?>">
+<article id="the-article" class="line item-page <?php echo implode(' ', $more['p']) ,' ', ContentLayoutHelper::getCssAlias($this->item, true) ?>">
 	<header id="the-header" class="article">
 <?php
 if ($params->get('show_page_heading')) {
 	if ($params->get('show_title')) { echo '<hgroup class="article">'; }
-	echo '<h1 class="H1 page-title">', $this->escape($this->params->get('page_heading')), '</h1>';
+	echo '<h1 class="H1 page-title"><span>', $this->escape($this->params->get('page_heading')), '</span></h1>';
 }
 if ($params->get('show_title')) {
-	echo '<h2 class="H2 title">', $this->escape($this->item->title), '</h2>';
+	echo '<h2 class="H2 title"><span>', $this->escape($this->item->title), '</span></h2>';
 }
 if ($params->get('show_page_heading')) {
 	if ($params->get('show_title')) { echo '</hgroup>'; }
