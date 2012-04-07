@@ -3,9 +3,9 @@
  * A better mod_menu override
  *
  * Magic class_sfx:
- *  - '_ordered' or '_ol' uses an ordered list instead of the standard
- *    unordered list for rendering.
- * Magix moduleclass_sfx:
+ *  - '_ordered' or '_ol' results in an <OL> element to be created instead of <UL>
+ * 		The value is removed from the final class list.
+ * Magic moduleclass_sfx:
  *  - '_chapters becomes 'moduletable chapters' to leverage the provided
  *    book chapter numbering found in the example better_menu.css
  *
@@ -15,37 +15,34 @@
  *
  * Other module params apply as usual.
  *
- * This are the "global" variables given to us from the Menu Module
- * to work and deal with:
- *	$module			stdClass Object of the Module itself
- *					->params in JSON format
- *	$attribs		assoc array with all attributes from <jdoc:load .../>
- *
- *	$params 		JRegistry version of $module->params
- * 	$class_sfx		value of that module parameter
- *	$showAll		integer value of that menu item paramater: 0|1 show subitems
- *
- * 	$list			Array version of the current menu (@see $menu)
- * 					often a massice huge list so beware of var_dump()ing it :)
- *	$active			stdClass representing the active menu item
- *	$active_id		same as $active->id (Itemid)
- *	$path 			array depicting the nesting level of the current menu item
- *
- * 	$app			JSite instance
- * 	$menu			JMenuSite instance of the WHOLE menu
- *	$scope			previous application scope, but usually an empty string
- *	$option			active component name incl. com_
- *	$chrome			this file's path
- *	$content		comes in as an empty string and might be deprecated;
- *					Eventually represents the module's "output". No need to set
- *					this manually here unless you want to discard the default output
- *					of this layout and return any other 'content'. utterly weired...
- *
  * @package     Template
  * @subpackage  Overrides
  * @author		WebMechanic http://webmechanic.biz
  * @copyright	(C) 2011-2012 WebMechanic. All rights reserved.
  * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
+ *
+ * @var object $module		the Module itself w/ ->params in JSON format
+ * @var array $attribs		all attributes from <jdoc:load .../>
+ *
+ * @var JRegistry $params	$module->params
+ * @var string $class_sfx	value of that module parameter
+ * @var integer $showAll	integer value of that menu item parameter: 0|1 show sub items
+ *
+ * @var array $list 		the current menu (@see $menu), beware of var_dump() !
+ * @var object $active		represents the active menu item
+ * @var integer $active_id	same as $active->id (Itemid)
+ * @var array $path			depicting the nesting level of the current menu item
+ *
+ * @var JSite $app			instance of JApplication
+ * @var JMenuSite $menu 	instance of JMenu, the COMPLETE menu
+ * @var string $scope		previous application scope, but usually an empty string
+ * @var string $option		active component name incl. com_
+ * @var string $chrome		this file's path
+ * @var string $content		comes in as an empty string and might be deprecated;
+ *							Eventually represents the module's "output".
+ *
+ * There's no need to set $content manually here unless you want to discard the
+ * default output of this layout and return any other 'content'. utterly weired...
  */
 
 JLoader::register('BetterMenuHelper', dirname(__FILE__) . '/_helper.php');
@@ -60,7 +57,7 @@ if ( preg_match('#(?:[_|-](chapters|book_chapters))#iu', ($msfx = $params->get('
 	unset($msfx);
 }
 
-// menu got "lost" in XHTML for no reason, but
+// <menu> got "lost" in XHTML for no reason, but
 // has always been supported by any browser on earth
 $elt = 'menu';
 $ol_types = array();
@@ -93,9 +90,9 @@ if ( preg_match('#(?:[_|-](ordered|ol))#iu', $class_sfx, $settings) )
 	$override = array_shift(explode(':',$params->get('layout', ':')));
 
 	// some potential folders to check for better stylesheets
-	$folders = array(JPATH_THEMES .DS. $tplname . '/html/mod_menu');
+	$folders = array(JPATH_THEMES .'/'. $tplname . '/html/mod_menu');
 	if ($override != $tplname) {
-		$folders[] = JPATH_THEMES .DS. $override . '/html/mod_menu';
+		$folders[] = JPATH_THEMES .'/'. $override . '/html/mod_menu';
 	}
 
 	// locate the goodness and turn it into a URL path
@@ -178,17 +175,17 @@ foreach ($list as $i => &$item)
 	echo '<li id="item-'.$item->id.'" class="'.trim(implode(' ', $class)).'">';
 
 	// Render the menu items using our local overrides.
-	switch ($item->type) :
+	switch ($item->type) {
 		case 'separator':
 		case 'url':
 		case 'component':
-			require dirname(__FILE__) . '/better_'.$item->type.'.php';
+			require dirname(__FILE__) . '/better_' . $item->type . '.php';
 			break;
 
 		default:
 			require dirname(__FILE__) . '/better_url.php';
 			break;
-	endswitch;
+	}
 
 	// The next item is deeper.
 	if ($item->deeper) {

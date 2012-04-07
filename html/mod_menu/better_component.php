@@ -5,6 +5,10 @@
  * @author		WebMechanic http://webmechanic.biz
  * @copyright	(C) 2011-2012 WebMechanic. All rights reserved.
  * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
+ *
+ * @var stdClass $item     the menu item
+ * @var string   $liclass  set in better.php
+ * @var string   $_alang   active language, set in better.php
  */
 
 // lang switch, as usual we have a web-unfriendly format
