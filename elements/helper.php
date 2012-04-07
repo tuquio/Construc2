@@ -218,8 +218,13 @@ class ConstructTemplateHelper
 		if (isset($item->alias)) {
 			$A[] = $item->alias;
 		}
+		if (isset($item->images) && preg_match('#\.(jpe?g|png|gif)#',$item->images)) {
+			$C = array('images');
+		}
+		if (isset($item->state) && $item->state == 0) {
+			$A[] = 'system-unpublished';
+		}
 
-		$alias = '';
 		foreach ((array)$A as $k => $ali)
 		{
 			$ali = trim($ali, '-');
@@ -585,9 +590,9 @@ class ConstructTemplateHelper
 			$attribs['style'] = $style;
 		}
 
-		// disable ".unit" auto columns?
+		// disable ".unit" auto columns? pick from settings
 		if (!array_key_exists('autocols', $attribs)) {
-			$attribs['autocols'] = $this->moduleStyle($position);
+			$attribs['autocols'] = (bool) $this->getConfig('autocols.' . $position);
 		}
 
 		$css = array();
@@ -633,14 +638,13 @@ class ConstructTemplateHelper
 
 			if ( ($chunk = $this->theme->getChunk('module', array('before', $module->name))) )
 			{
-				$name = '-'. $module->name;
-				if ($position == $module->name) {
-					$name  = '';
-					$css[] = $position;
+				if (empty($css)) {
+					$css[] = 'mod-'. $module->id;
 				}
+
 				$html[] = str_replace(
-							array('{position}', '{name}', '{class}'),
-							array($position, $name, implode(' ', $css)),
+							array('{name}', '{class}'),
+							array($module->name, implode(' ', $css)),
 							$chunk
 							);
 			}
@@ -1204,9 +1208,19 @@ class ConstructTemplateHelper
 	 */
 	public function getConfig($key, $default='')
 	{
+		if ( strpos($key, '.') > 1) {
+			list ($section, $key) = explode('.', $key);
+			if (isset($this->config[$section])) {
+				if ( array_key_exists($key, $this->config[$section]) ) {
+					return $this->config[$section][$key];
+				}
+			}
+		}
+
 		if ( array_key_exists($key, $this->config) ) {
 			return $this->config[$key];
 		}
+
 		return "$default";
 	}
 

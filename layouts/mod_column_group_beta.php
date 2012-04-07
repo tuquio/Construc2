@@ -1,12 +1,16 @@
 <?php defined('_JEXEC') or die;
 /**
- * Subtemplate loaded if $columnGroupBetaCount > 0
+ * Sub-template loaded if $columnGroupBetaCount > 0
  *
  * @package     Construc2
  * @subpackage  Layouts
  * @author      WebMechanic http://webmechanic.biz
  * @copyright   (C) 2011-2012 WebMechanic http://webmechanic.biz. All rights reserved.
  * @license     GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
+ *
+ * @var ConstructTemplateHelper $templateHelper
+ * @var integer $columnGroupBetaCount
+ * @var array $columnGroupCount
  */
 
 /*

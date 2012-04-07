@@ -81,7 +81,13 @@ class CustomTheme
 	/**
 	 * @see setChunks()
 	 */
-	static $chunks = array();
+	static $chunks = array(
+					'meta'          => '',
+					'module_before'	=> '<div class="{class} {name}">',
+					'module_after'	=> '</div>',
+					'unit_before'	=> '<div class="{class}">',
+					'unit_after'	=> '</div>'
+				);
 
 	protected function __construct(ConstructTemplateHelper $helper)
 	{
@@ -120,17 +126,6 @@ class CustomTheme
 				$this->config->setProperties($config);
 			}
 		}
-
-		// @see ConstructTemplateHelper::renderModules()
-		$chunks = array(
-					'meta'          => '',
-					'module_before'	=> '<div id="{position}{name}" class="{class}">',
-					'module_after'	=> '</div>',
-					'unit_before'	=> '<div class="{class}">',
-					'unit_after'	=> '</div>'
-				);
-
-		$this->setChunks($chunks);
 	}
 
 	/**

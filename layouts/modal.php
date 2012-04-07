@@ -20,26 +20,26 @@ $app = JFactory::getApplication();
 <head>
 <jdoc:include type="head" />
 </head>
-<body class="main modal <?php echo $app->input->get('option'), ' ', $app->input->get('print') ? 'print' : $app->input->get('layout') ?>">
+<body class="main-only modal <?php echo $app->input->get('option'), ' ', $columnLayout ?>">
 <?php ConstructTemplateHelper::msieSwatter(); ?>
 	<div id="page-top" class="line">
 		<div id="body-container" class="line <?php echo $templateHelper->getPageAlias(true) ?>">
 			<div class="line content-container">
 				<div id="content" class="line content-main">
 
-<?php if ($this->getBuffer('message')) : ?><jdoc:include type="message" /><?php endif; ?>
+<?php if ($this->getBuffer('message')) { ?><jdoc:include type="message" /><?php } ?>
 <section class="line component">
 <jdoc:include type="component" />
 </section>
 
 				</div><!-- .content-main -->
-<?php if ($footerAboveCount[0]) : include WMPATH_LAYOUTS. '/mod_footer_above.php'; endif; ?>
+<?php if ($footerAboveCount[0]) { include WMPATH_LAYOUTS. '/mod_footer_above.php'; } ?>
 			</div><!-- .content-container -->
 		</div><!-- #body-container -->
 	</div><!-- #page-top -->
 <?php
-if ($this->countModules('debug')) : $templateHelper->renderModules('debug', 'raw'); endif;
-if ($this->countModules('analytics')) : $templateHelper->renderModules('analytics', 'raw'); endif;
+if ($this->countModules('debug')) { $templateHelper->renderModules('debug', 'raw'); }
+if ($this->countModules('analytics')) { $templateHelper->renderModules('analytics', 'raw'); }
 
 ConstructTemplateHelper::msieSwatter();
 ?>

@@ -8,18 +8,19 @@
  * @copyright	Copyright (C) 2011 WebMechanic http://webmechanic.biz. All rights reserved.
  * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  *
+ * @var JSite $app
  * @var ConstructTemplateHelper $templateHelper
- * @var $cache_manifest
- * @var $columnLayout
- * @var $headerAboveCount
- * @var $headerBelowCount
- * @var $navBelowCount
- * @var $contentAboveCount
- * @var $contentBelowCount
- * @var $columnGroupAlphaCount
- * @var $columnGroupBetaCount
- * @var $footerAboveCount
- * @var $enableSwitcher
+ * @var string $cache_manifest
+ * @var string $columnLayout
+ * @var array $headerAboveCount
+ * @var array $headerBelowCount
+ * @var array $navBelowCount
+ * @var array $contentAboveCount
+ * @var array $contentBelowCount
+ * @var int $columnGroupAlphaCount
+ * @var int $columnGroupBetaCount
+ * @var array $footerAboveCount
+ * @var bool $enableSwitcher
  */
 !defined('WMPATH_LAYOUTS') && define('WMPATH_LAYOUTS', dirname(__FILE__));
 
