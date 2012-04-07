@@ -12,24 +12,24 @@ JLoader::register('ContentLayoutHelper', JPATH_THEMES . '/construc2/html/com_con
 ?>
 <section class="blog featured"><?php
 if ($this->params->get('show_page_heading')) {
-	echo '<header><h1 class="page_heading">', $this->escape($this->params->get('page_heading')), '</h1></header>';
+	echo '<h1 class="page-title">', $this->escape($this->params->get('page_heading')), '</h1>';
 }
 
-$leadingcount = 0;
+$leading_items = 0;
 
 if (!empty($this->lead_items))
 { ?>
 	<section class="line items-leading"><?php
 	foreach ($this->lead_items as $item)
 	{
-		$leadingcount += 1;
+		$leading_items += 1;
 		$this->item = $item;
 ?>
-	<div class="leading-<?php echo $leadingcount ?>">
+	<div class="leading-<?php echo $leading_items ?>">
 	<?php echo $this->loadTemplate('item') ?>
 	</div>
 <?php } ?>
-	</section><!-- .items-leading -->
+	</section>
 <?php
 }
 
@@ -37,24 +37,36 @@ if (!empty($this->intro_items))
 {
 	settype($this->columns, 'int');
 
-	$unitCss = (count($this->intro_items) > 1) ? 'unit size1of'.$this->columns : '';
+	$intro   = count($this->intro_items);
+	// grid class
+	$unitCss = ($intro > 1 && $this->columns > 1) ? 'unit size1of'.$this->columns : '';
+	// whether items can be evenly spread
+	$spread  = (int) (($intro % $this->columns) == 0);
 
 	foreach ($this->intro_items as $key => $item)
 	{
-		$key = (int)($key - $leadingcount) + 1;
+		$this->item = $item;
+
+		$key = (int)($key - $leading_items) + 1;
 		$col = (($key - 1) % $this->columns) + 1;
 		$row = ceil($key / $this->columns);
 
-		$this->item = $item;
+		$split = ($col % $this->columns) == 1;
+		$cols  = ' cols-'. $this->columns;
 
-		if ($col == 1) { ?>
-	<section class="line items-row cols-<?php echo $this->columns ?>">
+		// reset cols and units for last item, allowing it to "stretch" across
+		if (!$spread && $key == $intro) {
+			$unitCss = '';
+		}
+
+		if ($split) { ?>
+	<section class="line items-row<?php echo $cols ?>">
 <?php 	} ?>
 		<div class="<?php echo $unitCss, ' row-', $row, ' column-', $col, ($unitCss && $col == $this->columns ? ' lastUnit' : '') ?>">
 		<?php echo $this->loadTemplate('item') ?>
 		</div>
-<?php 	if ($col & $this->columns) { ?>
-	</section><!-- .items-row -->
+<?php 	if ($col == $this->columns) { ?>
+	</section>
 <?php	}
 	}
 }
@@ -76,9 +88,9 @@ if ($this->pagination->get('pages.total') > 1 && ($this->params->get('show_pagin
 <?php
 }
 
-/* NOT READY YET until ./html/pagination.php pagination_list_footer() is ironed out. */
+/*#FIXME NOT READY YET until ./html/pagination.php pagination_list_footer() is ironed out. */
 // $this->pagination->getListFooter()
 
 ?>
 
-</section><!-- .blog.featured -->
+</section>

@@ -15,7 +15,7 @@
 
 ?>
 	<header id="skiplinks">
-	<h1 class="H3 title"><?php echo JText::_('Skiplinks') ?></h1>
+	<h1 class="H3 title"><span><?php echo JText::_('Skiplinks') ?></span></h1>
 	<ol class="skiplinks">
 <?php
 $rqry = JURI::getInstance()->getQuery();

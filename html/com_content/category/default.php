@@ -23,14 +23,14 @@ $desc_img = ($this->params->def('show_description_image') && $this->category->ge
 	<header class="category">
 <?php
 	if ($toggle_headings) { ?><hgroup><?php } ?>
-	<h1 class="H1 page-title"><span class="cat-title"><?php echo $this->escape($this->params->get('page_heading')) ?></span></h1>
+	<h1 class="H1 page-title"><span><?php echo $this->escape($this->params->get('page_heading')) ?></span></h1>
 <?php
 
 	if ($show_category_title || $page_subheading) { ?>
 	<h2 class="H2 title"><?php
 		echo $this->escape($page_subheading);
 		if ($show_category_title) {
-			echo '<span class="cat-title">', $this->category->title, '</span>';
+			echo '<span>', $this->category->title, '</span>';
 		}
 		?></h2>
 <?php

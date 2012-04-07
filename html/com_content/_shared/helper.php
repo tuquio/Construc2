@@ -18,7 +18,7 @@ class ContentLayoutHelper
 	 * Renders the "Read More" link and must be wrapped in a call such as
 	 * <code>
 	 * if ($params->get('show_readmore') && $this->item->readmore) {
-	 *     echo ContentLayoutHelper::showReadmore($this->item, $params);
+	 *     echo ContentLayoutHelper::showReadMore($this->item, $params);
 	 * }
 	 * </code>
 	 *
@@ -26,15 +26,15 @@ class ContentLayoutHelper
 	 * @param  JRegistry $params Layout parameters
 	 * @return string
 	 */
-	static public function showReadmore($item, $params, $class='line readmore')
+	static public function showReadMore($item, $params, $class='line readmore', $target='#content')
 	{
 		$access = (bool) $params->get('access-view');
 
-		$html = '<p class="'. $class . ($access ? ' access-view' : '').'">';
+		$html = '<p class="'. $class . ($access ? '' :  ' access-view').'">';
+		$link  = JRoute::_(ContentHelperRoute::getArticleRoute($item->id, $item->catid));
 
 		if ($access) {
-			$link  = JRoute::_(ContentHelperRoute::getArticleRoute($item->slug, $item->catid));
-			$html .= '<a href="'. $link .'#content">';
+			$html .= '<a href="'. $link . $target .'">';
 
 			if ($params->get('show_readmore_title') && $item->alternative_readmore) {
 				$html .= JHtml::_('string.truncate', $item->alternative_readmore, $params->get('readmore_limit', 50));
@@ -42,77 +42,79 @@ class ContentLayoutHelper
 			else {
 				$html .= JText::sprintf('COM_CONTENT_READ_MORE_TITLE', $item->title);
 			}
+			$html .= '</a>';
 		}
 		else {
 			$itemId  = JSite::getMenu()->getActive()->id;
-			$URL     = JRoute::_(ContentHelperRoute::getArticleRoute($item->slug));
-			$link    = new JURI(JRoute::_('index.php?option=com_users&view=login&Itemid=' . $itemId));
-			$link->setVar('return', base64_encode($URL));
+			$uri  = new JURI(JRoute::_('index.php?option=com_users&view=login&Itemid=' . $itemId));
+			$uri->setVar('return', base64_encode($link));
 
 			$html .= '<a href="'. $link .'#content">' . JText::_('COM_CONTENT_REGISTER_TO_READ_MORE') . '</a>';
 		}
 
-		$html .= '</a></p>';
+		$html .= '</p>';
 
 		return PHP_EOL."\t".$html;
 	}
 
 	/**
-	 * Attempts to create a nice alias from the $item to use in the class attribute
-	 * to apply item and category based styles. The resulting names use '_' as a
-	 * word separator to avoid name clashing with module names and common classes.
+	 * Attempts to create nice list of class names from the $item data.
 	 *
-	 * @param  object $item   with an $alias and optional $category_alias property
+	 * State and meta classes:
+	 * - images: article has images set in the parameter
+	 * - system-unpublished: article is unpublished
+	 * - no-access: login required to "read more"
+	 *
+	 * @param  object $item   an article object or sth. close
 	 * @param  bool   $parent travel up the tree to fetch parent item aliases
 	 *
 	 * @return string some CSS classes
-	 *
-	 * @uses ConstructTemplateHelper::getCssAlias()
 	 */
 	static public function getCssAlias($item, $parent = true)
 	{
-		if (class_exists('ConstructTemplateHelper', false)) {
-			return ConstructTemplateHelper::getInstance()->getCssAlias($item, $parent);
-		}
+		static $props = array('images','parent_alias','category_alias','alias','state','id','catid','params');
 
-		$A = array();
-
-		// menuish item?
-		if (isset($item->type) && $parent) {
-			$A[] = $item->type;
-			if (isset($item->query['option'])) {
-				$A[] = str_replace('_', '-', $item->query['option']);
+		$C = array('');
+		$candidates = array_intersect( array_keys(get_object_vars($item)), $props );
+		while ($str = array_shift($candidates))
+		{
+			switch ($str) {
+				case 'images':
+					if (preg_match('#\.(jpe?g|png|gif)#i',$item->images)) {
+						$C[] = $str;
+					}
+					break;
+				case 'state':
+					if ($item->state == 0) {
+						$C[] = 'system-unpublished';
+					}
+					break;
+				case 'parent_alias':
+					if ($parent && 'root' != $item->parent_alias) {
+						$C[] = $item->parent_alias;
+					}
+					break;
+				case 'id':
+					$C[] = 'item-'. $item->id;
+					break;
+				case 'catid':
+					$C[] = 'cat-'. $item->catid;
+					break;
+				case 'params':
+					if ($item->params instanceof JRegistry) {
+						if (0 == (int)$item->params->get('access-view')) {
+							$C[] = 'no-access';
+						}
+					}
+					break;
+				default:
+					$C[] = $item->{$str};
 			}
-			if (isset($item->query['view'])) {
-				$A[] = $item->query['view'];
-			}
-			if (isset($item->query['layout'])) {
-				$A[] = $item->query['layout'];
-			}
 		}
-
-		if ($item instanceof JCategoryNode) {
-			list($tmp, $A[]) = explode(':', $item->slug);
-			$A[] = 'cid-' . $item->id;
-		} else {
-			if (isset($item->catid)) {
-				$A[] = 'cid-'.$item->catid;
-			}
-			$A[] = 'item-' . $item->id;
-		}
-
-		if (isset($item->category_alias)) {
-			$A[] = $item->category_alias;
-		}
-		if (isset($item->alias)) {
-			$A[] = $item->alias;
-		}
-
-		$words = array_unique($A);
+		$words = array_unique($C);
 		$alias = implode(' ', $words);
 
 		return trim($alias);
-
 	}
 
 	static public function isEmpty(&$content)
@@ -135,7 +137,7 @@ class ContentLayoutHelper
 
 	/**
 	 * Pimp both Article's Table of Contents and Page Navigation in place to make
-	 * them better. Will replaces the content of $item->toc and $item->pagination.
+	 * them better. Will replace the content of $item->toc and $item->pagination.
 	 *
 	 * @param  object  $item The article item object
 	 *
@@ -203,7 +205,6 @@ class ContentLayoutHelper
 		// pagination list using pagination.php
 		$i = 0;
 		$p = (int)JFactory::getApplication()->input->get('start', 0);
-		$n = count($div->ul->children());
 
 		// rebuild as <nav>
 		$nav = new SimpleXMLElement('<nav id="article-index" class="page-toc '. $class .'"/>', $flags);
