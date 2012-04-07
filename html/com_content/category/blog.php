@@ -26,13 +26,8 @@ $desc_img = $this->params->def('show_description_image');
 	<h1 class="H1 page-title"><span><?php echo $this->escape($this->params->get('page_heading')) ?></span></h1>
 <?php
 
-	if ($show_category_title || $page_subheading) { ?>
-	<h2 class="H2 title"><?php
-		echo '<span>', $this->escape($page_subheading), '</span>';
-		if ($show_category_title) {
-			echo ' <span>'. $this->category->title. '</span>';
-		}
-		?></h2><?php
+	if ($page_subheading) { ?>
+	<h2 class="H2 title"><span><?php echo $this->escape($page_subheading) ?></span></h2><?php
 	}
 
 	if ($toggle_headings) { ?></hgroup><?php } ?>
