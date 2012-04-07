@@ -60,7 +60,13 @@ class CustomTheme
 	/**
 	 * @see setChunks()
 	 */
-	static $chunks = array();
+	static $chunks = array(
+					'meta'			=> '',
+					'module_before'	=> '<div id="{position}{name}" class="{class}">',
+					'module_after'	=> '</div>',
+					'unit_before'	=> '<div class="{class}">',
+					'unit_after'	=> '</div>'
+				);
 
 	/**
 	 * @see setCapture(), getCapture()
@@ -106,17 +112,6 @@ class CustomTheme
 
 		$this->title   = $this->config->get('title');
 		$this->version = $this->config->get('version');
-
-		// @see ConstructTemplateHelper::renderModules()
-		$chunks = array(
-					'meta'			=> '',
-					'module_before'	=> '<div id="{position}{name}" class="{class}">',
-					'module_after'	=> '</div>',
-					'unit_before'	=> '<div class="{class}">',
-					'unit_after'	=> '</div>'
-				);
-
-		$this->setChunks($chunks);
 	}
 
 	/**
