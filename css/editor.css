@@ -3,7 +3,7 @@
  * @version 1.9.15
  * @license WTFPL
  */
-@import url("core/base.css");
+@import url(core/base.css);
 a:link, a:visited {color: #1B57B1;}
 #system-readmore {height:3px; padding:1px 0 0 0; border:1px dotted darkred; border-bottom:1px dashed darkred; margin-bottom:1em;}
 #system-readmore:before {content: '[Umbruch]'; display:block; text-align:right; font:normal 10px/normal sans-serif, monospace; color:darkgray;}
@@ -23,8 +23,15 @@ a.ext  {color:#c55}
 .rgt {float:right;margin:.6em 0 1ex .6em}
 .lft {float:left;margin:.6em .6em 1ex 0}
 
-/* message box text (div, p, blockquote, etc.) @see template.css font colors */
-.warning { padding: 5px; color: #c20000; font-size:1.1em}
-.negative, .error { padding: 5px; color: #c20000;}
-.positive, .message { padding: 5px; color: #fc6c06;}
-.tips { padding: 5px; color: #73ab00;}
+/* message box text (div, p, blockquote, etc.)*/
+p.warning,p.negative,p.error,p.positive,p.message,p.tips {padding-left:.5ex;padding-right:.5ex}
+/* =font colors should be as abstract as possible @see template.css font colors */
+.bare {color:#bbb}
+.pale {color:#999}
+.neutral {color:#666}
+.opaque {color:#333}
+.sharp {color:#000}
+.contrast {color:#fff}
+.firm {color:#fc6c06}
+.positive {color:#73ab00}
+.negative {color:#c20000}

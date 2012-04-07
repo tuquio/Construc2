@@ -6,8 +6,8 @@
 
 /* =Layout */
 #page-head {}
-.page-head {clear:both}
 #page-foot {margin:0 auto 2em}
+.page-head ,
 .page-foot {clear:both}
 
 .content-main {position:relative}
