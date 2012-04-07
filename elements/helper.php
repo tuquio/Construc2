@@ -30,7 +30,7 @@ class ConstructTemplateHelper
 	/** @var $layouts array List of template layout files */
 	protected $layouts = array();
 
-	/** @var $doc JDocumentHtml instance */
+	/** @var $doc JDocumentHTML instance */
 	protected $doc;
 
 	/** @var $tmpl object Template name + params */
@@ -63,7 +63,7 @@ class ConstructTemplateHelper
 	protected function __construct()
 	{
 		$this->doc  = JFactory::getDocument();
-		$this->tmpl = JFactory::getApplication()->getTemplate(true);
+		$this->getTemplate();
 
 		// remove this nonsense
 		$this->doc->setTab('');
@@ -954,18 +954,15 @@ To allow parallel downloading, move the inline script before the external CSS fi
 	 */
 	static public function isEmpty(&$markup, $by='')
 	{
-		static $keepers = '<audio><canvas><embed><hr><iframe><img><math><noscript><object><param><svg><video><command><script><style>';
-
 		#FIXME
 		return false;
-
+/*
+		static $keepers = '<audio><canvas><embed><hr><iframe><img><math><noscript><object><param><svg><video><command><script><style>';
 		// decode entities, keep meta + embeds, then remove "white-space"
-		$blank = preg_replace('#[\r\n\s\t\h\v\f]+#', '',
-					strip_tags(html_entity_decode($markup), $keepers)
-					);
+		$blank = preg_replace('#[\r\n\s\t\h\v\f]+#', '', strip_tags(html_entity_decode($markup), $keepers) );
 		return empty($blank);
+*/
 	}
-
 
 	/**
 	 * Returns a config value.
@@ -1021,14 +1018,17 @@ To allow parallel downloading, move the inline script before the external CSS fi
 		return $this->theme;
 	}
 
+	/**
+	 * Return Template meta data and parameters.
+	 * @return object
+	 */
 	public function getTemplate()
 	{
-		return $this->tmpl;
-	}
+		if (!isset($this->tmpl)) {
+			$this->tmpl = JFactory::getApplication()->getTemplate(true);
+		}
 
-	public function getLayoutpath()
-	{
-		return JPATH_THEMES .'/'. $this->tmpl->template .'/layouts';
+		return $this->tmpl;
 	}
 
 	/**
@@ -1096,73 +1096,6 @@ To allow parallel downloading, move the inline script before the external CSS fi
 	{
 		$app = JFactory::getApplication();
 		return $app->getCfg('debug') && $request->get('tpos', 0, 'bool');
-	}
-
-	/**
-	 * Initializes the given $group array in the $head section for the $uagent
-	 * (default = self::UA) using the $filler data.
-	 *
-	 * @param  string $group
-	 * @param  string $uagent
-	 * @param  array  $filler
-	 *
-	 * @return ConstructTemplateHelper for fluid interface
-	 */
-	private function _makeRoom($group, &$uagent, $filler=array())
-	{
-		settype($uagent, 'string');
-
-		if (empty($uagent)) {
-			$uagent = self::UA;
-		} else {
-			$uagent = str_replace('if ', '', strtolower($uagent));
-			$uagent = str_replace('ie ', 'IE ', strtolower($uagent));
-		}
-		$uagent = strtoupper($uagent);
-
-		if (!isset(self::$head["{$uagent}"])) {
-			self::$head["{$uagent}"] = $filler;
-		}
-
-		return $this;
-	}
-
-	private function _tuckUrl($url, $type='link')
-	{
-		static $root;
-
-		if (empty($root)) {
-			$root = JURI::root(true) . '/';
-		}
-		if (strpos('{', $url) !== false) {
-
-		}
-
-		$data = parse_url($url);
-		// make sure URLs w/o a scheme have an absolute path
-		if (!isset($data['scheme'])) {
-			// dealing with protocol relative URLs
-			if (substr("$url /", 0, 2) == '//') {
-				$uri = new JUri('tuck:' . $url);
-				if ($uri->getScheme() == 'tuck') {
-					$url = str_replace('tuck:', '', "{$uri}");
-				}
-			} else {
-				$url =  '/'. ltrim($url, '/');
-			}
-		}
-
-		$url = str_replace($root, '/', $url);
-
-		if ($type == 'link') {
-
-		}
-
-		//if ($type == 'icon') {
-		//}
-
-
-		return $url;
 	}
 
 	private function _applySubst($key, $name, $type=null)

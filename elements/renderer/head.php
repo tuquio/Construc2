@@ -137,7 +137,7 @@ class ElementRendererMeta extends ElementRendererAbstract
 		if (isset($this->data[$name])) return $this;
 
 		if (is_array($content)) {
-			$content = JArrayHelper::toString($content, '=', '"');
+			$content = JArrayHelper::toString($content);
 		}
 
 		if ($name == null && $content) {
@@ -272,11 +272,46 @@ class ElementRendererScript extends ElementRendererAbstract
 		return $this;
 	}
 
+	/**
+	 * Attributes with special treatment:
+	 * - async: bool, use for independent scripts
+	 * - defer: bool, use if order of appearance is important
+	 * - onload: JS code executed if a script is downloaded
+	 * - oncontentready: MSIE < 9 equivalent to onload
+	 *
+	 * Each `async` script executes at the first opportunity after it is finished
+	 * downloading and before the window’s `load` event. It’s possible and likely
+	 * these scripts are not executed in the order in which they occur in the page.
+	 *
+	 * The `defer` scripts are guaranteed to be executed in the order they occur
+	 * in the page. That execution starts after parsing is completely finished,
+	 * but before the document's <code>DOMContentLoaded</code> event.
+	 *
+	 * @param string $src
+	 * @param array $attribs
+	 * @param null $ua
+	 *
+	 * @return ElementRendererScript
+	 *
+	 * @link http://davidwalsh.name/html5-async
+	 * @link http://webkit.org/blog/1395/running-scripts-in-webkit/
+	 */
 	public function set($src, $attribs=array(), $ua=null)
 	{
 		self::subst($src);
 
 		if (isset($this->data[$src])) return $this;
+
+		if (count($attribs)) {
+			if (isset($attribs['mime'])) {
+				if ('text/javascript' != strtolower($attribs['mime'])) {
+					$attribs['type'] = $attribs['mime'];
+					unset($attribs['mime']);
+				}
+			}
+		}
+
+		$attribs = JArrayHelper::toString($attribs);
 
 		$this->data[$src] = '<script src="'. $src . '"></script>';
 
