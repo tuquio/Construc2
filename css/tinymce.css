@@ -1,6 +1,10 @@
-@import url("core/base.css");
-@import url("editor.css");
+/*!
+ * tinymce.css default styles
+ * @version 1.9.15
+ * @license WTFPL
+ */
+@import url(editor.css);
 /* add some wiggle room */
-.mceContentBody {font-size:100%; padding:10px;margin:0;}
+body.mceContentBody {font-size:100%;padding:10px;margin:0}
 /* prevent images from overlapping */
-.mceContentBody img {padding:5px;background:white;max-width:98%;}
+body.mceContentBody img {max-width:98%}
