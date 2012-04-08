@@ -16,23 +16,18 @@ $toggle_headings     = ($show_category_title || $page_subheading);
 
 $desc     = ($this->category->description && $this->params->get('show_description'));
 $desc_img = $this->params->def('show_description_image');
-
 ?>
-	<section class="blog">
-<?php if ($show_page_heading) { ?>
+
+<section class="blog">
+<?php if ($show_page_heading || $show_category_title) { ?>
 	<header class="category">
 <?php
 	if ($toggle_headings) { ?><hgroup><?php } ?>
-	<h1 class="H1 page-title"><?php echo $this->escape($this->params->get('page_heading')) ?></h1>
+	<h1 class="H1 page-title"><span><?php echo $this->escape($this->params->get('page_heading')) ?></span></h1>
 <?php
 
-	if ($show_category_title || $page_subheading) { ?>
-	<h2 class="H2 title"><?php
-		echo $this->escape($page_subheading);
-		if ($show_category_title) {
-			echo '<span class="subheading-category">'.$this->category->title.'</span>';
-		}
-		?></h2><?php
+	if ($page_subheading) { ?>
+	<h2 class="H2 title"><span><?php echo $this->escape($page_subheading) ?></span></h2><?php
 	}
 
 	if ($toggle_headings) { ?></hgroup><?php } ?>
@@ -77,10 +72,11 @@ if (!empty($this->intro_items))
 {
 	settype($this->columns, 'int');
 
-	$intro    = count($this->intro_items);
-	// whether items can be evenly distributed
-	$equalize = ($intro % $this->columns !== 0);
-	$unitCss  = ($intro > 1) ? 'unit size1of'.$this->columns : '';
+	$intro   = count($this->intro_items);
+	// grid class
+	$unitCss = ($intro > 1 && $this->columns > 1) ? 'unit size1of'.$this->columns : '';
+	// whether items can be evenly spread
+	$spread  = (int) (($intro % $this->columns) == 0);
 
 	foreach ($this->intro_items as $key => $item)
 	{
@@ -90,21 +86,22 @@ if (!empty($this->intro_items))
 		$col = (($key - 1) % $this->columns) + 1;
 		$row = ceil($key / $this->columns);
 
-		$cols = ' cols-'. $this->columns;
+		$split = ($col % $this->columns) == 1;
+		$cols  = ($unitCss) ? ' cols-'. $this->columns : '';
 
 		// reset cols and units for last item, allowing it to "stretch" across
-		if ($key == $this->columns && $equalize) {
-			$cols = $unitCss = '';
+		if (!$spread && $key == $intro) {
+			$unitCss = '';
 		}
 
-		if ($col == 1) { ?>
+		if ($split) { ?>
 	<section class="line items-row<?php echo $cols ?>">
 <?php 	} ?>
-		<div class="<?php echo $unitCss, ' row-', $row, ' column-', $col, ($unitCss && $col == $this->columns ? ' lastUnit' : '') ?>">
+		<div class="<?php echo $unitCss, ' row-', $row, ' column-', $col, ($col == $this->columns && $unitCss ? ' lastUnit' : '') ?>">
 		<?php echo $this->loadTemplate('item') ?>
 		</div>
-<?php 	if ($col && $this->columns) { ?>
-	</section><!-- .items-row -->
+<?php 	if ($col == $this->columns) { ?>
+	</section>
 <?php	}
 	}
 }
@@ -142,7 +139,7 @@ if ($this->pagination->get('pages.total') > 1 && ($this->params->get('show_pagin
 <?php
 }
 
-/* NOT READY YET until ./html/pagination.php pagination_list_footer() is ironed out. */
+/*#FIXME NOT READY YET until ./html/pagination.php pagination_list_footer() is ironed out. */
 // $this->pagination->getListFooter()
 
 ?>

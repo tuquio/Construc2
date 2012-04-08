@@ -8,6 +8,7 @@
  */
 
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
+JHtml::_('behavior.tooltip');
 
 $menu		= JSite::getMenu();
 $active		= $menu->getActive();
@@ -25,24 +26,24 @@ if (empty($this->items)) {
 
 	return;
 }
-?>
-<form name="adminForm" id="adminForm" action="<?php echo htmlspecialchars(JFactory::getURI()->toString()) ?>" method="post">
-<?php if ($this->params->get('filter_field') != 'hide') { ?>
+
+if ($this->params->get('filter_field') != 'hide') { ?>
+<form class="filter-fields" id="adminForm" action="<?php echo htmlspecialchars(JFactory::getURI()->toString()) ?>" method="post">
 	<fieldset class="filters">
-	<legend class="element-invisible"><?php echo JText::_('JGLOBAL_FILTER_LABEL') ?></legend>
+	<legend class="visuallyhidden"><?php echo JText::_('JGLOBAL_FILTER_LABEL') ?></legend>
 	<p class="filter-search">
-		<label class="filter-search-lbl" for="filter-search"><?php echo JText::_('COM_CONTENT_'.$this->params->get('filter_field').'_FILTER_LABEL').'&#160;' ?></label>
-		<input type="text" name="filter-search" id="filter-search" value="<?php echo $this->escape($this->state->get('list.filter')) ?>" class="inputbox" onchange="document.adminForm.submit();" title="<?php echo JText::_('COM_CONTENT_FILTER_SEARCH_DESC') ?>" />
+		<label class="filter-search" for="filter-search"><?php echo JText::_('COM_CONTENT_'.$this->params->get('filter_field').'_FILTER_LABEL') ?></label>
+		<input class="inputbox" type="text" name="filter-search" id="filter-search" value="<?php echo $this->escape($this->state->get('list.filter')) ?>" title="<?php echo JText::_('COM_CONTENT_FILTER_SEARCH_DESC') ?>" />
 	</p>
 <?php }
 
 if ($this->params->get('show_pagination_limit')) { ?>
 	<p class="display-limit">
-	<?php echo JText::_('JGLOBAL_DISPLAY_NUM'), '&#160;', $this->pagination->getLimitBox(); ?>
-	</p>
-	<?php
-}
+	<label class="filter-limit" for="limit"><?php echo JText::_('JGLOBAL_DISPLAY_NUM') ?></label><?php
+	echo $this->pagination->getLimitBox() ?>
 
+	</p><?php
+}
 if ($this->params->get('filter_field') != 'hide') { ?>
 	</fieldset>
 <?php
@@ -51,18 +52,18 @@ if ($this->params->get('filter_field') != 'hide') { ?>
 
 <table class="data category">
 <?php if ($this->params->get('show_headings')) { ?>
-<thead>
+<thead class="category-list">
 <tr>
 	<th class="list-title" id="tableOrdering"><?php  echo JHtml::_('grid.sort', 'COM_CONTENT_HEADING_TITLE', 'a.title', $listDirn, $listOrder) ?></th>
 	<?php if ($date = $this->params->get('list_show_date')) { ?>
 	<th class="list-date" id="tableOrdering2"><?php echo JHtml::_('grid.sort', 'COM_CONTENT_'.$date.'_DATE', 'a.created', $listDirn, $listOrder) ?></th>
-	<?php } ?>
+	<?php }
 
-	<?php if ($this->params->get('list_show_author',1)) { ?>
+	if ($this->params->get('list_show_author')) { ?>
 	<th class="list-author" id="tableOrdering3"><?php echo JHtml::_('grid.sort', 'JAUTHOR', 'author', $listDirn, $listOrder) ?></th>
-	<?php } ?>
+	<?php }
 
-	<?php if ($this->params->get('list_show_hits',1)) { ?>
+	if ($this->params->get('list_show_hits')) { ?>
 	<th class="list-hits" id="tableOrdering4"><?php echo JHtml::_('grid.sort', 'JGLOBAL_HITS', 'a.hits', $listDirn, $listOrder) ?></th>
 	<?php } ?>
 </tr>
@@ -71,13 +72,13 @@ if ($this->params->get('filter_field') != 'hide') { ?>
 }
 ?>
 
-<tbody class="data category-list">
+<tbody class="category-list">
 <?php foreach ($this->items as $i => &$article) { ?>
-<tr class="row-<?php echo $i % 2 ?>">
+<tr class="<?php echo $i % 2 ? 'even' : 'odd' ?>">
 <?php
 	if (in_array($article->access, $this->user->getAuthorisedViewLevels())) { ?>
 	<td class="list-title"><a href="<?php
-		echo JRoute::_(ContentHelperRoute::getArticleRoute($article->slug, $article->catid));
+		echo JRoute::_(ContentHelperRoute::getArticleRoute($article->id, $article->catid));
 		?>"><?php echo $this->escape($article->title) ?></a></td>
 
 <?php 	if ($this->params->get('list_show_date')) { ?>
@@ -117,6 +118,10 @@ if ($this->params->get('filter_field') != 'hide') { ?>
 <?php } ?>
 </tbody>
 </table>
+	<input type="hidden" name="filter_order" value="">
+	<input type="hidden" name="filter_order_Dir" value="">
+	<input type="hidden" name="limitstart" value="">
+</form>
 <?php
 
 if ($this->pagination->get('pages.total') > 1 && ($this->params->get('show_pagination') == 1 || $this->params->get('show_pagination') == 2))
@@ -128,12 +133,4 @@ if ($this->pagination->get('pages.total') > 1 && ($this->params->get('show_pagin
 	echo $this->pagination->getPagesLinks();
 ?>
 	</nav>
-<?php } ?>
-<input type="hidden" name="filter_order" value="">
-<input type="hidden" name="filter_order_Dir" value="">
-<input type="hidden" name="limitstart" value="">
-</form>
-<?php
-
-JHtml::_('behavior.tooltip');
-JHtml::core();
+<?php }

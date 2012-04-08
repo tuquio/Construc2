@@ -13,11 +13,12 @@
 #	JLoader::register('BehaviorWidgets', dirname(__FILE__) . '/widgets/behavior.php');
 
 /**
- * Proxy for the onBeforeCompileHead event because the Dispatcher only
- * allows function or class-based observers and insists on instatiating
- * the given 'class' for unknown reasons.
+ * @param  string   $context content being passed to the plugin.
+ * @param  object   $item    article object.  Note $article->text is also available
+ * @param  object   $params  article params
+ * @param  int      $limit   'page' number
  */
-function CustomThemeContentEvent($context, $item, $params, $limitstart=0)
+function CustomThemeContentEvent($context, $item, $params, $limit=0)
 {
 }
 
@@ -73,15 +74,20 @@ class CustomTheme
 				);
 
 	/**
-	 * @staticvar array chunks from the static html file(s) *
-	 * @see getStaticHtml(), loadStaticHtml()
+	 * @static array chunks from the static html file(s) *
 	 */
 	static $html;
 
 	/**
 	 * @see setChunks()
 	 */
-	static $chunks = array('header', 'footer', 'aside', 'nav', 'section', 'article');
+	static $chunks = array(
+					'meta'          => '',
+					'module_before'	=> '<div class="{class} {name}">',
+					'module_after'	=> '</div>',
+					'unit_before'	=> '<div class="{class}">',
+					'unit_after'	=> '</div>'
+				);
 
 	protected function __construct(ConstructTemplateHelper $helper)
 	{
@@ -113,27 +119,18 @@ class CustomTheme
 		{
 			// fake ini file
 			$config = parse_ini_file($this->path, true);
-			if (!$config || count($config) == 0) {
-				break;
+			if ($config && count($config) > 0)
+			{
+				$this->title   = $config['title'];
+				$this->version = $config['version'];
+				$this->config->setProperties($config);
 			}
-
-			$this->title   = $config['title'];
-			$this->version = $config['version'];
-
-			$this->config->setProperties($config);
 		}
-
-		// @see ConstructTemplateHelper::renderModules()
-		$chunks = array(
-					'unit_before' => '<div class="{class}">',
-					'unit_after'  => '</div>'
-				);
-
-		$this->setChunks($chunks);
 	}
 
 	/**
-	 * @return ConstructTemplateHelper
+	 * @param  ConstructTemplateHelper $helper
+	 * @return CustomTheme
 	 */
 	public static function getInstance(ConstructTemplateHelper $helper)
 	{
@@ -152,83 +149,13 @@ class CustomTheme
 	}
 
 	/**
-	 * Will load the static html files registered for the given $layout and add
-	 * their "chunks" for later inclusion and processing.
-	 *
-	 * Default chunks are: 'header', 'footer', 'aside', 'nav', 'section', 'article'.
-	 * Use setChunks() to configure the list.
-	 *
-	 * Static HTML files are useful for prototyping a layout or to include contents
-	 * that are not managed (manageable) within the CMS. The concept shares similarities
-	 * with Server Side Includes, where a "master file" (the layout) includes other
-	 * named files (chunks) to form the final content.
-	 *
-	 * @param  array  $layout An array with 'path' and optional 'scope' information
-	 * @return array
-	 *
-	 * @see  setChunks(), loadStaticHtml(), setCapture()
-	 * @see  ConstructTemplateHelper::addLayout()
-	 * @uses self::$chunks, JFile::exists()
-	 */
-	public function getStaticHtml(array &$layout)
-	{
-		if (self::$html['main'] = JFile::exists($layout['path'])) {
-			self::$html['main_path'] = $layout['path'];
-		}
-
-		$info = pathinfo($layout['path'], PATHINFO_DIRNAME | PATHINFO_FILENAME);
-
-		// run over the list of default and assigned chunks
-		foreach (self::$chunks as $name)
-		{
-			$path = $info['dirname'] .'/'. $info['filename'] .'-'. $name . '.html';
-			if ( $layout[$name] = JFile::exists($path) ) {
-				$layout[$name .'_path'] = $path;
-			}
-		}
-
-		return array_keys(self::$html);
-	}
-
-	/**
-	 * Loads an existing static html file from the theme's layout folder into a
-	 * given buffer of the same, e.g. for the html layout "ipsum" the $name="header"
-	 * yields to load "ipsum-header.html".
-	 *
-	 * To store (and cache) an arbitrary piece of runtime generated content use
-	 * {@link setCapture()}.
-	 *
-	 * @param  string  $name  a unique name where "main" is synonym for the "<themename>.html"
-	 *
-	 * @return string  Content of the static HTML file or a HTML comment if the $name was not found
-	 * @see  setCapture()
-	 * @uses self::$html, JFile::read()
-	 *
-	 * @todo implement caching
-	 */
-	public function loadStaticHtml($name='main')
-	{
-		settype(self::$html[$name], 'boolean');
-
-		if (self::$html[$name] == true) {
-			return JFile::read(self::$html[$name .'_path']);
-		}
-
-		return false;
-	}
-
-	/**
-	 * Stores a piece of runtime generated content into a named buffer. To load an
-	 * existing HTML file from disk into a butter use {@link loadStaticHtml()}.
+	 * Stores a piece of runtime generated content into a named buffer.
 	 *
 	 * @param  string  $name     buffer name, usually a template position or a "chunk" of the theme
 	 * @param  string  $content  the content to store
 	 * @param  array   $options  RESERVED
 	 *
 	 * @return CustomTheme
-	 * @see loadStaticHtml(), getStaticHtml()
-	 *
-	 * @todo implement caching
 	 */
 	public function setCapture($name, $content, $options = array())
 	{
@@ -248,23 +175,14 @@ class CustomTheme
 	 */
 	public function getCapture($name, $checkonly = false)
 	{
-		if ($checkonly == true) {
-			return isset(self::$html[$name]) ? strlen(self::$html[$name]) : 0;
-		}
-
 		if (isset(self::$html[$name])) {
-			return self::$html[$name];
+			return ($checkonly == true) ? strlen(self::$html[$name]) : self::$html[$name];
 		}
+		return '';
 	}
 
 	/**
-	 * Accepts an array with basename prefixes for the static html feature
-	 * provided with "static_html.php". For a list of default chunk names see
-	 * {@link self::$chunks}.
-	 * If your current html testfile is "ipsum.html" additional files will be
-	 * loaded named "ipsum-header.html", "ipsum-footer.html" etc.
-	 *
-	 * @param  array  $chunks
+	 * @param  array  $chunks   assoc array with chunk names and their data
 	 * @param  bool   $replace  false
 	 *
 	 * @return ConstructTemplateHelper for fluid interface

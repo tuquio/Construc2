@@ -1,29 +1,26 @@
 <?php defined('_JEXEC') or die;
 /**
- * Subtemplate loaded if $navBelowCount > 0
+ * Sub-template loaded if $navBelowCount > 0
  *
  * @package     Construc2
  * @subpackage  Layouts
  * @author      WebMechanic http://webmechanic.biz
  * @copyright   (C) 2011-2012 WebMechanic http://webmechanic.biz. All rights reserved.
  * @license     GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
+ *
+ * @var ConstructTemplateHelper $templateHelper
+ * @var array $navBelowCount
  */
 $modcount = $templateHelper->numModules('nav-below');
 
 $style	= 'raw';
-
-$chunks = array(
-		'module_before' => '<div id="{position}" class="{class}">',
-		'module_after'  => '</div>'
-		);
-$templateHelper->getTheme()->setChunks($chunks, true);
 
 /*
  * if you want to make use of the CSS3 :empty() selector,
  * keep these PHP tags tight close to the HTML markup or a
  * single white space may render your styles useless.
  */
-if ($modcount) : ?><div id="nav-below" class="line below count-<?php echo $navBelowCount[0] ?>"><div class="below-inner"><?php endif;
+if ($modcount) : ?><div id="nav-below" class="line below" data-modules="<?php echo $navBelowCount[0] ?>"><div class="below-inner"><?php endif;
 
 if ($modcount > 1 && $navBelowCount[1]) {
 	$templateHelper->renderModules('nav-below-1', $style);
@@ -41,5 +38,5 @@ if ($modcount > 4 && $navBelowCount[4]) {
 if ($modcount) : ?></div></div><?php endif;
 
 //cleanup
-unset($style, $modcount, $chunks);
+unset($style, $modcount);
 

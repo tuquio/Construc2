@@ -1,6 +1,6 @@
 /*!
  * edit-form.css loaded only in edit state
- * @version 1.9.8 06.03.2012
+ * @version 1.9.14
  * @license WTFPL
  */
 .actions {display:inline-block; position:absolute; right:0; top:0;padding:0;margin:0}
@@ -9,18 +9,31 @@
 
 form.form-validate {position:relative}
 form.form-validate fieldset {border-color:#ccc}
+form.form-validate label {font-weight:bold}
 #jform_articletext_parent {max-width:98% !important}
 #jform_articletext_tbl {}
 #jform_articletext_ifr {max-width:100% !important}
 
 div[class^="formelm"] {margin:1ex 0}
 div[class^="formelm"] label.hasTip {}
+div[class^="formelm"] .inputbox {border:thin solid #ccc;min-width:15em}
+div[class^="formelm"] input.inputbox {border-width:0 0 2px 0;padding:2px 4px;margin-right:.5ex}
 div[class^="formelm"] select.inputbox {}
-div[class^="formelm"] textarea.inputbox {}
+div[class^="formelm"] .inputbox:focus {border-color:#fc6c06}
 div[class^="formelm"] legend {font-weight:bold}
 div[class^="formelm"] > label {display:inline-block;width:20%}
 div[class^="formelm"] > ::-moz-any(input,select) {display:inline-block;min-width:25%;max-width:75%}
-div[class^="formelm"] > textarea {display:inline-block;width:75%}
+div[class^="formelm"] > textarea, #jform_title {display:inline-block;width:75%}
+.formelm label[for="jform_title"], #jform_title {font-size:1.6em}
+
+/* boost the micro calendar */
+.formelm img.calendar {cursor:pointer}
+.calendar table {border-collapse:collapse; box-shadow:0 0 20px 1px rgba(100,100,100,.25)}
+.calendar, .calendar .combo, .calendar table td {font:inherit;font-size:104%}
+.calendar .ttip {font-size:110%}
+.calendar tr.headrow td, .calendar tr.daynames td,
+.calendar tr.daysrow td, .calendar tr.footrow td {padding:2px 8px;text-align:center}
+.calendar tr.daysrow td {border: 1px solid #ddd}
 
 /* core buttons */
 #editor-xtd-buttons {display:inline-block}

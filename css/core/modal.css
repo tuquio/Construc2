@@ -1,4 +1,9 @@
+/*!
+ * modal.css loaded in modal windows
+ * @version 1.9.14
+ * @license WTFPL
+ */
 html{overflow-y:auto}
 #page,
 #content {padding:10px}
-p {margin-bottom:0px}
+p {margin-bottom:0}

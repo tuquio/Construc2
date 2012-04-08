@@ -1,16 +1,16 @@
 /*!
  * Construc2 "Exceptionally Broken"(tm) right-to-left scripts support
- * @version @version 1.9.8 06.03.2012
+ * @version 1.9.14
  * @license WTFPL
  *
- * @todo http://rishida.net/blog/?p=671
- * @todo http://cssjanus.commoner.com/
+ * @link http://rishida.net/blog/?p=671
+ * @link http://cssjanus.commoner.com/
  */
 #access li{float:right;direction:rtl;}
 #branding {float:right;text-align:right;direction:rtl;}
 #page-head {text-align:right;direction:rtl;}
 #page-foot {text-align:right;direction:rtl;}
-#content-container {padding:0px;margin:0px;text-align:right;direction:rtl;}
+#content-container {padding:0;margin:0;text-align:right;direction:rtl;}
 #content {float:right;}
 .left-main-right #content-main {float:left;text-align:right;direction:rtl;}
 .left-main #content-main {float:left;text-align:right;direction:rtl;}

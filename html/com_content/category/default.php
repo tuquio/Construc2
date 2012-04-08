@@ -15,22 +15,22 @@ $page_subheading     = $this->params->get('page_subheading');
 $toggle_headings     = ($show_category_title || $page_subheading);
 
 $desc     = ($this->category->description && $this->params->get('show_description'));
-$desc_img = $this->params->def('show_description_image');
+$desc_img = ($this->params->def('show_description_image') && $this->category->getParams()->get('image'));
 
 ?>
-	<section class="category-list">
+<section class="category-list">
 <?php if ($show_page_heading) { ?>
 	<header class="category">
 <?php
 	if ($toggle_headings) { ?><hgroup><?php } ?>
-	<h1 class="H1 page-title"><?php echo $this->escape($this->params->get('page_heading')) ?></h1>
+	<h1 class="H1 page-title"><span><?php echo $this->escape($this->params->get('page_heading')) ?></span></h1>
 <?php
 
 	if ($show_category_title || $page_subheading) { ?>
 	<h2 class="H2 title"><?php
 		echo $this->escape($page_subheading);
 		if ($show_category_title) {
-			echo '<span class="subheading-category">'.$this->category->title.'</span>';
+			echo '<span>', $this->category->title, '</span>';
 		}
 		?></h2>
 <?php
@@ -40,11 +40,11 @@ $desc_img = $this->params->def('show_description_image');
 <?php
 }
 
-if ($desc) { ?>
+if ($desc || $desc_img) { ?>
 	<article class="line category-desc">
 		<div class="introtext"><?php
-		if ($desc_img && $this->category->getParams()->get('image')) {
-		?><p><img class="catimg" src="<?php echo $this->category->getParams()->get('image') ?>" /></p><?php
+		if ($desc_img) {
+		?><img class="cat-image" src="<?php echo $this->category->getParams()->get('image') ?>" /><?php
 		}
 		if ($desc) {
 			echo JHtml::_('content.prepare', $this->category->description);
@@ -63,8 +63,8 @@ if (is_array($this->children[$this->category->id])
 ?>
 	<section class="cat-children">
 <?php
-		echo ($toggle_headings) ? '<h3>' : '<h2>' ;
-		echo JTEXT::_('JGLOBAL_SUBCATEGORIES');
+		echo ($toggle_headings) ? '<h3 class="H3 subtitle">' : '<h2 class="H3 subtitle">' ;
+		echo '<span class="cat-title">', JText::_('JGLOBAL_SUBCATEGORIES'), '</span>';
 		echo ($toggle_headings) ? '</h3>' : '</h2>' ;
 
 		echo $this->loadTemplate('children');
@@ -79,4 +79,4 @@ if (is_array($this->children[$this->category->id])
 <?php echo $this->loadTemplate('articles'); ?>
 	</section>
 
-	</section>
+</section>

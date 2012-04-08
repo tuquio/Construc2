@@ -5,6 +5,9 @@
  * @author		WebMechanic http://webmechanic.biz
  * @copyright	(C) 2011-2012 WebMechanic. All rights reserved.
  * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
+ *
+ * @var JDocumentHTML $this
+ * @var JRegistry $params
  */
 /*
 This layout separates $introtext and $fulltext, however Content Plugins only
@@ -57,12 +60,12 @@ $noPrint	= !(JFactory::getApplication()->input->get('print'));
 $images		= json_decode($this->item->images);
 $urls		= json_decode($this->item->urls);
 
-$showall	= (1 == (int)JFactory::getApplication()->input->get('showall'));
+$showAll	= (1 == (int)JFactory::getApplication()->input->get('showall'));
 
 // property and state classes
 $more = array('f'=>array(),'p'=>array(),'s'=>array());
 if  ($this->item->featured) 	{$more['f'][] = 'featured';}
-if  ($showall)					{$more['f'][] = 'showall';}
+if  ($showAll)					{$more['f'][] = 'showall';}
 if  (isset($this->item->toc))	{$more['p'][] = 'has-toc';}
 if  ($actions)					{$more['p'][] = 'has-actions';}
 if  (!$this->item->rating)  	{$more['s'][] = 'unrated';}
@@ -94,15 +97,15 @@ if  (!$this->item->rating)  	{$more['s'][] = 'unrated';}
 	$this->item->fulltext  = trim($ftext);
 
 ?>
-	<article id="the-article" class="line item-page <?php echo implode(' ', $more['p']) ,' ', ContentLayoutHelper::getCssAlias($this->item, true), ($this->item->state == 0 ? ' system-unpublished' : '') ?>">
+<article id="the-article" class="line item-page <?php echo implode(' ', $more['p']) ,' ', ContentLayoutHelper::getCssAlias($this->item, true) ?>">
 	<header id="the-header" class="article">
 <?php
 if ($params->get('show_page_heading')) {
 	if ($params->get('show_title')) { echo '<hgroup class="article">'; }
-	echo '<h1 class="H1 page-title">', $this->escape($this->params->get('page_heading')), '</h1>';
+	echo '<h1 class="H1 page-title"><span>', $this->escape($this->params->get('page_heading')), '</span></h1>';
 }
 if ($params->get('show_title')) {
-	echo '<h2 class="H2 title">', $this->escape($this->item->title), '</h2>';
+	echo '<h2 class="H2 title"><span>', $this->escape($this->item->title), '</span></h2>';
 }
 if ($params->get('show_page_heading')) {
 	if ($params->get('show_title')) { echo '</hgroup>'; }
@@ -160,7 +163,7 @@ if ($showStuff) {
 
 echo $this->item->event->afterDisplayContent;
 ?>
-	</article>
+</article>
 
 <?php if (isset($this->item->pagination) ) { ?>
 <footer id="component-footer" class="component article">
