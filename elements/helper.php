@@ -697,7 +697,7 @@ class ConstructTemplateHelper
 		// [alternate st]ylesheet
 		if ($info['extension'] == 'css' || strpos($attribs['rel'], 'ylesheet') > 0) {
 			$attribs['type'] = 'text/css';
-			// the ID attribute is also required by the styleswitcher
+			// the ID attribute is also required by styleswitcher.js
 			$attribs['id'] = basename($href, '.css') . '-css';
 			unset($attribs['mime']);
 		}

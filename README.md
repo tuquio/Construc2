@@ -103,10 +103,12 @@ Browsers always supported this yelde element, thus without any styling applied t
 ## Gone for good
 You won't find any notion of the `pageclass_sfx` in any page layout or override. The 'C' in CSS stands for *cascading* and in it's standard use and implementation `pageclass_sfx` essentially destroys this cascade easily.
 As a site implementor or webmaster you may also dislike to give "a designer" access to your backend and to the menu system in order to access this parameter.
-As you dig into Construc2 and learn how the supplemental class names come into existance and use, you or your designer won't miss this.
+As you (and your designers) dig into Construc2 and learn how the big load of supplemental and meta class names come into existance and use, you won't miss this thing.
 
 The `moduletable` class also vanished from modules rendered thru Construc2, that is the main layout positions. Not only is the "table" a total misnomer and relic from Mambo, the much more flexible `.mod` class allows for the same thing.
 And it's shorter to type :)
+
+The unconditional call of `new JCaption()` which requires caption.js which requires Mootools to create a single DIV is as unconditionally taken care of and got nuked.
 
 ## Component Layout Overrides
 Every "release" of Construc2 either adds or (attempts) to improve the output and markup of the CMS core component layouts. The com_content overrides are ripped from Angie Radtke's Beez5 (when J!1.6 was current) as a kickstart because of their great and extensive use of classes.
