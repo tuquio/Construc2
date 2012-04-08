@@ -22,7 +22,7 @@
 		JText::printf('MOD_LOGIN_HINAME', $user->get('name'));
 	} else {
 		JText::printf('MOD_LOGIN_HINAME', $user->get('username'));
-	} ?></p
+	} ?></p>
 	</div>
 <?php } ?>
 
