@@ -157,9 +157,19 @@ if ($app->get('input')->get('tp', 0, 'bool') && JComponentHelper::getParams('com
 
 // Style sheet switcher
 if ($enableSwitcher) {
-	$templateHelper->addLink($tmpl_url.'/css/diagnostic.css', null, array('title'=>'diagnostic'), 'alternate stylesheet');
-	// $templateHelper->addScript($tmpl_url.'/js/styleswitch.min.js');
+	$enableSwitcher = array();
+	foreach ((array) $templateHelper->getConfig('styleswitch') as $name => $title)
+	{
+		if ($name == 'normal') {
+			$href = '#';
+			$name = $templateHelper->getTheme()->get('name');
+		} else {
+			$href = $tmpl_url.'/css/'.$name.'.css';
+		}
+		$enableSwitcher[$name] = array('id'=>$name.'-css','href'=>$href,'title'=>JText::_($title));
+	}
 	$templateHelper->addScript($tmpl_url.'/js/src/styleswitch.js', null, array('defer'=>true));
+	$templateHelper->addScriptDeclaration('var StyleSwitcher='. json_encode($enableSwitcher). ';');
 }
 
 // Lea Verou's -prefix-free

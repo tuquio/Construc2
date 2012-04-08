@@ -20,6 +20,7 @@
 
 $app = JFactory::getApplication();
 ?>
+
 <html lang="<?php echo $this->language ?>" dir="<?php echo $this->direction ?>" <?php echo $cache_manifest ?>>
 <head>
 <jdoc:include type="head" />
@@ -28,9 +29,11 @@ $app = JFactory::getApplication();
 <?php ConstructTemplateHelper::msieSwatter(); ?>
 	<div id="page-top" class="line <?php echo $templateHelper->getPageAlias(true) ?>">
 <?php if ($app->input->get('print')) { ?>
-		<div id="page-head" class="line page-head">
+
+		<div id="page-head" class="line page-head"><div class="head-inner">
+
 		<h1 id="logo"><a class="site-link" href="<?php echo $this->baseurl ?>/"><span class="site-name"><?php echo $app->getCfg('sitename');?></span></a></h1>
-		</div>
+		</div></div>
 <?php } ?>
 		<div id="body-container" class="line">
 			<div class="line content-container">
@@ -43,6 +46,7 @@ $app = JFactory::getApplication();
 
 				</div><!-- .content-main -->
 <?php if ($this->countModules('footer')) { $templateHelper->renderModules('footer'); } ?>
+
 			</div><!-- .content-container -->
 		</div><!-- #body-container -->
 	</div><!-- #page-top -->

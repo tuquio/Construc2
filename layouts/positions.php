@@ -16,6 +16,7 @@
 
 $this->setTitle('Dummy Positions');
 ?>
+
 <html lang="<?php echo $this->language ?>" dir="<?php echo $this->direction ?>">
 <head>
 <jdoc:include type="head" />
