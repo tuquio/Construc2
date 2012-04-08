@@ -148,6 +148,13 @@ class CustomTheme
 		return self::$theme;
 	}
 
+	public function get($property)
+	{
+		if ($property[0] != '_' && isset($this->{$property})) {
+			return $this->{$property};
+		}
+	}
+
 	/**
 	 * Stores a piece of runtime generated content into a named buffer.
 	 *
