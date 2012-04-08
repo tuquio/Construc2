@@ -12,6 +12,9 @@
  * @author      WebMechanic http://webmechanic.biz
  * @copyright   (C) 2011-2012 WebMechanic
  * @license     GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
+ *
+ * @var ContentViewArticle $this
+ * @var JRegistry $params
  */
 JHtml::addIncludePath(JPATH_COMPONENT_SITE .'/helpers');
 
@@ -20,8 +23,9 @@ $ielt = array(
 			'r'=>array('<a tabindex="-1" ', '<span class="mi"><img ', '</span></a>')
 		);
 $iwhat = $params->get('show_icons') ? 'icon' : 'text';
+$dir   = $this->document->direction == 'ltr' ? 'rgt' : 'lft';
 
-?><ul class="menu hmenu actionsmenu rgt <?php echo $iwhat,'s' ?>" title="<?php echo JText::_('Article Actions') ?>">
+?><ul class="menu hmenu actionsmenu <?php echo $dir, ' ', $iwhat,'s' ?>" title="<?php echo JText::_('Article Actions') ?>">
 	<?php if ($params->get('show_print_icon')) { ?>
 	<li class="print <?php echo $iwhat ?> mi"><?php echo str_replace($ielt['p'], $ielt['r'], ContentLayoutHelper::widget('icon.print_popup', $this->item, $params)) ?></li>
 <?php }

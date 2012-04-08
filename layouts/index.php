@@ -68,17 +68,21 @@
 <?php if ($this->getBuffer('message')) : ?><jdoc:include type="message" /><?php endif; ?>
 
 <?php if ($contentAboveCount[0]) :	include WMPATH_LAYOUTS. '/mod_content_above.php'; endif; ?>
+
 	<section class="line component">
 	<jdoc:include type="component" />
 <?php if ($contentBelowCount[0]) : include WMPATH_LAYOUTS. '/mod_content_below.php'; endif; ?>
+
 	</section>
 
 <?php if ($columnGroupAlphaCount > 0) : include WMPATH_LAYOUTS. '/mod_column_group_alpha.php'; endif; ?>
+
 				</div><!-- end content-main -->
 
 <?php if ($columnGroupBetaCount > 0) : include WMPATH_LAYOUTS. '/mod_column_group_beta.php'; endif; ?>
 
 <?php if ($footerAboveCount[0]) : include WMPATH_LAYOUTS. '/mod_footer_above.php'; endif; ?>
+
 			</div><!-- .content-container -->
 		</div><!-- #body-container -->
 	</div><!-- #page-top -->
@@ -86,11 +90,13 @@
 	<footer id="page-foot" class="line page-foot"><div class="foot-inner">
 <?php /* echo JText::_('TPL_CONSTRUC2_JUMP_BACK_TO_TOP') */ ?>
 <?php if ($this->countModules('syndicate')) : ?>
+
 		<div class="mod syndicate">
 	<?php $templateHelper->renderModules('syndicate'); ?>
 		</div><!-- .syndicate -->
 <?php endif; ?>
 <?php $templateHelper->renderModules('footer', 'raw'); ?>
+
 	</div></footer><!-- end footer -->
 <?php
 if ($this->countModules('debug')) : $templateHelper->renderModules('debug', 'raw'); endif;

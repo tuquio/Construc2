@@ -952,7 +952,8 @@ class ConstructTemplateHelper
 						if (!isset($url['scheme'])) {
 							$key = ltrim($key, '/');
 						}
-						$rel = str_replace(JURI::root(), '/', $key);
+						// replace local domain name
+						$rel = str_replace(JURI::root(false), '/', $key);
 						$this->addScript($rel, self::UA, $data);
 					}
 					break;

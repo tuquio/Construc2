@@ -129,10 +129,13 @@ class ContentLayoutHelper
 	static public function widget($key, &$item, &$params, $attribs=array())
 	{
 		// list($class, $method) = explode('.', $key);
-		return str_replace(
-					array('&#160;','&nbsp;',JText::_('JGLOBAL_ICON_SEP')), '',
-					JHtml::_($key, $item, $params, $attribs)
-				);
+
+		if ($key == 'icon.edit') {
+			$attribs['offset'] = array('x'=>0, 'y'=>0);
+		}
+		$html = JHtml::_($key, $item, $params, $attribs);
+
+		return str_replace( array('&#160;','&nbsp;',JText::_('JGLOBAL_ICON_SEP')), '', $html);
 	}
 
 	/**
