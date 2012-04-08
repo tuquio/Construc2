@@ -46,8 +46,10 @@ if ($app->getCfg('debug') && ($cts = $app->input->get('cts')) ) {
 }
 
 // all things different in edit and popup mode
-$enableSwitcher  = !$editMode && !$printMode;
-$showDiagnostics = !$editMode && !$printMode;
+if ($editMode || $printMode) {
+	$enableSwitcher = false;
+	$showDiagnostics = false;
+}
 
 if ($showDiagnostics && $app->input->get('tmpl', 'index') == 'index') {
 	$jmenu = $app->getMenu();
@@ -115,9 +117,6 @@ if ($app->getCfg('debug') && $app->input->get('tpos', 0, 'bool')) {
 if (is_file(JPATH_THEMES .'/'. $this->template .'/favicon.png')) {
 	$templateHelper->addLink($tmpl_url.'/favicon.png', 'image/png', 'icon');
 }
-
-// Typography (protocol relative URLs)
-$templateHelper->webFonts();
 
 // Style sheets
 if ($ssiIncludes) {

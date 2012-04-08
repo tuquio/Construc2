@@ -526,10 +526,6 @@ class ConstructTemplateHelper
 		}
 
 		$i = array_sum($modules);
-		if ($i == 0) {
-			return null;
-		}
-
 		$modules[0] = $i;
 		self::$group_count[$group] = $modules;
 
@@ -539,7 +535,7 @@ class ConstructTemplateHelper
 			self::$group_count['column-1']		= $modules[1];
 			self::$group_count['column-2']		= $modules[2];
 
-			self::$group_count['group-beta']		= $modules[3] + $modules[4];
+			self::$group_count['group-beta']	= $modules[3] + $modules[4];
 			self::$group_count['column-3']		= $modules[3];
 			self::$group_count['column-4']		= $modules[4];
 		}
