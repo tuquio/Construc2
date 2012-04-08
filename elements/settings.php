@@ -54,9 +54,9 @@ nav-below 		= 0
 	; Values are list labels run thru JText for translation
 	; and best added to "xx-XX.override.ini"
 @default	= normal
-normal		= Widget_Styleswitch_Normal
-wireframe	= Widget_Styleswitch_Wireframe
-diagnostic	= Widget_Styleswitch_Diagnostic
+normal		= TPL_CONSTRUC2_STYLE_NORMAL_MODE
+wireframe	= TPL_CONSTRUC2_STYLE_WIREFRAME
+diagnostic	= TPL_CONSTRUC2_STYLE_DIAGNOSTIC_MODE
 
 [fontscaler]
 	; -----

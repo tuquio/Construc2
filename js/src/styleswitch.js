@@ -61,7 +61,7 @@
 		return null;
 	}
 
-	var $ready = function() {
+	var $ready = function () {
 		var cookie = readCookie("style");
 		var title = cookie ? cookie : getPreferredStyleSheet();
 		console.log('switcher.js', title, cookie);
@@ -69,13 +69,19 @@
 		if (window.jQuery) {
 			jQuery('#styleswitcher')
 				.find('.switcher')
-				.each( function(i, elt) { if( $('#' + $(elt).data().style + '-css').length == 0 ) { $(elt).remove(); } })
+				.each(function (i, elt) {
+					if ($('#' + $(elt).data().style + '-css').length === 0) {
+						$(elt).remove();
+					}
+				})
 				.end()
-				.live('click', function(evt) { setActiveStyleSheet($(evt.target).data().style); })
+				.live('click', function (evt) {
+					setActiveStyleSheet($(evt.target).data().style);
+				})
 				.toggle();
 		}
 		else if (window.$$) {
-			$$('#styleswitcher .switcher').each(function(elt) {});
+			$$('#styleswitcher .switcher').each(function (elt) { /* do sth. mooish */ });
 		}
 		else {
 		}

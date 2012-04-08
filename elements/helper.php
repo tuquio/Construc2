@@ -697,6 +697,7 @@ class ConstructTemplateHelper
 		// [alternate st]ylesheet
 		if ($info['extension'] == 'css' || strpos($attribs['rel'], 'ylesheet') > 0) {
 			$attribs['type'] = 'text/css';
+			// the ID attribute is also required by the styleswitcher
 			$attribs['id'] = basename($href, '.css') . '-css';
 			unset($attribs['mime']);
 		}
@@ -772,11 +773,19 @@ class ConstructTemplateHelper
 		unset($attribs['mime']);
 		$attribs['type'] = 'text/javascript';
 
-		if (array_key_exists('defer', $attribs) && $attribs['defer'] == false) {
-			unset($attribs['defer']);
+		if (array_key_exists('defer', $attribs)) {
+			if (!$attribs['defer']) {
+				unset($attribs['defer']);
+			} else {
+				$attribs['defer'] = 'defer';
+			}
 		}
-		if (array_key_exists('async', $attribs) && $attribs['async'] == false) {
-			unset($attribs['async']);
+		if (array_key_exists('async', $attribs)) {
+			if (!$attribs['async']) {
+				unset($attribs['async']);
+			} else {
+				$attribs['async'] = 'async';
+			}
 		}
 
 		// store
@@ -792,12 +801,16 @@ class ConstructTemplateHelper
 	{
 		$this->_makeRoom('script', $uagent);
 
-		// flatten
-		$script = (is_array($content) ? implode(PHP_EOL, $content) : $content);
-		// de-XHTMLize inline <script> created by modules
-		$script = str_replace(array('<![CDATA[', ']]>',"//\n"), '', $script);
+		if (!is_array($content)) {
+			$content = array($content);
+		}
 
-		self::$head["{$uagent}"]['script'][] = $script;
+		foreach ($content as $s => $script) {
+			// de-XHTMLize inline <script> created by modules
+			$script = str_replace(array('<![CDATA[', ']]>',"//\n"), '', $script);
+			self::$head["{$uagent}"]['script'][] = $script;
+		}
+
 
 		return $this;
 	}
@@ -864,19 +877,14 @@ class ConstructTemplateHelper
 		}
 		else {
 			// Remove MooTools if set to do so? 0=No, 1=Yes, 2=Default
-			$loadMoo = (int) $this->tmpl->params->def('loadMoo');
-
-			// html5 shim
-			if ((bool) $this->tmpl->params->get('html5shim')) {
-				$this->addScript($tmpl_url.'/js/html5.js');
-			}
+			$loadMoo = (int) $this->tmpl->params->get('loadMoo');
 
 			// Google Chrome Frame. if set, contains the version number, i.e '1.0.2'
 			$cgf = $this->tmpl->params->get('loadGcf');
 			if ((float)$cgf > 1.0) {
 				$this->addScript('//ajax.googleapis.com/ajax/libs/chrome-frame/'. $cgf .'/CFInstall.min.js',
 						'lt IE 9',
-						array('defer'=>true, 'onload'=>'var e=document.createElement("DIV");if(e && CFInstall){e.id="gcf_placeholder";e.style.zIndex="9999";CFInstall.check({node:"gcf_placeholder"});}')
+						array('defer'=>true, 'onreadystatechange'=>'if(elt.readyState == \'complete\' && CFInstall){var e=document.createElement("DIV");if(e){e.id="gcf_placeholder";e.style.zIndex="9999";CFInstall.check({node:"gcf_placeholder"});}}')
 						);
 			}
 
@@ -902,6 +910,7 @@ class ConstructTemplateHelper
 			}
 		}
 
+if (defined('DEVELOPER_MACHINE')) {FB::log($head, __METHOD__.' BEFORE');} #FIXME
 		foreach ($head as $group => $stuff)
 		{
 			if (!is_array($stuff)) continue;
@@ -939,9 +948,6 @@ class ConstructTemplateHelper
 							unset($head[$group][$key]);
 							continue;
 						}
-						if (strpos($key, 'media/system') != false) {
-							continue;
-						}
 						unset($head[$group][$key]);
 
 						$url = parse_url($key);
@@ -956,15 +962,25 @@ class ConstructTemplateHelper
 
 				case 'script':
 					foreach ($stuff as $key => $data) {
-						$head[$group][$key] = str_replace(
+						$head[$group][$key] = '/* de-Construc2-ed */';
+						if (strpos($data, 'new JCaption') !== false) {
+							$data = str_replace(
 										array('new JCaption', "\t"),
 										array('new Function', ''),
 										$data);
+						}
+						$this->addScriptDeclaration($data);
 					}
 					break;
 			}
 		}
 
+		// html5 shim
+		if ((bool) $this->tmpl->params->get('html5shim')) {
+			$head['scripts'][$tmpl_url.'/js/html5.js'] = array('mime'=>'text/javascript','defer'=>false, 'async'=>false);
+		}
+
+if (defined('DEVELOPER_MACHINE')) {FB::log($head, __METHOD__.' AFTER');} #FIXME
 		$head['metaTags'] = array('http-equiv'=>$httpEquiv, 'standard'=>$standard);
 		// put back what's left
 		$this->doc->setHeadData($head);
@@ -990,7 +1006,6 @@ class ConstructTemplateHelper
 				);
 
 		$head = $this->doc->getHeadData();
-
 		// Remove MooTools if set to do so? 0=No, 1=Yes, 2=Default
 		$loadMoo	= (int)  $this->tmpl->params->get('loadMoo');
 		$loadModal	= (bool) $this->tmpl->params->get('loadModal');
@@ -1005,7 +1020,7 @@ class ConstructTemplateHelper
 					unset($head['scripts'][$src]);
 				}
 				if (count($head['scripts']) == 0) {
-					$head['scripts'][JURI::root(true) . 'media/system/js/core.js'] = array('mime'=>'text/javascript','defer'=>'','async'=>'');
+					$head['scripts'][JURI::root(true) . 'media/system/js/core.js'] = array('mime'=>'text/javascript','defer'=>false,'async'=>false);
 				}
 			}
 			$this->doc->setHeadData($head);
@@ -1043,6 +1058,8 @@ class ConstructTemplateHelper
 			unset($head['scripts'][$src]);
 		}
 
+		if (empty($head['scripts'])) $head['scripts'] = array();
+
 		// put everything back
 		$this->doc->setHeadData($head);
 
@@ -1060,6 +1077,7 @@ class ConstructTemplateHelper
 		$head['custom'][] = '<!-- Construc2 -->';
 
 		ksort(self::$head);
+
 		foreach (self::$head as $ua => $groups)
 		{
 			// collected crap from modules and plugins will go elsewhere
@@ -1092,8 +1110,8 @@ class ConstructTemplateHelper
 						continue;
 					}
 					if (count($groups['scripts'][$sect])) {
-						foreach (array_keys($groups['scripts'][$sect]) as $href) {
-							$head['custom'][] = '<script src="'. $href . '"></script>';
+						foreach ($groups['scripts'][$sect] as $src => $attribs) {
+							$head['custom'][] = '<script src="'. $src . '"' . $attribs . '></script>';
 						}
 					}
 				}
@@ -1104,7 +1122,7 @@ class ConstructTemplateHelper
 				$head['custom'][] = '<script type="text/javascript">';
 				// scripts safe
 				foreach ($groups['script'] as $stuff) {
-					$head['custom'][] = 'try {'. $stuff. '} catch(e) {};';
+					$head['custom'][] = 'try {'. $stuff .'} catch(e) {if(\'console\' in window){console.log(e);}}';
 				}
 				$head['custom'][] = '</script>';
 			}
@@ -1128,6 +1146,7 @@ class ConstructTemplateHelper
 
 	public static function onAfterRender()
 	{
+		if (defined('DEVELOPER_MACHINE')) {FB::log(__METHOD__);} #FIXME
 	}
 
 	/**
@@ -1294,7 +1313,7 @@ class ConstructTemplateHelper
 		static $root;
 
 		if (empty($root)) {
-			$root = JURI::root(true) . '/';
+			$root = JURI::root() . '/';
 		}
 		if (strpos('{', $url) !== false) {
 
@@ -1304,7 +1323,7 @@ class ConstructTemplateHelper
 		// make sure URLs w/o a scheme have an absolute path
 		if (!isset($data['scheme'])) {
 			// dealing with protocol relative URLs
-			if (substr("$url /", 0, 2) == '//') {
+			if (substr("{$url}/", 0, 2) == '//') {
 				$uri = new JUri('tuck:' . $url);
 				if ($uri->getScheme() == 'tuck') {
 					$url = str_replace('tuck:', '', "{$uri}");

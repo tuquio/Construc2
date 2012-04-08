@@ -157,7 +157,7 @@ if ($app->get('input')->get('tp', 0, 'bool') && JComponentHelper::getParams('com
 
 // Style sheet switcher
 if ($enableSwitcher) {
-	$templateHelper->addLink($tmpl_url.'/css/core/diagnostic.css', null, array('title'=>'diagnostic'), 'alternate stylesheet');
+	$templateHelper->addLink($tmpl_url.'/css/diagnostic.css', null, array('title'=>'diagnostic'), 'alternate stylesheet');
 	// $templateHelper->addScript($tmpl_url.'/js/styleswitch.min.js');
 	$templateHelper->addScript($tmpl_url.'/js/src/styleswitch.js', null, array('defer'=>true));
 }
