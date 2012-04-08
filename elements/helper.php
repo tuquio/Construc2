@@ -1110,8 +1110,8 @@ if (defined('DEVELOPER_MACHINE')) {FB::log($head, __METHOD__.' AFTER');} #FIXME
 						continue;
 					}
 					if (count($groups['scripts'][$sect])) {
-						foreach ($groups['scripts'][$sect] as $src => $attribs) {
-							$head['custom'][] = '<script src="'. $src . '"' . $attribs . '></script>';
+						foreach ($groups['scripts'][$sect] as $href => $stuff) {
+							$head['custom'][] = '<script src="'. $href . '" ' . $stuff . '></script>';
 						}
 					}
 				}
