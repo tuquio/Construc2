@@ -9,11 +9,10 @@
 		<!--
 		Most Features would plug into the "features" parameter group.
 		Possible panel groups to plug into:
-			> general    : core functions and things with technical merit
 			> features   : the win and doubt group for almost anything
-			> javascript : add or mess with javascript files and scripts
 			> standards  : provide Shims, Shivs, and other means of webstandards compatibility
-			> maintenance: callbacks for the Backend Maintenance Plugin
+			> quirks     : nice to have a sim, shiv or polyfill in here
+			> javascript : add or mess with javascript files and scripts
 		 -->
 
 		<!-- the win and doubt group for almost anything -->
