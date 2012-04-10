@@ -16,6 +16,7 @@
 
 $app = JFactory::getApplication();
 ?>
+
 <html lang="<?php echo $this->language ?>" dir="<?php echo $this->direction ?>">
 <head>
 <jdoc:include type="head" />
@@ -26,13 +27,12 @@ $app = JFactory::getApplication();
 		<div id="body-container" class="line <?php echo $templateHelper->getPageAlias(true) ?>">
 			<div class="line content-container">
 				<div id="content" class="line content-main">
-
 <?php if ($this->getBuffer('message')) { ?><jdoc:include type="message" /><?php } ?>
+
 <section class="line component">
 <jdoc:include type="component" />
 </section>
-
-				</div><!-- .content-main -->
+				</div><!-- #content -->
 <?php if ($footerAboveCount[0]) { include WMPATH_LAYOUTS. '/mod_footer_above.php'; } ?>
 			</div><!-- .content-container -->
 		</div><!-- #body-container -->
