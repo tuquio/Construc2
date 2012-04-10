@@ -32,6 +32,12 @@ $tmpl_url 	= $base_url. 'templates/'. $this->template;
 $editMode  = $templateHelper->hasState('edit');
 $printMode = $templateHelper->hasState('print');
 
+/**
+ * For the time being, "features", "widgets" and "elements" need to be
+ * applied manually like below. Once the extended parameter panels are
+ * in order, any if this will be obsolete and things will self register.
+ */
+
 /*
  * META
  */
@@ -121,9 +127,12 @@ if (false == $editMode) {
 		$columnLayout = array('main-beta');
 	}
 
-	// merge $columnLayout into a string
-	$columnLayout = array_unique($columnLayout);
+	if ($printMode) {
+		$columnLayout[] = 'print';
+	}
 }
+// merge $columnLayout into a string
+$columnLayout = array_unique($columnLayout);
 $columnLayout = trim(implode(' ', $columnLayout));
 
 /* .eof */

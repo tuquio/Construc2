@@ -8,6 +8,7 @@
  * @license     GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
 !defined('WMPATH_TEMPLATE') && define('WMPATH_TEMPLATE', dirname(dirname(__FILE__)));
+!defined('WMPATH_ELEMENTS') && define('WMPATH_ELEMENTS', WMPATH_TEMPLATE . '/elements');
 
 JLoader::register('ElementRendererAbstract', WMPATH_TEMPLATE . '/elements/renderer/abstract.php');
 JLoader::register('ElementRendererHead', WMPATH_TEMPLATE . '/elements/renderer/head.php');
@@ -334,16 +335,13 @@ class CustomTheme
 	 */
 	public function loadParams()
 	{
-		// Get the form.
-		JForm::addFormPath(WMPATH_TEMPLATE . '/elements/widgets/forms');
-
 		return $this;
 	}
 
 	public function setForm(JForm $form)
 	{
 		// Get the form.
-		JForm::addFormPath(WMPATH_TEMPLATE . '/elements/widgets/forms');
+		JForm::addFormPath(WMPATH_ELEMENTS . '/elements/widgets/forms');
 
 		$this->jform = $form;
 
@@ -373,16 +371,14 @@ class CustomTheme
 		$parts = explode('.', $feature);
 		try
 		{
-			$method  = isset($parts[2]) ? $parts[2] : false;
-
 			$handler = ElementRendererAbstract::getInstance($parts[0].'.'.$parts[1], $data);
-			if ($method) {
+			if (isset($parts[2])) {
+				$method  = $parts[2];
 				self::$features[$feature] = $handler->{$method}($data);
 			} else {
 				self::$features[$feature] = $handler->build($data);
 			}
-
-		} catch (Exception $e) {
+		} catch (OutOfBoundsException $e) {
 			self::$features[$feature] = $e;
 		}
 

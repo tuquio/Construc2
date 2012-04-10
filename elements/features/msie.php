@@ -29,8 +29,8 @@ class ElementFeatureMsie extends ElementRendererMeta
 	 * <b>It's highly recommended to add a proper "http-equiv" server
 	 * response header instead</b> i.e. .htaccess
 	 * <code>
-	 *     Header add "imagetoolbar" "no"
-	 *     Header add "MSThemeCompatible" "no"
+	 *     Header set "imagetoolbar" "no"
+	 *     Header set "MSThemeCompatible" "no"
 	 * </code>
 	 */
 	public function bho()
@@ -70,7 +70,7 @@ class ElementFeatureMsie extends ElementRendererMeta
 	 * <b>It's highly recommended to add a proper "http-equiv" server
 	 * response header instead</b>, i.e. .htaccess
 	 * <code>
-	 *     Header add "X-UA-Compatible" "IE=Edge,chrome=1"
+	 *     Header set X-UA-Compatible "IE=Edge,chrome=1"
 	 * </code>
 	 *
 	 * @link http://h5bp.com/i/378  X-UA-Compatible issues

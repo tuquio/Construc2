@@ -36,10 +36,18 @@ system.css	= "{media}/css"
 system.js	= "{media}/js"
 
 [autocols]
-column-1=0
-column-2=0
-column-3=0
-column-4=0
+	; Positions to receive the "autocols" attribute
+	; causing modules to be evenly distributed
+column-1 		= 0
+column-2 		= 0
+column-3 		= 0
+column-4 		= 0
+header-above 	= 1
+header-below 	= 1
+content-above 	= 1
+content-below 	= 1
+footer-above 	= 0
+nav-below 		= 0
 
 [styleswitch]
 	; Defaults than can be REPLACED with theme config files

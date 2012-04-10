@@ -30,14 +30,18 @@ class ElementRendererHead extends ElementRendererAbstract implements IElementRen
 
 	/**
 	 * For API compliance with {@link JDocumentRenderer}
+	 *
 	 * @param string $name      The name of the element to render
 	 * @param array  $params    Array of values
 	 * @param null   $content   Override the output of the renderer
+	 *
 	 * @return string
+	 * @uses JDispatcher::trigger()
+	 * @uses ConstructTemplateHelper::$theme
 	 */
 	public function render($name = null, $params = array(), $content = null)
 	{
-		JFactory::getApplication()->triggerEvent('onBeforeCompileHead');
+		JDispatcher::getInstance()->trigger('onBeforeCompileHead');
 
 		$theme = ConstructTemplateHelper::getInstance()->theme;
 		$theme->build();
@@ -46,9 +50,12 @@ class ElementRendererHead extends ElementRendererAbstract implements IElementRen
 	}
 
 	/**
-	 * Sets charset, base and title to preceeed anything else.
+	 * Sets charset, base and title to preceed anything else.
 	 *
+	 * @uses JFactory::getDocument()
 	 * @todo  add "<link rel="dns-prefetch" href="//cdn.foo.bar">" if CDN are configured
+	 *
+	 * @return ElementRendererHead
 	 */
 	public function init()
 	{

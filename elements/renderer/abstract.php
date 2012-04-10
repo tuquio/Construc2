@@ -31,9 +31,10 @@ interface IElementRenderer
 	 * Use $uagent to add browser specific resources, typically for MSIE
 	 * in which case a conditional comment (CC) based on $uagent is added
 	 * to group output.
+	 * {@link http://msdn.microsoft.com/en-us/library/ms537512.aspx About Conditional Comments}
 	 *
 	 * MSIE CC $uagent examples:
-	 * - IE         = any MSIE with support for CC
+	 * - IE         = any MSIE with support for CC (MSIE 5.5 - MSIE9)
 	 * - IE 6       = MSIE 6 only
 	 * - !IE 6      = all but MSIE 6
 	 * - lt IE 9    = MSIE 5 - MSIE 8
@@ -41,6 +42,12 @@ interface IElementRenderer
 	 * - gt IE 6    = MSIE 7 - MSIE 9
 	 * - gte IE 9   = MSIE 9
 	 * - IEMobile   = MSIE 7 - MSIE 9 on smart phones
+	 * - !IEMobile  = all MSIE but IEMobile (any version)
+	 *
+	 * More complex rules:
+	 * - (IE 7)&!(IEMobile)
+	 * - (IE 8)&!(IEMobile)
+	 * - (gte IE 9)|(gt IEMobile 7)
 	 *
 	 * @abstract
 	 * @param string $key
@@ -48,8 +55,6 @@ interface IElementRenderer
 	 * @param string $ua
 	 *
 	 * @return ElementRendererAbstract Concrete instance of subclass.
-	 *
-	 * @todo fix "IEMobile" "(IE 7)&!(IEMobile)" "(IE 8)&!(IEMobile)" "(gte IE 9)|(gt IEMobile 7)"
 	 */
 	public function set($key, $value, $uagent=null);
 }
@@ -91,6 +96,7 @@ abstract class ElementRendererAbstract
 	 * @param null $attribs
 	 *
 	 * @return ElementRendererAbstract
+	 * @throws OutOfBoundsException $type
 	 */
 	public static function getInstance($type, $attribs=null)
 	{
@@ -102,10 +108,13 @@ abstract class ElementRendererAbstract
 
 			self::$elements[$type] = false;
 			$parts = explode('.', $type);
-
 			$class = 'Element'. ucfirst($parts[0]) . ucfirst($parts[1]);
 
-			self::$elements[$type] = new $class($attribs);
+			try {
+				self::$elements[$type] = new $class($attribs);
+			} catch(Exception $e) {
+				throw new OutOfBoundsException($type, 0, $e);
+			}
 		}
 
 		return self::$elements[$type];
@@ -119,7 +128,8 @@ abstract class ElementRendererAbstract
 	/**
 	 * Parse substitution {keys} into their full URL equivalent.
 	 *
-	 * @param  string $url
+	 * @param  string  $url
+	 * @uses ConstructTemplateHelper::getConfig()
 	 */
 	static public function subst(&$url)
 	{
@@ -161,7 +171,7 @@ abstract class ElementRendererAbstract
 	 * The __toArray() method allows a class to decide how it will
 	 * react when it is treated like an array.
 	 *
-	 * @return array Same as $data
+	 * @return array Defaults to {@link $data}
 	 */
 	public function __toArray()
 	{
