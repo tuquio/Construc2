@@ -3,8 +3,8 @@
 <extension version="2.5" type="template" group="features" client="site" method="upgrade">
 	<config>
 		<fields name="params">
-		<!-- core functions for Construc2 and things with technical merit -->
-		<fieldset name="general" addfieldpath="/templates/construc2/elements" />
+		<!-- core functions and things with technical merit -->
+		<fieldset name="general" addfieldpath="/templates/construc2/elements/features" />
 
 		<!--
 		Most Features would plug into the "features" parameter group.
@@ -18,33 +18,33 @@
 
 		<!-- the win and doubt group for almost anything -->
 			<fieldset name="features">
-				<field type="feature" name="diagnostics" default="0" label="TPL_CONSTRUC2_DIAGNOSTICS_LABEL" description="TPL_CONSTRUC2_DIAGNOSTICS_DESC">
+				<field type="feature" name="diagnostics" default="0" label="Standards_Feature_diagnostics" description="Standards_Feature_diagnostics_Desc">
 					<option value="1">JShow</option>
 					<option value="0">JHide</option>
 				</field>
 			</fieldset>
 
 			<fieldset name="standards">
-				<field type="feature" name="prefixfree" default="0" label="TPL_CONSTRUC2_PREFIXFREE_LABEL" description="TPL_CONSTRUC2_PREFIXFREE_DESC">
+				<field type="feature" name="prefixfree" default="0" label="Standards_Feature_prefixfree" description="Standards_Feature_prefixfree_Desc">
 					<option value="1">JYes</option>
 					<option value="0">JNo</option>
 				</field>
 			</fieldset>
 
 			<fieldset name="quirks">
-				<field type="feature" handler="msie" name="msieBho" default="0" label="Feature_Msie_Bho_Label" description="Feature_Msie_Bho_Label">
+				<field type="feature" handler="msie" name="msieBho" default="0" label="Quirks_Feature_msieBho" description="Quirks_Feature_msieBho_Desc">
 					<option value="1">JYes</option>
 					<option value="0">JNo</option>
 				</field>
-				<field type="feature" handler="msie" name="msieBrowserchoice" default="0" label="Feature_Msie_Browserchoice_Label" description="Feature_Msie_Browserchoice_Desc">
+				<field type="feature" handler="msie" name="msieBrowserchoice" default="0" label="Quirks_Feature_msieBrowserchoice" description="Quirks_Feature_msieBrowserchoice_Desc">
 					<option value="1">JYes</option>
 					<option value="0">JNo</option>
 				</field>
-				<field type="feature" handler="msie" name="msieCfinstall" default="0" label="Feature_Msie_Cfinstall_Label" description="Feature_Msie_Cfinstall_Label">
+				<field type="feature" handler="msie" name="msieCfinstall" default="0" label="Quirks_Feature_msieCfinstall" description="Quirks_Feature_msieCfinstall_Desc">
 					<option value="1">JYes</option>
 					<option value="0">JNo</option>
 				</field>
-				<field type="feature" handler="msie" name="msieEdge" default="0" label="Feature_Msie_Edge_Label" description="Feature_Msie_Edge_Label">
+				<field type="feature" handler="msie" name="msieEdge" default="0" label="Quirks_Feature_msieEdge" description="Quirks_Feature_msieEdge_Desc">
 					<option value="1">JYes</option>
 					<option value="0">JNo</option>
 				</field>
@@ -53,8 +53,8 @@
 		</fields>
 	</config>
 
-	<updateservers>
-		<server type="extension">http://joomla.webmechanic.biz/tpl/addons.xml?features</server>
+	<updateservers><!-- EXPERIMENTAL : type and location are in flux -->
+		<server type="template">http://joomla.webmechanic.biz/tpl/kaskade/features.xml</server>
 	</updateservers>
 
 </extension>

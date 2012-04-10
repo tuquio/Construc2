@@ -3,8 +3,8 @@
 <extension version="2.5" type="template" group="widgets" client="site" method="upgrade">
 	<config>
 		<fields name="params">
-		<!-- core functions for Construc2 and things with technical merit -->
-		<fieldset name="general" addfieldpath="/templates/construc2/elements" />
+		<!-- core functions and things with technical merit -->
+		<fieldset name="general" addfieldpath="/templates/construc2/elements/features" />
 
 		<!--
 		Most Widgets would plug into the "widgets" parameter group.
@@ -38,8 +38,8 @@
 		</fields>
 	</config>
 
-	<updateservers>
-		<server type="extension">http://joomla.webmechanic.biz/tpl/addons.xml?widgets</server>
+	<updateservers><!-- EXPERIMENTAL : type and location are in flux -->
+		<server type="template">http://joomla.webmechanic.biz/tpl/kaskade/widgets.xml</server>
 	</updateservers>
 
 </extension>
