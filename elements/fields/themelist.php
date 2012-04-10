@@ -32,7 +32,6 @@ class JFormFieldThemelist extends JFormFieldFileList
 	{
 		parent::__construct($form);
 		$doc = JFactory::getDocument();
-FB::log($doc, __METHOD__);
 	}
 
 	/**
