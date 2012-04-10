@@ -47,6 +47,10 @@ p.counter b, .pagination span.mi {padding:.2ex .4em}
 
 .pagenav li {display:inline;margin:3px;padding:0}
 
+/* width depends on the date format */
+.tip-wrap {background-color:inherit}
+div.tip-wrap {font-size:95%;width:12em}
+
 li.mi .mi {vertical-align:inherit}
 
 .footer .menu, .footer .menu li {display:inline-block;list-style:none;margin:0;padding:0}
