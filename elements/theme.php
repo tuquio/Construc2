@@ -29,18 +29,15 @@ class CustomTheme
 	 * @see getInstance()
 	 */
 	public static $theme;
+
 	/**#+
 	 * Theme Properties
 	 * @see getConfig()
 	 */
 	/** @var $name string lowercase */
 	protected $name = 'default';
-	/** @var $title string */
-	protected $title = 'Default';
 	/** @var $description string */
 	protected $description = 'Default Theme';
-	/** @var $version string */
-	protected $version = '0.1.0';
 	/** @var $author string */
 	protected $author = 'WebMechanic';
 	/** @var $path string */
@@ -83,57 +80,44 @@ class CustomTheme
 	/**
 	 * @see setFeature(), getFeatures(), dropFeatures(), renderFeatures()
 	 */
-	static $features = array();
+	static $features = array('core'=>array('link'=>array()));
 
 	/**
 	 * Apparently a constructor...
+	 *
+	 * @param string|object  Theme file or template style object
 	 */
-	protected function __construct($theme_file = null)
+	protected function __construct($theme = null)
 	{
-		//	spl_autoload_register(array('CustomTheme', 'autoload'));
-		// Frontend: pick the default template
-		if ($theme_file === null)
-		{
-			$tmpl = JFactory::getApplication('site')->getTemplate(true);
-			$ssi  = (bool) $tmpl->params->get('ssiIncludes', 0);
+		/* spl_autoload_register(array('CustomTheme', 'autoload')); */
+
+		// theme filename only? 'foo.css', 'bar.styles' (Backend usage)
+		if (is_string($theme)) {
+			list($this->name, $tmp) = explode('.', "$theme.");
+			// make it a "minimal" template style object
+			$theme = new stdClass;
+			$theme->template = basename(WMPATH_TEMPLATE);
+		}
+		else if (is_object($theme) && ($theme->params instanceof JRegistry)) {
+			// a template (style) object from JApplication (Frontend usage)
+			$ssi  = (bool) $theme->params->get('ssiIncludes', 0);
 			if ($ssi) {
-				$this->name = basename($tmpl->params->get('ssiTheme'), '.styles');
+				$this->name = basename($theme->params->get('ssiTheme'), '.styles');
 			}
 			else {
-				$this->name = basename($tmpl->params->get('theme'), '.css');
+				$this->name = basename($theme->params->get('theme'), '.css');
 			}
 		}
-		else if (is_string($theme_file)) {
-			// Backend: explicit name given via the theme file
-			list($this->name, $tmp) = explode('.', "$theme_file.");
-			$tmpl = new stdClass;
-			$tmpl->template = basename(WMPATH_TEMPLATE);
-		}
-FB::log($theme_file);
-		// a fake INI file with default settings
-		$this->path     = WMPATH_TEMPLATE .'/themes/'. $this->name . '.php';
+
+		$this->tmpl_url = JUri::root(true) .'/templates/'. $theme->template;
+
 		// an optional .xml file with params for the backend
-		$this->form     = WMPATH_TEMPLATE .'/themes/'. $this->name . '.xml';
-		$this->tmpl_url = JUri::root(true) .'/templates/'. $tmpl->template;
-		$this->url      = $this->tmpl_url .'/themes';
-
-		$this->config = new JRegistry();
-
-		if (is_file($this->path))
-		{
-			// fake ini file
-			$config = parse_ini_file($this->path, true);
-			if ($config || count($config) > 0) {
-				$this->config->loadArray($config);
-			}
-		}
-		if (!is_file($this->form))
-		{
+		$this->form = WMPATH_TEMPLATE .'/themes/'. $this->name . '.xml';
+		if (!is_file($this->form)) {
 			$this->form = false;
 		}
 
-		$this->title   = $this->config->get('title');
-		$this->version = $this->config->get('version');
+		$this->loadConfig();
 	}
 
 	/**
@@ -267,8 +251,9 @@ FB::log($theme_file);
 	}
 
 	/**
-	 * Adds a "feature" or "widget" to the frontend theme which typically involves
+	 * Adds a "feature" or "widget" to the template which typically involves
 	 * loading scripts and styles.
+	 *
 	 * Examples:
 	 * - feature.msie.edge :        ElementFeatureMsie::edge()
 	 * - feature.standards.json :   ElementFeatureStandards::json()
@@ -284,6 +269,7 @@ FB::log($theme_file);
 	public function setFeature($feature, $data)
 	{
 		if ($data === false) {
+			unset(self::$features[$feature]);
 			return $this;
 		}
 
@@ -293,16 +279,13 @@ FB::log($theme_file);
 			case 'feature.tp':    // template position preview
 			case 'feature.l10n':  // data uri flags
 			case 'feature.rtl':   // right to left scripts
-				if ( isset(self::$features['core']) ) {
-					self::$features[$feature]['link'] = '{tmpl.css}/core/'.$feature.'.css';
-				}
+				list($tmp, $name) = explode('.', $feature);
+				self::$features['core']['link'][$name] = '{tmpl.css}/core/'.$name.'.css';
 				break;
 
 			case 'feature.edit': // frontend editing
-				if ( isset(self::$features['core']) ) {
-					self::$features[$feature]['link'] = '{tmpl.css}/core/forms.css';
-					self::$features[$feature]['link'] = '{tmpl.css}/core/edit-form.css';
-				}
+				self::$features['core']['link']['forms'] = '{tmpl.css}/core/forms.css';
+				self::$features['core']['link']['edit-forms'] = '{tmpl.css}/core/edit-form.css';
 				break;
 
 			default:
@@ -424,21 +407,29 @@ FB::log($theme_file);
 		return self::$features[$feature];
 	}
 
+	protected function loadConfig()
+	{
+		// a fake INI file with default settings
+		$file_path = WMPATH_TEMPLATE .'/themes/'. $this->name . '.php';
+		if (is_file($file_path))
+		{
+			// fake ini file
+			$config = parse_ini_file($file_path, true);
+			if ($config || count($config) > 0) {
+				$this->config = new JRegistry($config);
+			}
+		}
+
+		return $this->config;
+	}
+
 	public function getConfig($name, $default=null)
 	{
 		if (null === $name) {
-			return $this->config;
+			return isset($this->config) ? $this->config : $default;
 		}
-		return $this->config->get($name, $default);
-	}
 
-	public function get($key, $default=null)
-	{
-		if (isset($this->$key))
-		{
-			return $this->$key;
-		}
-		return $default;
+		return isset($this->config) ? $this->config->get($name, $default) : $default;
 	}
 
 	/**
@@ -468,6 +459,7 @@ FB::log($theme_file);
 	{
 		if ($class[0] == 'J' || $class[0] == 'K') {return;}
 
+		// split Caps
 		$parts = preg_split('/(?<=[a-z])(?=[A-Z])/x', $class);
 
 		$parts[0] = WMPATH_TEMPLATE .'/'. strtolower($parts[0]) .'s';
@@ -479,6 +471,22 @@ FB::log($theme_file);
 		$parts[2] = strtolower($parts[2]) . '.php';
 FB::warn($parts, "autoload($class)");
 		include_once implode('/', $parts);
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getName()
+	{
+		return $this->name;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getPath()
+	{
+		return $this->path;
 	}
 
 }

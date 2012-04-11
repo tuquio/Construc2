@@ -87,8 +87,8 @@ class ConstructTemplateHelper
 
 		if (null === self::$helper->theme)
 		{
-			self::$helper->theme = CustomTheme::getInstance();
-			self::$helper->_applySubst('theme', self::$helper->theme->get('name'));
+			self::$helper->theme = CustomTheme::getInstance($this->tmpl);
+			self::$helper->_applySubst('theme', self::$helper->theme->getName());
 		}
 
 		return self::$helper;
@@ -411,12 +411,12 @@ class ConstructTemplateHelper
 	public function getLayout()
 	{
 		if (count($this->layouts) == 0) {
-			return;
+			return null;
 		}
 
-		$req	= new JInput();
-		$tmpl	= $req->get('tmpl');
-		$view	= $req->get('view');
+		$request	= new JInput();
+		$tmpl	= $request->get('tmpl');
+		$view	= $request->get('view');
 		$file	= null;
 
 		// override view? (category)
@@ -424,7 +424,7 @@ class ConstructTemplateHelper
 		{
 			$file = $this->layouts[$view.'.php'];
 			// or a layout? (blog, list, form)
-			$layout	= $req->get('layout');
+			$layout	= $request->get('layout');
 			$key  = $view .'-'. $layout .'.php';
 			if (isset($this->layouts[$key]))
 			{
@@ -504,8 +504,9 @@ class ConstructTemplateHelper
 			return ElementRendererAbstract::getInstance('renderer.'. $type);
 		}
 		catch (Exception $e) {
-			return;
 		}
+
+		return null;
 	}
 
 

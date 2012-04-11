@@ -65,7 +65,7 @@ $templateHelper->feature('edit' , $editMode);
 $templateHelper->feature('print', $printMode);
 
 // Preview Module Positions with index.php?tp=1
-if ($app->get('input')->get('tp', 0, 'bool')) {
+if ($app->input->get('tp', 0, 'bool')) {
 	$templateHelper->feature('tp', JComponentHelper::getParams('com_templates')->get('template_positions_display', 0));
 }
 
