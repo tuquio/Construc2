@@ -16,7 +16,7 @@ JLoader::register('SearchHelper', JPATH_ADMINISTRATOR .'/components/com_search/h
 
 class BetterMenuHelper
 {
-	static public function renderType($module, $params, $menuitem = null)
+	public static function renderType($module, $params, $menuitem = null)
 	{
 		$menu = new stdClass;
 		return $menu;
@@ -33,7 +33,7 @@ class BetterMenuHelper
 	 * @param  object $item  with an $alias and maybe more usefull things
 	 * @return string The alias
 	 */
-	static public function getCssAlias($item)
+	public static function getCssAlias($item)
 	{
 		$d = array();
 		// menu item?
@@ -99,7 +99,7 @@ class BetterMenuHelper
 	}
 
 	// @todo refactor to use JStringXXX if that comes available
-	static protected function _inflectAlias(&$aliases, $language = null)
+	protected static function _inflectAlias(&$aliases, $language = null)
 	{
 		static $locale;
 

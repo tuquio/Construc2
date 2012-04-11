@@ -26,7 +26,7 @@ class ContentLayoutHelper
 	 * @param  JRegistry $params Layout parameters
 	 * @return string
 	 */
-	static public function showReadMore($item, $params, $class='line readmore', $target='#content')
+	public static function showReadMore($item, $params, $class='line readmore', $target='#content')
 	{
 		$access = (bool) $params->get('access-view');
 
@@ -70,7 +70,7 @@ class ContentLayoutHelper
 	 *
 	 * @return string some CSS classes
 	 */
-	static public function getCssAlias($item, $parent = true)
+	public static function getCssAlias($item, $parent = true)
 	{
 		static $props = array('images','parent_alias','category_alias','alias','state','id','catid','params');
 
@@ -117,7 +117,7 @@ class ContentLayoutHelper
 		return trim($alias);
 	}
 
-	static public function isEmpty(&$content)
+	public static function isEmpty(&$content)
 	{
 		static $keepers = '<audio><canvas><embed><hr><iframe><img><math><noscript><object><param><svg><video><command><script><style>';
 		// decode entities, keep meta + embeds, then remove "white-space"
@@ -126,7 +126,7 @@ class ContentLayoutHelper
 	}
 
 	/*@todo delegate to Widget Class */
-	static public function widget($key, &$item, &$params, $attribs=array())
+	public static function widget($key, &$item, &$params, $attribs=array())
 	{
 		// list($class, $method) = explode('.', $key);
 
@@ -146,7 +146,7 @@ class ContentLayoutHelper
 	 *
 	 * @return void (sets the toc property)
 	 */
-	static public function betterToc(&$item)
+	public static function betterToc(&$item)
 	{
 		$item->pagenav = null;
 
@@ -197,7 +197,7 @@ class ContentLayoutHelper
 	 *
 	 * @todo insert skiplink href="#fulltext"
 	 */
-	static protected function _makePageToc(&$item, $class='unit size1of3 rgt')
+	protected static function _makePageToc(&$item, $class='unit size1of3 rgt')
 	{
 		$shutup = libxml_use_internal_errors(false);
 
