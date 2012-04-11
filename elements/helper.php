@@ -87,7 +87,7 @@ class ConstructTemplateHelper
 
 		if (null === self::$helper->theme)
 		{
-			self::$helper->theme = CustomTheme::getInstance($this->tmpl);
+			self::$helper->theme = CustomTheme::getInstance(self::$helper->getTemplate());
 			self::$helper->_applySubst('theme', self::$helper->theme->getName());
 		}
 
