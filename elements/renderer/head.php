@@ -43,7 +43,7 @@ class ElementRendererHead extends ElementRendererAbstract implements IElementRen
 	{
 		JDispatcher::getInstance()->trigger('onBeforeCompileHead');
 
-		$theme = ConstructTemplateHelper::getInstance()->theme;
+		$theme = ConstructTemplateHelper::getInstance()->getTheme();
 		$theme->build();
 
 		return implode('', $theme->getChunk('meta'));
@@ -81,7 +81,8 @@ class ElementRendererHead extends ElementRendererAbstract implements IElementRen
 	}
 
 	/**
-	 * @inherit
+	 * @param array $data
+	 * @param mixed $options
 	 * @return ElementRendererHead
 	 */
 	public function build(array &$data, $options=null)
@@ -108,8 +109,6 @@ class ElementRendererMeta extends ElementRendererAbstract
 	protected $name = 'meta';
 
 	/**
-	 * @param array $data
-	 * @param null  $options
 	 * @return ElementRendererMeta
 	 */
 	public function build(array &$data, $options=null)
@@ -207,6 +206,11 @@ class ElementRendererLink extends ElementRendererAbstract
 		return $this;
 	}
 
+	/**
+	 * @param array $data
+	 * @param mixed $options
+	 * @return ElementRendererLink
+	 */
 	public function build(array &$data, $mode=null)
 	{
 		// core stylesheets
@@ -256,6 +260,11 @@ class ElementRendererStyles extends ElementRendererAbstract
 {
 	protected $name = 'styles';
 
+	/**
+	 * @param array $data
+	 * @param mixed $options
+	 * @return ElementRendererStyles
+	 */
 	public function build(array &$data, $options=null)
 	{
 		return $this;
@@ -274,6 +283,11 @@ class ElementRendererScript extends ElementRendererAbstract
 {
 	protected $name = 'script';
 
+	/**
+	 * @param array $data
+	 * @param mixed $options
+	 * @return ElementRendererScript
+	 */
 	public function build(array &$data, $options=null)
 	{
 		return $this;
@@ -349,6 +363,11 @@ class ElementRendererScripts extends ElementRendererAbstract
 		return $this;
 	}
 
+	/**
+	 * @param array $data
+	 * @param mixed $options
+	 * @return ElementRendererScripts
+	 */
 	public function build(array &$data, $options=null)
 	{
 		array_unshift($this->data, '<script type="text/javascript">');
@@ -386,6 +405,11 @@ class ElementRendererCustom extends ElementRendererAbstract
 {
 	protected $name = 'custom';
 
+	/**
+	 * @param array $data
+	 * @param mixed $options
+	 * @return ElementRendererCustom
+	 */
 	public function build(array &$data, $options=null)
 	{
 		return $this;

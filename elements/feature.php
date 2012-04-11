@@ -11,6 +11,9 @@
 /** Register Standard Feature Classes */
 JLoader::register('ElementFeatureBehavior', WMPATH_TEMPLATE . '/elements/features/behavior.php');
 
+/**
+ *
+ */
 class ElementFeature extends ElementRendererAbstract
 {
 	/**
@@ -92,7 +95,12 @@ class ElementFeature extends ElementRendererAbstract
 		return ConstructTemplateHelper::getInstance()->getTheme()->getFeature($name);
 	}
 
-	public function build(array &$data, $options=null) {}
+	/**
+	 * @param array $data
+	 * @param mixed $options
+	 * @return ElementFeature
+	 */
+	public function build(array &$data, $options=null) {return $this;}
 
 	/**
 	 * Proxy to ElementRenderer setter.

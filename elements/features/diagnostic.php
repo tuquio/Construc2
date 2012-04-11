@@ -12,18 +12,21 @@ class ElementFeatureDiagnostic extends ElementFeature
 {
 	protected $name = 'diagnostic';
 
+	/**
+	 * @todo "export" $catId, $itemId, $articleId to template
+	 */
 	public function render()
 	{
-		$app   = JFactory::getApplication();
-		$jmenu = $app->getMenu();
-		$amenu = $jmenu->getActive();
+		$app    = JFactory::getApplication();
+		$menu   = $app->getMenu();
+		$active = $menu->getActive();
 
 		// get some numbers and add them somehow to the template :-)
 		$catId = $itemId = $articleId = '';
-		if ($amenu->component == 'com_content') {
-			$itemId 	= $amenu->id;
-			if (isset($amenu->query['id'])) {
-				$articleId = $amenu->query['id'];
+		if ($active->component == 'com_content') {
+			$itemId = $active->id;
+			if (isset($active->query['id'])) {
+				$articleId = $active->query['id'];
 			}
 		}
 

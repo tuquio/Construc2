@@ -16,10 +16,18 @@ JLoader::register('ElementWidgetContent', WMPATH_TEMPLATE . '/elements/widgets/c
  */
 class ElementWidget extends ElementFeature
 {
-	static public function better($old, $new)
+	/**
+	 * Allows to replace standard JHtml widgets and behaviors with
+	 * better alternatives.
+	 *
+	 * @param string $key      dot-notation according to JHtml rules
+	 * @param string $callback new handler
+	 * @return void
+	 */
+	static public function better($key, $callback)
 	{
-		JHtml::unregister($old);
-		JHtml::register($old, $new);
+		JHtml::unregister($key);
+		JHtml::register($key, $callback);
 	}
 
 	/**

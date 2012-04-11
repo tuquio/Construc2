@@ -16,15 +16,6 @@ JLoader::register('ElementWidget' , WMPATH_TEMPLATE . '/elements/widget.php');
  */
 interface IElementRenderer
 {
-
-	/**
-	 * @abstract
-	 * @param array $data
-	 * @param mixed $options
-	 * @return ElementRendererAbstract Concrete instance of subclass.
-	 */
-	public function build(array &$data, $options=null);
-
 	/**
 	 * Sets the value/data for the designated $key of this element.
 	 *
@@ -133,6 +124,14 @@ abstract class ElementRendererAbstract
 	protected function init() {return $this;}
 
 	/**
+	 * @abstract
+	 * @param array $data
+	 * @param mixed $options
+	 * @return ElementRendererAbstract Concrete instance of subclass.
+	 */
+	abstract public function build(array &$data, $options=null);
+
+	/**
 	 * Parse substitution {keys} into their full URL equivalent.
 	 * Key/Values are cached from [subst] as available in settings.php
 	 *
@@ -152,17 +151,6 @@ abstract class ElementRendererAbstract
 		}
 
 		return $url;
-	}
-
-	/**
-	 * Default implementation proxies to {@link __toString()}
-	 *
-	 * @return string
-	 * @uses __toString()
-	 */
-	public function build(array &$data, $options=null)
-	{
-		return $this->__toString();
 	}
 
 	/**
