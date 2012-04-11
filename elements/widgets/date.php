@@ -23,7 +23,7 @@ class ElementWidgetDate extends ElementWidget
 	 * @param  string  $elt		defaults to 'span' as the date fragment wrapper element
 	 * @return string
 	 */
-	static public function container($date='now', $format='DATE_FORMAT_LC4', $elt='span')
+	public static function container($date='now', $format='DATE_FORMAT_LC4', $elt='span')
 	{
 		// format keys for day and month numbers and names and their mapping to a $markup
 		static

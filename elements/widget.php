@@ -24,7 +24,7 @@ class ElementWidget extends ElementFeature
 	 * @param string $callback new handler
 	 * @return void
 	 */
-	static public function better($key, $callback)
+	public static function better($key, $callback)
 	{
 		JHtml::unregister($key);
 		JHtml::register($key, $callback);

@@ -138,7 +138,7 @@ abstract class ElementRendererAbstract
 	 * @param  string  $url
 	 * @uses ConstructTemplateHelper::getConfig()
 	 */
-	static public function subst(&$url)
+	public static function subst(&$url)
 	{
 		static $subst;
 

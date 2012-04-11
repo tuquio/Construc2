@@ -455,7 +455,7 @@ class CustomTheme
 	 * @param $class
 	 * @return void
 	 */
-	static protected function autoload($class)
+	protected static function autoload($class)
 	{
 		if ($class[0] == 'J' || $class[0] == 'K') {return;}
 

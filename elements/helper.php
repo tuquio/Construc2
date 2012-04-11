@@ -101,7 +101,7 @@ class ConstructTemplateHelper
 	 * @return string  View name or empty string if NOT homepage
 	 * @static bool $front
 	 */
-	static public function isHomePage()
+	public static function isHomePage()
 	{
 		static $front = null;
 
@@ -919,7 +919,7 @@ To allow parallel downloading, move the inline script before the external CSS fi
 	 * @param int $min default 6, CC's start with MSIE 6
 	 * @param int $max default 9, CC's end with MSIE 9
 	 */
-	static public function msieSwatter($min=6, $max=9)
+	public static function msieSwatter($min=6, $max=9)
 	{
 		static $flap = 0;
 		$flap++;
@@ -953,9 +953,9 @@ To allow parallel downloading, move the inline script before the external CSS fi
 	 * @param  string  $markup
 	 * @return bool
 	 */
-	static public function isEmpty(&$markup, $by='')
+	public static function isEmpty(&$markup, $by='')
 	{
-		#FIXME
+		#FIXME isEmpty() detections
 		return false;
 /*
 		static $keepers = '<audio><canvas><embed><hr><iframe><img><math><noscript><object><param><svg><video><command><script><style>';

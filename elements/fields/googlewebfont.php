@@ -36,7 +36,7 @@ class JFormFieldGooglewebfont extends JFormFieldList
 		return $options;
 	}
 
-	static protected function _staticFontList()
+	protected static function _staticFontList()
 	{
 		$options    = array();
 		$options[]	= JHtml::_('select.option', '', JText::_('TPL_CONSTRUC2_GOOGLE_WEB_FONT_SELECT'));
