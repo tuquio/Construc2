@@ -49,26 +49,8 @@ content-below 	= 1
 footer-above 	= 0
 nav-below 		= 0
 
-[styleswitch]
-	; Defaults than can be REPLACED with theme config files
-	; Values are list labels run thru JText for translation
-	; and best added to "xx-XX.override.ini"
-@default	= normal
-normal		= Widget_Styleswitch_Normal
-wireframe	= Widget_Styleswitch_Wireframe
-diagnostic	= Widget_Styleswitch_Diagnostic
-
-[fontscaler]
-	; -----
-	; Font scaling
-larger		= "Huge Font"
-large		= "Large Font"
-@default	= "Default Font"
-small		= "Small Font"
-smaller		= "Tiny Font"
-
 [allow_empty]
 	; -----
 	; module types
-custom	= 1
-
+custom		= 1
+banner		= 0

@@ -59,6 +59,12 @@ class CustomTheme
 	protected $config;
 
 	/**
+	 * Used in the Template Manager to assign the parameter form.
+	 * @var $jform JForm
+	 */
+	protected $jform;
+
+	/**
 	 * @see setChunks()
 	 */
 	static $chunks = array(
@@ -79,24 +85,35 @@ class CustomTheme
 	 */
 	static $features = array();
 
-	protected function __construct()
+	/**
+	 * Apparently a constructor...
+	 */
+	protected function __construct($theme_file = null)
 	{
-		$tmpl   = JFactory::getApplication()->getTemplate(true);
-	//	spl_autoload_register(array('CustomTheme', 'autoload'));
-
-		$theme  = null;
-
-		$ssi = (bool) $tmpl->params->get('ssiIncludes', 0);
-		if ($ssi) {
-			$theme = basename($tmpl->params->get('ssiTheme'), '.styles');
+		//	spl_autoload_register(array('CustomTheme', 'autoload'));
+		// Frontend: pick the default template
+		if ($theme_file === null)
+		{
+			$tmpl = JFactory::getApplication('site')->getTemplate(true);
+			$ssi  = (bool) $tmpl->params->get('ssiIncludes', 0);
+			if ($ssi) {
+				$this->name = basename($tmpl->params->get('ssiTheme'), '.styles');
+			}
+			else {
+				$this->name = basename($tmpl->params->get('theme'), '.css');
+			}
 		}
-		else {
-			$theme = basename($tmpl->params->get('theme', $tmpl->params->get('customStyleSheet')), '.css'); #FIXME remove BC param
+		else if (is_string($theme_file)) {
+			// Backend: explicit name given via the theme file
+			list($this->name, $tmp) = explode('.', "$theme_file.");
+			$tmpl = new stdClass;
+			$tmpl->template = basename(WMPATH_TEMPLATE);
 		}
-		$this->name = $theme;
-
-		$this->path     = JPATH_THEMES .'/'. $tmpl->template .'/themes/'. $this->name . '.php';
-		$this->form     = JPATH_THEMES .'/'. $tmpl->template .'/themes/'. $this->name . '.xml';
+FB::log($theme_file);
+		// a fake INI file with default settings
+		$this->path     = WMPATH_TEMPLATE .'/themes/'. $this->name . '.php';
+		// an optional .xml file with params for the backend
+		$this->form     = WMPATH_TEMPLATE .'/themes/'. $this->name . '.xml';
 		$this->tmpl_url = JUri::root(true) .'/templates/'. $tmpl->template;
 		$this->url      = $this->tmpl_url .'/themes';
 
@@ -110,18 +127,23 @@ class CustomTheme
 				$this->config->loadArray($config);
 			}
 		}
+		if (!is_file($this->form))
+		{
+			$this->form = false;
+		}
 
 		$this->title   = $this->config->get('title');
 		$this->version = $this->config->get('version');
 	}
 
 	/**
+	 * @param  string $theme  optional theme file, i.e 'foo.css', 'bar.styles'
 	 * @return CustomTheme
 	 */
-	public static function getInstance()
+	public static function getInstance($theme = null)
 	{
 		if (!self::$theme) {
-			self::$theme = new self();
+			self::$theme = new self($theme);
 		}
 		return self::$theme;
 	}
@@ -330,22 +352,39 @@ class CustomTheme
 		return $this;
 	}
 
-	/**
-	 * @see JModelForm::loadForm()
-	 */
-	public function loadParams()
-	{
-		return $this;
-	}
-
 	public function setForm(JForm $form)
 	{
-		// Get the form.
-		JForm::addFormPath(WMPATH_ELEMENTS . '/elements/widgets/forms');
+		// only once, please.
+		if (isset($this->jform)) {
+			return $this;
+		}
 
+		// grab the form.
 		$this->jform = $form;
 
-		FB::info($this->jform->getName());
+		// load "core" widgets and features
+		try {
+			JFactory::getLanguage()->load('tpl_features', WMPATH_TEMPLATE);
+			$form->loadFile(WMPATH_ELEMENTS . '/features.xml', false);
+		} catch(Exception $e) {
+			if (defined('DEVELOPER_MACHINE')) {
+				FB::warn($e);
+			}
+		}
+
+		try {
+			JFactory::getLanguage()->load('tpl_widgets', WMPATH_TEMPLATE);
+			$form->loadFile(WMPATH_ELEMENTS . '/widgets.xml', false);
+		} catch(Exception $e) {
+			if (defined('DEVELOPER_MACHINE')) {
+				FB::warn($e);
+			}
+		}
+
+		if ($this->form) {
+			JFactory::getLanguage()->load($this->name, WMPATH_TEMPLATE);
+			$form->loadFile($this->form, false);
+		}
 
 		return $this;
 	}
@@ -403,6 +442,24 @@ class CustomTheme
 	}
 
 	/**
+	 * @return  string  JSON representation, stripped
+	 */
+	public function __toString()
+	{
+		$white_list = array('name','title','form','tmpl_url','url');
+		$me = new stdClass;
+		foreach (get_object_vars($this) as $prop => $val) {
+			if ( in_array($prop, $white_list) ) {
+				$me->{$prop} = $val;
+			}
+		}
+
+		$me->config = $this->config->toObject();
+
+		return json_encode($me);
+	}
+
+	/**
 	 * @static
 	 * @param $class
 	 * @return void
@@ -420,7 +477,7 @@ class CustomTheme
 		$parts[1] .= ($parts[1] == 'renderer') ? '' : 's';
 		// filename
 		$parts[2] = strtolower($parts[2]) . '.php';
-FB::warn($parts, 'AUTO LOAD '. $class);
+FB::warn($parts, "autoload($class)");
 		include_once implode('/', $parts);
 	}
 

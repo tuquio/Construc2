@@ -13,6 +13,11 @@ require_once dirname(dirname(__FILE__)) . '/theme.php';
 
 JFormHelper::loadFieldClass('filelist');
 
+// add some paths
+JFormHelper::addFormPath(WMPATH_ELEMENTS . '/elements');
+JFormHelper::addFieldPath(WMPATH_ELEMENTS . '/elements/features');
+JFormHelper::addFieldPath(WMPATH_ELEMENTS . '/elements/widgets');
+
 /**
  * Provides a list of Theme files
  */
@@ -23,6 +28,8 @@ class JFormFieldThemelist extends JFormFieldFileList
 	 */
 	public $type = 'Themelist';
 
+	protected $_doc;
+
 	/**
 	 * Instatiate the theme select list.
 	 *
@@ -31,7 +38,11 @@ class JFormFieldThemelist extends JFormFieldFileList
 	public function __construct($form = null)
 	{
 		parent::__construct($form);
-		$doc = JFactory::getDocument();
+
+		$this->_doc = JFactory::getDocument();
+//		if (defined('DEVELOPER_MACHINE')) {
+//			$this->_doc->addScriptDeclaration('console.info( "Theme parameters initializing! " );');
+//		}
 	}
 
 	/**
@@ -40,14 +51,35 @@ class JFormFieldThemelist extends JFormFieldFileList
 	 * @param  JForm  $form  The JForm object to attach to the form field.
 	 *
 	 * @return object The form field object so that the method can be used in a chain.
-	 */
 	public function setForm(JForm $form)
 	{
 		parent::setForm($form);
-		$theme = CustomTheme::getInstance()->setForm($form);
-		// document.querySelector('p.tip')
-FB::log($theme, __METHOD__);
 		return $this;
+	}
+	 */
+
+	/**
+	 * Method to attach a JForm object to the field.
+	 *
+	 * @param	object	$element	The JXmlElement representing the <field />.
+	 * @param	mixed	$value		The form field value to validate.
+	 * @param	string	$group		The field name group control value.
+	 * The $group acts as as an array container for the field. For example if
+	 * the field has name="foo" and the group value is set to "bar" then the
+	 * full field name would end up being "bar[foo]".
+	 *
+	 * @return  boolean  True on success.
+	 */
+	public function setup(JXMLElement $element, $value, $group = null)
+	{
+		$result = parent::setup($element, $value, $group);
+
+		$theme = CustomTheme::getInstance($value)->setForm($this->form);
+//		if (defined('DEVELOPER_MACHINE')) {
+//			$this->_doc->addScriptDeclaration('console.info("'.__METHOD__ .'",'."$theme" .');');
+//		}
+
+		return $result;
 	}
 
 	/**
@@ -74,4 +106,32 @@ FB::log($theme, __METHOD__);
 
 		return $options;
 	}
+
+	/**@#+
+	 * Prepare form, fired on form preparation (before content plugins)
+	 *
+	 * $data feat. a record from the __extensions table.
+	 * - xml: JXMLElement of the manifest
+	 * - params: array of current params
+	 *
+	 * @param JForm  $form
+	 * @param array|JObject $data array "after save", JObject "on read" %-/
+	 */
+	public function onContentPrepareForm(JForm $form, $data)
+	{
+		FB::log($data, __METHOD__);
+	}
+
+	/**
+	 * Prepare data, fired on data preparation
+	 * com_contact context: 'com_users.profile'
+	 * com_user contexts: 'com_users.profile', 'com_users.registration'
+	 * @param string $context
+	 * @param object $data
+	 */
+	public function onContentPrepareData($context, $data)
+	{
+		FB::log($data, __METHOD__);
+	}
+
 }

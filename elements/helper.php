@@ -9,8 +9,8 @@
  */
 !defined('WMPATH_TEMPLATE') && define('WMPATH_TEMPLATE', dirname(dirname(__FILE__)));
 
-JLoader::register('ElementRendererAbstract', WMPATH_TEMPLATE . '/elements/renderer/abstract.php');
-JLoader::register('ElementRendererHead', WMPATH_TEMPLATE . '/elements/renderer/head.php');
+require_once WMPATH_TEMPLATE . '/elements/renderer/abstract.php';
+require_once WMPATH_TEMPLATE . '/elements/renderer/head.php';
 JLoader::register('CustomTheme', WMPATH_TEMPLATE . '/elements/theme.php');
 
 /* SearchHelper knows about the (enhanced) stop words list in xx_XXLocalise
@@ -46,7 +46,7 @@ class ConstructTemplateHelper
 	public static $helper;
 
 	/** @var $config array */
-	protected $config = array('cdn'=>array('@default'=>''), 'features'=>array());
+	protected $config = array('cdn'=>array('@default'=>''), 'subst'=>array());
 
 	/** @var $theme CustomTheme */
 	public $theme;
@@ -87,7 +87,7 @@ class ConstructTemplateHelper
 
 		if (null === self::$helper->theme)
 		{
-			self::$helper->theme = CustomTheme::getInstance(self::$helper);
+			self::$helper->theme = CustomTheme::getInstance();
 			self::$helper->_applySubst('theme', self::$helper->theme->get('name'));
 		}
 
