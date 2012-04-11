@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE extension>
-<extension version="2.5" type="template" group="theme" client="site" method="upgrade">
-	<config>
-		<fields name="params">
+<form>
 		<!--
 			Most Themes would plug into the "theme" parameter group.
 			Possible panel groups to plug into:
@@ -15,19 +12,26 @@
 
 			<!-- the stuff for theme goodness -->
 			<fieldset name="theme" addfieldpath="/templates/construc2/themes">
+				<field type="radio" name="stickyMenu" default="0" label="Sticky-Menu" description="Sticky Menu Desc">
+					<option value="1">JShow</option>
+					<option value="0">JHide</option>
+				</field>
+				<field type="radio" name="topLink" default="0" label="Top-Link" description="Top-Link Desc">
+					<option value="1">JShow</option>
+					<option value="0">JHide</option>
+				</field>
 			</fieldset>
 
-			<fieldset name="features" />
+			<fieldset name="features">
+			</fieldset>
+
 			<fieldset name="quirks" />
 			<fieldset name="javascript" />
 			<fieldset name="widgets" />
 			<fieldset name="maintenance" />
 
-		</fields>
-	</config>
-
 	<updateservers><!-- EXPERIMENTAL : type and location are in flux -->
 		<server type="package">http://joomla.webmechanic.biz/tpl/kaskade/themes/padawan.xml</server>
 	</updateservers>
 
-</extension>
+</form>
