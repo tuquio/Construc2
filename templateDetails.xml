@@ -79,41 +79,39 @@
 					<option value="1">On</option>
 					<option value="0">Off</option>
 				</field>
-			</fieldset>
-<!--
-			<!** stub for themes to plug-in optional parameters **>
-			<fieldset name="theme">
-				<field name="theme_note" type="spacer" label="Custom_Theme_Parameters" description="Custom_Theme_Parameters_Desc" class="tpl-theme" />
-			</fieldset>
--->
-			<fieldset name="features">
+
 				<field name="setGeneratorTag" type="text" default="" label="TPL_CONSTRUC2_METAGENERATOR" description="TPL_CONSTRUC2_METAGENERATOR_DESC" size="56" />
 			</fieldset>
 
+			<fieldset name="theme" description="Theme_Slot_Desc" class="tpl-plugin">
+			</fieldset>
+
+			<fieldset name="features" description="Features_Slot_Desc" class="tpl-plugin">
+			</fieldset>
+
+			<fieldset name="widgets" description="Widgets_Slot_Desc" class="tpl-plugin">
+			</fieldset>
+
 			<fieldset name="javascript">
-				<field name="loadMoo" type="list" default="2" label="TPL_CONSTRUC2_LOAD_MOO_LABEL" description="TPL_CONSTRUC2_LOAD_MOO_DESC">
+				<field name="loadMoo" type="list" default="2" label="Features_Javascript_loadMoo" description="Features_Javascript_loadMoo_Desc">
 					<option value="2">Auto</option>
 					<option value="1">JYes</option>
 					<option value="0">JNo</option>
 				</field>
 <!--
-				<field name="loadMooSrc" type="cdnlist" members="mootools" default="ajax.googleapis.com" label="TPL_CONSTRUC2_MOOSRC_LABEL" description="TPL_CONSTRUC2_MOOSRC_DESC" />
+				<field name="loadMooSrc" type="cdnlist" members="mootools" default="ajax.googleapis.com" label="Features_Javascript_loadMooSrc" description="Features_Javascript_loadMooSrc_Desc" />
  -->
-				<field name="loadModal" type="radio" default="1" label="TPL_CONSTRUC2_LOAD_MODAL" description="TPL_CONSTRUC2_LOAD_MODAL_DESC">
+				<field name="loadModal" type="radio" default="1" label="Features_Javascript_loadModal" description="Features_Javascript_loadModal_Desc">
 					<option value="1">JYes</option>
 					<option value="0">JNo</option>
 				</field>
 
-				<field name="loadjQuery" type="jqueryversion" default="" label="TPL_CONSTRUC2_LOAD_JQUERY_LABEL" description="TPL_CONSTRUC2_LOAD_JQUERY_DESC" />
-				<field name="loadjQuerySrc" type="cdnlist" members="jquery" default="ajax.googleapis.com" label="TPL_CONSTRUC2_JQUERYSRC_LABEL" description="TPL_CONSTRUC2_JQUERYSRC_DESC" />
+				<field name="loadjQuery" type="jqueryversion" default="" label="Features_Javascript_loadjQuery" description="Features_Javascript_loadjQuery_Desc" />
+				<field name="loadjQuerySrc" type="cdnlist" members="jquery" default="ajax.googleapis.com" label="Features_Javascript_loadjQuerySrc" description="Features_Javascript_loadjQuerySrc_Desc" />
 
-				<field name="headCleanup" type="radio" default="0" label="TPL_CONSTRUC2_HEADCLEANUP_LABEL" description="TPL_CONSTRUC2_HEADCLEANUP_DESC">
-					<option value="1">JYes</option>
-					<option value="0">JNo</option>
-				</field>
 			</fieldset>
 
-			<fieldset name="compat" description="TPL_CONSTRUC2_STANDARDS_DESC">
+			<fieldset name="standards" description="Standards_Slot_Desc" class="tpl-plugin">
 				<field name="html5shim" type="radio" default="1" label="TPL_CONSTRUC2_HTML5_LABEL" description="TPL_CONSTRUC2_HTML5_DESC">
 					<option value="1">JYes</option>
 					<option value="0">JNo</option>
@@ -123,12 +121,18 @@
 					<option value="0">JNo</option>
 				</field>
 			</fieldset>
-<!--
-			<!** stub for the extended backend plugin and maintenance tools **>
+
+			<fieldset name="quirks" description="Quirks_Slot_Desc" class="tpl-plugin">
+				<field name="headCleanup" type="radio" default="0" label="Quirks_headCleanup" description="Quirks_headCleanup">
+					<option value="1">JYes</option>
+					<option value="0">JNo</option>
+				</field>
+			</fieldset>
+
 			<fieldset name="maintenance">
 				<field name="maintenance_note" type="spacer" label="Maintenance_Plugin_Slot" description="Maintenance_Plugin_Slot_Desc" class="tpl-plugin" />
 			</fieldset>
- -->
+
 		</fields>
 	</config>
 
