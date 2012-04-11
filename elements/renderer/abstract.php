@@ -66,9 +66,16 @@ abstract class ElementRendererAbstract
 {
 	const UA = 'ALL';
 
-	protected $attribs = array();
+	/** @var string $name  Renderer name */
 	protected $name;
+
+	/** @var array $data  something the renderer can deal with */
 	protected $data = array();
+
+	/** @var string $attibs  arguments and settings (most of) */
+	protected $attribs = array();
+
+	/** @var array $elements  A collection of ElementRendererAbstract classes */
 	protected static $elements = array();
 
 	/**
@@ -78,7 +85,7 @@ abstract class ElementRendererAbstract
 	{
 		if (!isset($this->name))
 		{
-			if (defined('DEVELOPER_MACHINE')) {FB::warn(get_class($this), 'MISSING NAME!');}
+			if (defined('DEVELOPER_MACHINE')) {FB::warn(get_class($this), 'ElementRendererAbstract MISSING NAME!');}
 			preg_match('/([A-Z]+[a-z]+)$/', get_class($this), $parts);
 			$this->name  = strtolower($parts[1]);
 		}
@@ -110,11 +117,11 @@ abstract class ElementRendererAbstract
 			$parts = explode('.', $type);
 			$class = 'Element'. ucfirst($parts[0]) . ucfirst($parts[1]);
 
-			try {
+#			try {
 				self::$elements[$type] = new $class($attribs);
-			} catch(Exception $e) {
-				throw new OutOfBoundsException($type, 0, $e);
-			}
+#			} catch(Exception $e) {
+#				throw new OutOfBoundsException($type, 0, $e);
+#			}
 		}
 
 		return self::$elements[$type];
@@ -127,6 +134,7 @@ abstract class ElementRendererAbstract
 
 	/**
 	 * Parse substitution {keys} into their full URL equivalent.
+	 * Key/Values are cached from [subst] as available in settings.php
 	 *
 	 * @param  string  $url
 	 * @uses ConstructTemplateHelper::getConfig()
@@ -144,6 +152,17 @@ abstract class ElementRendererAbstract
 		}
 
 		return $url;
+	}
+
+	/**
+	 * Default implementation proxies to {@link __toString()}
+	 *
+	 * @return string
+	 * @uses __toString()
+	 */
+	public function build(array &$data, $options=null)
+	{
+		return $this->__toString();
 	}
 
 	/**
