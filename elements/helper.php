@@ -19,12 +19,17 @@ JLoader::register('CustomTheme', dirname(__FILE__) . '/theme.php');
  * Proxy for the onBeforeCompileHead event because the Dispatcher only
  * allows function or class-based observers and insists on instantiating
  * the given 'class' for unknown reasons.
+ *
+ * @deprecated 1.10.0
  */
 function ConstructHelperBeforeCompileHead()
 {
 	ConstructTemplateHelper::getInstance()->onBeforeCompileHead();
 }
 
+/**
+ * @deprecated 1.10.0
+ */
 function ConstructHelperAfterRender()
 {
 	ConstructTemplateHelper::getInstance()->onAfterRender();
@@ -1190,9 +1195,7 @@ if (defined('DEVELOPER_MACHINE')) {FB::log($head, __METHOD__.' AFTER');} #FIXME
 	}
 
 	/**
-	 * Generates CSS links for Google Webfonts.
-	 *
-	 * @return ConstructTemplateHelper for fluid interface
+	 * @deprecated 1.10.0
 	 */
 	public function webFonts()
 	{
@@ -1263,6 +1266,9 @@ if (defined('DEVELOPER_MACHINE')) {FB::log($head, __METHOD__.' AFTER');} #FIXME
 		return $this->tmpl;
 	}
 
+	/**
+	 * @deprecated 1.10.0
+	 */
 	public function isEditMode()
 	{
 		if (null == $this->edit_mode) {
@@ -1280,14 +1286,7 @@ if (defined('DEVELOPER_MACHINE')) {FB::log($head, __METHOD__.' AFTER');} #FIXME
 	}
 
 	/**
-	 * Initializes the given $group array in the $head section for the $uagent
-	 * (default = self::UA) using the $filler data.
-	 *
-	 * @param  string $group
-	 * @param  string $uagent
-	 * @param  array  $filler
-	 *
-	 * @return ConstructTemplateHelper for fluid interface
+	 * @deprecated 1.10.0
 	 */
 	protected function _makeRoom($group, &$uagent, $filler=array())
 	{
@@ -1308,6 +1307,9 @@ if (defined('DEVELOPER_MACHINE')) {FB::log($head, __METHOD__.' AFTER');} #FIXME
 		return $this;
 	}
 
+	/**
+	 * @deprecated 1.10.0
+	 */
 	protected function _tuckUrl($url, $type='link')
 	{
 		static $root;
