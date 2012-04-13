@@ -140,7 +140,6 @@
 		<folder>css</folder>
 		<folder>elements</folder>
 		<folder>html</folder>
-		<!-- <folder>images</folder> -->
 		<folder>js</folder>
 		<folder>language</folder>
 		<folder>layouts</folder>
@@ -148,15 +147,12 @@
 		<filename>component.php</filename>
 		<filename>construc2.manifest</filename>
 		<filename>construc2_rtl.manifest</filename>
-		<filename>CREDITS.php</filename>
 		<filename>embed.php</filename>
 		<filename>error.php</filename>
-		<!-- <filename>gz.php</filename> -->
 		<filename>htaccess.txt</filename>
 		<filename>index.php</filename>
 		<filename>modal.php</filename>
 		<filename>offline.php</filename>
-		<filename>README.md</filename>
 		<filename>template_thumbnail.png</filename>
 	</files>
 
