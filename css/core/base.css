@@ -12,7 +12,7 @@ body{font-size:100.1%}
 * {-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box}
 
 /* Gecko Hacks */
-@media screen,handheld,projection{html{margin-bottom:1px;height:100% !important}}
+@media screen,handheld,projection{html{margin-bottom:1px;min-height:100%}}
 /* iPhone 3=163 ppi (std. 112 x 1.455) */
 @media screen and (min-resolution: 160dpi){html{font-size:21px}}
 /* iPhone 4=326 ppi (std. 112 x 2,911) */
