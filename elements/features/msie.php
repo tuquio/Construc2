@@ -17,39 +17,44 @@ class ElementFeatureMsie extends ElementRendererMeta
 {
 	protected $name = 'msie';
 	protected $renderer = array(
-				'bho'=>'meta',
+				'meta'=>'meta',
 				'browserchoice'=>'meta',
 				'cfinstall'=>'script',
 				'edge'=>'meta',
 			);
 
 	/**
-	 * Kick "browser helper objects" imagetoolbar, MSThemeCompatible.
+	 * Kick imagetoolbar and MSThemeCompatible.
 	 *
 	 * <b>It's highly recommended to add a proper "http-equiv" server
 	 * response header instead</b> i.e. .htaccess
-	 * <code>
-	 *     Header set "imagetoolbar" "no"
-	 *     Header set "MSThemeCompatible" "no"
-	 * </code>
+	 * <code>Header set imagetoolbar "no"</code>
+	 * <code>Header set MSThemeCompatible "no"</code>
+	 *
+	 * @return ElementFeatureMsie
 	 */
-	public function bho()
+	public function meta()
 	{
 		$this->httpEquiv('imagetoolbar', 'no');
 		$this->httpEquiv('MSThemeCompatible', 'no');
 
+		return $this;
 	}
 
 	/**
 	 * BrowserChoice.com Popup or Redirect
+	 *
+	 * @return ElementFeatureMsie
 	 */
 	public function browserchoice()
 	{
-		$this->set('refresh', '2;url=http://browserchoice.eu/', 'lt IE 9');
+		return $this->set('refresh', '2;url=http://browserchoice.eu/', 'lt IE 9');
 	}
 
 	/**
 	 * Google Chrome Frame Install for oldIEs
+	 *
+	 * @return ElementFeatureMsie
 	 */
 	public function cfinstall($version = '1.0.3')
 	{
@@ -60,7 +65,7 @@ class ElementFeatureMsie extends ElementRendererMeta
 		            'onload'=>'var e=document.createElement("DIV");if(e && CFInstall){e.id="gcf_placeholder";e.style.zIndex="9999";CFInstall.check({node:"gcf_placeholder"});}'
 					);
 
-		$this->set('script', $attribs, 'lt IE 9');
+		return $this->set('script', $attribs, 'lt IE 9');
 	}
 
 	/**
@@ -69,17 +74,18 @@ class ElementFeatureMsie extends ElementRendererMeta
 	 *
 	 * <b>It's highly recommended to add a proper "http-equiv" server
 	 * response header instead</b>, i.e. .htaccess
-	 * <code>
-	 *     Header set X-UA-Compatible "IE=Edge,chrome=1"
-	 * </code>
+	 * <code>Header set X-UA-Compatible "IE=Edge,chrome=1"</code>
 	 *
 	 * @link http://h5bp.com/i/378  X-UA-Compatible issues
 	 * @link http://wiki.whatwg.org/wiki/PragmaExtensions
+	 *
+	 * @return ElementFeatureMsie
+	 *
+	 * @todo call ElementRendererHead and "inject" BEFORE data['base']
 	 */
 	public function edge()
 	{
-		//#FIXME pick ElementRendererHead and "inject" BEFORE data['base']
-		$this->httpEquiv('X-UA-Compatible', 'IE=Edge,chrome=1');
+		return $this->httpEquiv('X-UA-Compatible', 'IE=Edge,chrome=1');
 	}
 
 }

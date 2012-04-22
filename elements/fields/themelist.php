@@ -9,14 +9,7 @@
  * @copyright	(C)2012 WebMechanic. All rights reserved.
  * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
-require_once dirname(dirname(__FILE__)) . '/theme.php';
-
 JFormHelper::loadFieldClass('filelist');
-
-// add some paths
-JFormHelper::addFormPath(WMPATH_ELEMENTS . '/elements');
-JFormHelper::addFieldPath(WMPATH_ELEMENTS . '/elements/features');
-JFormHelper::addFieldPath(WMPATH_ELEMENTS . '/elements/widgets');
 
 /**
  * Provides a list of Theme files
@@ -28,8 +21,6 @@ class JFormFieldThemelist extends JFormFieldFileList
 	 */
 	public $type = 'Themelist';
 
-	protected $_doc;
-
 	/**
 	 * Instatiate the theme select list.
 	 *
@@ -39,9 +30,8 @@ class JFormFieldThemelist extends JFormFieldFileList
 	{
 		parent::__construct($form);
 
-		$this->_doc = JFactory::getDocument();
 //		if (defined('DEVELOPER_MACHINE')) {
-//			$this->_doc->addScriptDeclaration('console.info( "Theme parameters initializing! " );');
+//			JFactory::getDocument()->addScriptDeclaration('console.info( "Theme parameters initializing! " );');
 //		}
 	}
 
@@ -73,12 +63,6 @@ class JFormFieldThemelist extends JFormFieldFileList
 	public function setup(JXMLElement $element, $value, $group = null)
 	{
 		$result = parent::setup($element, $value, $group);
-
-		$theme = CustomTheme::getInstance($value)->setForm($this->form);
-//		if (defined('DEVELOPER_MACHINE')) {
-//			$this->_doc->addScriptDeclaration('console.info("'.__METHOD__ .'",'."$theme" .');');
-//		}
-
 		return $result;
 	}
 

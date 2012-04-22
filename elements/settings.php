@@ -1,4 +1,4 @@
-<?php return; ?>
+;<?php return; ?>
 	;------------------------------------------------
 	;
 	; Construc2 Main Configuration.

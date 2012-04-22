@@ -26,7 +26,7 @@ class JFormFieldCdnlist extends JFormFieldList
 	protected function getOptions()
 	{
 		$options = array();
-		$config  = parse_ini_file(WMPATH_ELEMENTS . '/settings.php', true);
+		$config  = @parse_ini_file(WMPATH_ELEMENTS . '/settings.php', true);
 
 		settype($config['cdn'], 'array');
 

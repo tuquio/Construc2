@@ -99,7 +99,7 @@ class CustomTheme
 			$theme->template = basename(WMPATH_TEMPLATE);
 		}
 		else if (is_object($theme) && ($theme->params instanceof JRegistry)) {
-			// a template (style) object from JApplication (Frontend usage)
+			// a Template Style object via ConstructTemplateHelper (Frontend usage)
 			$ssi  = (bool) $theme->params->get('ssiIncludes', 0);
 			if ($ssi) {
 				$this->name = basename($theme->params->get('ssiTheme'), '.styles');
@@ -135,7 +135,7 @@ class CustomTheme
 	/**
 	 * @return CustomTheme
 	 */
-	public function build()
+	final public function build()
 	{
 		// does anyone know what $head['link'] is for? skipping...
 		$head = JFactory::getDocument()->getHeadData();
@@ -170,7 +170,7 @@ class CustomTheme
 	 *
 	 * @todo implement caching
 	 */
-	public function setCapture($name, $content)
+	final public function setCapture($name, $content)
 	{
 		$buffer = is_array($content) ? trim(implode('', $content)) : trim($content);
 
@@ -186,7 +186,7 @@ class CustomTheme
 	 * @param  string  $name
 	 * @param  bool    $checkonly
 	 */
-	public function getCapture($name, $checkonly = false)
+	final public function getCapture($name, $checkonly = false)
 	{
 		if ($checkonly == true) {
 			return isset(self::$html[$name]) ? strlen(self::$html[$name]) : 0;
@@ -203,7 +203,7 @@ class CustomTheme
 	 *
 	 * @return ConstructTemplateHelper for fluid interface
 	 */
-	public function setChunks(array $chunks, $replace = false)
+	final public function setChunks(array $chunks, $replace = false)
 	{
 		if (count($chunks)) {
 			if ($replace) {
@@ -215,17 +215,17 @@ class CustomTheme
 		return $this;
 	}
 
-	public function getChunks()
+	final public function getChunks()
 	{
 		return self::$chunks;
 	}
 
-	public function setChunk($name, $chunk)
+	final public function setChunk($name, $chunk)
 	{
 		self::$chunks[$chunk] = $chunk;
 	}
 
-	public function getChunk($name, $affixes = null)
+	final public function getChunk($name, $affixes = null)
 	{
 		$chunks = array($name);
 		if (is_string($affixes)) {
@@ -266,7 +266,7 @@ class CustomTheme
 	 *
 	 * @uses CustomTheme::setFeature()
 	 */
-	public function setFeature($feature, $data)
+	final public function setFeature($feature, $data)
 	{
 		if ($data === false) {
 			unset(self::$features[$feature]);
@@ -299,7 +299,7 @@ class CustomTheme
 	 * @param $name
 	 * @return ElementRendererAbstract or NULL
 	 */
-	public function getFeature($name)
+	final public function getFeature($name)
 	{
 		if (isset(self::$features[$name])) {
 			return self::$features[$name];
@@ -310,7 +310,7 @@ class CustomTheme
 	 * @param bool $names_only
 	 * @return array
 	 */
-	public function getFeatures($names_only = false)
+	final public function getFeatures($names_only = false)
 	{
 		return $names_only == false ? self::$features : array_keys(self::$features);
 	}
@@ -335,49 +335,12 @@ class CustomTheme
 		return $this;
 	}
 
-	public function setForm(JForm $form)
-	{
-		// only once, please.
-		if (isset($this->jform)) {
-			return $this;
-		}
-
-		// grab the form.
-		$this->jform = $form;
-
-		// load "core" widgets and features
-		try {
-			JFactory::getLanguage()->load('tpl_features', WMPATH_TEMPLATE);
-			$form->loadFile(WMPATH_ELEMENTS . '/features.xml', false);
-		} catch(Exception $e) {
-			if (defined('DEVELOPER_MACHINE')) {
-				FB::warn($e);
-			}
-		}
-
-		try {
-			JFactory::getLanguage()->load('tpl_widgets', WMPATH_TEMPLATE);
-			$form->loadFile(WMPATH_ELEMENTS . '/widgets.xml', false);
-		} catch(Exception $e) {
-			if (defined('DEVELOPER_MACHINE')) {
-				FB::warn($e);
-			}
-		}
-
-		if ($this->form) {
-			JFactory::getLanguage()->load($this->name, WMPATH_TEMPLATE);
-			$form->loadFile($this->form, false);
-		}
-
-		return $this;
-	}
-
 	/**
 	 * @param      $feature
 	 * @param null $data    Can be an array with a 'module' reference.
 	 * @return string A rendered feature.
 	 */
-	public function renderFeature($feature, $data=null)
+	final public function renderFeature($feature, $data=null)
 	{
 		if (array_key_exists($feature, self::$features) && (false === (bool)self::$features[$feature])) {
 			return $data;
@@ -407,14 +370,26 @@ class CustomTheme
 		return self::$features[$feature];
 	}
 
-	protected function loadConfig()
+	/**
+	 * Loads the INI data part from a Theme configuration file.
+	 *
+	 * See {@link ../docs/ThemeConfiguration.md} in the distribution
+	 * archive about the format and rules.
+	 *
+	 * @return JRegistry
+	 */
+	final protected function loadConfig()
 	{
 		// a fake INI file with default settings
 		$file_path = WMPATH_TEMPLATE .'/themes/'. $this->name . '.php';
 		if (is_file($file_path))
 		{
-			// fake ini file
-			$config = parse_ini_file($file_path, true);
+			// treat theme file as an INI file
+			$data   = file_get_contents($file_path);
+			// strip leading php code
+			$start  = strpos($data, '?>', strlen('<?php'));
+			$data   = trim(substr($data, ($start > 0 ? $start + 1 : 0)));
+			$config = parse_ini_string($data, true);
 			if ($config || count($config) > 0) {
 				$this->config = new JRegistry($config);
 			}
@@ -423,7 +398,15 @@ class CustomTheme
 		return $this->config;
 	}
 
-	public function getConfig($name, $default=null)
+	/**
+	 * Read a configuration value.
+	 *
+	 * @param  string  $name    The config key or NULL to return all configuration values
+	 * @param  null    $default A default value if key is not set.
+	 *
+	 * @return JRegistry|mixed|null
+	 */
+	final public function getConfig($name, $default=null)
 	{
 		if (null === $name) {
 			return isset($this->config) ? $this->config : $default;
@@ -433,9 +416,29 @@ class CustomTheme
 	}
 
 	/**
+	 * Assign the parameter form data used in the backend theme manager.
+	 *
+	 * @param  JForm $form
+	 *
+	 * @return CustomTheme
+	 */
+	final public function setForm(JForm $form)
+	{
+		// only once, please.
+		if (isset($this->jform)) {
+			return $this;
+		}
+
+		// grab the form.
+		$this->jform = $form;
+
+		return $this;
+	}
+
+	/**
 	 * @return  string  JSON representation, stripped
 	 */
-	public function __toString()
+	final public function __toString()
 	{
 		$white_list = array('name','title','form','tmpl_url','url');
 		$me = new stdClass;
@@ -455,7 +458,7 @@ class CustomTheme
 	 * @param $class
 	 * @return void
 	 */
-	protected static function autoload($class)
+	final protected static function autoload($class)
 	{
 		if ($class[0] == 'J' || $class[0] == 'K') {return;}
 
