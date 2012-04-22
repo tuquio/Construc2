@@ -17,17 +17,8 @@ section.component > div.finder	,
 .items-more, .item-page			,
 .blog article			{background-color:#fff}
 
-nav, .hmenu,
-.actionsmenu:hover		{background-color:#fff}
-
-.toc-items a.mi:hover	{background-color:rgba(255,255,255,.8)}
-.toc-items li.mi		{margin-right:5px} /* compensate inner shadow */
-
-button 					{padding:0.5ex 2ex}
 button:focus 			,
 .inputbox:focus			{background-color:#fff}
-
-.menu a.mi:focus        {background-color:rgba(224,224,224,.6)}
 
 /* fly-out 'title' as icon label */
 .tip-wrap,
@@ -35,53 +26,41 @@ button:focus 			,
 .actionsmenu img			{opacity:.8;display:inline-block}
 .actionsmenu img:hover		{opacity:1;}
 .tip-wrap,
-.actionsmenu .icon a:before 	{background-color:#fff}
-
-.tips, .error, .warning,
-.notice, .message 				{background-color:#fff}
-
-.mod-custom div.inner			{background:none}
-menu.categories > li.current	{background-color:rgb(224,224,224)}
-
-/* =text */
-.tips							{color:#ee9600}
-.error, .warning, .firm			{color:#bf0000}
-.notice, .message				{color:#069}
-
-.pagination li.mi				{outline:1px solid #ddd}
-.toc-items li.mi:last-child 	{border-top:1px ridge #ddd}
-.error, .warning, .notice,
-.message, .tips 				{border:1px solid}
-
-.mod-custom div.inner			{outline:none}
-
-menu.categories > li.current	{outline:1px solid #fff}
-.mod-articles-categories .inner	,
-.column-group .mod-login .inner	{outline:1px solid hsla(0, 50%, 96%, .25)}
-
-menu.categories span.mi:hover	{border-bottom:1px dotted #999}
+.actionsmenu .icon a:before	{background-color:#fff}
 
 /* =widgets */
 aside.article:hover .content_rating ,
 aside.article:hover .content_rating + form {outline:1px solid #CCC;background-color:#FEFEFE}
 
+/* =navigation stuff + links */
+nav, .hmenu,
+.actionsmenu:hover			{background-color:#fff}
+
+.toc-items a.mi:hover		{background-color:rgba(255,255,255,.8)}
+.toc-items li.mi			{margin-right:5px} /* compensate ".menu li" inner shadow */
+.toc-items li.mi:last-child {border-top:1px ridge #ddd}
+
+.pagination li.mi				{outline:1px solid #ddd}
+
+.mod-custom div.inner			{background:none}
+
+menu.categories > li.current	{background-color:rgb(224,224,224);outline:1px solid #fff}
+menu.categories span.mi:hover	{border-bottom:1px dotted #999}
+.mod-articles-categories .inner	,
+.column-group .mod-login .inner	{outline:1px solid hsla(0, 50%, 96%, .25)}
+
+/* =content blobs */
+.mod-custom div.inner		{outline:none}
+
 /* =eye candy boxes */
-figure img					{border:5px solid #FFF;outline:1px solid #CDCDCD}
+figure img					{border:5px solid #fff;outline:1px solid #cdcdcd}
 .introtext img,
 .fulltext img				{border:8px solid #fff}
 
 /* =eye candy text */
-#logo 						{text-shadow:0px 1px 1px #fff, 1px 0px 1px #000, 0px 5px 20px #888, 0px -5px 10px #fff}
-.site-link:focus,
-.site-link:hover			{opacity:0.9; text-shadow:0px 1px 2px #fff, 1px 0px 1px #000}
 .site-name					{color:#333}
-
-h2,h3,h4, .H2,.H3,.H4		{text-shadow:0px 1px 0px #ddd}
-.category-desc				{text-shadow:0px 1px 0px #fff, 0px 0px 1px #888}
-.category-desc blockquote	{text-shadow:0px 0px 3px #888, 1px 1px 10px #fff}
-
-article h1, article .H1,
-.hts, .ts					{text-shadow:0px 0px 2px #888}
+.site-name:hover			{color:#252525}
+#logo .site-link			{border-bottom:none;text-decoration:none}
 
 h1 a, h1 a:hover,
 h2 a, h2 a:hover,
@@ -89,12 +68,6 @@ h3 a, h3 a:hover 			{border-bottom:1px solid #ccc;text-decoration:none}
 h1 a:hover,
 h2 a:hover,
 h3 a:hover 					{border-bottom-color:inherit}
-#logo .site-link			{border-bottom:none;text-decoration:none}
-
-.mainmenu a.mi:hover		,
-.breadcrumbs a.mi:hover		,
-.categories a.mi:hover		,
-.tslt						{text-shadow:0px 0px 2px #aaa}
 
 .loginmenu span.mi:hover	{background-color:#fff;border-radius:3px}
 
@@ -107,11 +80,15 @@ input.inputbox				{border:1px solid #ddd}
 button:focus				{border-color:#73ab00}
 input.inputbox:focus 		{border-color:#bbb}
 
-/* Tips, Error, Message, Hightlight */
-.error, .warning, .notice,
-.message, .tips 			{border:1px solid;background:#efefef;padding:1ex .6em;text-indent:0px !important}
+/* =supplements */
+.error, .warning, .firm		{color:#bf0000}
+.notice, .message			{color:#069}
+.tips						{color:#ee9600}
 
-/* if <q> wraps terms and results from com_finder */
+.error, .warning, .notice,
+.message, .tips 			{border:1px solid;background-color:#efefef;padding:1ex .6em;text-indent:0px !important}
+
+/* =com_finder : if <q> wraps terms and results via lang files */
 .mainnavi .finder a 		{background:#fff}
 #search-query-explained	{}
 div.finder q {}
@@ -123,34 +100,52 @@ div.finder .date {}
 dl.search-results {}
 dt.result-title {}
 
-/* =box shadows */
+/* =shadow and light */
 @media screen
 {
+	#logo 				{text-shadow:0 1px 1px #fff, 1px 0 1px #000, 0 5px 20px #888, 0 -5px 10px #fff}
+	.site-link:focus,
+	.site-link:hover	{text-shadow:0 1px 2px #fff, 1px 0 1px #000}
+
+	h2,h3,h4, .H2,.H3,.H4		{text-shadow:0 1px 0 #ddd}
+	.category-desc				{text-shadow:0 1px 0 #fff, 0 0 1px #888}
+	.category-desc blockquote	{text-shadow:0 0 3px #888, 1px 1px 10px #fff}
+
+	article h1, article .H1,
+	.hts, .ts					{text-shadow:0 0 2px #888}
+
+	.mainmenu a.mi:hover		,
+	.breadcrumbs a.mi:hover		,
+	.categories a.mi:hover		,
+	.tslt						{text-shadow:0 0 2px #aaa}
+
+	.menu a.mi:focus        	{text-shadow:0 0 6px 2px rgba(224,224,224,.6)}
+
 	button					,
-	input.inputbox			{box-shadow: 0px 0px 2px 1px #eee}
-	button:active			{box-shadow: 0px 0px 2px 1px #eee inset}
-	button:focus			{box-shadow: 0px 2px 2px 1px #e0e0e0}
+	input.inputbox			{box-shadow: 0 0   2px 1px #eee}
+	button:active			{box-shadow: 0 0   2px 1px #eee inset}
+	button:focus			{box-shadow: 0 2px 2px 1px #e0e0e0}
 
 	.button button			,
 	input.inputbox:focus	,
 	nav.pages				,
 	.pagenav a.mi:hover 	,
 	.pagination li.mi:hover	,
-		.dslt				{box-shadow: 0px 0px 3px 0px #CCC;outline:none}
+		.dslt				{box-shadow: 0 0 3px 0 #ccc;outline:none}
 
 	/* fly-out 'title' as icon label */
-	.actionsmenu:hover			{box-shadow:-4px 0px 4px rgba(100,100,100,.25)}
+	.actionsmenu:hover			{box-shadow:-4px 0   4px rgba(100,100,100,.25)}
 	.actionsmenu .icon a:before	{box-shadow:-4px 3px 3px rgba(100,100,100,.25)}
 
-	dd.result-text			{box-shadow: 0px -4px 10px -10px #888}
-	dd.result-url			{box-shadow: 3px  7px 10px  -9px #888}
-		.ds					{box-shadow: 0px  0px 3px    0px #888}
+	dd.result-text			{box-shadow: 0  -4px 10px -10px #888}
+	dd.result-url			{box-shadow: 3px 7px 10px -9px #888}
+		.ds					{box-shadow: 0   0    3px  0 #888}
 	.introtext img			,
 	.fulltext img			,
 		.hbox-ds			{box-shadow:-2px 3px 5px  1px #888}
-	.mainnavi .finder a 	{box-shadow: 0px 4px 9px -7px #888}
+	.mainnavi .finder a 	{box-shadow: 0   4px 9px -7px #888}
 
-	.page-toc, .meta		{box-shadow: 0px 0px 6px  0px #aaa inset}
+	.page-toc, .meta		{box-shadow: 0 0 6px  0 #aaa inset}
 
 }
 

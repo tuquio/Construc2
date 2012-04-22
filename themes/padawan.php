@@ -1,8 +1,16 @@
-;<?php return; ?>
-	; -----
-	; Custom Theme Configuration: Padawan
-	; -----
+<?php
+/**
+ * Padawan Theme.
+ */
+class PadawanTheme extends CustomTheme
+{
+}
 
+return;
+?>
+; -----
+; Custom Theme Configuration: Padawan
+; -----
 name		= "Padawan"
 title		= "Padawan Theme"
 description	= "Frontend Theme kyrhia.com"

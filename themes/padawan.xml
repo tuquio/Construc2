@@ -1,34 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
-		<!--
-			Most Themes would plug into the "theme" parameter group.
-			Possible panel groups to plug into:
-				> features   : the win and doubt group for almost anything
-				> quirks     : nice to have a sim, shiv or polyfill in here
-				> javascript : add or mess with javascript files and scripts
-				> widgets    : add or generate visual output
-				> maintenance: callbacks for the Backend Maintenance Plugin
-		 -->
+<!--
+	Most Themes would plug into the "theme" parameter group.
+	Possible panel groups to plug into:
+		> features   : the win and doubt group for almost anything
+		> quirks     : nice to have a sim, shiv or polyfill in here
+		> javascript : add or mess with javascript files and scripts
+		> widgets    : add or generate visual output
+		> maintenance: callbacks for the Backend Maintenance Plugin
+ -->
+	<fields name="params">
+		<!-- the stuff for theme goodness -->
+		<fieldset name="theme" addfieldpath="/templates/construc2/themes">
+			<field type="radio" name="stickyMenu" default="0" label="Sticky-Menu" description="Sticky Menu Desc">
+				<option value="1">JShow</option>
+				<option value="0">JHide</option>
+			</field>
+			<field type="radio" name="topLink" default="0" label="Top-Link" description="Top-Link Desc">
+				<option value="1">JShow</option>
+				<option value="0">JHide</option>
+			</field>
+		</fieldset>
 
-			<!-- the stuff for theme goodness -->
-			<fieldset name="theme" addfieldpath="/templates/construc2/themes">
-				<field type="radio" name="stickyMenu" default="0" label="Sticky-Menu" description="Sticky Menu Desc">
-					<option value="1">JShow</option>
-					<option value="0">JHide</option>
-				</field>
-				<field type="radio" name="topLink" default="0" label="Top-Link" description="Top-Link Desc">
-					<option value="1">JShow</option>
-					<option value="0">JHide</option>
-				</field>
-			</fieldset>
-
-			<fieldset name="features">
-			</fieldset>
-
-			<fieldset name="quirks" />
-			<fieldset name="javascript" />
-			<fieldset name="widgets" />
-			<fieldset name="maintenance" />
+	<!--
+		<fieldset name="features" />
+		<fieldset name="quirks" />
+		<fieldset name="javascript" />
+		<fieldset name="widgets" />
+		<fieldset name="maintenance" />
+	-->
+	</fields>
 
 	<updateservers><!-- EXPERIMENTAL : type and location are in flux -->
 		<server type="package">http://joomla.webmechanic.biz/tpl/kaskade/themes/padawan.xml</server>

@@ -8,7 +8,18 @@
 @import url(padawan_light.css) screen,projection;
 @import url(padawan_light_fx.css) screen,projection;
 
-body {min-width:900px;max-width:94%;margin:0 auto}
+body {width:100%;margin:0 auto}
+
+@media screen and (min-width: 27em) {
+	#body-container, #page-head, #page-foot {max-width:94%;margin:0 auto}
+}
+@media screen and (min-width: 50em) {
+	#body-container, #page-head, #page-foot {max-width:72em}
+}
+
+/* Retina Resolution
+@media only screen and (-webkit-min-device-pixel-ratio: 2) {}
+*/
 
 /* popup modal */
 @media screen {
@@ -37,7 +48,7 @@ header, footer	{clear:both}
 #page-foot 		{margin:0 auto 20px}
 .page-foot {}
 
-#logo   		{margin:15px auto 15px 5%;font-size:450%;display:inline-block}
+#logo   		{margin:15px auto 15px;font-size:450%;display:inline-block}
 .site-link {}
 .site-name {}
 
@@ -80,29 +91,11 @@ header.below	{margin:0 auto}
 		 column-count:2;		column-gap:10px;
 }
 
-
-/* template param override (#body-container,#header-above 100%) */
-@media screen and (max-width:1039px) {
-	body #body-container, .page-foot {max-width:94%}
-	#logo {margin-left:3%}
-}
-@media screen and (min-width:1040px) {
-	body #body-container, .page-foot {max-width:90%}
-	#logo {margin-left:5%}
-}
-
-/* Retina Resolution
-@media only screen and (-webkit-min-device-pixel-ratio: 2) {
-
-}
-*/
-
 /* = typography stuff */
 h1,h2,h3,h4,h5,h6	{line-height:normal}
 
 h1,h2,h3,h4,h5,h6	,
 menu, .hmenu		{font-family:'Ubuntu Condensed','Trebuchet MS',Arial,sans-serif;text-rendering:optimizelegibility}
-.hmenu				{font-size-adjust:.62}
 
 /* hyphens are tuned off below for some contexts */
 p 					{-webkit-hyphens:auto;-moz-hyphens:auto;hyphens:auto}
@@ -112,6 +105,9 @@ blockquote 			{padding:1ex;margin:0 3em;}
 
 table.data th.clip	,
 .column-group .hd	{text-overflow:ellipsis;-ms-text-overflow:ellipsis;-o-text-overflow:ellipsis}
+
+/* =form elements */
+button 				{padding:0.5ex 2ex}
 
 /*
  * =columns context

@@ -1,5 +1,7 @@
 /*!
  * padawan_light_fx.css CSS3 eye candy and vendor stuff
+ * deliberatly uses "media screen and (foo)" to keep oldIEs away
+ *
  * @version 2.0.1
  * @license CC BY-NC 3.0/de
  * FF9+ generatedcontent flexbox canvas touch rgba hsla borderimage csscolumns cssgradients csstransitions svg inlinesvg
@@ -7,7 +9,7 @@
  * OE8:    generatedcontent no-...
  */
 
-/* keeps oldIEs away */
+/* Mozilla Gecko only */
 @media screen and (min-width:320px)
 {
 	/* just colors, base.css cares for the rest */
@@ -23,6 +25,7 @@
 	}
 }
 
+/* WebKit only */
 @media screen and (min-width:320px)
 {
 	/* =widgets */
