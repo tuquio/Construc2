@@ -1,10 +1,9 @@
 /*!
- * exemplar.css (Frontend Template Layout)
+ * highkey.css (Frontend Template Layout)
  * @version 1.9.15
  * @license CC BY-NC 3.0/de
  */
 @import url(//fonts.googleapis.com/css?family=Ubuntu+Condensed);
-@import url(//fonts.googleapis.com/css?family=Kristi);
 
 body {min-width:900px;max-width:94%;margin:0 auto}
 
@@ -18,61 +17,13 @@ body {min-width:900px;max-width:94%;margin:0 auto}
 	#logo {margin-left:5%}
 }
 
-/* Retina Resolution
-@media only screen and (-webkit-min-device-pixel-ratio: 2) {
-
-}
+/* iOS Retina Resolution (320ppi)
+@media only screen and (-webkit-min-device-pixel-ratio: 2) { }
 */
 
-/* popup modal */
-@media screen {
-	body.com_media, body.modal,
-	body.com_media #body-container	,
-	body.modal     #body-container	,
-	body.com_media .page-foot		,
-	body.modal     .page-foot		{min-width:0;max-width:100%}
-	body.com_media .content-container,
-	body.modal     .content-container {margin-top:0}
-	.body-overlayed #sbox-window.shadow {padding:2px}
-	.body-overlayed #sbox-content.sbox-content-iframe {overflow:auto}
-}
-
-#header			{height:100px}
-#logo   		{font-size:450%;display:inline-block}
-.site-link {}
-.site-name {}
-
-nav, .breadcrumbs	{margin-bottom:10px}
-#mainmenu {}
-#breadcrumbs {}
-
-#to-page-top		{position:absolute;right:10px;text-align:right}
-#diagnostics		{position:absolute;right:10px;top:20px;max-width:90px}
-#diagnostics li		{padding:0;margin:0;line-height:1}
-
-h1,h2,h3,h4,h5,h6	{line-height:normal}
-
-.mainmenu {}
-.breadcrumbs {}
-menu.categories	{}
-
-blockquote 			{padding:1ex;margin:0 3em;}
-button 				{padding:0.2ex 2ex}
-
-/* =type and fonts */
-h1,h2,h3,h4,h5,h6	,
-.mainmenu			,
-.breadcrumbs		,
-menu.categories		{font-family:'Ubuntu Condensed','Trebuchet MS',Arial,sans-serif;text-rendering:optimizelegibility}
-
-/* hyphens can be tuned off below for some contexts */
-p 					{-webkit-hyphens:auto;-moz-hyphens:auto;hyphens:auto}
-p:only-child 		{margin-bottom:0}
-
-table.data th.clip	,
-.column-group .hd	{text-overflow:ellipsis;-ms-text-overflow:ellipsis;-o-text-overflow:ellipsis}
-
-/* =column layout */
+/*
+ * =column layouts
+ */
 #body-container	,
 header.above	,
 header.below	{margin:0 auto}
@@ -105,6 +56,58 @@ header.below	{margin:0 auto}
 		 column-count:2;		column-gap:10px;
 }
 
+/* =popup, modal */
+@media screen {
+	body.com_media, body.modal,
+	body.com_media #body-container	,
+	body.modal     #body-container	,
+	body.com_media .page-foot		,
+	body.modal     .page-foot		{min-width:0;max-width:100%}
+	body.com_media .content-container,
+	body.modal     .content-container {margin-top:0}
+	.body-overlayed #sbox-window.shadow {padding:2px}
+	.body-overlayed #sbox-content.sbox-content-iframe {overflow:auto}
+}
+
+/*
+ * =main containers
+ */
+.page-head 		{clear:both}
+.page-foot 		{clear:both}
+
+#header			{height:100px}
+#logo   		{font-size:450%;display:inline-block}
+.site-link {}
+.site-name {}
+
+nav, .breadcrumbs	{margin-bottom:10px}
+#mainmenu {}
+#breadcrumbs {}
+
+h1,h2,h3,h4,h5,h6	{line-height:normal}
+
+/* "pull" out the title (author) of the citation */
+blockquote 			{padding:1ex;margin:0 3em;}
+blockquote:after 	{content:attr(title);display:block;margin-top:1em;text-align:right;clear:both}
+
+/* =type and fonts */
+h1,h2,h3,h4,h5,h6	,
+.mainmenu			,
+.breadcrumbs		,
+menu.categories		{font-family:'Ubuntu Condensed','Trebuchet MS',Arial,sans-serif;text-rendering:optimizelegibility}
+
+/* hyphens can be tuned off below for some contexts */
+p 					{-webkit-hyphens:auto;-moz-hyphens:auto;hyphens:auto}
+p:only-child 		{margin-bottom:0}
+
+/* =form elements */
+button 				{padding:0.2ex 2ex}
+
+/* =tables */
+table.data th.clip	,
+.column-group .hd	{text-overflow:ellipsis;-ms-text-overflow:ellipsis;-o-text-overflow:ellipsis}
+
+/* =other */
 #system-message-container {position:absolute;right:0;top:auto;min-width:50%;max-width:75%;opacity:.95}
 
 /*
@@ -150,7 +153,6 @@ dl.search-results {}
 .unit > article			{margin-right:5px}
 .lastUnit > article		{margin-left:5px;margin-right:0}
 
-
 /* make room for .actionsmenu */
 header.actions .title {}
 
@@ -173,22 +175,19 @@ aside.article:hover .content_rating + form {display:block}
  .content_rating img	,
  .content_vote input	{display:inline-block;margin:0 2px;vertical-align:middle}
 
-/* @todo make <details> see padawan/padawan-dark.css
+/* as of April 2012 only Chrome renders <details>, others need a polyfill.
  * the disclosure widget will still be displayed if you don't provide a summary element
  */
-details.meta	{clear:both;padding:1ex .8em;margin-top:10px}
-summary[tabindex] {outline:none} /* with tabindex, ugly outlines are shown*/
-.meta summary	{display:inline;cursor:help}
+details.meta		{clear:both;padding:1ex .8em;margin-top:10px}
+summary[tabindex]	{outline:none} /* with tabindex, ugly outlines are shown*/
+.meta summary		{display:inline;cursor:help}
 summary::-webkit-details-marker {font-size:1.2em}
-
-/* toggle article details on hover */
-.article-info			{padding-left:0}
 .meta summary:focus		{text-decoration:underline}
 
-.article-info	{margin:0}
-
-.article-info dt {display:inline}
-.article-info dd {display:inline}
+/* toggle article details on hover */
+.article-info		{margin:0;padding-left:0}
+.article-info dt	{display:inline}
+.article-info dd	{display:inline}
  .article-info .createdby {}
  .article-info .parent-category {}
  .article-info .category {}
@@ -201,11 +200,9 @@ summary::-webkit-details-marker {font-size:1.2em}
 
 /* =category page contents */
 .category-desc {font-size:100%}
-.category-desc blockquote {font:normal 2.25em/1 'Kristi',cursive;text-align:center;text-rendering:optimizelegibility}
-.category-desc blockquote {font-size-adjust:0.5; font-stretch:expanded} /* FF */
-blockquote:after {content:attr(title);display:block;margin-top:1em;text-align:right;clear:both;font:normal 12px/1 "Trebuchet MS",Arial,Helvetica,sans-serif}
 
-blockquote p {-webkit-hyphens:none;-moz-hyphens:none;hyphens:none}
+/* =misc */
+.contact-item {}
 
 /*
  * =pictures - single page, blog page, columns list
@@ -284,16 +281,15 @@ nav.page-toc					{padding-top:1ex;padding-left:.6em;margin-left:1em} /* aka #art
 .breadcrumbs a.mi		,
 .breadcrumbs .active	{padding:0.25ex 0.6em}
 
-.has-toc .actionsmenu	{position:absolute;float:none;margin-right:0;right:0}
-.actionsmenu 			{margin-top:-1em;margin-right:-10px;width:20px;opacity:.4}
+.has-toc .actionsmenu	{position:absolute;float:none;margin-right:0;right:0;background-color:inherit}
+.actionsmenu 			{margin-top:-1em;margin-right:-10px;width:20px}
 .actionsmenu li.mi		{display:inline-block;width:100%;text-align:center}
 .actionsmenu .text		{padding:0}
 .actionsmenu .icon		{padding:.2ex 0}
 .actionsmenu .icon img {}
 /* fly-out 'title' as icon label - offset .right by .actionsmenu:width */
-.actionsmenu .icon a:before 		{font-size:.8em;margin-right:1ex;padding:.2ex 1ex;position:absolute;right:20px}
-.actionsmenu .icon:hover a:before	{content:attr(title);white-space:pre}
-
+.actionsmenu .icon a:before 		{font-size:95%;margin-right:1ex;padding:.1ex .5ex;position:absolute;right:20px}
+.actionsmenu .icon:hover a:before	{content:attr(title);white-space:pre;background-color:#fff}
 
 .skiplinks a.mi					{text-decoration: underline}
 .skiplinks .cat-title:before	{content:'\A0('}
@@ -335,16 +331,18 @@ menu.categories .current > menu		{height:auto;display:block}
 menu.loginmenu					{margin-top:0.6ex}
 .loginmenu span.mi				{padding: 1px 3px;}
 
-/* =misc */
-.contact-item {}
-
-/* this "menu" ist JS based and will be enabled by the script itself */
-#styleswitcher	{display:none}
-li.switcher 	{display:inline-block;cursor:pointer}
-
 /* =widgets */
 summary:focus {}
 summary:focus + * {}
+
+#to-page-top		{position:absolute;right:10px;text-align:right}
+
+#diagnostics		{position:absolute;right:10px;top:20px;max-width:90px}
+#diagnostics li		{padding:0;margin:0;line-height:1}
+
+/* this "menu" ist JS based and will be enabled by the script itself */
+#styleswitcher	{}
+li.switcher 	{display:inline-block;cursor:pointer}
 
 /*
  * =branding - category and page styles

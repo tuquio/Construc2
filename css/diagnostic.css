@@ -3,12 +3,9 @@
  * @version 1.9.14
  * @license WTFPL
  */
-
 #styleswitcher {}
 #styleswitcher .switcher {}
-
 body            #styleswitcher .normal,
-body.wireframe  #styleswitcher .wireframe	,
-body.diagnostic #styleswitcher .diagnostic	{font-weight:bold}
-
+body.wireframe  #styleswitcher .wireframe  ,
+body.diagnostic #styleswitcher .diagnostic  {font-weight:bold}
 /* .eof */
