@@ -12,6 +12,8 @@
 	<description>TPL_CONSTRUC2_DESCRIPTION</description>
 	<credits><![CDATA[Inspired by "Construct Community", Matt Thomas, Joomla Engineering. See CREDITS.php]]></credits>
 
+	<help key="Construc2_Help" url="http://joomla.webmechanic.biz/docs/construc2/" />
+
 	<positions>
 		<position>nav</position>
 		<position>breadcrumbs</position>
@@ -56,7 +58,7 @@
 	<config>
 		<fields name="params">
 			<!-- "themelist" MUST appear first in the first fieldset -->
-			<fieldset name="general" addfieldpath="/templates/construc2/elements/fields">
+			<fieldset name="basic" addfieldpath="/templates/construc2/elements/fields">
 				<field name="theme" type="themelist" default=""
 						label="TPL_CONSTRUC2_CUSTOM_STYLE_SHEET_LABEL"
 						description="TPL_CONSTRUC2_CUSTOM_STYLE_SHEET_DESC"
@@ -79,19 +81,13 @@
 					<option value="1">On</option>
 					<option value="0">Off</option>
 				</field>
-
-				<field name="setGeneratorTag" type="text" default="" label="TPL_CONSTRUC2_METAGENERATOR" description="TPL_CONSTRUC2_METAGENERATOR_DESC" size="56" />
 			</fieldset>
 
-			<fieldset name="theme" description="Theme_Slot_Desc" class="tpl-plugin">
-			</fieldset>
-
-			<fieldset name="features" description="Features_Slot_Desc" class="tpl-plugin">
-			</fieldset>
-
-			<fieldset name="widgets" description="Widgets_Slot_Desc" class="tpl-plugin">
-			</fieldset>
-
+			<fieldset name="theme" description="Theme_Slot_Desc" class="tpl-plugin" />
+<!--
+			<fieldset name="features" description="Features_Slot_Desc" class="tpl-plugin" />
+			<fieldset name="widgets" description="Widgets_Slot_Desc" class="tpl-plugin" />
+-->
 			<fieldset name="javascript">
 				<field name="loadMoo" type="list" default="2" label="Features_Javascript_loadMoo" description="Features_Javascript_loadMoo_Desc">
 					<option value="2">Auto</option>
@@ -101,14 +97,13 @@
 <!--
 				<field name="loadMooSrc" type="cdnlist" members="mootools" default="ajax.googleapis.com" label="Features_Javascript_loadMooSrc" description="Features_Javascript_loadMooSrc_Desc" />
  -->
+				<field name="loadjQuery" type="jqueryversion" default="" label="Features_Javascript_loadjQuery" description="Features_Javascript_loadjQuery_Desc" />
+				<field name="loadjQuerySrc" type="cdnlist" members="jquery" default="ajax.googleapis.com" label="Features_Javascript_loadjQuerySrc" description="Features_Javascript_loadjQuerySrc_Desc" />
+
 				<field name="loadModal" type="radio" default="1" label="Features_Javascript_loadModal" description="Features_Javascript_loadModal_Desc">
 					<option value="1">JYes</option>
 					<option value="0">JNo</option>
 				</field>
-
-				<field name="loadjQuery" type="jqueryversion" default="" label="Features_Javascript_loadjQuery" description="Features_Javascript_loadjQuery_Desc" />
-				<field name="loadjQuerySrc" type="cdnlist" members="jquery" default="ajax.googleapis.com" label="Features_Javascript_loadjQuerySrc" description="Features_Javascript_loadjQuerySrc_Desc" />
-
 			</fieldset>
 
 			<fieldset name="standards" description="Standards_Slot_Desc" class="tpl-plugin">
