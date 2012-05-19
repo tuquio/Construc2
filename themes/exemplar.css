@@ -35,9 +35,8 @@ header.below	{margin:0 auto}
 	.group-beta		{float:left}
 
 	/* 2col [alpha |  main] */
-	.alpha-main section.component	{width:75%;float:right}
-	.alpha-main .column-group		{float:left}
-	.alpha-main .group-alpha {}
+	.alpha-main .content-main {}
+	.alpha-main section.component > section {width:75%;float:right}
 
 	/* 2col [  main  | beta] */
 	.main-beta .content-main {width:75%;float:left}
@@ -127,7 +126,7 @@ table.data th.clip	,
  */
 .blog article		,
 .item-page			,
-.items-more			{padding:10px;margin-bottom:10px}
+.items-more			{padding:10px}
 .items-more .links	{-webkit-columns:2;-moz-columns:2;-ms-columns:2;columns:2}
 
 /*
@@ -164,9 +163,9 @@ p.readmore:after	{content:'\2026\A0';display:inline}
  * call-outs and <aside>s flush right within their containing box + reveal their content on :hover
  * - right border matches the inner padding of <article> and provides the hoverable area
  */
-aside.article		{position:absolute;right:0;top:0;width:auto;height:2em;border-right:10px solid #888}
+aside.article		{position:absolute;right:0;top:10px;width:auto;height:2em;border-right:10px solid #888}
 .content_rating		,
-aside.article form	{display:none;position:absolute;width:15em;padding:.2em;min-height:1.6em;right:0;z-index:2707}
+aside.article form	{display:none;position:absolute;width:13em;padding:.2em;min-height:1.6em;right:0;z-index:2707}
 aside.article form	{top:2em}
 
 aside.article:hover .content_rating ,
@@ -282,15 +281,16 @@ nav.page-toc					{padding-top:1ex;padding-left:.6em;margin-left:1em} /* aka #art
 .breadcrumbs a.mi		,
 .breadcrumbs .active	{padding:0.25ex 0.6em}
 
-.has-toc .actionsmenu	{position:absolute;float:none;margin-right:0;right:0;background-color:inherit}
-.actionsmenu 			{margin-top:-1em;margin-right:-10px;width:20px}
-.actionsmenu li.mi		{display:inline-block;width:100%;text-align:center}
+.has-toc .actionsmenu	{position:absolute;float:none;margin-right:0;right:0}
+.actionsmenu 			{margin-right:-10px;width:20px;padding:2px 0}
+.actionsmenu li.mi		{display:inline-block;width:100%;text-align:center;padding:0 2px}
 .actionsmenu .text		{padding:0}
 .actionsmenu .icon		{padding:.2ex 0}
 .actionsmenu .icon img {}
 /* fly-out 'title' as icon label - offset .right by .actionsmenu:width */
-.actionsmenu .icon a:before 		{font-size:95%;margin-right:1ex;padding:.1ex .5ex;position:absolute;right:20px}
-.actionsmenu .icon:hover a:before	{content:attr(title);white-space:pre;background-color:#fff}
+.actionsmenu .icon a:before 		{font-size:95%;padding:.1ex .5ex;position:absolute;right:20px}
+.actionsmenu .icon:hover a:before	{content:attr(title);white-space:pre}
+.actionsmenu, .icon:hover a:before {background-color:#fff}
 
 .skiplinks a.mi					{text-decoration: underline}
 .skiplinks .cat-title:before	{content:'\A0('}
@@ -329,17 +329,14 @@ menu.categories .parent:hover menu	{height:auto;display:block}
 menu.categories .current > menu		{height:auto;display:block}
 */
 
-menu.loginmenu					{margin-top:0.6ex}
-.loginmenu span.mi				{padding: 1px 3px;}
+menu.loginmenu		{margin-top:0.6ex}
+.loginmenu span.mi	{padding: 1px 3px;}
 
 /* =widgets */
-summary:focus {}
-summary:focus + * {}
+#to-page-top	{position:absolute;right:10px;text-align:right}
 
-#to-page-top		{position:absolute;right:10px;text-align:right}
-
-#diagnostics		{position:absolute;right:10px;top:20px;max-width:90px}
-#diagnostics li		{padding:0;margin:0;line-height:1}
+#diagnostics	{position:absolute;right:10px;top:20px;max-width:90px}
+#diagnostics li	{padding:0;margin:0;line-height:1}
 
 /* this "menu" ist JS based and will be enabled by the script itself */
 #styleswitcher	{display:none}
