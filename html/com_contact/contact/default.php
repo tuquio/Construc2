@@ -2,7 +2,7 @@
 /**
  * Custom Override for com_contact.default.
  *
- * @package     Template
+ * @package		Template
  * @subpackage  Overrides
  * @author		WebMechanic http://webmechanic.biz
  * @copyright	(C) 2011-2012 WebMechanic. All rights reserved.
@@ -12,38 +12,39 @@
 $cparams = JComponentHelper::getParams ('com_media');
 $pstyle  = $this->params->get('presentation_style');
 
-?>
-<article class="line contact-page"><?php
-if ($this->params->get('show_page_heading')) { ?>
+?><article class="line contact-page">
+
+<?php if ($this->params->get('show_page_heading')) { ?>
 	<h1><?php echo $this->escape($this->params->get('page_heading')) ?></h1>
-<?php
-}
+
+<?php }
 
 if ($this->contact->name && $this->params->get('show_name')) { ?>
 	<h2><span class="contact-name"><?php echo $this->contact->name ?></span></h2>
-<?php
-}
+
+<?php }
 
 if ($this->params->get('show_contact_category') == 'show_no_link') { ?>
 	<h3><span class="contact-category"><?php echo $this->contact->category_title ?></span></h3>
-<?php
-}
+
+<?php }
 
 if ($this->params->get('show_contact_category') == 'show_with_link') {
 	$contactLink = ContactHelperRoute::getCategoryRoute($this->contact->catid); ?>
 	<h3><span class="contact-category"><a href="<?php echo $contactLink ?>"><?php
 	echo $this->escape($this->contact->category_title);
 	?></a></span></h3>
-<?php
-}
+<?php }
 
 if ($this->params->get('show_contact_list') && count($this->contacts) > 1) { ?>
+<p class="contact_list">
 	<form action="#" method="get" name="selectForm" id="selectForm">
 	<?php
 	echo JText::_('COM_CONTACT_SELECT_CONTACT');
 	echo JHtml::_('select.genericlist',  $this->contacts, 'id', 'class="inputbox" onchange="document.location.href = this.value"', 'link', 'name', $this->contact->link);
 	?>
 	</form>
+</p>
 <?php
 }
 
@@ -53,7 +54,7 @@ if ($pstyle != 'plain') {
 	echo JHtml::_($pstyle.'.panel',JText::_('COM_CONTACT_DETAILS'), 'basic-details');
 }
 else {
-	echo '<h3>'. JText::_('COM_CONTACT_DETAILS').'</h3>';
+	echo '<h3>', JText::_('COM_CONTACT_DETAILS'), '</h3>';
 }
 
 if ($this->contact->image && $this->params->get('show_image')) { ?>
@@ -71,7 +72,7 @@ echo $this->loadTemplate('address');
 if ($this->params->get('allow_vcard')) { ?>
 	<p class="contact-vcard"><?php echo JText::_('COM_CONTACT_DOWNLOAD_INFORMATION_AS') ?>
 	<a href="<?php echo JRoute::_('index.php?option=com_contact&amp;view=contact&amp;id='.$this->contact->id . '&amp;format=vcf') ?>"><?php
-		echo JText::_('COM_CONTACT_VCARD');?></a></p>
+		echo JText::_('COM_CONTACT_VCARD') ?></a></p>
 <?php
 }
 
@@ -81,7 +82,7 @@ if ($this->params->get('show_email_form') && ($this->contact->email_to || $this-
 		echo JHtml::_($pstyle.'.panel', JText::_('COM_CONTACT_EMAIL_FORM'), 'display-form');
 	}
 	else {
-		echo '<h3>'. JText::_('COM_CONTACT_EMAIL_FORM').'</h3>';
+		echo '<h3>', JText::_('COM_CONTACT_EMAIL_FORM'), '</h3>';
 	}
 
 	echo $this->loadTemplate('form');
@@ -125,8 +126,10 @@ if ($this->contact->misc && $this->params->get('show_misc'))
 		echo '<h3>'. JText::_('COM_CONTACT_OTHER_INFORMATION').'</h3>';
 	}
 ?>
-	<div class="contact-miscinfo"><div class="<?php echo $this->params->get('marker_class') ?>"><?php echo $this->params->get('marker_misc') ?></div></div>
-	<div class="contact-misc"><?php echo $this->contact->misc ?></div>
+	<div class="contact-miscinfo">
+		<span class="<?php echo $this->params->get('marker_class') ?>"><?php echo $this->params->get('marker_misc') ?></span>
+		<div class="contact-misc"><?php echo $this->contact->misc ?></div>
+	</div>
 
 </article><?php
 }
