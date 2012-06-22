@@ -133,6 +133,7 @@
 
 	<files>
 		<folder>css</folder>
+		<folder>docs</folder>
 		<folder>elements</folder>
 		<folder>html</folder>
 		<folder>js</folder>
