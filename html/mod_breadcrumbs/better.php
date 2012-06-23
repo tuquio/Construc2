@@ -19,6 +19,14 @@ if ($count == 0) {
 	return;
 }
 
+if ($count == 1) {
+	$jmenu = JFactory::getApplication()->getMenu();
+	if ($jmenu->getActive() == $jmenu->getDefault()) {
+	$content = '';
+	return;
+	}
+}
+
 ?><div class="menu breadcrumbs <?php echo $moduleclass_sfx ?>"><?php
 
 if ($params->get('showHere', 0)) {
