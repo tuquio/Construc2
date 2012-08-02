@@ -127,6 +127,15 @@ button 				{padding:0.5ex 2ex}
 .item-page			,
 .items-more			{padding:10px;margin-bottom:10px}
 
+.blog h1, .blog .H1 {}
+.blog h2, .blog .H2	{}
+
+.introtext, .fulltext	{margin-right:20px}
+
+.item-page header.article	{margin:10px 10px 20px 20px}
+.item-page .introtext,
+.item-page .fulltext	{padding: 0 20px}
+
 /*
  * misc components
  */
@@ -141,11 +150,6 @@ dl.search-results {}
 	dt.result-title:not(:first-child) {margin-top:10px}
 	dd.result-text		{padding:1ex 1em 1ex 1ex}
 	dd.result-url		{padding:0 1ex;font-size:.9em}
-
-.blog h1, .blog .H1 {}
-.blog h2, .blog .H2		{margin-top:0}
-
-.introtext, .fulltext	{margin-right:20px}
 
 .unit > article			{margin-right:5px}
 .lastUnit > article		{margin-left:5px;margin-right:0}
@@ -201,7 +205,7 @@ summary::-webkit-details-marker {font-size:1.2em}
 
 /* =category page contents */
 .category-desc {font-size:100%}
-.category-desc blockquote {font:normal 2.25em/1 'Kristi',cursive;text-align:center;text-rendering:optimizelegibility}
+.category-desc blockquote {font:normal 2.25em/1.2 'Kristi',cursive;text-align:center;text-rendering:optimizelegibility}
 .category-desc blockquote {font-size-adjust:.62;font-stretch:expanded} /* FF */
 blockquote:after {content:attr(title);display:block;margin-top:1em;text-align:right;clear:both;font:normal 12px/1 "Trebuchet MS",Arial,Helvetica,sans-serif}
 
@@ -244,8 +248,7 @@ figure.portrait				{height:245px;width:auto;max-width:100%}
 /* =customs */
 .column-group .portrait {
     border: 5px solid #fff;
-    height: 235px;
-    width: 180px;
+    height: 260px;
     margin: 0 auto 10px auto;
     outline: 1px solid #ddd;
 	background-size: 100% auto;
@@ -277,7 +280,7 @@ figure.portrait				{height:245px;width:auto;max-width:100%}
 /*
  * =menus
  */
-.hmenu				{padding:.5ex 0}
+.hmenu				{padding:.5ex .4em}
 .mainmenu .active	{font-weight:bold}
 
 .current > a.li	{} /* may contain a nested menu.submenu */
@@ -297,7 +300,6 @@ nav.page-toc					{padding-top:1ex;padding-left:.6em;margin-left:1em} /* aka #art
 .has-actions nav.page-toc 		{margin-right:20px}
 
 /* align with mainmenu items which also happens to be a .hmenu */
-.breadcrumbs .hmenu		{padding-left:.4em;padding-right:.4em}
 .breadcrumbs strong		,
 .breadcrumbs > span		{display:table-cell}
 .breadcrumbs span.mi    {padding:.2ex .4em}
