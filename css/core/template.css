@@ -33,11 +33,12 @@ h6,.H6 {font-size:1.0em}
 h3+ul, h3+ol {margin-top:-.3em}
 
 /* "data" tables */
-table.data {border:1px solid #000}
-.data thead {background:#333;color:#fff}
+table.data {border:1px solid #000;min-width:50%}
+.data thead {background:#333}
+.data thead th {color:#fff}
 .data thead a {color:inherit}
 .data tbody tr:hover {background:#dddddd}
-.data td {padding:5px}
+.data th, .data td {padding:5px}
 /* prevent ugly line-breaks. apply scoped to [thead|tbody|tfoot|tr] with tr.compact */
 .data .compact th {overflow:hidden;text-overflow:ellipsis}
 
