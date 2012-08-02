@@ -14,16 +14,17 @@
  */
 
 // nothing to do if: home + don't show home + don't show first)
-if ($count == 0) {
-	$content = '';
-	return;
-}
+if ($count <= 1) 
+{
+	if ($count == 0) {
+		$content = '';
+		return;
+	}
 
-if ($count == 1) {
 	$jmenu = JFactory::getApplication()->getMenu();
 	if ($jmenu->getActive() == $jmenu->getDefault()) {
-	$content = '';
-	return;
+		$content = '';
+		return;
 	}
 }
 
