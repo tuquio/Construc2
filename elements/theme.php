@@ -389,7 +389,32 @@ class CustomTheme
 			// strip leading php code
 			$start  = strpos($data, '?>', strlen('<?php'));
 			$data   = trim(substr($data, ($start > 0 ? $start + 1 : 0)));
-			$config = parse_ini_string($data, true);
+			if (function_exists('parse_ini_string')) {
+				$config = parse_ini_string($data, true);
+			} else {
+				$data = preg_replace('/^(\s*\w+\s*=\s*)((?:(?!\s;)[^"\r\n])*?)(\s*(?:\s;.*)?)$/mx', '\1\2\3', $data);
+				$data = explode("\n", preg_replace('/(\s*(?:\s;.*)?)$/mx', '', $data) );
+				$config = array();
+				$sec = '';
+				foreach ($data as $item) {
+					$a   = preg_split('/(\s*=\s*)/mx', $item);
+					$a[0]= trim($a[0], '[]');
+					// drop empty lines, remaining comments, and PHP "header"
+					if (empty($a[0]) || preg_match('/[;\<\>\?]+/', $a[0])) continue;
+					if (isset($a[1])) {
+						// '=' in value, ie DSN with params, URLs with query
+						if (count($a) > 2) {
+							$k    = array_shift($a);
+							$a[1] = implode('=', $a);
+							$a[0] = $k;
+						}
+						$output[$sec][$a[0]] = trim($a[1], "'\"`");
+					} else {
+						$sec = $a[0];
+						$output[$sec] = array();
+					}
+				}
+			}
 			if ($config || count($config) > 0) {
 				$this->config = new JRegistry($config);
 			}
