@@ -4,7 +4,7 @@
  * @version 04.03.2012 (grids.css, grids_rtl.css, mods.css, menu.css)
  */
 /* grids.css */
-line,.lastUnit{overflow:hidden;*overflow:visible;*zoom:1;}
+.line,.lastUnit{overflow:hidden;*overflow:visible;*zoom:1;}
 .unit{float:left}
 .unitRight{float:right}
 .lastUnit{float:none;width:auto;_position:relative;_left:-3px;_margin-right:-3px;}
