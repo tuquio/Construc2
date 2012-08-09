@@ -189,6 +189,12 @@ class ConstructTemplateHelper
 		if (isset($item->alias)) {
 			$A[] = $item->alias;
 		}
+		if (isset($item->images) && preg_match('#\.(jpe?g|png|gif)#',$item->images)) {
+			$C[] = 'images';
+		}
+		if (isset($item->state) && $item->state == 0) {
+			$A[] = 'system-unpublished';
+		}
 
 		$alias = '';
 		foreach ((array)$A as $k => $ali)
@@ -236,7 +242,7 @@ class ConstructTemplateHelper
 	 * @param  string  $position
 	 * @return boolean
 	 *
-	 * @todo IMPLEMENT $position conditions
+	 * @todo IMPLEMENT and honor $position conditions
 	 */
 	public function moduleStyle($position)
 	{
