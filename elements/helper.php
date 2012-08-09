@@ -9,7 +9,6 @@
  */
 !defined('WMPATH_TEMPLATE') && define('WMPATH_TEMPLATE', dirname(dirname(__FILE__)));
 
-require_once WMPATH_TEMPLATE . '/elements/renderer/abstract.php';
 require_once WMPATH_TEMPLATE . '/elements/renderer/head.php';
 JLoader::register('CustomTheme', WMPATH_TEMPLATE . '/elements/theme.php');
 

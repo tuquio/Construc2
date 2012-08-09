@@ -109,7 +109,8 @@ class CustomTheme
 			}
 		}
 
-		$this->tmpl_url = JUri::root(true) .'/templates/'. $theme->template;
+		$jtmpl = basename(JPATH_THEMES);
+		$this->tmpl_url = JUri::root(true) ."/{$jtmpl}/". $theme->template;
 
 		// an optional .xml file with params for the backend
 		$this->form = WMPATH_TEMPLATE .'/themes/'. $this->name . '.xml';
@@ -336,13 +337,14 @@ class CustomTheme
 	}
 
 	/**
-	 * @param      $feature
-	 * @param null $data    Can be an array with a 'module' reference.
+	 * @param string $feature dot-notation of a loadable feature
+	 * @param null   $data    Can be an array with a 'module' reference.
 	 * @return string A rendered feature.
 	 */
 	final public function renderFeature($feature, $data=null)
 	{
-		if (array_key_exists($feature, self::$features) && (false === (bool)self::$features[$feature])) {
+		// known feature but disabled explicitly
+		if (array_key_exists($feature, self::$features) && (false === self::$features[$feature])) {
 			return $data;
 		}
 
@@ -358,7 +360,7 @@ class CustomTheme
 		{
 			$handler = ElementRendererAbstract::getInstance($parts[0].'.'.$parts[1], $data);
 			if (isset($parts[2])) {
-				$method  = $parts[2];
+				$method = $parts[2];
 				self::$features[$feature] = $handler->{$method}($data);
 			} else {
 				self::$features[$feature] = $handler->build($data);
