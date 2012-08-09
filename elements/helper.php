@@ -224,12 +224,13 @@ class ConstructTemplateHelper
 			$A[] = $item->alias;
 		}
 		if (isset($item->images) && preg_match('#\.(jpe?g|png|gif)#',$item->images)) {
-			$C = array('images');
+			$C[] = 'images';
 		}
 		if (isset($item->state) && $item->state == 0) {
 			$A[] = 'system-unpublished';
 		}
 
+		$alias = '';
 		foreach ((array)$A as $k => $ali)
 		{
 			$ali = trim($ali, '-');
@@ -282,9 +283,14 @@ class ConstructTemplateHelper
 		return (bool) $this->tmpl->params->get('modOocss', 0);
 	}
 
+	// @todo refactor to use JStringXXX if that comes available
 	protected function _inflectAlias(&$aliases, $language = null)
 	{
-		static $locale;
+		static $locale, $inflect = true;
+
+		if (!$inflect) {
+			return $aliases;
+		}
 
 		if (!isset($locale)) {
 			// need this to find the default language
@@ -315,6 +321,9 @@ class ConstructTemplateHelper
 				foreach ($aliases as $i => $alias) {
 					$aliases[$i] = en_GBLocalise::inflect($alias, false);
 				}
+			}
+			else {
+				$inflect = false;
 			}
 		}
 
