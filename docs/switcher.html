@@ -23,12 +23,14 @@
 
 <style id="PageStuff">
 section.component > p {max-width:40em}
-.component h2 {margin-left:-2em}
+.component h2 {margin-left:-1.8em}
 h2:target {color:green;text-decoration:underline}
-pre {margin:10px auto 10px -3.4em; padding:.5ex 1ex; line-height:normal}
+pre {margin:10px auto 10px -2.4em; padding:.5ex 1ex; line-height:normal}
 pre,code,samp,kbd,tt,var {background-color:#efefef}
+.group-alpha {margin-left: -2.6em}
 
-#styleswitcher .switcher {display:block}
+#styleswitcher {display:block;background-color:navy;}
+#styleswitcher .switcher {display:block;background-color:#eee8aa;}
 </style>
 
 </head>
@@ -61,17 +63,17 @@ pre,code,samp,kbd,tt,var {background-color:#efefef}
 		sitting on your page if JavaScript is not available.</p>
 
 	<h2 id="classic">Classic: <code>LI</code> and <code>LINK</code> elements</h2>
-	<p>The <q>classic</q> method provides backwards compatibility with ALA's well known
+	<p>The <q>classic</q> method provides backwards compatibility with the well known
 		<q><a href="http://www.alistapart.com/articles/alternate/">styleswitcher.js</a></q>
-		introduced in 2001 and its various successors.
-		You can create as many "physical" link and list items in your markup for each
-		supplemental style sheet as you need.</p>
+		from A List Apart introduced in 2001 and its various successors.
+		For each supplemental style sheet you're required to create a pairs of link and list
+		items in your markup.</p>
+	<p>The relationship (or linkage) between these <code>LI</code> and <code>LINK</code> elements
+		is established by their <var>title</var> attribute. The comparison is case insensitive.</p>
 <pre>&lt;link rel="alternate stylesheet" href="wireframe.css" title="wireframe">
 &lt;link rel="alternate stylesheet" href="diagnostic.css" title="Diagnostic"></pre>
 <pre>&lt;li title="Wireframe">Wireframe&lt;/li>
 &lt;li title="Diagnostic">Diagnostic&lt;/li></pre>
-		<p>The relationship between the <code>LI</code> and <code>LINK</code> elements is established
-			by their <var>title</var> attribute. The comparison is none case insensitive.</p>
 
 	<h2 id="modern">Modern: <code>data-styles</code> attribute</h2>
 	<p>The <q>modern</q> method makes use of HTML5's data attributes and creates both <code>LI</code>
@@ -100,9 +102,9 @@ pre,code,samp,kbd,tt,var {background-color:#efefef}
 	<div id="group-alpha" class="column-group group-alpha" data-modules="1">
 	<div class="mod">
 		<menu class="menu">
-		<li class="li"><a class="li" href="#intro">Introduction</a></li>
-		<li class="li"><a class="li" href="#classic">Classic Markup</a></li>
-		<li class="li"><a class="li" href="#modern">Modern Attribute</a></li>
+		<li class="mi"><a class="mi" href="#intro">Introduction</a></li>
+		<li class="mi"><a class="mi" href="#classic">Classic Markup</a></li>
+		<li class="mi"><a class="mi" href="#modern">Modern Attribute</a></li>
 		</menu>
 	</div>
 	<div class="mod">
