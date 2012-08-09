@@ -7,15 +7,18 @@
  * @license     GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
 $app = JFactory::getApplication();
+
+$tmpl_url = $this->baseurl .'/'. basename(JPATH_THEMES) .'/system';
+
 ?>
 <html lang="<?php echo $this->language; ?>" dir="<?php echo $this->direction; ?>">
 <head>
 	<jdoc:include type="head" />
-	<link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/system/css/offline.css" type="text/css" />
+	<link rel="stylesheet" href="<?php echo $tmpl_url ?>/css/offline.css" type="text/css" />
 	<?php if ($this->direction == 'rtl') : ?>
-	<link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/system/css/offline_rtl.css" type="text/css" />
+	<link rel="stylesheet" href="<?php echo $tmpl_url ?>/css/offline_rtl.css" type="text/css" />
 	<?php endif; ?>
-	<link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/system/css/general.css" type="text/css" />
+	<link rel="stylesheet" href="<?php echo $tmpl_url ?>/css/general.css" type="text/css" />
 </head>
 <body>
 <jdoc:include type="message" />
