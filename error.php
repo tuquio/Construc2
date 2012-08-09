@@ -31,6 +31,8 @@ if (!JComponentHelper::isEnabled('com_finder') && !JPluginHelper::isEnabled('fin
 	$sitesearch = JRoute::_('index.php?option=com_finder&view=search');
 }
 
+$tmpl_url = $this->baseurl .'/'. basename(JPATH_THEMES) .'/'. $this->template;
+
 ?>
 <html lang="<?php echo $lang ?>" dir="<?php echo $this->direction ?>">
 <head>
@@ -38,9 +40,9 @@ if (!JComponentHelper::isEnabled('com_finder') && !JPluginHelper::isEnabled('fin
 <title><?php echo $doc_title ?> - <?php echo $this->title ?></title>
 <meta name="language" content="<?php echo $lang ?>">
 <meta name="generator" content="Construc2">
-<link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/construc2/css/core/base.css" type="text/css">
-<link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/construc2/css/core/oocss.css" type="text/css">
-<link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/construc2/css/core/template.css" type="text/css">
+<link rel="stylesheet" href="<?php echo $tmpl_url ?>/css/core/base.css" type="text/css">
+<link rel="stylesheet" href="<?php echo $tmpl_url ?>/css/core/oocss.css" type="text/css">
+<link rel="stylesheet" href="<?php echo $tmpl_url ?>/css/core/template.css" type="text/css">
 </head>
 <body>
 <div class="line error">

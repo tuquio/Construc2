@@ -111,7 +111,7 @@ class CustomTheme
 		}
 
 		$this->path = JPATH_THEMES .'/'. $tmpl->template .'/themes/'. $this->name . '.php';
-		$this->url  = JUri::root(true) .'/templates/'. $tmpl->template .'/themes';
+		$this->url  = JUri::root(true) .'/'. basename(JPATH_THEMES) .'/'. $tmpl->template .'/themes';
 
 		$this->config = new JObject($this->_config);
 

@@ -851,7 +851,7 @@ class ConstructTemplateHelper
 	protected function buildHead()
 	{
 		$head = $this->doc->getHeadData();
-		$tmpl_url = JURI::base(true) . '/templates/'. $this->tmpl->template;
+		$tmpl_url = JURI::base(true) . '/'. basename(JPATH_THEMES) .'/'. $this->tmpl->template;
 
 		// cleanup meta tags
 		unset($head['metaTags']['http-equiv']);
