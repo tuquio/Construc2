@@ -16,6 +16,7 @@ section.component > div.search	,
 section.component > div.finder	,
 .items-more, .item-page			,
 .blog article			{background-color:#fff}
+article.category-desc	{background-color:transparent;}
 
 button:focus 			,
 .inputbox:focus			{background-color:#fff}
@@ -44,10 +45,11 @@ nav, .hmenu,
 
 .mod-custom div.inner			{background:none}
 
-menu.categories > li.current	{background-color:rgb(224,224,224);outline:1px solid #fff}
-menu.categories span.mi:hover	{border-bottom:1px dotted #999}
 .mod-articles-categories .inner	,
 .column-group .mod-login .inner	{outline:1px solid hsla(0, 50%, 96%, .25)}
+menu.categories > li.mi			{}
+menu.categories > li.current	{background-color:rgb(224,224,224);outline:1px solid #fff}
+menu.categories span.mi:hover	{border-bottom:1px dotted #999}
 
 /* =content blobs */
 .mod-custom div.inner		{outline:none}
