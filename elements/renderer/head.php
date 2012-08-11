@@ -161,13 +161,16 @@ class ElementRendererMeta extends ElementRendererAbstract
 	 * @param      $content
 	 * @param null $ua
 	 * @return ElementRendererMeta
+	 *
+	 * @todo Needs to deal with extendable content lists where 
+	 *		multiple calls add up to $content for $name
 	 */
 	public function httpEquiv($name, $content, $ua=null)
 	{
 		if (isset($this->data[$name])) return $this;
 
 		if (is_array($content)) {
-			$content = implode(' ', $content);
+			$content = implode(',', $content);
 		}
 
 		if ($content) {
