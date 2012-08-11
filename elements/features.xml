@@ -47,6 +47,10 @@ Possible panel groups to plug into:
 				<option value="1">JYes</option>
 				<option value="0">JNo</option>
 			</field>
+			<field type="radio" handler="msie" name="msieMetroActivex" default="0" label="Quirks_Feature_msieMetroActivex" description="Quirks_Feature_msieMetroActivex_Desc">
+				<option value="1">JYes</option>
+				<option value="0">JNo</option>
+			</field>
 		</fieldset>
 	</fields>
 
