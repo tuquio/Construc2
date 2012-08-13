@@ -73,7 +73,7 @@ class JFormFieldThemelist extends JFormFieldFileList
 	 */
 	protected function getOptions()
 	{
-		$this->element['directory'] = 'templates/construc2/themes';
+		$this->element['directory'] = basename(JPATH_THEMES).'/construc2/themes';
 
 		if ('ssi' == (string) $this->element['themetype']) {
 			$this->element['filter']  = '\.styles';

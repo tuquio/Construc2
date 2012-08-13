@@ -26,7 +26,7 @@ $app		= JFactory::getApplication();
 $base_url 	= JURI::base(true) . '/';
 
 /** @var $tmpl_url string Define relative shortcut for current template directory */
-$tmpl_url 	= $base_url. 'templates/'. $this->template;
+$tmpl_url 	= $base_url. basename(JPATH_THEMES). '/'. $this->template;
 
 // some editor form requested, needs mo' styles, and less modules
 $editMode  = $templateHelper->hasState('edit');

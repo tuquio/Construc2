@@ -28,7 +28,7 @@ cdnjs.cloudflare.com		= 1,jquery,mootools
 	;
 media		= "{root}/media/system"
 images		= "{root}/images"
-template	= "{root}/templates/construc2"
+template	= "{themes}/construc2"
 theme		= "{template}/themes/{name}"
 tmpl.css	= "{template}/css"
 tmpl.js		= "{template}/js"

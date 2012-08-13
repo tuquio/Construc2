@@ -58,8 +58,16 @@ class CustomTheme
 	/**
 	 * Used in the Template Manager to assign the parameter form.
 	 * @var $jform JForm
+	 * @see setForm()
 	 */
 	protected $jform;
+
+	/**
+	 * An optional xml file for the theme form.
+	 * @var $form string
+	 * @see setForm()
+	 */
+	protected $form;
 
 	/**
 	 * @see setChunks()
@@ -458,6 +466,11 @@ class CustomTheme
 
 		// grab the form.
 		$this->jform = $form;
+
+		// load configuration
+		if ($this->form) {
+			$form->loadFile($this->form, false);
+		}
 
 		return $this;
 	}

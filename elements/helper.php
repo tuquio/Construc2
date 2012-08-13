@@ -807,7 +807,7 @@ class ConstructTemplateHelper
 		}
 
 		// followed by media/system, templates/system
-		foreach (preg_grep('#(media|templates)/system/#', array_keys($head['scripts'])) as $src)
+		foreach (preg_grep('#(media|'.basename(JPATH_THEMES).')/system/#', array_keys($head['scripts'])) as $src)
 		{
 			$this->addScript($src, self::UA, $head['scripts'][$src]);
 			// nuke old entry
@@ -874,7 +874,7 @@ To allow parallel downloading, move the inline script before the external CSS fi
 
 			// scripts
 			if (isset($groups['scripts']) && count($groups['scripts'])) {
-				foreach (array('cdn', 'media', 'templates', 'scripts') as $sect) {
+				foreach (array('cdn', 'media', basename(JPATH_THEMES), 'scripts') as $sect) {
 					if (!isset($groups['scripts'][$sect])) {
 						continue;
 					}
@@ -1002,9 +1002,10 @@ To allow parallel downloading, move the inline script before the external CSS fi
 		{
 			settype($default['subst'][$k], 'string');
 			$default['subst'][$k] = str_replace(
-							array('{root}','{template}','{theme}','{media}'),
+							array('{root}','{template}','{themes}','{theme}','{media}'),
 							array(JURI::root(true),
 									$default['subst']['template'],
+									basename(JPATH_THEMES),
 									$default['subst']['theme'],
 									$default['subst']['media'],
 								),
