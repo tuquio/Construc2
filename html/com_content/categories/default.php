@@ -24,7 +24,7 @@ JLoader::register('ContentLayoutHelper', JPATH_THEMES . '/construc2/html/com_con
 			echo  JHtml::_('content.prepare',$this->params->get('categories_description'));
 		}
 		// otherwise get one from the database if it exists.
-		else if ($this->parent->description) {
+		elseif ($this->parent->description) {
 			echo JHtml::_('content.prepare', $this->parent->description);
 		} ?>
 	</article>

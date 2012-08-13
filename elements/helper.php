@@ -179,7 +179,7 @@ class ConstructTemplateHelper
 			if (isset($item->parent_alias)) {
 				$A[] = $item->parent_alias;
 			}
-			else if (isset($item->parent_route)) {
+			elseif (isset($item->parent_route)) {
 				$A[] = substr($item->parent_route, 0, strpos($item->parent_route, '/'));
 			}
 		}
@@ -436,7 +436,7 @@ class ConstructTemplateHelper
 				$file = $this->layouts[$key];
 			}
 		}
-		else if (isset($this->layouts[$tmpl .'.php'])) {
+		elseif (isset($this->layouts[$tmpl .'.php'])) {
 			// alternative tmpl (component, modal)
 			$file = $this->layouts[$tmpl .'.php'];
 		}
@@ -1149,7 +1149,7 @@ To allow parallel downloading, move the inline script before the external CSS fi
 					$found = true;
 				}
 				// not type or a type pointing to a script language
-				else if (!isset($arr['type']) || (isset($arr['type']) && strpos($arr['type'], 'script') )) {
+				elseif (!isset($arr['type']) || (isset($arr['type']) && strpos($arr['type'], 'script') )) {
 					$this->element('scripts')->set($m[2][$i], null, 'BODY');
 					$found = true;
 				}

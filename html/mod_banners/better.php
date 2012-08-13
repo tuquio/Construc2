@@ -54,7 +54,7 @@ foreach ($list as $item)
 			if ($alt) {
 				$alt = ' alt="'.  htmlspecialchars($alt, ENT_QUOTES, 'UTF-8') .'"';
 			}
-			else if ($item->name) {
+			elseif ($item->name) {
 				$alt = ' alt="'.  htmlspecialchars($item->name, ENT_QUOTES, 'UTF-8') .'"';
 			}
 			else {
@@ -93,7 +93,7 @@ foreach ($list as $item)
 			}
 		}
 		// Flash based banner
-		else if (BannerHelper::isFlash($imageurl)) {
+		elseif (BannerHelper::isFlash($imageurl)) {
 
 	// @see http://kb2.adobe.com/cps/415/tn_4150.html http://kb2.adobe.com/cps/127/tn_12701.html
 ?>

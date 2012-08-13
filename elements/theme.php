@@ -98,7 +98,7 @@ class CustomTheme
 			$theme = new stdClass;
 			$theme->template = basename(WMPATH_TEMPLATE);
 		}
-		else if (is_object($theme) && ($theme->params instanceof JRegistry)) {
+		elseif (is_object($theme) && ($theme->params instanceof JRegistry)) {
 			// a Template Style object via ConstructTemplateHelper (Frontend usage)
 			$ssi  = (bool) $theme->params->get('ssiIncludes', 0);
 			if ($ssi) {

@@ -53,15 +53,18 @@ class ElementFeature extends ElementRendererAbstract
 	 * 			Should call "return" to cancel the request.
 	 * - msie:  a conditional comment selector for MSIE 'lt IE 8'
 	 *
+	 * @todo Implement $prerun array keys
+	 *
 	 * @see yepnope()
-	 * @param  string        $href  The script to load, may contain {subst.keys}
+	 * @param  string        $href   The script to load, may contain {subst.keys}
 	 * @param  string|array  $prerun see method comments
 	 * @return string
 	 */
 	public function loader($href, $prerun='')
 	{
 		if (is_array($prerun)) {
-			//#FIXME check properties
+			//#FIXME check array keys 'run' and 'msie'
+			$prerun = implode(' ', $prerun);
 		}
 
 		return	'(function(W,D,src) {'
@@ -123,16 +126,16 @@ class ElementFeature extends ElementRendererAbstract
 			settype($data['rel'], 'string');
 			ElementRendererAbstract::getInstance('renderer.'. $type)->set($data['href'], $data['rel'], $data, $ua);
 		}
-		else if ($type == 'script')
+		elseif ($type == 'script')
 		{
 			ElementRendererAbstract::getInstance('renderer.'. $type)->set($data['src'], $data, $ua);
 		}
-		else if ($type == 'styles')
+		elseif ($type == 'styles')
 		{
 			// in this case it better be a string ;)
 			ElementRendererAbstract::getInstance('renderer.'. $type)->set($this->name, (string) $data, $ua);
 		}
-		else if ($type == 'scripts')
+		elseif ($type == 'scripts')
 		{
 			// in this case it better be a string ;)
 			ElementRendererAbstract::getInstance('renderer.'. $type)->set((string) $data, null, $ua);

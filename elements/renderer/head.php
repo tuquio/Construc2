@@ -149,7 +149,7 @@ class ElementRendererMeta extends ElementRendererAbstract
 		if ($name == null && $content) {
 			$this->data[$name] = '<meta '. $content .'>';
 		}
-		else if ($content) {
+		elseif ($content) {
 			$this->data[$name] = '<meta name="'. $name .'" content="'. $content .'">';
 		}
 
@@ -162,7 +162,7 @@ class ElementRendererMeta extends ElementRendererAbstract
 	 * @param null $ua
 	 * @return ElementRendererMeta
 	 *
-	 * @todo Needs to deal with extendable content lists where 
+	 * @todo Needs to deal with extendable content lists where
 	 *		multiple calls add up to $content for $name
 	 */
 	public function httpEquiv($name, $content, $ua=null)
