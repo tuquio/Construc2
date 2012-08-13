@@ -82,7 +82,7 @@ class ElementFeatureMsie extends ElementRendererMeta
 	 * rendering if installed.
 	 *
 	 * <b>It's highly recommended to add a proper "http-equiv" server
-	 * response header instead</b>, i.e. .htaccess to prevent the 
+	 * response header instead</b>, i.e. .htaccess to prevent the
 	 * "compatibility view button" to appear.
 	 * <code>Header set X-UA-Compatible "IE=Edge,chrome=1"</code>
 	 *
@@ -100,10 +100,10 @@ class ElementFeatureMsie extends ElementRendererMeta
 	}
 
 	/**
-	 * Metro style IE10 detects these flags, and provides a one-touch 
+	 * Metro style IE10 detects these flags, and provides a one-touch
 	 * option to switch to IE10 on the desktop.
 	 *
-	 * <b>IMPORTANT!</b> This currently includes edge() to handle IE8+ ChromeFrame!
+	 * <b>IMPORTANT!</b> This currently includes edge() to handle regular IE8 + ChromeFrame!
 	 * <b>It's highly recommended to add a proper "http-equiv" server response header instead.</b>
 	 *
 	 * <code>Header set X-UA-Compatible "requiresActiveX=true"</code>

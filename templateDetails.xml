@@ -83,12 +83,9 @@
 				</field>
 			</fieldset>
 
-			<fieldset name="theme" description="Theme_Slot_Desc" class="tpl-plugin" />
-<!--
-			<fieldset name="features" description="Features_Slot_Desc" class="tpl-plugin" />
-			<fieldset name="widgets" description="Widgets_Slot_Desc" class="tpl-plugin" />
--->
-			<fieldset name="javascript">
+            <fieldset name="theme" description="Theme_Slot_Desc" class="tpl-plugin" />
+
+            <fieldset name="javascript">
 				<field name="loadMoo" type="list" default="2" label="Features_Javascript_loadMoo" description="Features_Javascript_loadMoo_Desc">
 					<option value="2">Auto</option>
 					<option value="1">JYes</option>
@@ -117,16 +114,20 @@
 				</field>
 			</fieldset>
 
-			<fieldset name="quirks" description="Quirks_Slot_Desc" class="tpl-plugin">
-				<field name="headCleanup" type="radio" default="0" label="Quirks_headCleanup" description="Quirks_headCleanup">
-					<option value="1">JYes</option>
-					<option value="0">JNo</option>
-				</field>
-			</fieldset>
+            <fieldset name="features" description="Features_Slot_Desc" class="tpl-plugin" />
 
-			<fieldset name="maintenance">
-				<field name="maintenance_note" type="spacer" label="Maintenance_Plugin_Slot" description="Maintenance_Plugin_Slot_Desc" class="tpl-plugin" />
-			</fieldset>
+            <fieldset name="widgets" description="Widgets_Slot_Desc" class="tpl-plugin" />
+
+            <fieldset name="quirks" description="Quirks_Slot_Desc" class="tpl-plugin">
+                <field name="headCleanup" type="radio" default="0" label="Quirks_headCleanup" description="Quirks_headCleanup">
+                    <option value="1">JYes</option>
+                    <option value="0">JNo</option>
+                </field>
+            </fieldset>
+
+            <fieldset name="maintenance">
+                <field name="maintenance_note" type="spacer" label="Maintenance_Plugin_Slot" description="Maintenance_Plugin_Slot_Desc" class="tpl-plugin" />
+            </fieldset>
 
 		</fields>
 	</config>
