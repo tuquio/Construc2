@@ -57,10 +57,10 @@ class CustomTheme
 
 	/**
 	 * Used in the Template Manager to assign the parameter form.
-	 * @var $jform JForm
+	 * @var $xml JForm
 	 * @see setForm()
 	 */
-	protected $jform;
+	protected $xml;
 
 	/**
 	 * An optional xml file for the theme form.
@@ -106,14 +106,23 @@ class CustomTheme
 			$theme = new stdClass;
 			$theme->template = basename(WMPATH_TEMPLATE);
 		}
-		elseif (is_object($theme) && ($theme->params instanceof JRegistry)) {
+
+		elseif (is_object($theme))
+		{
+			// plain array from 'onContentPrepareForm' if run in backend
+			if (is_array($theme->params)) {
+				$params = new JRegistry($theme->params);
+			} else {
+				$params = &$theme->params;
+			}
+
 			// a Template Style object via ConstructTemplateHelper (Frontend usage)
-			$ssi  = (bool) $theme->params->get('ssiIncludes', 0);
+			$ssi  = (bool) $params->get('ssiIncludes', 0);
 			if ($ssi) {
-				$this->name = basename($theme->params->get('ssiTheme'), '.styles');
+				$this->name = basename($params->get('ssiTheme'), '.styles');
 			}
 			else {
-				$this->name = basename($theme->params->get('theme'), '.css');
+				$this->name = basename($params->get('theme'), '.css');
 			}
 		}
 
@@ -313,6 +322,7 @@ class CustomTheme
 		if (isset(self::$features[$name])) {
 			return self::$features[$name];
 		}
+		return null;
 	}
 
 	/**
@@ -451,7 +461,8 @@ class CustomTheme
 	}
 
 	/**
-	 * Assign the parameter form data used in the backend theme manager.
+	 * Assigns the form object used in the backend theme manager, load the
+	 * supplemental XML config and language files for the theme.
 	 *
 	 * @param  JForm $form
 	 *
@@ -460,16 +471,19 @@ class CustomTheme
 	final public function setForm(JForm $form)
 	{
 		// only once, please.
-		if (isset($this->jform)) {
+		if (isset($this->xml)) {
 			return $this;
 		}
 
 		// grab the form.
-		$this->jform = $form;
+		$this->xml = $form;
 
-		// load configuration
+		// load XML configuration and language file
 		if ($this->form) {
+			JFormHelper::addFormPath(WMPATH_TEMPLATE . '/themes');
+
 			$form->loadFile($this->form, false);
+			JFactory::getLanguage()->load('theme_'.$this->name, WMPATH_TEMPLATE);
 		}
 
 		return $this;
