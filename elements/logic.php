@@ -19,6 +19,9 @@ JLoader::register('ConstructTemplateHelper', dirname(__FILE__) . '/helper.php');
 /** @var $templateHelper ConstructTemplateHelper */
 $templateHelper	= ConstructTemplateHelper::getInstance();
 
+/** Bootstrap the Kaskade Template Plugin */
+JPluginHelper::importPlugin('extension', 'kaskade');
+
 /** @var $app JSite To enable use of site configuration */
 $app		= JFactory::getApplication();
 
