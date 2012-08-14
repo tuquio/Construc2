@@ -1121,11 +1121,14 @@ To allow parallel downloading, move the inline script before the external CSS fi
 	}
 
 	/**
-	 * Some Modules and Plugins, incl. the "Core" don't use the JDocumentHTML API
-	 * to add scripts and styles to the HEAD element.
+	 * Some Modules and Plugins (incl. the "Core") don't use the JDocumentHTML API
+	 * to add scripts and styles to the HEAD element. Here this crap it detected
+	 * and script content pushed to the common script container in the head.
 	 *
 	 * @param  string  $content  Some markup
 	 * @param  string  $culprit  A string that identifies the content originator
+	 *
+	 * @todo refactor into a separate "feature"
 	 */
 	private function _choppInlineCrap($content, $culprit = '')
 	{
@@ -1135,7 +1138,8 @@ To allow parallel downloading, move the inline script before the external CSS fi
 			for ($i = 0; $i < count($m[0]); $i += 1)
 			{
 				// some moron developer still uses document.write[ln]
-				// instead proper DOM manipulation. Can't fix this BS!
+				// instead proper DOM manipulation. Can't fix this NOW!
+				//TODO add support for document.write() capture found in /x~incubator/js/doc-frag-writer.html
 				if (strpos($m[2][$i], 'document.write')) {
 					JLog::add('Performance hog document.write() detected '.$culprit, JLog::WARNING, 'deprecated');
 					continue;
