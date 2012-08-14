@@ -20,8 +20,8 @@
 	}
 
 	@-moz-keyframes readmore {
-		from, 100% { background-color:red; }
-		50% { background-color: floralwhite; }
+		from, 100% { background-color:#fff; }
+		50% { background-color: palegoldenrod; }
 	}
 }
 
@@ -36,8 +36,8 @@
 	}
 
 	@-webkit-keyframes readmore {
-		from, 100% { background-color:red; }
-		50% { background-color: floralwhite; }
+		from, 100% { background-color:#fff; }
+		50% { background-color: palegoldenrod; }
 	}
 }
 
@@ -47,11 +47,11 @@
 
 	/* =transitions */
 	input, textarea {
-	-webkit-transition: border linear 0.2s, box-shadow linear 0.2s;
-	   -moz-transition: border linear 0.2s, box-shadow linear 0.2s;
-	    -ms-transition: border linear 0.2s, box-shadow linear 0.2s;
-	     -o-transition: border linear 0.2s, box-shadow linear 0.2s;
-	        transition: border linear 0.2s, box-shadow linear 0.2s;
+	-webkit-transition: border linear .2s, box-shadow linear .5s, width linear .5s;
+	   -moz-transition: border linear .2s, box-shadow linear .5s, width linear .5s;
+	    -ms-transition: border linear .2s, box-shadow linear .5s, width linear .5s;
+	     -o-transition: border linear .2s, box-shadow linear .5s, width linear .5s;
+	        transition: border linear .2s, box-shadow linear .5s, width linear .5s;
 	}
 
 	/* =gradients */
@@ -75,7 +75,7 @@
 		background-image:   -moz-linear-gradient(50% bottom, #efefef 4em, #fff 8em);
 		background-image:    -ms-linear-gradient(50% bottom, #efefef 4em, #fff 8em);
 		background-image:     -o-linear-gradient(50% bottom, #efefef 4em, #fff 8em);
-		box-shadow: 0px -3px 9px -1px #fff inset;
+		box-shadow: 0 -3px 9px -1px #fff inset;
 	}
 
 	.items-row article {
@@ -83,7 +83,7 @@
 		background-image:   -moz-linear-gradient(50% bottom, #efefef 3em, #fff 10em);
 		background-image:    -ms-linear-gradient(50% bottom, #efefef 3em, #fff 10em);
 		background-image:     -o-linear-gradient(50% bottom, #efefef 3em, #fff 10em);
-		box-shadow: 0px -3px 9px -1px #fff inset;
+		box-shadow: 0 -3px 9px -1px #fff inset;
 	}
 
 }

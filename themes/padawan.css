@@ -103,6 +103,7 @@ p:only-child 		{margin-bottom:0}
 
 blockquote 			{padding:1ex;margin:0 3em;}
 
+table.data, .datatable {table-layout:fixed}
 table.data th.clip	,
 .column-group .hd	{text-overflow:ellipsis;-ms-text-overflow:ellipsis;-o-text-overflow:ellipsis}
 
@@ -132,7 +133,9 @@ button 				{padding:0.5ex 2ex}
 
 .introtext, .fulltext	{margin-right:20px}
 
-.item-page header.article	{margin:10px 10px 20px 20px}
+.items-leading .introtext,
+.item-page header.article	{margin-left:20px}
+
 .item-page .introtext,
 .item-page .fulltext	{padding: 0 20px}
 
@@ -255,12 +258,14 @@ figure.portrait				{height:245px;width:auto;max-width:100%}
 }
 
 /* =mod_search / mod_finder - align with mainmenu and li padding */
-.mainnavi form 				{position:absolute;right:2px;top:.5ex}
+.mainnavi form 				{position:absolute;right:0.4em;top:.5ex}
 .mainnavi div.finder ,
-.mainnavi div.search		{display:inline-block;padding:.2ex}
+.mainnavi div.search		{display:inline-block;padding:.2ex;text-align: right}
+
 .mainnavi label.finder ,
 .mainnavi .search > label	{display:inline;padding-right:1em}
-.mainnavi input.inputbox	{display:inline;width:75%;padding-right:1em}
+.mainnavi input.inputbox	{display:inline;width:50%}
+.mainnavi input.inputbox:focus	{width:75%}
 .mainnavi .finder a			{display:none;padding:.5ex 0;text-align:center;width:100%;z-index:27}
 .mainnavi .finder br		{display:none}
 /* https://developer.mozilla.org/en/CSS/pointer-events
