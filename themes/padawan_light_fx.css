@@ -67,8 +67,9 @@
 	.mod-articles-categories .inner,
 	.column-group .mod-login .inner {
 		background-image:-moz-radial-gradient(0 45%, hsl(0,0%,96%), hsl(0,0%,90%));
-		box-shadow:5px 5px 13px -5px #fff inset
-	}
+		box-shadow:5px 5px 13px -5px #fff inset;
+		padding: 0.6em 0;
+    }
 
 	.items-leading article {
 		background-image:-webkit-linear-gradient(50% bottom, #efefef 4em, #fff 8em);

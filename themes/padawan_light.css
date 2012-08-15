@@ -47,7 +47,7 @@ nav, .hmenu,
 
 .mod-articles-categories .inner	,
 .column-group .mod-login .inner	{outline:1px solid hsla(0, 50%, 96%, .25)}
-menu.categories > li.mi			{}
+menu.categories > li.mi			{padding-left: 1em}
 menu.categories > li.current	{background-color:rgb(224,224,224);outline:1px solid #fff}
 menu.categories span.mi:hover	{border-bottom:1px dotted #999}
 
@@ -147,8 +147,7 @@ dt.result-title {}
 		.hbox-ds			{box-shadow:-2px 3px 5px  1px #888}
 	.mainnavi .finder a 	{box-shadow: 0   4px 9px -7px #888}
 
-	.page-toc, .meta		{box-shadow: 0 0 6px  0 #aaa inset}
-
+	.page-toc, .meta		{box-shadow: 0 0 6px 0 #aaa inset}
 }
 
 /* =print stuff */

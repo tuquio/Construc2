@@ -113,10 +113,11 @@ button 				{padding:0.5ex 2ex}
 /*
  * =columns context
  */
-.column-group fieldset		{padding:5px;margin:0}
+.column-group fieldset          {padding:5px;margin:0}
 .column-group h3,
-.column-group .H3			{margin-bottom:0;padding:0}
-.column-group .mod:first-child {margin-top:0}
+.column-group .H3               {margin-bottom:0;padding:0}
+.column-group .mod:first-child  {margin-top:0}
+.group-beta .mod                {margin-right:0}
 
 /*
  * =contents
@@ -258,14 +259,14 @@ figure.portrait				{height:245px;width:auto;max-width:100%}
 }
 
 /* =mod_search / mod_finder - align with mainmenu and li padding */
-.mainnavi form 				{position:absolute;right:0.4em;top:.5ex}
+.mainnavi form 				{padding: 0.5ex 0.4em;text-align:right}
 .mainnavi div.finder ,
-.mainnavi div.search		{display:inline-block;padding:.2ex;text-align: right}
+.mainnavi div.search		{display:inline-block;padding:0}
 
 .mainnavi label.finder ,
 .mainnavi .search > label	{display:inline;padding-right:1em}
-.mainnavi input.inputbox	{display:inline;width:50%}
-.mainnavi input.inputbox:focus	{width:75%}
+.mainnavi input.inputbox	{display:inline;width:35%}
+.mainnavi input.inputbox:focus	{width:48%}
 .mainnavi .finder a			{display:none;padding:.5ex 0;text-align:center;width:100%;z-index:27}
 .mainnavi .finder br		{display:none}
 /* https://developer.mozilla.org/en/CSS/pointer-events
