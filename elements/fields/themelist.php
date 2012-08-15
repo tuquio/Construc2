@@ -22,17 +22,13 @@ class JFormFieldThemelist extends JFormFieldFileList
 	public $type = 'Themelist';
 
 	/**
-	 * Instatiate the theme select list.
+	 * Instatiate the theme files select list.
 	 *
 	 * @param JForm|null $form
 	 */
 	public function __construct($form = null)
 	{
 		parent::__construct($form);
-
-//		if (defined('DEVELOPER_MACHINE')) {
-//			JFactory::getDocument()->addScriptDeclaration('console.info( "Theme parameters initializing! " );');
-//		}
 	}
 
 	/**
@@ -63,6 +59,9 @@ class JFormFieldThemelist extends JFormFieldFileList
 	public function setup(JXMLElement $element, $value, $group = null)
 	{
 		$result = parent::setup($element, $value, $group);
+		if (defined('DEVELOPER_MACHINE')) {
+			JFactory::getDocument()->addScriptDeclaration('console.info( "JFormFieldThemelist '. $this->name .' initializing! " );');
+		}
 		return $result;
 	}
 
@@ -91,6 +90,15 @@ class JFormFieldThemelist extends JFormFieldFileList
 		return $options;
 	}
 
+	/**
+	 * @return  string  The basename of the file (theme)
+	 */
+	public function getTheme()
+	{
+		$name = explode('.', $this->value .'.');
+		return $name[0];
+	}
+
 	/**@#+
 	 * Prepare form, fired on form preparation (before content plugins)
 	 *
@@ -103,19 +111,7 @@ class JFormFieldThemelist extends JFormFieldFileList
 	 */
 	public function onContentPrepareForm(JForm $form, $data)
 	{
-		FB::log($data, __METHOD__);
-	}
-
-	/**
-	 * Prepare data, fired on data preparation
-	 * com_contact context: 'com_users.profile'
-	 * com_user contexts: 'com_users.profile', 'com_users.registration'
-	 * @param string $context
-	 * @param object $data
-	 */
-	public function onContentPrepareData($context, $data)
-	{
-		FB::log($data, __METHOD__);
+		FB::log($data, $form->getName() .' @ '. __METHOD__);
 	}
 
 }
