@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
 <!--
-Most Widgets would plug into the "widgets" parameter group.
+Most Widgets would plug into the "widgets" parameter group (fieldset).
 Possible panel groups to plug into:
 	> widgets   : add or generate visual output
 	> javascript: add or mess with javascript files and scripts
@@ -9,9 +9,6 @@ Possible panel groups to plug into:
  -->
 
 	<fields name="params">
-		<!-- core widgets or things with technical merit -->
-		<fieldset name="basic" addfieldpath="/templates/construc2/elements/features" />
-
 		<fieldset name="widgets">
 			<field type="radio" name="widgetDate" default="0" label="TPL_CONSTRUC2_DATECONTAINER_LABEL" description="TPL_CONSTRUC2_DATECONTAINER_DESC">
 				<option value="1">JShow</option>
@@ -24,11 +21,11 @@ Possible panel groups to plug into:
 				<option value="3">DATE_FORMAT_LC3</option>
 				<option value="4">DATE_FORMAT_LC4</option>
 			</field>
-			<field type="radio" name="fontscaler" default="0" label="TPL_CONSTRUC2_FONTSCALER_LABEL" description="TPL_CONSTRUC2_FONTSCALER_DESC">
+			<field fieldset="kaskade" type="radio" name="fontscaler" default="0" label="TPL_CONSTRUC2_FONTSCALER_LABEL" description="TPL_CONSTRUC2_FONTSCALER_DESC">
 				<option value="1">JShow</option>
 				<option value="0">JHide</option>
 			</field>
-			<field type="radio" name="styleswitch" default="0" label="TPL_CONSTRUC2_STYLESWITCH_LABEL" description="TPL_CONSTRUC2_STYLESWITCH_DESC">
+			<field fieldset="kaskade" type="radio" name="styleswitch" default="0" label="TPL_CONSTRUC2_STYLESWITCH_LABEL" description="TPL_CONSTRUC2_STYLESWITCH_DESC">
 				<option value="1">JShow</option>
 				<option value="0">JHide</option>
 			</field>

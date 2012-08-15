@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
 <!--
-Most Features would plug into the "features" parameter group.
+Most Features would plug into the "features" parameter group (fieldset).
 Possible panel groups to plug into:
 	> features   : the win and doubt group for almost anything
 	> standards  : provide Shims, Shivs, and other means of webstandards compatibility
@@ -10,25 +10,19 @@ Possible panel groups to plug into:
  -->
 
 	<fields name="params">
-		<!-- core features or things with technical merit -->
-		<fieldset name="basic" addfieldpath="/templates/construc2/elements/features">
-			<field name="setGeneratorTag" type="text" default="" label="TPL_CONSTRUC2_METAGENERATOR" description="TPL_CONSTRUC2_METAGENERATOR_DESC" size="56" />
-		</fieldset>
+		<!-- basic = core features or things with technical merit -->
+		<field  fieldset="basic"  name="setGeneratorTag" type="text" default="" label="TPL_CONSTRUC2_METAGENERATOR" description="TPL_CONSTRUC2_METAGENERATOR_DESC" size="56" />
 
-		<!-- the win and doubt group for almost anything -->
-		<fieldset name="features">
-			<field type="radio" name="diagnostics" default="0" label="Standards_Feature_diagnostics" description="Standards_Feature_diagnostics_Desc">
-				<option value="1">JShow</option>
-				<option value="0">JHide</option>
-			</field>
-		</fieldset>
+		<!-- features = the win and doubt group for almost anything -->
+		<field  fieldset="features"  name="diagnostics" type="radio" default="0" label="Standards_Feature_diagnostics" description="Standards_Feature_diagnostics_Desc">
+			<option value="1">JShow</option>
+			<option value="0">JHide</option>
+		</field>
 
-		<fieldset name="standards">
-			<field type="radio" name="prefixfree" default="0" label="Standards_Feature_prefixfree" description="Standards_Feature_prefixfree_Desc">
-				<option value="1">JYes</option>
-				<option value="0">JNo</option>
-			</field>
-		</fieldset>
+        <field  fieldset="standards"  name="prefixfree" type="radio" default="0" label="Standards_Feature_prefixfree" description="Standards_Feature_prefixfree_Desc">
+            <option value="1">JYes</option>
+            <option value="0">JNo</option>
+        </field>
 
 		<fieldset name="quirks">
 			<field type="radio" handler="msie" name="msieEdge" default="0" label="Quirks_Feature_msieEdge" description="Quirks_Feature_msieEdge_Desc">
@@ -52,7 +46,7 @@ Possible panel groups to plug into:
 				<option value="0">JNo</option>
 			</field>
 		</fieldset>
-	</fields>
+    </fields>
 
 	<!-- EXPERIMENTAL : type and location are in flux -->
 	<updateservers>

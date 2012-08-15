@@ -130,9 +130,29 @@
             </fieldset>
 
 		</fields>
-	</config>
 
-	<files>
+        <!-- EXPERIMENTAL secondary <fields> element within <config>
+            for potential use in the "Maintenance Plugins"
+            $form->getGroup('secrets')    as 'jform_secrets_sauce' a JFormFieldSpacer
+            $form->getFieldset('quirks')  included due to fieldset="quirks"
+        <fields name="secrets">
+            <fieldset name="magic">
+                <field name="sauce"  type="spacer" label="Secrets_Quirks_Sauce_Spacer" />
+            </fieldset>
+        </fields>
+        -->
+
+        <!-- EXPERIMENTAL various <field> elements within the wild of <config>
+            $form->getFieldset('kaskade')   the first two elements
+            $form->getFieldset('theme')     the last two elements
+        <field  fieldset="kaskade"  name="theme_features"     type="spacer" label="Addons_Kaskade_Features" />
+        <field  fieldset="kaskade"  name="theme_widgets"      type="spacer" label="Addons_Kaskade_Widgets" />
+        <field  fieldset="theme"    name="theme_quirks"       type="spacer" label="Addons_Theme_Quirks" />
+        <field  fieldset="theme"    name="theme_maintenance"  type="spacer" label="Addons_Theme_Maintenance" />
+        -->
+    </config>
+
+    <files>
 		<folder>css</folder>
 		<folder>docs</folder>
 		<folder>elements</folder>
