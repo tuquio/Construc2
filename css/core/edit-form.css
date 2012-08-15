@@ -35,6 +35,17 @@ div[class^="formelm"] > textarea, #jform_title {display:inline-block;width:75%}
 .calendar tr.daysrow td, .calendar tr.footrow td {padding:2px 8px;text-align:center}
 .calendar tr.daysrow td {border: 1px solid #ddd}
 
+.formelm label[for="jform_title"], #jform_title {font-size:1.6em}
+
+/* boost the micro calendar */
+.formelm img.calendar {cursor:pointer}
+.calendar table {border-collapse:collapse}
+.calendar, .calendar .combo, .calendar table td {font:inherit;font-size:104%}
+.calendar .ttip {font-size:110%}
+.calendar tr.headrow td, .calendar tr.daynames td,
+.calendar tr.daysrow td, .calendar tr.footrow td {padding:2px 8px;text-align:center}
+.calendar tr.daysrow td {border: 1px solid #ddd}
+
 /* core buttons */
 #editor-xtd-buttons {display:inline-block}
 	.button2-left {display:inline-block;float:none;margin:1ex .5ex;border:1px solid #ccc;box-shadow:0 0 2px 1px #eee;border-radius:3px}
