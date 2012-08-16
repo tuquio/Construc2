@@ -9,7 +9,9 @@
  */
 !defined('WMPATH_TEMPLATE') && define('WMPATH_TEMPLATE', dirname(dirname(__FILE__)));
 
-require_once WMPATH_TEMPLATE . '/elements/renderer/head.php';
+JLoader::registerPrefix('Element', WMPATH_TEMPLATE . '/elements');
+// require_once WMPATH_TEMPLATE . '/elements/renderer/head.php';
+
 JLoader::register('CustomTheme', WMPATH_TEMPLATE . '/elements/theme.php');
 
 /* SearchHelper knows about the (enhanced) stop words list in xx_XXLocalise

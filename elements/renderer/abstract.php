@@ -63,7 +63,7 @@ abstract class ElementRendererAbstract
 	/** @var array $data  something the renderer can deal with */
 	protected $data = array();
 
-	/** @var string $attibs  arguments and settings (most of) */
+	/** @var array $attribs  arguments and settings (most of) */
 	protected $attribs = array();
 
 	/** @var array $elements  A collection of ElementRendererAbstract classes */
@@ -108,11 +108,11 @@ abstract class ElementRendererAbstract
 			$parts = explode('.', $type);
 			$class = 'Element'. ucfirst($parts[0]) . ucfirst($parts[1]);
 
-#			try {
+			try {
 				self::$elements[$type] = new $class($attribs);
-#			} catch(Exception $e) {
-#				throw new OutOfBoundsException($type, 0, $e);
-#			}
+			} catch(Exception $e) {
+				throw new OutOfBoundsException($type, 0, $e);
+			}
 		}
 
 		return self::$elements[$type];

@@ -53,7 +53,7 @@ $templateHelper->feature('msie.browserchoice', $this->params->get('msieBrowserch
 // tell mobile devices to treat the viewport as being the same width as the
 // physical width of the device to make width work in media-queries as expected
 // @link http://h5bp.com/viewport
-$templateHelper->element('meta')->set('viewport', 'width=device-width,initial-scale=1.0');
+$templateHelper->feature('meta.viewport', 'width=device-width,initial-scale=1.0');
 
 /*
  * STYLE

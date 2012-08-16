@@ -10,15 +10,6 @@
 !defined('WMPATH_TEMPLATE') && define('WMPATH_TEMPLATE', dirname(dirname(__FILE__)));
 !defined('WMPATH_ELEMENTS') && define('WMPATH_ELEMENTS', WMPATH_TEMPLATE . '/elements');
 
-JLoader::register('ElementRendererAbstract', WMPATH_TEMPLATE . '/elements/renderer/abstract.php');
-JLoader::register('ElementRendererHead', WMPATH_TEMPLATE . '/elements/renderer/head.php');
-JLoader::register('ElementRendererMeta', WMPATH_TEMPLATE . '/elements/renderer/head.php');
-JLoader::register('ElementRendererLink', WMPATH_TEMPLATE . '/elements/renderer/head.php');
-JLoader::register('ElementRendererStyles', WMPATH_TEMPLATE . '/elements/renderer/head.php');
-JLoader::register('ElementRendererScript', WMPATH_TEMPLATE . '/elements/renderer/head.php');
-JLoader::register('ElementRendererScripts', WMPATH_TEMPLATE . '/elements/renderer/head.php');
-JLoader::register('ElementRendererCustom', WMPATH_TEMPLATE . '/elements/renderer/head.php');
-
 /**
  * CustomTheme Base Class.
  */

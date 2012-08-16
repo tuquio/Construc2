@@ -8,7 +8,6 @@
  * @license     GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
 
-JLoader::register('ElementRendererAbstract', WMPATH_TEMPLATE . '/elements/renderer/abstract.php');
 JLoader::register('JDocumentRendererToe', WMPATH_TEMPLATE . '/elements/renderer/toe.php');
 
 /**
