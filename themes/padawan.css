@@ -261,12 +261,12 @@ figure.portrait				{height:245px;width:auto;max-width:100%}
 /* =mod_search / mod_finder - align with mainmenu and li padding */
 .mainnavi form 				{padding: 0.5ex 0.4em;text-align:right}
 .mainnavi div.finder ,
-.mainnavi div.search		{display:inline-block;padding:0}
+.mainnavi div.search		{padding:0}
 
 .mainnavi label.finder ,
 .mainnavi .search > label	{display:inline;padding-right:1em}
 .mainnavi input.inputbox	{display:inline;width:35%}
-.mainnavi input.inputbox:focus	{width:48%}
+.mainnavi input.inputbox:focus	{width: 46%}
 .mainnavi .finder a			{display:none;padding:.5ex 0;text-align:center;width:100%;z-index:27}
 .mainnavi .finder br		{display:none}
 /* https://developer.mozilla.org/en/CSS/pointer-events
