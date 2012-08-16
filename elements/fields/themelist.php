@@ -100,16 +100,16 @@ class JFormFieldThemelist extends JFormFieldFileList
 	}
 
 	/**@#+
-	 * Prepare form, fired on form preparation (before content plugins)
+	 * Prepare form, fired from plgSystemKaskade::onContentPrepareForm()
 	 *
 	 * $data feat. a record from the __extensions table.
 	 * - xml: JXMLElement of the manifest
 	 * - params: array of current params
 	 *
-	 * @param JForm  $form
-	 * @param array|JObject $data array "after save", JObject "on read" %-/
+	 * @param JForm   $form
+	 * @param JObject $data
 	 */
-	public function onContentPrepareForm(JForm $form, $data)
+	public function prepareForm(JForm $form, JObject $data)
 	{
 		FB::log($data, $form->getName() .' @ '. __METHOD__);
 	}
