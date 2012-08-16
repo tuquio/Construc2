@@ -22,9 +22,13 @@ JLoader::register('SearchHelper', JPATH_ADMINISTRATOR .'/components/com_search/h
  */
 class ConstructTemplateHelper
 {
-	const MAX_MODULES  = 4;
-	const MAX_COLUMNS  = 4;
-	const UA           = 'ALL';
+	/** @var int Number of module positions per position group */
+	static $MAX_MODULES  = 4;
+
+	/** @var int Total number of module positions in all "column" groups (alpha + beta) */
+	static $MAX_COLUMNS  = 4;
+
+	const UA = 'ALL';
 
 	/** @var $layouts array List of template layout files */
 	protected $layouts = array();
@@ -36,7 +40,7 @@ class ConstructTemplateHelper
 	protected $tmpl;
 
 	/**
-	 * @var $states a list of request states
+	 * @var $states array  A list of page request rendering states
 	 * @see hasState()
 	 */
 	static $states = array('debug'=>null,'edit'=>null,'print'=>null,'modal'=>null);
@@ -53,8 +57,8 @@ class ConstructTemplateHelper
 	/** @var $head array */
 	static protected $head = array();
 
-	/** @var $group_count array */
-	static protected $group_count = array();
+	/** @var $positions object */
+	static protected $positions;
 
 	/**
 	 * Use {@link getInstance()} to instantiate.
@@ -63,11 +67,16 @@ class ConstructTemplateHelper
 	{
 		$this->doc  = JFactory::getDocument();
 		$this->getTemplate();
-
 		// remove this nonsense
 		$this->doc->setTab('');
 
+		settype(self::$positions, 'object');
+
 		$this->loadConfig();
+
+		// sort of BC
+		self::$MAX_MODULES = $this->getConfig('MAX_MODULES', 4);
+		self::$MAX_COLUMNS = $this->getConfig('MAX_COLUMNS', 4);
 
 		$this->addLayout('index')
 			->addLayout('component')
@@ -520,67 +529,70 @@ class ConstructTemplateHelper
 	/**
 	 * Counts and returns the amount of active Modules in the given position $group.
 	 *
-	 * If "debug" mode, the number of modules and groups is equal to MAX_MODULES
-	 * and MAX_COLUMNS
+	 * @param string  $group      Module position group
 	 *
-	 * @param string  $group
-	 * @param integer $max   default self::MAX_MODULES
-	 *
-	 * @return array|null
-	 * @see numModules(), renderModules()
-	 * @uses JDocumentHTML::countModules();
+	 * @return PositionGroup
+	 * @see    numModules(), renderModules()
+	 * @uses   JDocumentHTML::countModules();
 	 *
 	 * @todo find a more flexible way to count 'column-X' split into 'group-alpha/beta'
 	 */
-	public function getModulesCount($group, $max = self::MAX_MODULES)
+	public function getModulesCount($group)
 	{
-		settype($max, 'int');
+		$max = self::$MAX_MODULES;
+
 		// #FIXME columns are only 2 per group 'alpha' and 'beta'
 		if ($group =='column') {
-			$max = self::MAX_COLUMNS;
-		}
-
-		if ($this->hasState('debug')) {
-			self::$group_count[$group] = ($group =='column') ? self::MAX_COLUMNS : self::MAX_MODULES;
-		}
-
-		if (isset(self::$group_count[$group])) {
-			return self::$group_count[$group];
+			$max = self::$MAX_COLUMNS;
 		}
 
 		if ($max < 1) $max = 1;
 
-		$modules = array_fill(0, $max, 0);
+		if (isset(self::$positions->{$group})) {
+			return self::$positions->{$group};
+		}
 
+		self::$positions->{$group} = new PositionGroup($group);
+
+		// a shortcut reference
+		$position = &self::$positions->{$group};
+
+		$modules = array();
 		for ($i = 1; $i <= $max; $i += 1) {
-			$modules[$i] = $this->doc->countModules($group .'-'. $i);
+			$pos = $group .'-'. $i;
+			$modules[$i]        = $this->doc->countModules($pos);
+			$position->{$pos}   = $modules[$i];
+			$position->{$i}     = &$position->{$pos};
+			$position->total    += $position->{$pos};
 		}
 
-		$i = array_sum($modules);
-		if ($i == 0) {
-			return null;
+		if ($position->total == 0) {
+			return $position;
 		}
 
-		$modules[0] = $i;
-		self::$group_count[$group] = $modules;
+		$position->total = $i;
 
 		// #FIXME special treatment for alpha/beta groups if $group='column'
 		if ($group =='column') {
-			self::$group_count['group-alpha']	= $modules[1] + $modules[2];
-			self::$group_count['column-1']		= $modules[1];
-			self::$group_count['column-2']		= $modules[2];
-
-			self::$group_count['group-beta']		= $modules[3] + $modules[4];
-			self::$group_count['column-3']		= $modules[3];
-			self::$group_count['column-4']		= $modules[4];
+			$position->groups = array('alpha', 'beta');
+			$position->{'group-alpha'} = new PositionGroup('group-alpha', $modules[1] + $modules[2]);
+			$position->{'group-beta'}  = new PositionGroup('group-beta', $modules[3] + $modules[4]);
 		}
 
-		return $modules;
+		return self::$positions->{$group};
 	}
 
+	/**
+	 * Returns the number of published Module in the given Position Group $group
+	 * incl. its descendants, i.e. 'group-alpha' includes 'column-N'.
+	 *
+	 * @param   string $group
+	 * @return  int    The amount of modules
+	 * @@deprecated Kaskade 2.0.0 -- use getModulesCount($group)->total instead
+	 */
 	public function numModules($group)
 	{
-		return isset(self::$group_count[$group]) ? self::$group_count[$group] : 0;
+		return isset(self::$positions->{$group}) ? self::$positions->{$group}->total : 0;
 	}
 
 	/**
@@ -604,8 +616,7 @@ class ConstructTemplateHelper
 		}
 
 		if ( $group != false ) {
-			$modules = $this->getModulesCount($group);
-			$n = $modules[0];
+			$n = $this->getModulesCount($group)->total;
 		} else {
 			$n = $this->doc->countModules($position);
 		}
@@ -1168,4 +1179,30 @@ To allow parallel downloading, move the inline script before the external CSS fi
 		return trim($content);
 	}
 
+}
+
+class PositionGroup
+{
+	public $name;
+	public $total;
+
+	public function __construct($name, $total = 0)
+	{
+		$this->name  = $name;
+		$this->total = $total;
+		$this->{0}   = &$this->total;
+	}
+
+	public function toArray()
+	{
+		$modules = array(0=>0);
+		foreach (get_object_vars($this) as $prop => $val) {
+			if (is_numeric($prop)) {
+				$modules[(int)$prop] = $val;
+			} else {
+				$modules[$prop] = $val;
+			}
+		}
+		return $modules;
+	}
 }

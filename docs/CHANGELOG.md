@@ -2,11 +2,15 @@
 1.10.0-beta
 =============
 **API changes**
-* ConstructTemplateHelper constants MAX_xxx became static properties and configurable via settings.php
-* ConstructTemplateHelper::$positions refactored from array to more informative object. Numeric "keys"
-    are still supported yet the total number in key '0' is now also available as 'total'.
-* ConstructTemplateHelper::getModulesCount($group, $positions=false) the unused (int) $max argument was
-    replaced with (bool) $positions to return the group object
+
+* ConstructTemplateHelper constants `MAX_COLUMS` and `MAX_MODULES` became static properties and
+    are now configurable via settings.php
+* `ConstructTemplateHelper::$positions` refactored from array to more informative `PositionGroup` object.
+    The total number of modules formerly available as key '0' is now available as 'total'.
+    <br>**BC** Numeric "keys" are still supported by casting the result of `getModulesCount()` to an array (see logic.php)
+    <br>**Check your usage** of (older) global arrays like `$headerAboveCount`, `$headerBelowCount` or `$columnGroupXxxCount`
+* `ConstructTemplateHelper::getModulesCount`: the unused (int) $max argument was replaced
+    with (bool) $positions to return the group object in $positions
 
 **Parameter changes: you MUST REVIEW the template style parameters!**
 
@@ -27,10 +31,10 @@ Revised usage of $parent parameter in getCssAlias() to reduce the amount of clas
 	'content-category'
 
 
-**HTML markup changes: you SHOULD REVIEW your context selectors!**
+**HTML markup changes: you SHOULD REVIEW your CSS context selectors!**
 layouts/mod_column_group_beta.php
 
-* outermost container element changed from <div> to <aside> as  page level "secondary" content.
+* outermost container element changed from <div> to <aside> as page level "secondary" content.
 	**BC NOTICE:** CSS selectors may need to be adjusted.
 
 layouts/mod_xxx_yyy.php (all)

@@ -10,6 +10,11 @@
 	;  custom Theme configuration file.
 	;------------------------------------------------
 
+; Number of module positions per position group
+MAX_MODULES=4
+; Total number of module positions in all "column" groups (alpha + beta)
+MAX_COLUMNS=4
+
 [cdn]
 @default	= "ajax.googleapis.com"
 	; -----

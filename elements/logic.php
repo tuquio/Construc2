@@ -19,9 +19,6 @@ JLoader::register('ConstructTemplateHelper', dirname(__FILE__) . '/helper.php');
 /** @var $templateHelper ConstructTemplateHelper */
 $templateHelper	= ConstructTemplateHelper::getInstance();
 
-/** Bootstrap the Kaskade Template Plugin */
-JPluginHelper::importPlugin('extension', 'kaskade');
-
 /** @var $app JSite To enable use of site configuration */
 $app		= JFactory::getApplication();
 
@@ -32,8 +29,8 @@ $base_url 	= JURI::base(true) . '/';
 $tmpl_url 	= $base_url. basename(JPATH_THEMES). '/'. $this->template;
 
 // some editor form requested, needs mo' styles, and less modules
-$editMode  = $templateHelper->hasState('edit');
-$printMode = $templateHelper->hasState('print');
+$editMode   = $templateHelper->hasState('edit');
+$printMode  = $templateHelper->hasState('print');
 
 /**
  * For the time being, "features", "widgets" and "elements" need to be
@@ -100,22 +97,30 @@ if ((bool) $this->params->get('html5manifest', false)) {
 	$cache_manifest = '';
 }
 
-/* Count and Seed Module Position Groups
+/**@#+
+ * Count and Seed Module Position Groups.
  * NOTE! In debug mode values are set to their respective maximum
- * @see ConstructTemplateHelper::MAX_MODULES
- * @see ConstructTemplateHelper::MAX_COLUMNS
+ * @see ConstructTemplateHelper::$MAX_MODULES
+ * @see ConstructTemplateHelper::$MAX_COLUMNS
+ * @var PositionGroup
+ * @@deprecated Kaskade 2.0.0
  */
-$headerAboveCount	= $templateHelper->getModulesCount('header-above');
-$headerBelowCount	= $templateHelper->getModulesCount('header-below');
-$navBelowCount		= $templateHelper->getModulesCount('nav-below');
-$contentAboveCount	= $templateHelper->getModulesCount('content-above');
-$contentBelowCount	= $templateHelper->getModulesCount('content-below');
-$footerAboveCount	= $templateHelper->getModulesCount('footer-above');
+$headerAboveCount	= $templateHelper->getModulesCount('header-above')->toArray();
+$headerBelowCount	= $templateHelper->getModulesCount('header-below')->toArray();
+$navBelowCount		= $templateHelper->getModulesCount('nav-below')->toArray();
+$contentAboveCount	= $templateHelper->getModulesCount('content-above')->toArray();
+$contentBelowCount	= $templateHelper->getModulesCount('content-below')->toArray();
+$footerAboveCount	= $templateHelper->getModulesCount('footer-above')->toArray();
+$columnGroupCount   = $templateHelper->getModulesCount('column')->toArray();
+/**@#- */
 
-/* Count and Seed Column Module Position */
-$columnGroupCount      = $templateHelper->getModulesCount('column', ConstructTemplateHelper::MAX_COLUMNS);
-$columnGroupAlphaCount = $templateHelper->numModules('group-alpha');
-$columnGroupBetaCount  = $templateHelper->numModules('group-beta');
+/**@#+
+ * Count and Seed Column Groups Module Positions
+ * @var int
+ * @@deprecated Kaskade 2.0.0
+ */
+$columnGroupAlphaCount = $columnGroupCount['group-alpha']->total; // $templateHelper->numModules('group-alpha');
+$columnGroupBetaCount  = $columnGroupCount['group-beta']->total;  // $templateHelper->numModules('group-beta');
 
 /* Build Column Layout class */
 $columnLayout = array('main-only');
