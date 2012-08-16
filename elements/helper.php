@@ -67,6 +67,8 @@ class ConstructTemplateHelper
 
 	/**
 	 * Use {@link getInstance()} to instantiate.
+	 *
+	 * @uses getTemplate(), loadConfig(), getConfig(), addLayout()
 	 */
 	protected function __construct()
 	{
@@ -87,6 +89,7 @@ class ConstructTemplateHelper
 
 	/**
 	 * @return ConstructTemplateHelper
+	 * @uses CustomTheme::getInstance()
 	 */
 	public static function getInstance()
 	{
@@ -1060,6 +1063,9 @@ To allow parallel downloading, move the inline script before the external CSS fi
 	 *
 	 * @param  string $state a document/request state: edit, print, modal, preview...
 	 * @return bool
+	 *
+	 * @uses JInput
+	 * @uses _editState(), _printState(), _modalState(), _debugState()
 	 */
 	public function hasState($state, $default = false)
 	{
@@ -1078,6 +1084,7 @@ To allow parallel downloading, move the inline script before the external CSS fi
 					self::$states[$state] = (bool) $this->_printState($request);
 					break;
 				case 'modal':
+					self::$states[$state] = (bool) $this->_modalState($request);
 					break;
 				case 'debug':
 					self::$states[$state] = (bool) $this->_debugState($request);
@@ -1090,6 +1097,7 @@ To allow parallel downloading, move the inline script before the external CSS fi
 
 	/**
 	 * @return bool true if the document/template is in "edit mode"
+	 * @see hasState()
 	 */
 	protected function _editState(JInput $request)
 	{
@@ -1100,6 +1108,7 @@ To allow parallel downloading, move the inline script before the external CSS fi
 	}
 	/**
 	 * @return bool true if the document/template is in "print mode"
+	 * @see hasState()
 	 */
 	protected function _printState(JInput $request)
 	{
@@ -1107,6 +1116,7 @@ To allow parallel downloading, move the inline script before the external CSS fi
 	}
 	/**
 	 * @return bool true if the document/template is in "modal window mode"
+	 * @see hasState()
 	 */
 	protected function _modalState(JInput $request)
 	{
@@ -1114,6 +1124,7 @@ To allow parallel downloading, move the inline script before the external CSS fi
 	}
 	/**
 	 * @return bool true if the document/template is in "debug mode"
+	 * @see hasState()
 	 */
 	protected function _debugState(JInput $request)
 	{
