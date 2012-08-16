@@ -35,7 +35,10 @@ class ConstructTemplateHelper
 	/** @var $layouts array List of template layout files */
 	protected $layouts = array();
 
-	/** @var $doc JDocumentHTML instance */
+	/**
+	 * @todo refactor as $engine with getEngine(), see getTemplate()
+	 * @var $doc JDocumentHTML instance
+	 */
 	protected $doc;
 
 	/** @var $tmpl object Template name + params */
@@ -67,10 +70,7 @@ class ConstructTemplateHelper
 	 */
 	protected function __construct()
 	{
-		$this->doc  = JFactory::getDocument();
 		$this->getTemplate();
-		// remove this nonsense
-		$this->doc->setTab('');
 
 		settype(self::$positions, 'object');
 
@@ -1041,10 +1041,13 @@ To allow parallel downloading, move the inline script before the external CSS fi
 	/**
 	 * Return Template meta data and parameters.
 	 * @return object
+	 *
+	 * @todo refactor as getEngine()
 	 */
 	public function getTemplate()
 	{
 		if (!isset($this->tmpl)) {
+			$this->doc  = JFactory::getDocument()->setTab('');
 			$this->tmpl = JFactory::getApplication()->getTemplate(true);
 		}
 
