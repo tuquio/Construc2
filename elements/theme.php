@@ -126,7 +126,10 @@ class CustomTheme
 			$this->form = false;
 		}
 
-		$this->loadConfig();
+		$config = $this->loadConfig('themes/'. $this->name);
+		if ($config || count($config) > 0) {
+			$this->config = new JRegistry($config);
+		}
 	}
 
 	/**
@@ -382,17 +385,20 @@ class CustomTheme
 	}
 
 	/**
-	 * Loads the INI data part from a Theme configuration file.
+	 * Loads the INI data part from the theme configuration file (.php).
 	 *
-	 * See {@link ../docs/ThemeConfiguration.md} in the distribution
-	 * archive about the format and rules.
+	 * See {@link ../docs/ThemeConfiguration.md} in the distribution archive about
+	 * the format and rules.
 	 *
-	 * @return JRegistry
+	 * @param  string $config_file  Relative path for a config file within the WMPATH_TEMPLATE folder.
+	 *
+	 * @return array
 	 */
-	final protected function loadConfig()
+	final public static function loadConfig($config_file)
 	{
+		$config = array();
 		// a fake INI file with default settings
-		$file_path = WMPATH_TEMPLATE .'/themes/'. $this->name . '.php';
+		$file_path = WMPATH_TEMPLATE .'/'. trim($config_file, '\\/') . '.php';
 		if (is_file($file_path))
 		{
 			// treat theme file as an INI file
@@ -400,9 +406,13 @@ class CustomTheme
 			// strip leading php code
 			$start  = strpos($data, '?>', strlen('<?php'));
 			$data   = trim(substr($data, ($start > 0 ? $start + 1 : 0)));
-			if (function_exists('parse_ini_string')) {
+
+			if (function_exists('parse_ini_string'))
+			{
 				$config = parse_ini_string($data, true);
-			} else {
+			}
+			else
+			{
 				$data = preg_replace('/^(\s*\w+\s*=\s*)((?:(?!\s;)[^"\r\n])*?)(\s*(?:\s;.*)?)$/mx', '\1\2\3', $data);
 				$data = explode("\n", preg_replace('/(\s*(?:\s;.*)?)$/mx', '', $data) );
 				$config = array();
@@ -426,12 +436,9 @@ class CustomTheme
 					}
 				}
 			}
-			if ($config || count($config) > 0) {
-				$this->config = new JRegistry($config);
-			}
 		}
 
-		return $this->config;
+		return $config;
 	}
 
 	/**

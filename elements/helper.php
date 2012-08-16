@@ -76,7 +76,7 @@ class ConstructTemplateHelper
 
 		settype(self::$positions, 'object');
 
-		$this->loadConfig();
+		$this->loadConfig('elements/settings');
 
 		// sort of BC
 		self::$MAX_MODULES = $this->getConfig('MAX_MODULES', 4);
@@ -608,6 +608,8 @@ class ConstructTemplateHelper
 	 * @return ConstructTemplateHelper for fluid interface
 	 *
 	 * @uses CustomTheme::setCapture()
+	 *
+	 * @todo refactor into ElementRendererModule
 	 */
 	public function renderModules($position, $style=null, $attribs=array())
 	{
@@ -1006,12 +1008,12 @@ To allow parallel downloading, move the inline script before the external CSS fi
 		return $default;
 	}
 
-	protected function loadConfig()
+	protected function loadConfig($name)
 	{
 		$default = array();
 
 		// fake ini file
-		$config  = parse_ini_file(WMPATH_TEMPLATE . '/elements/settings.php', true);
+		$config  = CustomTheme::loadConfig($name);
 		$default = array_merge_recursive($default, $config);
 
 		foreach ($default['subst'] as $k => $v)
@@ -1029,12 +1031,15 @@ To allow parallel downloading, move the inline script before the external CSS fi
 		}
 
 		$this->config = $default;
+
+		return $this;
 	}
 
 	/**
 	 * Return the current theme instance.
 	 *
 	 * @return CustomTheme
+	 * @see $theme
 	 */
 	public function getTheme()
 	{
@@ -1043,7 +1048,12 @@ To allow parallel downloading, move the inline script before the external CSS fi
 
 	/**
 	 * Return Template meta data and parameters.
+	 * Will initialize and configure the render engine (JDocumentHtml) and
+	 * prepares the ElementRendererHead instance so it can register its
+	 * formatter, renderer, and event handlers.
+	 *
 	 * @return object
+	 * @see $tmpl
 	 *
 	 * @todo refactor as getEngine()
 	 */
@@ -1052,6 +1062,7 @@ To allow parallel downloading, move the inline script before the external CSS fi
 		if (!isset($this->tmpl)) {
 			$this->doc  = JFactory::getDocument()->setTab('');
 			$this->tmpl = JFactory::getApplication()->getTemplate(true);
+			$this->element('head');
 		}
 
 		return $this->tmpl;
