@@ -1,3 +1,12 @@
+<?php defined('_JEXEC') or die;
+/**
+ * @package		Templates
+ * @subpackage  Construc2
+ * @author		WebMechanic http://webmechanic.biz
+ * @copyright	(C)2011-2012 WebMechanic
+ * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
+ */
+?><pre>
 Construc2 is a HTML5 Template for Joomla 2.5 and carries several ideas
 inspired by "Construct Community Template Framework for Joomla! 1.6".
 It has since been heavily refactored after being forked on gihub.com on
@@ -39,3 +48,4 @@ http://oocss.org - https://github.com/stubbornella/oocss
 NOTE: This project contains third party code licensed under various terms.
 See license texts in the ./docs folder of the distribution archive.
 All other code is licensed as GNU/GPL v2 or later.
+</pre>

@@ -23,7 +23,7 @@ You can learn more about OOCSS @ http://oocss.org or fork/download the sources f
 You may definitly want to search for Nicole on YouTube and watch some of her talks.
 
 ### base.css
-`base.css` is what others would label a "reset", but it isn't. The bad use of a typical "reset" style sheet starting with a brain-dead `* {margin:0;padding:0}` usually causes more harm than good and more often than not results in monstrous .css files desperately trying to _de-reset_ and rebuild what has been destroyed in the first place.
+`base.css` is what others would label a "reset", but it isn't. The bad use of a typical "reset" style sheet starting with a brain-dead `* {margin:0;padding:0}` usually causes more harm than good and more often than not results in monstrous .css files desperately trying to _de-reset_ and rebuild what was destroyed in the first place.
 
 This base file is a conglomerate of subtle personal preferences and some of the Good Things "found" on the Interwebs incl. but not limited to things made by Eric Meyer, Yahoo!, Nicole Sullivan, Dean Edwards, the CSS-WG, W3C, browser style sheets, and a good chunk from `normalize.css`.
 
@@ -108,7 +108,7 @@ As you (and your designers) dig into Construc2 and learn how the big load of sup
 The `moduletable` class also vanished from modules rendered thru Construc2, that is the main layout positions. Not only is the "table" a total misnomer and relic from Mambo, the much more flexible `.mod` class allows for the same thing.
 And it's shorter to type :)
 
-The unconditional call of `new JCaption()` which requires caption.js which requires Mootools to create a single DIV is unconditionally taken care of and got nuked.
+The unconditional call of `new JCaption()` which requires caption.js which requires Mootools to create a single DIV is as unconditionally taken care of and got nuked.
 
 ## Component Layout Overrides
 Every "release" of Construc2 either adds or (attempts) to improve the output and markup of the CMS core component layouts. The com_content overrides are ripped from Angie Radtke's Beez5 (when J!1.6 was current) as a kickstart because of their great and extensive use of classes.

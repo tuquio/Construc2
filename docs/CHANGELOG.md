@@ -1,6 +1,13 @@
 
 1.10.0-beta
 =============
+**API changes**
+* ConstructTemplateHelper constants MAX_xxx became static properties and configurable via settings.php
+* ConstructTemplateHelper::$positions refactored from array to more informative object. Numeric "keys"
+    are still supported yet the total number in key '0' is now also available as 'total'.
+* ConstructTemplateHelper::getModulesCount($group, $positions=false) the unused (int) $max argument was
+    replaced with (bool) $positions to return the group object
+
 **Parameter changes: you MUST REVIEW the template style parameters!**
 
 * `customStyleSheet`:  *theme* -- Theme CSS file
