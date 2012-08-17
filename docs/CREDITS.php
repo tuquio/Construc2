@@ -32,8 +32,8 @@ This template and its originating framework would not exists without the
 inspiration and ingenuity of countless individuals and other projects.
 Following is a inconclusive list of those individuals, projects and other
 resources that helped to shape it.
-If you feel that you should be included in this list, we offer you our sincerest
-apologies for omitting you and ask that you contact us at joomla@webmechanic.biz
+If you feel that you should be included in this list, I offer you my sincerest
+apologies for omitting you and ask that you contact me at joomla@webmechanic.biz
 
 Beez5 layout overrides by Angie Radtke.
 
@@ -46,5 +46,6 @@ Object Oriented CSS by Nicole 'stubornella' Sullivan
 http://oocss.org - https://github.com/stubbornella/oocss
 
 NOTE: This project contains third party code licensed under various terms.
+See license texts in the ./docs folder of the distribution archive.
 All other code is licensed as GNU/GPL v2 or later.
 </pre>

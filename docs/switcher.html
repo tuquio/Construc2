@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>switcher.js</title>
+	<!--[if IE]><![endif]-->
+
+	<!-- the core set -->
+	<!--[if lt IE 9]>
+	<script src="../js/html5.js"></script><![endif]-->
+
+	<!-- The "core" style should not have a title attribute at all, or they will be disabled after the switch -->
+	<link rel="stylesheet" href="../css/core/base.css">
+	<link rel="stylesheet" href="../css/core/oocss.css">
+	<link rel="stylesheet" href="../css/core/template.css">
+
+	<!-- The "default" style sheet must have a title attribute or it will remain active after the switch -->
+	<link rel="stylesheet" id="highkey-css" href="../themes/highkey.css" title="Highkey">
+
+	<!-- Each alternative stylesheet must also have a distinct title -->
+	<link rel="alternative stylesheet" id="wireframe-css" href="../css/wireframe.css" title="Wireframe">
+	<link rel="alternative stylesheet" id="diagnostic-css" href="../css/diagnostic.css" title="Diagnostic">
+
+<style id="PageStuff">
+section.component > p {max-width:40em}
+.component h2 {margin-left:-1.8em}
+h2:target {color:green;text-decoration:underline}
+pre {margin:10px auto 10px -2.4em; padding:.5ex 1ex; line-height:normal}
+pre,code,samp,kbd,tt,var {background-color:#efefef}
+.group-alpha {margin-left: -2.6em}
+
+#styleswitcher {display:block;background-color:navy;}
+#styleswitcher .switcher {display:block;background-color:#eee8aa;}
+</style>
+
+</head>
+
+<body class="alpha-main">
+<div id="page-top" class="line">
+	<div id="page-head" class="line page-head"><div class="head-inner">
+		<h1 id="page-title">switcher.js manual and test</h1>
+	</div></div>
+
+<div id="body-container" class="line">
+	<div class="line content-container">
+
+	<section class="line component">
+	<h2 id="intro">Introduction</h2>
+	<p>As a prerequisite to use <kbd>switcher.js</kbd> the document <b>requires</b> at least one
+		list element (UL, OL, MENU) with an <var>ID</var> of <samp>#styleswitcher</samp>.
+		A reasonable option is adding a <var>class</var> attribute with <samp>hmenu</samp>
+		so the list renders as a horizontal menu.</p>
+	<pre>&lt;ol id="styleswitcher" class="hmenu">&lt;/ol></pre>
+
+	<p>Names and titles for switchable style sheets can be provided in two different ways:
+		<em>classic</em> and <em>modern</em>.</p>
+	<ol>
+		<li>classic: <b>either</b> add a pair of <code>LI</code> and <code>LINK</code> elements for each style sheet</li>
+		<li>modern: <b>or</b> set the <var>data-styles</var> attribute of the list element to a JSON string</li>
+	</ol>
+	<p>These methods are mutually exclusive so you <strong>MUST NOT</strong> use both!</p>
+	<p>Using the <q>modern</q> method is recommended to avoid non-functional elements
+		sitting on your page if JavaScript is not available.</p>
+
+	<h2 id="classic">Classic: <code>LI</code> and <code>LINK</code> elements</h2>
+	<p>The <q>classic</q> method provides backwards compatibility with the well known
+		<q><a href="http://www.alistapart.com/articles/alternate/">styleswitcher.js</a></q>
+		from A List Apart introduced in 2001 and its various successors.
+		For each supplemental style sheet you're required to create a pairs of link and list
+		items in your markup.</p>
+	<p>The relationship (or linkage) between these <code>LI</code> and <code>LINK</code> elements
+		is established by their <var>title</var> attribute. The comparison is case insensitive.</p>
+<pre>&lt;link rel="alternate stylesheet" href="wireframe.css" title="wireframe">
+&lt;link rel="alternate stylesheet" href="diagnostic.css" title="Diagnostic"></pre>
+<pre>&lt;li title="Wireframe">Wireframe&lt;/li>
+&lt;li title="Diagnostic">Diagnostic&lt;/li></pre>
+
+	<h2 id="modern">Modern: <code>data-styles</code> attribute</h2>
+	<p>The <q>modern</q> method makes use of HTML5's data attributes and creates both <code>LI</code>
+		and <code>LINK</code> elements from script using the properties of the embedded JSON value.</p>
+<pre>data-styles='{
+	"_default":"highkey",
+	"href":"../../css/",
+	"wireframe":"Wireframe",
+	"diagnostic":"Diagnostics",
+	"highkey":"Standard"
+}'</pre>
+	<dl>
+	<dt>_default</dt>
+		<dd>(string) the base name of the "default" stylesheet, i.e. <samp>highkey</samp> yields to <samp>highkey.css</samp></dd>
+	<dt>href</dt>
+		<dd>(string) this property features the base URL to the /css/ folder that contains all .css files
+			to be used by the StyleSwitcher. Use an absolute path starting with a leading slash <kbd>/</kbd>
+			or a path relative to the document's base URL starting with dots <kbd>..</kbd>.
+			Note that browsers will evaluate the <var>href</var> attribute of the &lt;base> element to
+			determine the actual location.</dd>
+	<dt><var>name-1</var> - <var>name-N</var></dt>
+		<dd>one or more base names for each alternative .css file, i.e. <samp>wireframe</samp> yields to <samp>wireframe.css</samp></dd>
+	</dl>
+	</section><!-- .component -->
+
+	<div id="group-alpha" class="column-group group-alpha" data-modules="1">
+	<div class="mod">
+		<menu class="menu">
+		<li class="mi"><a class="mi" href="#intro">Introduction</a></li>
+		<li class="mi"><a class="mi" href="#classic">Classic Markup</a></li>
+		<li class="mi"><a class="mi" href="#modern">Modern Attribute</a></li>
+		</menu>
+	</div>
+	<div class="mod">
+		<ol id="styleswitcher" class="menu hmenu"
+			data-xstyles='{"_default":"highkey","href":"../../css/","wireframe":"XWireframe","diagnostic":"XDiagnostics","highkey":"XStandard"}'>
+			<!-- label "Standard" differs from default "highkey": data-style || title attribute is REQUIRED -->
+			<li class="mi switcher normal" data-style="highkey">Standard</li>
+			<!-- label.toLower is equal to stylesheet: "wireframe.css": data-style optional -->
+			<li class="mi switcher wireframe">Wireframe</li>
+			<!-- label "Diagnostics" is plural and differs from stylesheet: data-style || title attribute is REQUIRED -->
+			<li class="mi switcher diagnostic" data-style="diagnostic" title="Diagnostic">Diagnostics</li>
+		</ol>
+	</div>
+	</div>
+
+	</div><!-- .content-container -->
+</div><!-- #body-container -->
+
+<script src="../js/src/switcher.js"></script>
+</div><!-- #page-top -->
+</body>
+</html>

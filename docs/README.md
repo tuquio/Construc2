@@ -17,13 +17,13 @@ If you're a parameters junkie and love clicking backend panels to make your webs
 Construc2 will allow you to make your template and frontend "design friendly" and potentially faster, giving you a couple of parameters and configuration files to add missing features (polyfills, shims) for antique browsers.
 
 ## Core Style Sheets
-Construc2 ships with **OOCSS** by _Nicole Sullivan_ to bring you a flexible, solid grid system with great modularity. Flexibility includes anything from fixed pixel widths to fluid layouts with almost no limitation on grid "columns".
+Construc2 ships with **OOCSS** by _Nicole Sullivan_ to bring you a flexible, solid grid system with great modularity. Flexibility includes anything from fixed pixel widths to fluid layouts with almost no limitation on grid "columns" and nesting.
 
 You can learn more about OOCSS @ http://oocss.org or fork/download the sources from https://github.com/stubbornella/oocss
 You may definitly want to search for Nicole on YouTube and watch some of her talks.
 
 ### base.css
-`base.css` is what others would label a "reset", but it isn't. The bad use of a typical "reset" style sheet usually causes more harm than good and more often than not results in monstrous .css files desperately trying to _de-reset_ and rebuild what was destroyed in the first place.
+`base.css` is what others would label a "reset", but it isn't. The bad use of a typical "reset" style sheet starting with a brain-dead `* {margin:0;padding:0}` usually causes more harm than good and more often than not results in monstrous .css files desperately trying to _de-reset_ and rebuild what was destroyed in the first place.
 
 This base file is a conglomerate of subtle personal preferences and some of the Good Things "found" on the Interwebs incl. but not limited to things made by Eric Meyer, Yahoo!, Nicole Sullivan, Dean Edwards, the CSS-WG, W3C, browser style sheets, and a good chunk from `normalize.css`.
 

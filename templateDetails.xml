@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE extension>
-<extension version="2.5" type="template" client="site" method="upgrade" >
+<extension version="2.5" type="template" client="site" method="upgrade">
 	<name>Construc2</name>
 	<creationDate>2011-06-20</creationDate>
 	<author>WebMechanic</author>
@@ -8,9 +8,11 @@
 	<authorUrl>http://joomla.webmechanic.biz</authorUrl>
 	<copyright>Copyright (C)2011-2012 WebMechanic. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
-	<version>1.9.15-RC2</version>
+	<version>1.10.0</version>
 	<description>TPL_CONSTRUC2_DESCRIPTION</description>
 	<credits><![CDATA[Inspired by "Construct Community", Matt Thomas, Joomla Engineering. See CREDITS.php]]></credits>
+
+	<help key="Construc2_Help" url="http://joomla.webmechanic.biz/docs/construc2/" />
 
 	<positions>
 		<position>nav</position>
@@ -55,23 +57,25 @@
 
 	<config>
 		<fields name="params">
-			<fieldset name="general" addfieldpath="/templates/construc2/elements" >
-				<field name="customStyleSheet" type="filelist" default=""
+			<!-- "themelist" MUST appear first in the first fieldset -->
+			<fieldset name="basic" addfieldpath="/templates/construc2/elements/fields">
+				<field name="theme" type="themelist" default=""
 						label="TPL_CONSTRUC2_CUSTOM_STYLE_SHEET_LABEL"
 						description="TPL_CONSTRUC2_CUSTOM_STYLE_SHEET_DESC"
+						themetype="css" filter="\.css"
 						directory="templates/construc2/themes"
-						filter="\.css"
-						exclude="(template|editor|tinymce|codemirror|jce|ie\d+|test.+|x~.+)\.css"
+						exclude="(template|editor|tinymce|codemirror|jce|ie\d+|x~.+)\.*"
 					/>
-				<field name="ssiIncludes" type="radio" default="0" label="TPL_CONSTRUC2_ENABLE_APACHESSI_LABEL" description="TPL_CONSTRUC2_ENABLE_APACHESSI_DESC">
+				<field name="ssiIncludes" type="radio" default="0" label="TPL_CONSTRUC2_APACHESSI_LABEL" description="TPL_CONSTRUC2_APACHESSI_DESC">
 					<option value="1">JYes</option>
 					<option value="0">JNo</option>
 				</field>
-				<field name="ssiTheme" type="filelist" default=""
+				<field name="ssiTheme" type="themelist" default=""
 						label="TPL_CONSTRUC2_SSITHEME_LABEL"
 						description="TPL_CONSTRUC2_SSITHEME_LABEL"
+						themetype="ssi" filter="\.styles"
 						directory="templates/construc2/themes"
-						filter="\.styles"
+						exclude=""
 					/>
 				<field name="modOocss" type="radio" default="0" label="TPL_CONSTRUC2_USE_MODOOCSS_LABEL" description="TPL_CONSTRUC2_USE_MODOOCSS_DESC">
 					<option value="1">On</option>
@@ -79,90 +83,80 @@
 				</field>
 			</fieldset>
 
-			<fieldset name="features">
-				<field name="setGeneratorTag" type="text" default="" label="TPL_CONSTRUC2_CUSTOM_GENERATOR_TAG" description="TPL_CONSTRUC2_CUSTOM_GENERATOR_TAG_DESC" size="56" />
-				<field name="enableSwitcher" type="radio" default="0" label="TPL_CONSTRUC2_ENABLE_SWITCHER_LABEL" description="TPL_CONSTRUC2_ENABLE_SWITCHER_DESC">
-					<option value="1">JShow</option>
-					<option value="0">JHide</option>
-				</field>
-				<field name="showDiagnostics" type="radio" default="0" label="TPL_CONSTRUC2_ENABLE_DIAGNOSTICS_LABEL" description="TPL_CONSTRUC2_ENABLE_DIAGNOSTICS_DESC">
-					<option value="1">JShow</option>
-					<option value="0">JHide</option>
-				</field>
-				<field name="showDateContainer" type="radio" default="0" label="TPL_CONSTRUC2_ENABLE_DATECONTAINER_LABEL" description="TPL_CONSTRUC2_ENABLE_DATECONTAINER_DESC">
-					<option value="1">JShow</option>
-					<option value="0">JHide</option>
-				</field>
-				<field name="dateFormat" type="list" default="4" label="TPL_CONSTRUC2_DATEFORMAT_LABEL" description="TPL_CONSTRUC2_DATEFORMAT_DESC">
-					<option value="" >DATE_FORMAT_LC</option>
-					<option value="1">DATE_FORMAT_LC1</option>
-					<option value="2">DATE_FORMAT_LC2</option>
-					<option value="3">DATE_FORMAT_LC3</option>
-					<option value="4">DATE_FORMAT_LC4</option>
-				</field>
-			</fieldset>
+            <fieldset name="theme" description="Theme_Slot_Desc" class="tpl-plugin" />
 
-			<fieldset name="javascript">
-				<field name="loadMoo" type="list" default="2" label="TPL_CONSTRUC2_LOAD_MOO_LABEL" description="TPL_CONSTRUC2_LOAD_MOO_DESC">
-					<option value="2">JDEFAULT</option>
+            <fieldset name="javascript">
+				<field name="loadMoo" type="list" default="2" label="Features_Javascript_loadMoo" description="Features_Javascript_loadMoo_Desc">
+					<option value="2">Auto</option>
 					<option value="1">JYes</option>
 					<option value="0">JNo</option>
 				</field>
 <!--
-				<field name="loadMooSrc" type="cdnlist" members="mootools" default="ajax.googleapis.com" label="TPL_CONSTRUC2_MOOSRC_LABEL" description="TPL_CONSTRUC2_MOOSRC_DESC" />
+				<field name="loadMooSrc" type="cdnlist" members="mootools" default="ajax.googleapis.com" label="Features_Javascript_loadMooSrc" description="Features_Javascript_loadMooSrc_Desc" />
  -->
-				<field name="loadModal" type="radio" default="0" label="TPL_CONSTRUC2_LOAD_MODAL" description="TPL_CONSTRUC2_LOAD_MODAL_DESC">
-					<option value="1">JYes</option>
-					<option value="0">JNo</option>
-				</field>
+				<field name="loadjQuery" type="jqueryversion" default="" label="Features_Javascript_loadjQuery" description="Features_Javascript_loadjQuery_Desc" />
+				<field name="loadjQuerySrc" type="cdnlist" members="jquery" default="ajax.googleapis.com" label="Features_Javascript_loadjQuerySrc" description="Features_Javascript_loadjQuerySrc_Desc" />
 
-				<field name="loadjQuery" type="jqueryversion" default="" label="TPL_CONSTRUC2_LOAD_JQUERY_LABEL" description="TPL_CONSTRUC2_LOAD_JQUERY_DESC" />
-				<field name="loadjQuerySrc" type="cdnlist" members="jquery" default="ajax.googleapis.com" label="TPL_CONSTRUC2_JQUERYSRC_LABEL" description="TPL_CONSTRUC2_JQUERYSRC_DESC" />
-
-				<field name="headCleanup" type="radio" default="0" label="TPL_CONSTRUC2_ENABLE_HEADCLEANUP_LABEL" description="TPL_CONSTRUC2_ENABLE_HEADCLEANUP_DESC">
+				<field name="loadModal" type="radio" default="1" label="Features_Javascript_loadModal" description="Features_Javascript_loadModal_Desc">
 					<option value="1">JYes</option>
 					<option value="0">JNo</option>
 				</field>
 			</fieldset>
 
-			<fieldset name="compat" description="TPL_CONSTRUC2_COMPAT_DESC">
+			<fieldset name="standards" description="Standards_Slot_Desc" class="tpl-plugin">
 				<field name="html5shim" type="radio" default="1" label="TPL_CONSTRUC2_HTML5_LABEL" description="TPL_CONSTRUC2_HTML5_DESC">
 					<option value="1">JYes</option>
 					<option value="0">JNo</option>
 				</field>
-				<field name="html5manifest" type="radio" default="0" label="TPL_CONSTRUC2_ENABLE_HTML5MANIFEST_LABEL" description="TPL_CONSTRUC2_ENABLE_HTML5MANIFEST_DESC">
+				<field type="list" name="html5manifest" default="0" label="TPL_CONSTRUC2_HTML5MANIFEST_LABEL" description="TPL_CONSTRUC2_HTML5MANIFEST_DESC">
 					<option value="1">JYes</option>
 					<option value="0">JNo</option>
 				</field>
-				<field name="prefixfree" type="radio" default="0" label="TPL_CONSTRUC2_PREFIXFREE_LABEL" description="TPL_CONSTRUC2_PREFIXFREE_DESC">
-					<option value="1">JYes</option>
-					<option value="0">JNo</option>
-				</field>
-				<field name="loadGcf" type="radio" default="0" label="TPL_CONSTRUC2_CHROME_FRAME_LABEL" description="TPL_CONSTRUC2_CHROME_FRAME_DESC">
-					<option value="1.0.2">JYes</option><!-- field value = version number-->
-					<option value="0">JNo</option>
-				</field>
-			</fieldset>
-<!--
-			<!** stub for themes to plug-in optional parameters **>
-			<fieldset name="theme">
-				<field name="theme_note" type="spacer" label="Custom_Theme_Parameters" description="Custom_Theme_Parameters_Desc" class="tpl-theme" />
 			</fieldset>
 
-			<!** stub for the extended backend plugin and maintenance tools **>
-			<fieldset name="maintenance">
-				<field name="maintenance_note" type="spacer" label="Maintenance_Plugin_Slot" description="Maintenance_Plugin_Slot_Desc" class="tpl-plugin" />
-			</fieldset>
- -->
+            <fieldset name="features" description="Features_Slot_Desc" class="tpl-plugin" />
+
+            <fieldset name="widgets" description="Widgets_Slot_Desc" class="tpl-plugin" />
+
+            <fieldset name="quirks" description="Quirks_Slot_Desc" class="tpl-plugin">
+                <field name="headCleanup" type="radio" default="0" label="Quirks_headCleanup" description="Quirks_headCleanup">
+                    <option value="1">JYes</option>
+                    <option value="0">JNo</option>
+                </field>
+            </fieldset>
+
+            <fieldset name="maintenance">
+                <field name="maintenance_note" type="spacer" label="Maintenance_Plugin_Slot" description="Maintenance_Plugin_Slot_Desc" class="tpl-plugin" />
+            </fieldset>
 
 		</fields>
-	</config>
 
-	<files>
+        <!-- EXPERIMENTAL secondary <fields> element within <config>
+            for potential use in the "Maintenance Plugins"
+            $form->getGroup('secrets')    as 'jform_secrets_sauce' a JFormFieldSpacer
+            $form->getFieldset('quirks')  included due to fieldset="quirks"
+        <fields name="secrets">
+            <fieldset name="magic">
+                <field name="sauce"  type="spacer" label="Secrets_Quirks_Sauce_Spacer" />
+            </fieldset>
+        </fields>
+        -->
+
+        <!-- EXPERIMENTAL various <field> elements within the wild of <config>
+            $form->getFieldset('kaskade')   the first two elements
+            $form->getFieldset('theme')     the last two elements
+        <field  fieldset="kaskade"  name="theme_features"     type="spacer" label="Addons_Kaskade_Features" />
+        <field  fieldset="kaskade"  name="theme_widgets"      type="spacer" label="Addons_Kaskade_Widgets" />
+        <field  fieldset="theme"    name="theme_quirks"       type="spacer" label="Addons_Theme_Quirks" />
+        <field  fieldset="theme"    name="theme_maintenance"  type="spacer" label="Addons_Theme_Maintenance" />
+        -->
+    </config>
+
+    <files>
 		<folder>css</folder>
+		<folder>docs</folder>
 		<folder>elements</folder>
 		<folder>html</folder>
-		<!-- <folder>images</folder> -->
 		<folder>js</folder>
 		<folder>language</folder>
 		<folder>layouts</folder>
@@ -170,15 +164,12 @@
 		<filename>component.php</filename>
 		<filename>construc2.manifest</filename>
 		<filename>construc2_rtl.manifest</filename>
-		<filename>CREDITS.php</filename>
 		<filename>embed.php</filename>
 		<filename>error.php</filename>
-		<!-- <filename>gz.php</filename> -->
 		<filename>htaccess.txt</filename>
 		<filename>index.php</filename>
 		<filename>modal.php</filename>
 		<filename>offline.php</filename>
-		<filename>README.md</filename>
 		<filename>template_thumbnail.png</filename>
 	</files>
 
