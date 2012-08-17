@@ -14,9 +14,18 @@
  */
 
 // nothing to do if: home + don't show home + don't show first)
-if ($count == 0) {
-	$content = '';
-	return;
+if ($count <= 1) 
+{
+	if ($count == 0) {
+		$content = '';
+		return;
+	}
+
+	$jmenu = JFactory::getApplication()->getMenu();
+	if ($jmenu->getActive() == $jmenu->getDefault()) {
+		$content = '';
+		return;
+	}
 }
 
 ?><div class="menu breadcrumbs <?php echo $moduleclass_sfx ?>"><?php

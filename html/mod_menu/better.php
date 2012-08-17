@@ -192,7 +192,7 @@ foreach ($list as $i => &$item)
 		echo '<'. $elt .' class="submenu">';
 	}
 	// The next item is shallower.
-	else if ($item->shallower) {
+	elseif ($item->shallower) {
 		echo '</li>';
 		echo str_repeat('</'.$elt.'></li>', $item->level_diff);
 	}
