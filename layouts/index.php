@@ -37,11 +37,6 @@
 
 		<h1 id="logo"><a class="site-link" href="<?php echo $this->baseurl ?>/"><span class="site-name"><?php echo $app->getCfg('sitename');?></span></a></h1>
 <?php if ($this->countModules('header')) : $templateHelper->renderModules('header', 'raw'); endif; ?>
-
-		<?php if (count($enableSwitcher)) { ?>
-		<ul id="styleswitcher" class="menu style-switcher"><!-- populated by styleswitcher.js --></ul>
-		<?php } ?>
-
 		</div></div><!-- #page-head -->
 
 		<div id="body-container" class="line <?php echo $templateHelper->getPageAlias() ?>">
