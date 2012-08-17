@@ -7,20 +7,8 @@
  * @copyright   (C) 2011-2012 WebMechanic. All rights reserved.
  * @license     GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
-
-/** Register some Widget Classes */
-#	JLoader::register('ContentWidgets', dirname(__FILE__) . '/widgets/content.php');
-#	JLoader::register('BehaviorWidgets', dirname(__FILE__) . '/widgets/behavior.php');
-
-/**
- * @param  string   $context content being passed to the plugin.
- * @param  object   $item    article object.  Note $article->text is also available
- * @param  object   $params  article params
- * @param  int      $limit   'page' number
- */
-function CustomThemeContentEvent($context, $item, $params, $limit=0)
-{
-}
+!defined('WMPATH_TEMPLATE') && define('WMPATH_TEMPLATE', dirname(dirname(__FILE__)));
+!defined('WMPATH_ELEMENTS') && define('WMPATH_ELEMENTS', WMPATH_TEMPLATE . '/elements');
 
 /**
  * CustomTheme Base Class.
@@ -37,122 +25,151 @@ class CustomTheme
 	 * Theme Properties
 	 * @see getConfig()
 	 */
-	/** @var $name string */
-	protected $name    = 'default';
-	/** @var $title string */
-	protected $title   = 'Default';
-	/** @var $version string */
-	protected $version = '0.1.0';
+	/** @var $name string lowercase */
+	protected $name = 'default';
+	/** @var $description string */
+	protected $description = 'Default Theme';
 	/** @var $author string */
-	protected $author  = 'WebMechanic';
+	protected $author = 'WebMechanic';
 	/** @var $path string */
-	protected $path    = '';
+	protected $path = '';
 	/** @var $url string */
-	protected $url     = '';
+	protected $url = '';
 	/**#- */
 
+	/** @var $tmpl_url string */
+	public $tmpl_url = '';
+
 	/**
-	 * @var $config JObject
+	 * @var $config JRegistry
 	 * @see getConfig()
 	 */
 	protected $config;
 
 	/**
-	 * @ignore
-	 * @var array defaults
+	 * Used in the Template Manager to assign the parameter form.
+	 * @var $xml JForm
+	 * @see setForm()
 	 */
-	protected $_config = array(
-				'title'=>'Default',
-				'version'=>'',
-				'layouts'=>array(),
-				'cdn'=>array(),
-				'scripts'=>array(),
-				'nuke_scripts'=>array(),
-				'nuke_styles'=>array(),
-				'styleswitcher'=>array(),
-				'fontscaler'=>array(),
-				);
+	protected $xml;
 
 	/**
-	 * @static array chunks from the static html file(s) *
+	 * An optional xml file for the theme form.
+	 * @var $form string
+	 * @see setForm()
 	 */
-	static $html;
+	protected $form;
 
 	/**
 	 * @see setChunks()
 	 */
 	static $chunks = array(
-					'meta'          => '',
-					'module_before'	=> '<div class="{class} {name}">',
+					'meta'			=> '',
+					'module_before'	=> '<div id="{position}{name}" class="{class}">',
 					'module_after'	=> '</div>',
 					'unit_before'	=> '<div class="{class}">',
 					'unit_after'	=> '</div>'
 				);
 
-	protected function __construct(ConstructTemplateHelper $helper)
+	/**
+	 * @see setCapture(), getCapture()
+	 */
+	static $html = array();
+
+	/**
+	 * @see setFeature(), getFeatures(), dropFeatures(), renderFeatures()
+	 */
+	static $features = array('core'=>array('link'=>array()));
+
+	/**
+	 * Apparently a constructor...
+	 *
+	 * @param string|object  Theme file or template style object
+	 */
+	protected function __construct($theme = null)
 	{
-		$tmpl   = $helper->getTemplate();
+		/* spl_autoload_register(array('CustomTheme', 'autoload')); */
 
-		$ssi    = false;
-		$theme  = null;
-
-		$ssi = (bool) $tmpl->params->get('ssiIncludes', 0);
-		if ($ssi) {
-			$theme = basename($tmpl->params->get('ssiTheme'), '.styles');
-		}
-		else {
-			$theme = basename($tmpl->params->get('customStyleSheet'), '.css');
-		}
-		$this->name = $theme;
-
-		// use "default" == 'template.css"
-		if ((int) $theme == -1) {
-			$helper->addLink('template.css');
+		// theme filename only? 'foo.css', 'bar.styles' (Backend usage)
+		if (is_string($theme)) {
+			list($this->name, $tmp) = explode('.', "$theme.");
+			// make it a "minimal" template style object
+			$theme = new stdClass;
+			$theme->template = basename(WMPATH_TEMPLATE);
 		}
 
-		$this->path = JPATH_THEMES .'/'. $tmpl->template .'/themes/'. $this->name . '.php';
-		$this->url  = JUri::root(true) .'/'. basename(JPATH_THEMES) .'/'. $tmpl->template .'/themes';
-
-		$this->config = new JObject($this->_config);
-
-		if (is_file($this->path))
+		elseif (is_object($theme))
 		{
-			// fake ini file
-			$config = parse_ini_file($this->path, true);
-			if ($config && count($config) > 0)
-			{
-				$this->title   = $config['title'];
-				$this->version = $config['version'];
-				$this->config->setProperties($config);
+			// plain array from 'onContentPrepareForm' if run in backend
+			if (is_array($theme->params)) {
+				$params = new JRegistry($theme->params);
+			} else {
+				$params = &$theme->params;
 			}
+
+			// a Template Style object via ConstructTemplateHelper (Frontend usage)
+			$ssi  = (bool) $params->get('ssiIncludes', 0);
+			if ($ssi) {
+				$this->name = basename($params->get('ssiTheme'), '.styles');
+			}
+			else {
+				$this->name = basename($params->get('theme'), '.css');
+			}
+		}
+
+		$jtmpl = basename(JPATH_THEMES);
+		$this->tmpl_url = JUri::root(true) ."/{$jtmpl}/". $theme->template;
+
+		// an optional .xml file with params for the backend
+		$this->form = WMPATH_TEMPLATE .'/themes/'. $this->name . '.xml';
+		if (!is_file($this->form)) {
+			$this->form = false;
+		}
+
+		$config = $this->loadConfig('themes/'. $this->name);
+		if ($config || count($config) > 0) {
+			$this->config = new JRegistry($config);
 		}
 	}
 
 	/**
-	 * @param  ConstructTemplateHelper $helper
+	 * @param  string $theme  optional theme file, i.e 'foo.css', 'bar.styles'
 	 * @return CustomTheme
 	 */
-	public static function getInstance(ConstructTemplateHelper $helper)
+	public static function getInstance($theme = null)
 	{
-		if (!self::$theme)
-		{
-			self::$theme = new self($helper);
-
-			// register event handler
-			$dispatcher = JDispatcher::getInstance();
-			$dispatcher->register('onContentAfterTitle',    'CustomThemeContentEvent');
-			$dispatcher->register('onContentBeforeDisplay', 'CustomThemeContentEvent');
-			$dispatcher->register('onContentAfterDisplay',  'CustomThemeContentEvent');
+		if (!self::$theme) {
+			self::$theme = new self($theme);
 		}
-
 		return self::$theme;
 	}
 
-	public function get($property)
+	/**
+	 * @return CustomTheme
+	 */
+	final public function build()
 	{
-		if ($property[0] != '_' && isset($this->{$property})) {
-			return $this->{$property};
-		}
+		// does anyone know what $head['link'] is for? skipping...
+		$head = JFactory::getDocument()->getHeadData();
+
+// FB::log(self::$chunks, 'CustomTheme::build $chunks');
+// FB::log(array_keys(self::$features), 'CustomTheme::build $features');
+
+		self::$chunks['meta']['renderer.head']    = ElementRendererAbstract::getInstance('renderer.head')->build($head);
+		self::$chunks['meta']['renderer.meta']    = ElementRendererAbstract::getInstance('renderer.meta')->build($head['metaTags']);
+
+		// from an HTML perspective this is equivalent to <link>
+		self::$chunks['meta']['renderer.link']    = ElementRendererAbstract::getInstance('renderer.link')->build($head['style']);
+		self::$chunks['meta']['renderer.styles']  = ElementRendererAbstract::getInstance('renderer.styles')->build($head['styleSheets']);
+
+		self::$chunks['meta']['renderer.script']  = ElementRendererAbstract::getInstance('renderer.script')->build($head['script']);
+		self::$chunks['meta']['renderer.scripts'] = ElementRendererAbstract::getInstance('renderer.scripts')->build($head['scripts']);
+
+		self::$chunks['meta']['renderer.custom']  = ElementRendererAbstract::getInstance('renderer.custom')->build($head['custom']);
+
+// FB::log($head, 'build');
+
+		return $this;
 	}
 
 	/**
@@ -160,11 +177,12 @@ class CustomTheme
 	 *
 	 * @param  string  $name     buffer name, usually a template position or a "chunk" of the theme
 	 * @param  string  $content  the content to store
-	 * @param  array   $options  RESERVED
 	 *
 	 * @return CustomTheme
+	 *
+	 * @todo implement caching
 	 */
-	public function setCapture($name, $content, $options = array())
+	final public function setCapture($name, $content)
 	{
 		$buffer = is_array($content) ? trim(implode('', $content)) : trim($content);
 
@@ -180,21 +198,24 @@ class CustomTheme
 	 * @param  string  $name
 	 * @param  bool    $checkonly
 	 */
-	public function getCapture($name, $checkonly = false)
+	final public function getCapture($name, $checkonly = false)
 	{
-		if (isset(self::$html[$name])) {
-			return ($checkonly == true) ? strlen(self::$html[$name]) : self::$html[$name];
+		if ($checkonly == true) {
+			return isset(self::$html[$name]) ? strlen(self::$html[$name]) : 0;
 		}
-		return '';
+
+		if (isset(self::$html[$name])) {
+			return self::$html[$name];
+		}
 	}
 
 	/**
-	 * @param  array  $chunks   assoc array with chunk names and their data
+	 * @param  array  $chunks
 	 * @param  bool   $replace  false
 	 *
 	 * @return ConstructTemplateHelper for fluid interface
 	 */
-	public function setChunks(array $chunks, $replace = false)
+	final public function setChunks(array $chunks, $replace = false)
 	{
 		if (count($chunks)) {
 			if ($replace) {
@@ -203,20 +224,31 @@ class CustomTheme
 				self::$chunks = array_merge(self::$chunks, $chunks);
 			}
 		}
+		return $this;
 	}
 
-	public function getChunk($name, $suffixes = null)
+	final public function getChunks()
+	{
+		return self::$chunks;
+	}
+
+	final public function setChunk($name, $chunk)
+	{
+		self::$chunks[$chunk] = $chunk;
+	}
+
+	final public function getChunk($name, $affixes = null)
 	{
 		$chunks = array($name);
-		if (is_string($suffixes)) {
-			$chunks = array($name, $suffixes, $name .' '. $suffixes);
+		if (is_string($affixes)) {
+			$chunks = array($name, $affixes, $name .'_'. $affixes);
 		}
-		elseif (is_array($suffixes)) {
+		elseif (is_array($affixes)) {
 			$chunks = array();
-			foreach ($suffixes as $suffix) {
-				$chunks[] = trim($name .'_'. $suffix);
+			foreach ($affixes as $affix) {
+				$chunks[] = trim($name .'_'. $affix);
 				$chunks[] = trim($name);
-				$chunks[] = trim($suffix);
+				$chunks[] = trim($affix);
 			}
 		}
 
@@ -230,39 +262,286 @@ class CustomTheme
 		return false;
 	}
 
-	public function getConfig($name, $default=null)
+	/**
+	 * Adds a "feature" or "widget" to the template which typically involves
+	 * loading scripts and styles.
+	 *
+	 * Examples:
+	 * - feature.msie.edge :        ElementFeatureMsie::edge()
+	 * - feature.standards.json :   ElementFeatureStandards::json()
+	 * - widget.fontscaler :        ElementWidgetFontscaler()
+	 * - widget.styleswitch :       ElementWidgetStyleswitch()
+	 *
+	 * @param  string  $feature A fully qualified feature or widget identified.
+	 * @param  mixed   $data    Some data or FALSE to disable a feature at runtime
+	 * @return
+	 *
+	 * @uses CustomTheme::setFeature()
+	 */
+	final public function setFeature($feature, $data)
 	{
-		return $this->config->get($name, $default);
+		if ($data === false) {
+			unset(self::$features[$feature]);
+			return $this;
+		}
+
+		switch ($feature)
+		{
+			case 'feature.print': // print preview
+			case 'feature.tp':    // template position preview
+			case 'feature.l10n':  // data uri flags
+			case 'feature.rtl':   // right to left scripts
+				list($tmp, $name) = explode('.', $feature);
+				self::$features['core']['link'][$name] = '{tmpl.css}/core/'.$name.'.css';
+				break;
+
+			case 'feature.edit': // frontend editing
+				self::$features['core']['link']['forms'] = '{tmpl.css}/core/forms.css';
+				self::$features['core']['link']['edit-forms'] = '{tmpl.css}/core/edit-form.css';
+				break;
+
+			default:
+				self::$features[$feature] = $data;
+		}
+
+		return $this;
 	}
 
 	/**
-	 * @param string     $context    event originator
-	 * @param object     $item       data to be deleted
-	 * @param JRegistry  $params     item parameters
-	 * @param int        $limitstart data offset or paginator
+	 * @param $name
+	 * @return ElementRendererAbstract or NULL
 	 */
-	static public function onContentAfterTitle($context, $item, $params, $limitstart=0)
+	final public function getFeature($name)
 	{
+		if (isset(self::$features[$name])) {
+			return self::$features[$name];
+		}
+		return null;
 	}
 
 	/**
-	 * @param string     $context    event originator
-	 * @param object     $item       data to be deleted
-	 * @param JRegistry  $params     item parameters
-	 * @param int        $limitstart data offset or paginator
+	 * @param bool $names_only
+	 * @return array
 	 */
-	static public function onContentBeforeDisplay($context, $item, $params, $limitstart=0)
+	final public function getFeatures($names_only = false)
 	{
+		return $names_only == false ? self::$features : array_keys(self::$features);
 	}
 
 	/**
-	 * @param string     $context    event originator
-	 * @param object     $item       data to be deleted
-	 * @param JRegistry  $params     item parameters
-	 * @param int        $limitstart data offset or paginator
+	 * @param $name
 	 */
-	static public function onContentAfterDisplay($context, $item, $params, $limitstart=0)
+	public function dropFeature($name)
 	{
+
+	}
+
+	/**
+	 * @param string $theme
+	 * @return ElementRendererAbstract or NULL
+	 */
+	public function loadFeatures($theme = null)
+	{
+		if (null == $theme) {
+			$theme = $this->name;
+		}
+		return $this;
+	}
+
+	/**
+	 * @param string $feature dot-notation of a loadable feature
+	 * @param null   $data    Can be an array with a 'module' reference.
+	 * @return string A rendered feature.
+	 */
+	final public function renderFeature($feature, $data=null)
+	{
+		// known feature but disabled explicitly
+		if (array_key_exists($feature, self::$features) && (false === self::$features[$feature])) {
+			return $data;
+		}
+
+		if (is_array($data)) {
+			if (isset($data['module'])) {
+				// parse $data['module']->content, ie {fontscaler}
+			}
+		}
+
+		// [feature|widget].class[.method]
+		$parts = explode('.', $feature);
+		try
+		{
+			$handler = ElementRendererAbstract::getInstance($parts[0].'.'.$parts[1], $data);
+			if (isset($parts[2])) {
+				$method = $parts[2];
+				self::$features[$feature] = $handler->{$method}($data);
+			} else {
+				self::$features[$feature] = $handler->build($data);
+			}
+		} catch (OutOfBoundsException $e) {
+			self::$features[$feature] = $e;
+		}
+
+		return self::$features[$feature];
+	}
+
+	/**
+	 * Loads the INI data part from the theme configuration file (.php).
+	 *
+	 * See {@link ../docs/ThemeConfiguration.md} in the distribution archive about
+	 * the format and rules.
+	 *
+	 * @param  string $config_file  Relative path for a config file within the WMPATH_TEMPLATE folder.
+	 *
+	 * @return array
+	 */
+	final public static function loadConfig($config_file)
+	{
+		$config = array();
+		// a fake INI file with default settings
+		$file_path = WMPATH_TEMPLATE .'/'. trim($config_file, '\\/') . '.php';
+		if (is_file($file_path))
+		{
+			// treat theme file as an INI file
+			$data   = file_get_contents($file_path);
+			// strip leading php code
+			$start  = strpos($data, '?>', strlen('<?php'));
+			$data   = trim(substr($data, ($start > 0 ? $start + 1 : 0)));
+
+			if (function_exists('parse_ini_string'))
+			{
+				$config = parse_ini_string($data, true);
+			}
+			else
+			{
+				$data = preg_replace('/^(\s*\w+\s*=\s*)((?:(?!\s;)[^"\r\n])*?)(\s*(?:\s;.*)?)$/mx', '\1\2\3', $data);
+				$data = explode("\n", preg_replace('/(\s*(?:\s;.*)?)$/mx', '', $data) );
+				$config = array();
+				$sec = '';
+				foreach ($data as $item) {
+					$a   = preg_split('/(\s*=\s*)/mx', $item);
+					$a[0]= trim($a[0], '[]');
+					// drop empty lines, remaining comments, and PHP "header"
+					if (empty($a[0]) || preg_match('/[;\<\>\?]+/', $a[0])) continue;
+					if (isset($a[1])) {
+						// '=' in value, ie DSN with params, URLs with query
+						if (count($a) > 2) {
+							$k    = array_shift($a);
+							$a[1] = implode('=', $a);
+							$a[0] = $k;
+						}
+						$output[$sec][$a[0]] = trim($a[1], "'\"`");
+					} else {
+						$sec = $a[0];
+						$output[$sec] = array();
+					}
+				}
+			}
+		}
+
+		return $config;
+	}
+
+	/**
+	 * Read a configuration value.
+	 *
+	 * @param  string  $name    The config key or NULL to return all configuration values
+	 * @param  null    $default A default value if key is not set.
+	 *
+	 * @return JRegistry|mixed|null
+	 */
+	final public function getConfig($name, $default=null)
+	{
+		if (null === $name) {
+			return isset($this->config) ? $this->config : $default;
+		}
+
+		return isset($this->config) ? $this->config->get($name, $default) : $default;
+	}
+
+	/**
+	 * Assigns the form object used in the backend theme manager, load the
+	 * supplemental XML config and language files for the theme.
+	 *
+	 * @param  JForm $form
+	 *
+	 * @return CustomTheme
+	 */
+	final public function setForm(JForm $form)
+	{
+		// only once, please.
+		if (isset($this->xml)) {
+			return $this;
+		}
+
+		// grab the form.
+		$this->xml = $form;
+
+		// load XML configuration and language file
+		if ($this->form) {
+			JFormHelper::addFormPath(WMPATH_TEMPLATE . '/themes');
+
+			$form->loadFile($this->form, false);
+			JFactory::getLanguage()->load('theme_'.$this->name, WMPATH_TEMPLATE);
+		}
+
+		return $this;
+	}
+
+	/**
+	 * @return  string  JSON representation, stripped
+	 */
+	final public function __toString()
+	{
+		$white_list = array('name','title','form','tmpl_url','url');
+		$me = new stdClass;
+		foreach (get_object_vars($this) as $prop => $val) {
+			if ( in_array($prop, $white_list) ) {
+				$me->{$prop} = $val;
+			}
+		}
+
+		$me->config = $this->config->toObject();
+
+		return json_encode($me);
+	}
+
+	/**
+	 * @static
+	 * @param $class
+	 * @return void
+	 */
+	final protected static function autoload($class)
+	{
+		if ($class[0] == 'J' || $class[0] == 'K') {return;}
+
+		// split Caps
+		$parts = preg_split('/(?<=[a-z])(?=[A-Z])/x', $class);
+
+		$parts[0] = WMPATH_TEMPLATE .'/'. strtolower($parts[0]) .'s';
+		// i.e. feature, widget, renderer
+		$parts[1] = strtolower($parts[1]);
+		// inflection-ish
+		$parts[1] .= ($parts[1] == 'renderer') ? '' : 's';
+		// filename
+		$parts[2] = strtolower($parts[2]) . '.php';
+FB::warn($parts, "autoload($class)");
+		include_once implode('/', $parts);
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getName()
+	{
+		return $this->name;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getPath()
+	{
+		return $this->path;
 	}
 
 }

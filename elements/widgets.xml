@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+<!--
+Most Widgets would plug into the "widgets" parameter group (fieldset).
+Possible panel groups to plug into:
+	> widgets   : add or generate visual output
+	> javascript: add or mess with javascript files and scripts
+	> standards : provide SHims or other means of webstandards compatibility
+ -->
+
+	<fields name="params">
+		<fieldset name="widgets">
+			<field type="radio" name="widgetDate" default="0" label="TPL_CONSTRUC2_DATECONTAINER_LABEL" description="TPL_CONSTRUC2_DATECONTAINER_DESC">
+				<option value="1">JShow</option>
+				<option value="0">JHide</option>
+			</field>
+			<field type="list" name="widgetDateFormat" default="4" label="TPL_CONSTRUC2_DATEFORMAT_LABEL" description="TPL_CONSTRUC2_DATEFORMAT_DESC">
+				<option value="" >DATE_FORMAT_LC</option>
+				<option value="1">DATE_FORMAT_LC1</option>
+				<option value="2">DATE_FORMAT_LC2</option>
+				<option value="3">DATE_FORMAT_LC3</option>
+				<option value="4">DATE_FORMAT_LC4</option>
+			</field>
+			<field fieldset="kaskade" type="radio" name="fontscaler" default="0" label="TPL_CONSTRUC2_FONTSCALER_LABEL" description="TPL_CONSTRUC2_FONTSCALER_DESC">
+				<option value="1">JShow</option>
+				<option value="0">JHide</option>
+			</field>
+			<field fieldset="kaskade" type="radio" name="styleswitch" default="0" label="TPL_CONSTRUC2_STYLESWITCH_LABEL" description="TPL_CONSTRUC2_STYLESWITCH_DESC">
+				<option value="1">JShow</option>
+				<option value="0">JHide</option>
+			</field>
+		</fieldset>
+	</fields>
+
+	<!-- EXPERIMENTAL : type and location are in flux -->
+	<updateservers>
+		<server type="template">http://joomla.webmechanic.biz/tpl/kaskade/widgets.xml</server>
+	</updateservers>
+
+</form>

@@ -1,4 +1,4 @@
-<?php return; ?>
+;<?php return; ?>
 	;------------------------------------------------
 	;
 	; Construc2 Main Configuration.
@@ -9,6 +9,11 @@
 	;  To override or add entries use a
 	;  custom Theme configuration file.
 	;------------------------------------------------
+
+; Number of module positions per position group
+MAX_MODULES=4
+; Total number of module positions in all "column" groups (alpha + beta)
+MAX_COLUMNS=4
 
 [cdn]
 @default	= "ajax.googleapis.com"
@@ -28,7 +33,7 @@ cdnjs.cloudflare.com		= 1,jquery,mootools
 	;
 media		= "{root}/media/system"
 images		= "{root}/images"
-template	= "{root}/templates/construc2"
+template	= "{themes}/construc2"
 theme		= "{template}/themes/{name}"
 tmpl.css	= "{template}/css"
 tmpl.js		= "{template}/js"
@@ -49,25 +54,8 @@ content-below 	= 1
 footer-above 	= 0
 nav-below 		= 0
 
-[styleswitch]
-	; Defaults than can be REPLACED with theme config files
-	; Values are list labels run thru JText for translation
-	; and best added to "xx-XX.override.ini"
-normal		= TPL_CONSTRUC2_STYLE_NORMAL_MODE
-wireframe	= TPL_CONSTRUC2_STYLE_WIREFRAME
-diagnostic	= TPL_CONSTRUC2_STYLE_DIAGNOSTIC_MODE
-
-[fontscaler]
-	; -----
-	; Font scaling
-larger		= "Huge Font"
-large		= "Large Font"
-@default	= "Default Font"
-small		= "Small Font"
-smaller		= "Tiny Font"
-
 [allow_empty]
 	; -----
 	; module types
-custom	= 1
-
+custom		= 1
+banner		= 0
