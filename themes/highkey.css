@@ -1,0 +1,369 @@
+/*!
+ * highkey.css (Frontend Template Layout)
+ * @version 1.9.15
+ * @license CC BY-NC 3.0/de
+ */
+@import url(//fonts.googleapis.com/css?family=Ubuntu+Condensed);
+
+body {min-width:900px;max-width:94%;margin:0 auto}
+
+/* template param override (#body-container,#header-above 100%) */
+@media screen and (max-width:1039px) {
+	body #body-container, .page-foot {max-width:94%}
+	#logo {margin-left:3%}
+}
+@media screen and (min-width:1040px) {
+	body #body-container, .page-foot {max-width:90%}
+	#logo {margin-left:5%}
+}
+
+/* iOS Retina Resolution (320ppi)
+@media only screen and (-webkit-min-device-pixel-ratio: 2) { }
+*/
+
+/*
+ * =column layouts
+ */
+#body-container	,
+header.above	,
+header.below	{margin:0 auto}
+
+@media screen {
+	.content-main	{width:auto}
+	.column-group 	{width:25%}
+	.group-alpha	{float:left}
+	.group-beta		{float:left}
+
+	/* 2col [alpha | main ] */
+	.alpha-main section.component	{width:75%;float:right}
+	.alpha-main .column-group		{float:left}
+	.alpha-main .group-alpha {}
+
+	/* 2col [ main | beta] */
+	.main-beta .content-main {width:75%;float:left}
+
+	/* 3col [ [alpha|main] beta] */
+	.alpha-main-beta .column-group {width:23%}
+	.alpha-main-beta .content-main {float:left;width:77%}
+	.alpha-main-beta .group-alpha  {width:30%}
+	.alpha-main-beta section.component {float:right;width:70%}
+}
+
+.page-foot	{margin:0 auto}
+.foot-inner	{
+ -webkit-column-count:2;-webkit-column-gap:10px;
+	-moz-column-count:2;   -moz-column-gap:10px;
+		 column-count:2;		column-gap:10px;
+}
+
+/* =popup, modal */
+@media screen {
+	body.com_media, body.modal,
+	body.com_media #body-container	,
+	body.modal     #body-container	,
+	body.com_media .page-foot		,
+	body.modal     .page-foot		{min-width:0;max-width:100%}
+	body.com_media .content-container,
+	body.modal     .content-container {margin-top:0}
+	.body-overlayed #sbox-window.shadow {padding:2px}
+	.body-overlayed #sbox-content.sbox-content-iframe {overflow:auto}
+}
+
+/*
+ * =main containers
+ */
+.page-head 		{clear:both}
+.page-foot 		{clear:both}
+
+#header			{height:100px}
+#logo   		{font-size:450%;display:inline-block}
+.site-link {}
+.site-name {}
+
+nav, .breadcrumbs	{margin-bottom:10px}
+#mainmenu {}
+#breadcrumbs {}
+
+h1,h2,h3,h4,h5,h6	{line-height:normal}
+
+/* "pull" out the title (author) of the citation */
+blockquote 			{padding:1ex;margin:0 3em;}
+blockquote:after 	{content:attr(title);display:block;margin-top:1em;text-align:right;clear:both}
+
+/* =type and fonts */
+h1,h2,h3,h4,h5,h6	,
+.mainmenu			,
+.breadcrumbs		,
+menu.categories		{font-family:'Ubuntu Condensed','Trebuchet MS',Arial,sans-serif;text-rendering:optimizelegibility}
+
+/* hyphens can be tuned off below for some contexts */
+p 					{-webkit-hyphens:auto;-moz-hyphens:auto;hyphens:auto}
+p:only-child 		{margin-bottom:0}
+
+/* =form elements */
+button 				{padding:0.2ex 2ex}
+
+/* =tables */
+table.data th.clip	,
+.column-group .hd	{text-overflow:ellipsis;-ms-text-overflow:ellipsis;-o-text-overflow:ellipsis}
+
+/* =other */
+#system-message-container {position:absolute;right:0;top:auto;min-width:50%;max-width:75%;opacity:.95}
+
+/*
+ * =columns context
+ */
+.column-group fieldset		{padding:5px;margin:0}
+.column-group h3,
+.column-group .H3			{margin-bottom:0;padding:0}
+
+.column-group .notice .inner {padding:1ex 1em}
+
+/*
+ * =contents
+	.items-leading
+	.items-row
+	.items-more
+ */
+.blog article		,
+.item-page			,
+.items-more			{padding:10px;margin-bottom:10px}
+.items-more .links	{-webkit-columns:2;-moz-columns:2;-ms-columns:2;columns:2}
+
+/*
+ * misc components
+ */
+section.component > div.search ,
+section.component > div.finder {padding:10px;margin-bottom:10px}
+
+#finder-search label,
+#finder-search input,
+#finder-search button	{display:inline-block; max-width:30%}
+#search-results			{margin-top:10px;padding:1ex 0.8em}
+dl.search-results {}
+	dt.result-title:not(:first-child) {margin-top:10px}
+	dd.result-text		{padding:1ex 1em 1ex 1ex}
+	dd.result-url		{padding:0 1ex;font-size:.9em}
+
+.blog h1, .blog .H1 {}
+.blog h2, .blog .H2		{margin-top:0}
+
+.introtext, .fulltext	{margin-right:20px}
+
+.unit > article			{margin-right:5px}
+.lastUnit > article		{margin-left:5px;margin-right:0}
+
+/* make room for .actionsmenu */
+header.actions .title {}
+
+p.readmore			{text-align:right;margin-top:1ex;margin-bottom:0}
+p.readmore:after	{content:'\2026\A0';display:inline}
+
+/*
+ * call-outs and <aside>s flush right within their containing box + reveal their content on :hover
+ * - right border matches the inner padding of <article> and provides the hoverable area
+ */
+aside.article		{position:absolute;right:0;top:0;width:auto;height:2em;border-right:10px solid #888}
+.content_rating		,
+aside.article form	{display:none;position:absolute;width:15em;padding:.2em;min-height:1.6em;right:0;z-index:2707}
+aside.article form	{top:2em}
+
+aside.article:hover .content_rating ,
+aside.article:hover .content_rating + form {display:block}
+ .content_rating		,
+ .content_vote			{cursor:default}
+ .content_rating img	,
+ .content_vote input	{display:inline-block;margin:0 2px;vertical-align:middle}
+
+/* as of April 2012 only Chrome renders <details>, others need a polyfill.
+ * the disclosure widget will still be displayed if you don't provide a summary element
+ */
+details.meta		{clear:both;padding:1ex .8em;margin-top:10px}
+summary[tabindex]	{outline:none} /* with tabindex, ugly outlines are shown*/
+.meta summary		{display:inline;cursor:help}
+summary::-webkit-details-marker {font-size:1.2em}
+.meta summary:focus		{text-decoration:underline}
+
+/* toggle article details on hover */
+.article-info		{margin:0;padding-left:0}
+.article-info dt	{display:inline}
+.article-info dd	{display:inline}
+ .article-info .createdby {}
+ .article-info .parent-category {}
+ .article-info .category {}
+ .article-info .hits {}
+ .article-info .created {}
+ .article-info .modified {}
+ .article-info .published {}
+
+.items-row .article-info dd.createdby:after {content:" ";display: block;}
+
+/* =category page contents */
+.category-desc {font-size:100%}
+
+/* =misc */
+.contact-item {}
+
+/*
+ * =pictures - single page, blog page, columns list
+ */
+.introtext img,.fulltext img{height:auto}
+
+.item-page .introtext img	,
+.item-page .fulltext img	{display:inline-block;max-width:96%}
+
+.blog .introtext img		{max-width:96%}
+.unit .introtext img 		{max-height:200px;border-width:5px}
+.blog .unit .introtext		{min-height:250px}
+.category-desc img.catimg {}
+
+figure img					{max-width:100%;height:auto}
+.portrait					{text-align:center}
+
+/*
+ * =modules / forms
+ */
+.column-group .inner 		{padding:5px}
+.column-group fieldset		{border:none;outline:none}
+.column-group dl			{margin:0;padding:0}
+.column-group div.button	{text-align:center}
+
+.mod-login ul				{margin-left:10px;padding-left:.7em}
+
+.column-group fieldset dt	,
+.column-group fieldset dd	,
+.column-group .inputbox 	{display:block;margin-left:0;width:100%}
+
+/* @todo test with multiple banners in a single bannergroup, using table-row and table-cell */
+.mod-banner {}
+.bannergroup 				{vertical-align:top;text-align:center}
+.banneritem					{margin-left:auto;margin-right:auto}
+.banneritem img 			{display:inline-block}
+
+/* =mod_search / mod_finder - align with mainmenu and li paddings */
+.mainnavi form 				{position:absolute;right:2px;top:0.5ex}
+.mainnavi div.finder ,
+.mainnavi div.search		{display:inline-block;padding:0.2ex}
+.mainnavi label.finder ,
+.mainnavi .search > label	{display:inline;padding-right:1em}
+.mainnavi .finder > input ,
+.mainnavi .search > input	{display:inline;width:75%;padding-right:1em}
+.mainnavi .finder a			{position:absolute;display:none;padding:.5ex;text-align:center;width:100%}
+.mainnavi .finder:hover a	,
+.mainnavi .finder a:focus	,
+.mainnavi .finder a:active	,
+.mainnavi input:focus ~ a	{display:inline-block}
+div.finder br				{display:none}
+
+/*
+ * =menus
+ */
+.hmenu				{padding:.5ex 0}
+.mainmenu .active	{font-weight:bold}
+
+.current > a.li	{} /* may contain a nested menu.submenu */
+.active > a.li		{font-weight:bold} /* single item */
+.sep 				{padding:0.25ex}
+li.mi img			{border:none;box-shadow:none}
+
+/* allow the nested list determine its [default] whitepace at bottom */
+nav.page-toc					{padding-top:1ex;padding-left:.6em;margin-left:1em} /* aka #article-index */
+	.toc-title {}
+	.toc-items					{list-style-type:decimal;counter-reset:toc}
+	.toc-items .current 		{font-weight:bold}
+	.toc-items span.mi			{display:inline-block;width:95%}
+	.toc-items li.mi:last-child {list-style:none;margin-left:-1ex}
+
+/* push the whole thing inwards to make room for .actionsmenu:width */
+.has-actions nav.page-toc 		{margin-right:20px}
+
+/* align with menu items */
+.breadcrumbs a.mi		,
+.breadcrumbs .active	{padding:0.25ex 0.6em}
+
+.has-toc .actionsmenu	{position:absolute;float:none;margin-right:0;right:0;background-color:inherit}
+.actionsmenu 			{margin-top:-1em;margin-right:-10px;width:20px}
+.actionsmenu li.mi		{display:inline-block;width:100%;text-align:center}
+.actionsmenu .text		{padding:0}
+.actionsmenu .icon		{padding:.2ex 0}
+.actionsmenu .icon img {}
+/* fly-out 'title' as icon label - offset .right by .actionsmenu:width */
+.actionsmenu .icon a:before 		{font-size:95%;margin-right:1ex;padding:.1ex .5ex;position:absolute;right:20px}
+.actionsmenu .icon:hover a:before	{content:attr(title);white-space:pre;background-color:#fff}
+
+.skiplinks a.mi					{text-decoration: underline}
+.skiplinks .cat-title:before	{content:'\A0('}
+.skiplinks .cat-title:after		{content:')'}
+
+.pagenav						{margin-left:0;margin-right:0;padding-left:0;padding-right:0;overflow:auto}
+.pagenav li.mi {}
+.pagenav a.mi {}
+.pagenav .prev:only-child		{float:left}
+.pagenav .next:only-child		{float:right}
+
+.pagenavcounter {}
+
+nav.pagination {}
+footer nav.pagination			{overflow:auto;padding:0 10px}
+menu.pagination					{display:inline-block}
+div.search-pagination {}
+
+p.counter, .search-pages-counter {display:inline-block;margin:.6ex 1em}
+
+.search-pages-counter strong,
+.pagination span.mi				{font-weight:bold}
+
+/* =modules */
+.mod-articles-categories .hd	{font-size:110%}
+
+menu.categories span.active		{text-transform:uppercase}
+menu.categories .submenu		{padding-left:.6em}
+menu.categories .H3 {}
+menu.categories .parent > a.mi	{display:inline}
+
+/* kinda drop-down, needs transition and backdrop color
+menu.categories .parent .H3			{display:block;cursor:pointer}
+menu.categories .parent > menu		{height:0;display:none;position:absolute}
+menu.categories .parent:hover menu	{height:auto;display:block}
+menu.categories .current > menu		{height:auto;display:block}
+*/
+
+menu.loginmenu					{margin-top:0.6ex}
+.loginmenu span.mi				{padding: 1px 3px;}
+
+/* =widgets */
+summary:focus {}
+summary:focus + * {}
+
+#to-page-top		{position:absolute;right:10px;text-align:right}
+
+#diagnostics		{position:absolute;right:10px;top:20px;max-width:90px}
+#diagnostics li		{padding:0;margin:0;line-height:1}
+
+/* this "menu" ist JS based and will be enabled by the script itself */
+#styleswitcher	{}
+li.switcher 	{display:inline-block;cursor:pointer}
+
+/*
+ * =branding - category and page styles
+ */
+
+/* =supplemental property classes */
+.prel {position:relative} .pabs {position:absolute}
+.mt0 {margin-top:0}  .mr0 {margin-right:0}  .mb0 {margin-bottom:0}  .ml0 {margin-left:0}
+.pt0 {padding-top:0} .pr0 {padding-right:0} .pb0 {padding-bottom:0} .pl0 {padding-left:0}
+.bt0 {border-top:0}  .br0 {border-right:0}  .bb0 {border-bottom:0}  .bl0 {border-left:0}
+.lft {float:left} .rgt {float:right}
+
+/*= print (popups) */
+body.print {min-width:0;max-width:100%}
+body.print aside.article {display:none}
+body.print #logo {display:block;text-align:center}
+
+@media print {
+	aside.article {display:none}
+	.blog .introtext img,
+	.item-page .introtext img	{height:13cm;max-width:13cm;display:block;margin:0 auto}
+}
+
+/* .eof */

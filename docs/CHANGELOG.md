@@ -15,12 +15,11 @@
 **Parameter changes: you MUST REVIEW the template style parameters!**
 
 * `customStyleSheet`:  *theme* -- Theme CSS file
-* `enableSwitcher`:  *styleswitch*, now in widget.xml, enables the Style Switcher
-* `showDiagnostics`:  *diagnostics*, now in feature.xml, part of the core 'styleswitch' widget
-* `showDateContainer`:  *widgetDate*, now in widget.xml, Display "date container"
-* `dateFormat`:  *widgetDateFormat*, now in widget.xml,Date format for "date container"
-* `loadGcf`:  *msieCfinstall*, now in widget.xml, bump oldIE users to install Google Chrome Frame
-* `html5manifest`: now in features.xml
+* `enableSwitcher`:  *styleswitch* -- Enables the Style Switcher
+* `showDiagnostics`:  this is part of the core 'styleswitch' widget
+* `showDateContainer`:  *widgetDate* -- Display "date container"
+* `dateFormat`:  *widgetDateFormat* -- Date format for "date container"
+* `loadGcf`:  *cfinstall* -- bump oldIE users to install Google Chrome Frame
 
 **CSS "alias" classes: you SHOULD REVIEW your context selectors!**
 	**BC NOTICE:** CSS selectors may need to be adjusted.
