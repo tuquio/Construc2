@@ -5,6 +5,8 @@
  * @author		WebMechanic http://webmechanic.biz
  * @copyright	(C) 2011-2012 WebMechanic. All rights reserved.
  * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
+ *
+ * @var $params JRegistry
  */
 
 $params		= $this->item->params;
@@ -24,9 +26,9 @@ $urls		= json_decode($this->item->urls);
 
 ?>
 	<article id="<?php echo $this->item->alias ?>" class="feature <?php echo $showact, ContentLayoutHelper::getCssAlias($this->item) ?>">
-	<header class="article">
 <?php
 if ($params->get('show_title')) { ?>
+	<header class="article">
 	<h2 class="H2 title"><?php
 	if ($params->get('link_titles') && $params->get('access-view')) {
 	?><a href="<?php echo JRoute::_(ContentHelperRoute::getArticleRoute($this->item->slug, $this->item->catid)); ?>#content"><?php
@@ -37,14 +39,13 @@ if ($params->get('show_title')) { ?>
 	} ?></h2>
 <?php
 }
-
 if (!$params->get('show_intro')) {
 	echo $this->item->event->afterDisplayTitle;
 }
-?>
+if ($params->get('show_title')) { ?>
 	</header>
-
 <?php
+}
 
 /* cleanup vote plugin if exists */
 if (!ContentLayoutHelper::isEmpty($this->item->event->beforeDisplayContent))
@@ -62,8 +63,7 @@ if ($actions && $noPrint) {
 
 	<div class="introtext"><?php echo $this->item->introtext ?></div>
 <?php
-if ($params->get('show_readmore') && $this->item->readmore)
-{
+if ($params->get('show_readmore') && $this->item->readmore) {
 	echo ContentLayoutHelper::showReadMore($this->item, $params);
 }
 

@@ -43,9 +43,9 @@ $desc_img = ($this->params->def('show_description_image') && $this->category->ge
 if ($desc || $desc_img) { ?>
 	<article class="line category-desc">
 		<div class="introtext"><?php
-		if ($desc_img) {
-		?><img class="cat-image" src="<?php echo $this->category->getParams()->get('image') ?>" /><?php
-		}
+		if ($desc_img) { ?>
+		<figure class="category"><img src="<?php echo $this->category->getParams()->get('image') ?>" class="catimg" alt="" /></figure>
+<?php	}
 		if ($desc) {
 			echo JHtml::_('content.prepare', $this->category->description);
 		}

@@ -15,7 +15,8 @@ $page_subheading     = $this->params->get('page_subheading');
 $toggle_headings     = ($show_category_title || $page_subheading);
 
 $desc     = ($this->category->description && $this->params->get('show_description'));
-$desc_img = $this->params->def('show_description_image');
+$desc_img = $this->params->def('show_description_image') && $this->category->getParams()->get('image');
+
 ?>
 
 <section class="blog">
@@ -35,12 +36,12 @@ $desc_img = $this->params->def('show_description_image');
 <?php
 }
 
-if ($desc) { ?>
+if ($desc || $desc_img) { ?>
 	<article class="line category-desc">
 		<div class="introtext"><?php
-		if ($desc_img && $this->category->getParams()->get('image')) {
-		?><p><img class="catimg" src="<?php echo $this->category->getParams()->get('image') ?>" /></p><?php
-		}
+		if ($desc_img) { ?>
+		<figure class="category"><img src="<?php echo $this->category->getParams()->get('image') ?>" class="catimg" alt="" /></figure>
+<?php	}
 		if ($desc) {
 			echo JHtml::_('content.prepare', $this->category->description);
 		}
@@ -50,60 +51,27 @@ if ($desc) { ?>
 <?php
 }
 
-$leading_items = 0;
-
 if (!empty($this->lead_items))
 { ?>
+
 	<section class="line items-leading"><?php
-	foreach ($this->lead_items as $item)
+	foreach ($this->lead_items as $i => $item)
 	{
-		$leading_items += 1;
 		$this->item = $item;
 ?>
-	<div class="leading-<?php echo $leading_items ?>">
+
+	<div class="leading-<?php echo $i ?>">
 	<?php echo $this->loadTemplate('item') ?>
 	</div>
 <?php } ?>
-	</section>
+
+	</section><!-- .items-leading -->
 <?php
 }
 
 if (!empty($this->intro_items))
 {
-	settype($this->columns, 'int');
-
-	$intro   = count($this->intro_items);
-	// grid class
-	$unitCss = ($intro > 1 && $this->columns > 1) ? 'unit size1of'.$this->columns : '';
-	// whether items can be evenly spread
-	$spread  = (int) (($intro % $this->columns) == 0);
-
-	foreach ($this->intro_items as $key => $item)
-	{
-		$this->item = $item;
-
-		$key = (int)($key - $leading_items) + 1;
-		$col = (($key - 1) % $this->columns) + 1;
-		$row = ceil($key / $this->columns);
-
-		$split = ($col % $this->columns) == 1;
-		$cols  = ($unitCss) ? ' cols-'. $this->columns : '';
-
-		// reset cols and units for last item, allowing it to "stretch" across
-		if (!$spread && $key == $intro) {
-			$unitCss = '';
-		}
-
-		if ($split) { ?>
-	<section class="line items-row<?php echo $cols ?>">
-<?php 	} ?>
-		<div class="<?php echo $unitCss, ' row-', $row, ' column-', $col, ($col == $this->columns && $unitCss ? ' lastUnit' : '') ?>">
-		<?php echo $this->loadTemplate('item') ?>
-		</div>
-<?php 	if ($col == $this->columns) { ?>
-	</section>
-<?php	}
-	}
+	echo $this->loadTemplate('intro');
 }
 
 if (!empty($this->link_items))
@@ -115,12 +83,12 @@ if (is_array($this->children[$this->category->id])
 	&& count($this->children[$this->category->id]) > 0
 	&& $this->params->get('maxLevel') !=0
 ) { ?>
-	<section class="cat-children">
+	<section class="line categories-list">
 <?php
 	if (count($this->children[$this->category->id]) > 0) {
-		echo ($toggle_headings) ? '<h3>' : '<h2>' ;
+		echo ($toggle_headings) ? '<h3><span>' : '<h2><span>' ;
 		echo JTEXT::_('JGLOBAL_SUBCATEGORIES');
-		echo ($toggle_headings) ? '</h3>' : '</h2>' ;
+		echo ($toggle_headings) ? '</span></h3>' : '</span></h2>' ;
 		echo $this->loadTemplate('children');
 	}
 ?>
@@ -144,4 +112,4 @@ if ($this->pagination->get('pages.total') > 1 && ($this->params->get('show_pagin
 
 ?>
 
-</section>
+</section><!-- .blog -->

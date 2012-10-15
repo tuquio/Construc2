@@ -35,73 +35,94 @@ class BetterMenuHelper
 	 */
 	static public function getCssAlias($item)
 	{
-		$d = array();
+		if (is_callable('ConstructTemplateHelper::getCssAlias')) {
+			return ConstructTemplateHelper::getCssAlias($item);
+		}
+		$C = array('');
 		// menu item?
-		if (isset($item->type)) {
-			$d['t'] = $item->type;
+		//	$C[] = $item->type;
+		if (isset($item->query) && $parent) {
 			if (isset($item->query['option'])) {
-				$d['o'] = str_replace('_', '-', $item->query['option']);
+				$C[key($C)] .= substr($item->query['option'], strpos($item->query['option'], '_')+1);
 			}
 			if (isset($item->query['view'])) {
-				$d['v'] = $item->query['view'];
-			}
-			if (isset($item->query['layout'])) {
-				$d['l'] = $item->query['layout'];
+				$C[key($C)] .= '-'.$item->query['view'];
 			}
 		}
+		if (isset($item->query['layout'])) {
+			$C[] = $item->query['layout'];
+		}
 
-		$d['A'] = array();
-		if (isset($item->parent_alias)) {
-			$d['A']['pa'] = $item->parent_alias;
+		$A = array();
+		if ($parent) {
+			if (isset($item->parent_alias)) {
+				$A[] = $item->parent_alias;
+			}
+			elseif (isset($item->parent_route)) {
+				$A[] = substr($item->parent_route, 0, strpos($item->parent_route, '/'));
+			}
 		}
 		if (isset($item->category_alias)) {
-			$d['A']['ca'] = $item->category_alias;
+			$A[] = $item->category_alias;
 		}
 		if (isset($item->alias)) {
-			$d['A']['ia'] = $item->alias;
+			$A[] = $item->alias;
 		}
-
-		if ($item instanceof JCategoryNode) {
-			$d['id'] = 'cid-' . $item->id;
-		} else {
-			if (isset($item->catid)) {
-				$d['cid'] = 'cid-'.$item->catid;
-			}
-			$d['id'] = 'item-' . $item->id;
+		if (isset($item->images) && preg_match('#\.(jpe?g|png|gif)#',$item->images)) {
+			$C[] = 'images';
+		}
+		if (isset($item->state) && $item->state == 0) {
+			$A[] = 'system-unpublished';
 		}
 
 		$alias = '';
-		foreach ($d['A'] as $k => $ali)
+		foreach ((array)$A as $k => $ali)
 		{
+			$ali = trim($ali, '-');
+
 			// single word
 			if (strpos($ali, '-') === false) continue;
 			// short enough
 			if (strlen($ali) <= 20) continue;
+
 			// split and sanitize
 			$alias = JStringNormalise::toSpaceSeparated($ali);
-
 			$words = explode(' ', $alias);
 			if (count($words) > 1) {
-				$ignore = JFactory::getLanguage()->getIgnoredSearchWords();
-				$ali = array_diff($words, $ignore);
+				$ali = array_diff($words, JFactory::getLanguage()->getIgnoredSearchWords());
 				if (isset($item->language)) {
 					$alias = self::_inflectAlias($ali, $item->language);
 				} else {
 					$alias = self::_inflectAlias($ali);
 				}
 			}
+			$A[$k] = is_array($alias) ? implode('-', $alias) : $alias;
 		}
-		unset($d['A']);
 
-		$alias .= ' ' . implode(' ', $d);
+		if ($item instanceof JCategoryNode) {
+			list($tmp, $C[]) = explode(':', $item->slug);
+			$C[] = 'cid-' . $item->id;
+		} else {
+			if (isset($item->catid)) {
+				$C[] = 'cid-'.$item->catid;
+			}
+			$C[] = 'item-' . $item->id;
+		}
+
+		$words = array_unique( array_merge($C, $A) );
+		$alias = implode(' ', $words);
 
 		return trim($alias);
 	}
 
 	// @todo refactor to use JStringXXX if that comes available
-	static protected function _inflectAlias(&$aliases, $language = null)
+	protected static function _inflectAlias(&$aliases, $language = null)
 	{
-		static $locale;
+		static $locale, $inflect = true;
+
+		if (!$inflect) {
+			return $aliases;
+		}
 
 		if (!isset($locale)) {
 			// need this to find the default language
@@ -132,6 +153,9 @@ class BetterMenuHelper
 				foreach ($aliases as $i => $alias) {
 					$aliases[$i] = en_GBLocalise::inflect($alias, false);
 				}
+			}
+			else {
+				$inflect = false;
 			}
 		}
 

@@ -21,7 +21,7 @@ JLoader::register('ContentLayoutHelper', JPATH_THEMES . '/construc2/html/com_con
 <?php
 		// If there is a description in the menu parameters use that;
 		if ($this->params->get('categories_description')) {
-			echo  JHtml::_('content.prepare',$this->params->get('categories_description'));
+			echo  JHtml::_('content.prepare', $this->params->get('categories_description'));
 		}
 		// otherwise get one from the database if it exists.
 		elseif ($this->parent->description) {

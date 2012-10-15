@@ -10,7 +10,9 @@
 $item_params     = null;
 $this->cat_level += 1;
 
-?><ul class="menu category <?php echo 'level-',$this->cat_level,' ', ContentLayoutHelper::getCssAlias($this->parent, false) ?>"><?php
+?>
+
+<ul class="menu categories <?php echo 'level-',$this->cat_level,' ', ContentLayoutHelper::getCssAlias($this->parent, false) ?>"><?php
 foreach ($this->items[$this->parent->id] as $id => $item)
 {
 	// let's use it. for some reason this is always ''
@@ -26,27 +28,28 @@ foreach ($this->items[$this->parent->id] as $id => $item)
 
 	?>
 
-	<li class="mi <?php echo ($descImage ? 'has-image ' : '') , ($item->childrennumitems ? 'has-items ' : '') , ContentLayoutHelper::getCssAlias($item, false) ?>">
-	<a class="mi" href="<?php	echo JRoute::_(ContentHelperRoute::getCategoryRoute($item->id)) ?>
+	<li class="mi <?php echo ($descImage ? 'has-image ' : '') , ($item->childrennumitems ? 'parent ' : '') , ContentLayoutHelper::getCssAlias($item, false) ?>">
+	<a class="mi" href="<?php echo JRoute::_(ContentHelperRoute::getCategoryRoute($item->id)) ?>
 	"><span class="mi item-title"><?php echo $this->escape($item->title) ?></span></a>
 
-<?php
-		if ($this->params->get('show_subcat_desc_cat') == 1)
-		{
+<?php   if ($this->params->get('show_subcat_desc_cat') == 1) {
 			if ($descImage) {
 				echo '<figure class="category"><img src="', $descImage ,'" class="thumb" alt="" /></figure>';
 			}
 
-			if (trim($item->description))
-			{
-	?><div class="category-desc"><?php echo JHtml::_('content.prepare', $item->description); ?></div><?php
-			}
+			if (trim($item->description)) { ?>
+	<div class="category-desc">
+		<div class="introtext"><?php echo JHtml::_('content.prepare', $item->description); ?>
+	</div>
+<?php       }
 		}
 
 		if ($this->params->get('show_cat_num_articles_cat') == 1) { ?>
 	<p class="article-info">
-	<strong><?php echo JText::_('COM_CONTENT_NUM_ITEMS') ?></strong><span><?php echo $item->getNumItems(true) ?></span>
-	</p><?php
+	<strong><?php echo JText::_('COM_CONTENT_NUM_ITEMS') ?></strong>
+	<span><?php echo $item->getNumItems(true) ?></span>
+	</p>
+<?php
 		}
 
 		if (count($item->getChildren()) > 0)

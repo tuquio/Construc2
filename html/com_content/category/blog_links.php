@@ -9,7 +9,7 @@
  */
 ?>
 	<aside id="more" class="items-more">
-		<header><h3><?php echo JText::_('COM_CONTENT_MORE_ARTICLES') ?></h3></header>
+		<header><h2 class="H3"><?php echo JText::_('COM_CONTENT_MORE_ARTICLES') ?></h2></header>
 		<ol class="menu links"><?php
 foreach ($this->link_items as $item)
 {

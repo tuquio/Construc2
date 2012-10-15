@@ -11,7 +11,7 @@ $app = JFactory::getApplication();
 
 if ($this->user->get('guest')):
 	// The user is not logged in
-	if ($app->get('input')->get('tmpl') == 'modal') {
+	if ($app->input->get('tmpl') == 'modal') {
 		// login as a modal box
 		echo $this->loadTemplate('loginmodal');
 	} else {

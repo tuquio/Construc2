@@ -8,67 +8,34 @@
  */
 
 JLoader::register('ContentLayoutHelper', JPATH_THEMES . '/construc2/html/com_content/_shared/helper.php');
-
 ?>
+
 <section class="blog featured"><?php
 if ($this->params->get('show_page_heading')) {
 	echo '<h1 class="page-title">', $this->escape($this->params->get('page_heading')), '</h1>';
 }
 
-$leading_items = 0;
-
 if (!empty($this->lead_items))
 { ?>
+
 	<section class="line items-leading"><?php
-	foreach ($this->lead_items as $item)
-	{
-		$leading_items += 1;
-		$this->item = $item;
-?>
-	<div class="leading-<?php echo $leading_items ?>">
-	<?php echo $this->loadTemplate('item') ?>
-	</div>
-<?php } ?>
-	</section>
-<?php
+		foreach ($this->lead_items as $i => $item)
+		{
+			$this->item = $item;
+			?>
+
+			<div class="leading-<?php echo $i ?>">
+				<?php echo $this->loadTemplate('item') ?>
+			</div>
+			<?php } ?>
+
+	</section><!-- .items-leading -->
+	<?php
 }
 
 if (!empty($this->intro_items))
 {
-	settype($this->columns, 'int');
-
-	$intro   = count($this->intro_items);
-	// grid class
-	$unitCss = ($intro > 1 && $this->columns > 1) ? 'unit size1of'.$this->columns : '';
-	// whether items can be evenly spread
-	$spread  = (int) (($intro % $this->columns) == 0);
-
-	foreach ($this->intro_items as $key => $item)
-	{
-		$this->item = $item;
-
-		$key = (int)($key - $leading_items) + 1;
-		$col = (($key - 1) % $this->columns) + 1;
-		$row = ceil($key / $this->columns);
-
-		$split = ($col % $this->columns) == 1;
-		$cols  = ' cols-'. $this->columns;
-
-		// reset cols and units for last item, allowing it to "stretch" across
-		if (!$spread && $key == $intro) {
-			$unitCss = '';
-		}
-
-		if ($split) { ?>
-	<section class="line items-row<?php echo $cols ?>">
-<?php 	} ?>
-		<div class="<?php echo $unitCss, ' row-', $row, ' column-', $col, ($unitCss && $col == $this->columns ? ' lastUnit' : '') ?>">
-		<?php echo $this->loadTemplate('item') ?>
-		</div>
-<?php 	if ($col == $this->columns) { ?>
-	</section>
-<?php	}
-	}
+	echo $this->loadTemplate('intro');
 }
 
 if (!empty($this->link_items))

@@ -14,7 +14,7 @@
  */
 
 // nothing to do if: home + don't show home + don't show first)
-if ($count <= 1) 
+if ($count <= 1)
 {
 	if ($count == 0) {
 		$content = '';
@@ -23,6 +23,15 @@ if ($count <= 1)
 
 	$jmenu = JFactory::getApplication()->getMenu();
 	if ($jmenu->getActive() == $jmenu->getDefault()) {
+		$content = '';
+		return;
+	}
+
+	$_menu = $jmenu->getActive();
+	if (!$_menu) {
+		$_menu = $jmenu->getDefault();
+	}
+	if ($list[0]->link == '/'.$_menu->route) {
 		$content = '';
 		return;
 	}

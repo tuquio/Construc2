@@ -6,7 +6,13 @@
  * @copyright	(C) 2011-2012 WebMechanic. All rights reserved.
  * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  */
+
+if (count($this->children[$this->category->id]) == 0) {
+	return;
+}
+
 ?>
+
 <ul class="menu categories"><?php
 foreach ($this->children[$this->category->id] as $id => $child)
 {
@@ -18,15 +24,17 @@ foreach ($this->children[$this->category->id] as $id => $child)
 	<?php
 		if ($this->params->get('show_subcat_desc') == 1) {
 			if ($child->description && $this->params->get('show_description')!=0 ) { ?>
-		<div class="line category-desc"><?php echo JHtml::_('content.prepare', $child->description) ?></div>
+	<div class="category-desc">
+		<div class="introtext"><?php echo JHtml::_('content.prepare', $child->description) ?></div>
+	</div>
 	<?php	}
 		}
 
 		if ($child->getNumItems()) { ?>
-		<p class="article-info">
-		<strong><?php echo JText::_('COM_CONTENT_NUM_ITEMS') ?></strong>
-		<span><?php echo $child->getNumItems(true) ?></span>
-		</p><?php
+	<p class="article-info">
+	<strong><?php echo JText::_('COM_CONTENT_NUM_ITEMS') ?></strong>
+	<span><?php echo $child->getNumItems(true) ?></span>
+	</p><?php
 		}
 
 		if (count($child->getChildren()) > 0 ) {

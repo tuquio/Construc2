@@ -29,7 +29,9 @@ function modChrome_chtml( $module, &$params, &$attribs )
 {
 	static $ooobj = array('mod'=>false,'complex'=>false,'pop'=>false,'bubble'=>false);
 
-	$css	= array();
+	// set some default attributes
+	$attribs = $attribs + array('module-class'=>$module->position, 'level'=>3, 'header-class'=>'ct-header');
+	$css    = array();
 	$oocss  = null;
 
 	if (isset($attribs['oocss']))
@@ -51,7 +53,7 @@ function modChrome_chtml( $module, &$params, &$attribs )
 		$css[] = str_replace('_', '-', $module->module);
 	}
 
-	$css[] 	= isset($attribs['module-class'])  ? $attribs['module-class'] : $module->position;
+	$css[] 	= $attribs['module-class'];
 	$css[] 	= $params->get('moduleclass_sfx');
 	$css    = trim(implode(' ', array_unique($css) ));
 
@@ -65,7 +67,7 @@ function modChrome_chtml( $module, &$params, &$attribs )
 
 	if ($module->showtitle)
 	{
-		$level = isset($attribs['level']) ? (int) $attribs['level'] : 3;
+		$level = $attribs['level'];
 
 		// flip title for guests and users
 		$u = JFactory::getUser()->guest ? '_0' : '_1';
@@ -80,7 +82,7 @@ function modChrome_chtml( $module, &$params, &$attribs )
 		if ('custom' != $module->module) {
 			$css[] = str_replace(array('_','mod_'), array('_',''), $module->module) .'-title';
 		}
-		$css[] = isset($attribs['header-class']) ? $attribs['header-class'] : 'ct-header';
+		$css[] = $attribs['header-class'];
 
 		$css   = trim(implode(' ', array_unique($css) ));
 

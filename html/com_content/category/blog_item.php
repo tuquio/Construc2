@@ -6,7 +6,7 @@
  * @copyright	(C) 2011-2012 WebMechanic. All rights reserved.
  * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  *
- * @var JRegistry $params
+ * @var $params JRegistry
  */
 
 $params		= $this->item->params;
@@ -26,9 +26,9 @@ $urls		= json_decode($this->item->urls);
 
 ?>
 	<article class="article <?php echo $showact, ContentLayoutHelper::getCssAlias($this->item) ?>">
-	<header class="article">
 <?php
 if ($params->get('show_title')) { ?>
+	<header class="article">
 	<h2 class="H2 title"><?php
 	if ($params->get('link_titles') && $params->get('access-view')) {
 	?><a href="<?php echo JRoute::_(ContentHelperRoute::getArticleRoute($this->item->id, $this->item->catid)); ?>#content"><?php
@@ -39,14 +39,13 @@ if ($params->get('show_title')) { ?>
 	} ?></h2>
 <?php
 }
-
 if (!$params->get('show_intro')) {
 	echo $this->item->event->afterDisplayTitle;
 }
-?>
+if ($params->get('show_title')) { ?>
 	</header>
-
 <?php
+}
 
 /* cleanup vote plugin if exists */
 if (!ContentLayoutHelper::isEmpty($this->item->event->beforeDisplayContent))
@@ -72,8 +71,6 @@ if ($showStuff) {
 	require JPATH_THEMES . '/construc2/html/com_content/_shared/articledetails.php';
 }
 
-	echo $this->item->event->afterDisplayContent;
-
+echo $this->item->event->afterDisplayContent;
 ?>
 	</article>
-

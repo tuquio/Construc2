@@ -150,14 +150,14 @@ class ContentLayoutHelper
 	{
 		$item->pagenav = null;
 
-		if (!isset($item->toc)) {
-			return;
-		}
-
 		// no toc for "all pages" view
 		if ((bool) JFactory::getApplication()->input->get('showall'))
 		{
 			$item->toc = null;
+		}
+
+		if (empty($item->toc)) {
+			return;
 		}
 
 		try {
@@ -200,10 +200,23 @@ class ContentLayoutHelper
 	static protected function _makePageToc(&$item, $class='unit size1of3 rgt')
 	{
 		$shutup = libxml_use_internal_errors(false);
-
 		$flags = LIBXML_NOBLANKS | LIBXML_NOEMPTYTAG | LIBXML_NOCDATA;
+		settype($item->toc, 'string');
 
-		$div = new SimpleXMLElement($item->toc, $flags);
+		try {
+			$div = new SimpleXMLElement($item->toc, $flags);
+		} catch (Exception $e) {
+			$doc = new DOMDocument();
+			$doc->validateOnParse = false;
+			$doc->strictErrorChecking = false;
+			try {
+				$doc->loadHTML($item->toc);
+				$doc->encoding = 'UTF-8';
+				$div = new SimpleXMLElement($doc->saveXML(), $flags);
+			} catch (Exception $e) {
+				return $item->toc;
+			}
+		}
 
 		// pagination list using pagination.php
 		$i = 0;

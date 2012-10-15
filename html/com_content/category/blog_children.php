@@ -12,22 +12,23 @@ if (count($this->children[$this->category->id]) == 0) {
 }
 $class = ' class="mi first"';
 ?>
+
 <ul class="menu categories"><?php
 foreach($this->children[$this->category->id] as $id => $child)
 {
 	if ($this->params->get('show_empty_categories') || $child->getNumItems(true) || count($child->getChildren()))
 	{
 		if (!isset($this->children[$this->category->id][$id + 1])) {
-			$class = ' class="last"';
+			$class = ' class="mi last"';
 		}
-?><li class="mi">
-	<article class="line category-desc">
-	<span class="mi H4"><a  class="mi" href="<?php echo JRoute::_(ContentHelperRoute::getCategoryRoute($child->id))	?>"><?php
-		echo $this->escape($child->title) ?></a></span>
+?><li class="<?php echo $class ?>>">
+	<div class="category-desc">
+	<a  class="mi" href="<?php echo JRoute::_(ContentHelperRoute::getCategoryRoute($child->id))	?>">
+		<span class="mi item-title"><?php echo $this->escape($child->title) ?></span>
+	</a>
 <?php
-		if ($this->params->get('show_subcat_desc') == 1)
-		{
-			if ($child->description && $this->params->get('show_description')!=0 ) { ?>
+		if ($this->params->get('show_subcat_desc') == 1) {
+			if ($child->description && $this->params->get('show_description') != 0) { ?>
 		<div class="introtext"><?php echo JHtml::_('content.prepare', $child->description) ?></div>
 <?php		}
 		}
@@ -37,7 +38,7 @@ foreach($this->children[$this->category->id] as $id => $child)
 	<strong><?php echo JText::_('COM_CONTENT_NUM_ITEMS') ?></strong>
 	<span><?php echo $child->getNumItems(true) ?></span>
 	</p>
-	</article>
+	</div>
 <?php
 		}
 
@@ -53,7 +54,9 @@ foreach($this->children[$this->category->id] as $id => $child)
 
 			$this->category = $child->getParent();
 			$this->maxLevel++;
-		} ?></li><?php
+		} ?></li>
+
+<?php
 	} // if
 } // foreach
 ?></ul>
