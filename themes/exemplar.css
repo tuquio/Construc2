@@ -260,6 +260,7 @@ div.finder br				{display:none}
  */
 .hmenu				{padding:.5ex 0}
 .mainmenu .active	{font-weight:bold}
+.menu .submenu		{font-weight:normal}
 
 .current > a.li	{} /* may contain a nested menu.submenu */
 .active > a.li		{font-weight:bold} /* single item */
