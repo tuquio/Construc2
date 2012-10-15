@@ -6,56 +6,68 @@ Possible panel groups to plug into:
 	> features   : the win and doubt group for almost anything
 	> standards  : provide Shims, Shivs, and other means of webstandards compatibility
 	> quirks     : nice to have a sim, shiv or polyfill in here
-	> javascript : add or mess with javascript files and scripts
+	> javascripts: add or mess with javascript files and scripts
  -->
 
 	<fields name="params">
 		<!-- basic = core features or things with technical merit -->
-		<field  fieldset="basic"  name="setGeneratorTag" type="text" default="" label="TPL_CONSTRUC2_METAGENERATOR" description="TPL_CONSTRUC2_METAGENERATOR_DESC" size="56" />
+		<field  fieldset="basic"  name="setGeneratorTag" type="text" default="" label="Basic_setGeneratorTag" description="Basic_setGeneratorTag_Desc" size="56" />
 
 		<!-- features = the win and doubt group for almost anything -->
-		<field  fieldset="features"  name="diagnostics" type="radio" default="0" label="Standards_Feature_diagnostics" description="Standards_Feature_diagnostics_Desc">
+		<field  fieldset="features"  name="diagnostics" type="radio" default="0" label="Standards_diagnostics" description="Standards_diagnostics_Desc">
 			<option value="1">JShow</option>
 			<option value="0">JHide</option>
 		</field>
 
-        <field  fieldset="standards"  name="prefixfree" type="radio" default="0" label="Standards_Feature_prefixfree" description="Standards_Feature_prefixfree_Desc">
-            <option value="1">JYes</option>
-            <option value="0">JNo</option>
-        </field>
+		<field  fieldset="standards"  name="prefixfree" type="radio" default="0" label="Standards_prefixfree" description="Standards_prefixfree_Desc">
+			<option value="1">JYes</option>
+			<option value="0">JNo</option>
+		</field>
 
-		<field  fieldset="standards"  name="html5manifest" type="radio" default="0" label="TPL_CONSTRUC2_ENABLE_HTML5MANIFEST_LABEL" description="TPL_CONSTRUC2_ENABLE_HTML5MANIFEST_DESC">
+		<field  fieldset="standards"  name="html5manifest" type="radio" default="0" label="Standards_html5manifest" description="Standards_html5manifest_Desc">
 			<option value="1">JYes</option>
 			<option value="0">JNo</option>
 		</field>
 
 		<fieldset name="quirks">
-			<field type="radio" handler="msie" name="msieEdge" default="0" label="Quirks_Feature_msieEdge" description="Quirks_Feature_msieEdge_Desc">
+			<field type="radio" handler="msie" name="msieEdge" default="0" label="Quirks_msieEdge" description="Quirks_msieEdge_Desc">
 				<option value="1">JYes</option>
 				<option value="0">JNo</option>
 			</field>
-            <field type="radio" handler="msie" name="msieMetroActivex" default="0" label="Quirks_Feature_msieMetroActivex" description="Quirks_Feature_msieMetroActivex_Desc">
-                <option value="1">JYes</option>
-                <option value="0">JNo</option>
-            </field>
-            <field type="radio" handler="msie" name="msieMeta" default="0" label="Quirks_Feature_msieMeta" description="Quirks_Feature_msieMeta_Desc">
+			<field type="radio" handler="msie" name="msieMetroActivex" default="0" label="Quirks_msieMetroActivex" description="Quirks_msieMetroActivex_Desc">
 				<option value="1">JYes</option>
 				<option value="0">JNo</option>
 			</field>
-			<field type="radio" handler="msie" name="msieBrowserchoice" default="0" label="Quirks_Feature_msieBrowserchoice" description="Quirks_Feature_msieBrowserchoice_Desc">
+			<field type="radio" handler="msie" name="msieMeta" default="0" label="Quirks_msieMeta" description="Quirks_msieMeta_Desc">
 				<option value="1">JYes</option>
 				<option value="0">JNo</option>
 			</field>
-			<field type="radio" handler="msie" name="msieCfinstall" default="0" label="Quirks_Feature_msieCfinstall" description="Quirks_Feature_msieCfinstall_Desc">
+			<field type="radio" handler="msie" name="msieBrowserchoice" default="0" label="Quirks_msieBrowserchoice" description="Quirks_msieBrowserchoice_Desc">
+				<option value="1">JYes</option>
+				<option value="0">JNo</option>
+			</field>
+			<field type="radio" handler="msie" name="msieCfinstall" default="0" label="Quirks_msieCfinstall" description="Quirks_msieCfinstall_Desc">
 				<option value="1">JYes</option>
 				<option value="0">JNo</option>
 			</field>
 		</fieldset>
-    </fields>
+	</fields>
 
 	<!-- EXPERIMENTAL : type and location are in flux -->
 	<updateservers>
-		<server type="template">http://joomla.webmechanic.biz/tpl/kaskade/features.xml</server>
+		<server type="package">http://joomla.webmechanic.biz/tpl/kaskade/pkg_features.xml</server>
 	</updateservers>
+
+	<metadata>
+		<name>Kaskade Core Features</name>
+		<creationDate>2012 Aug.</creationDate>
+		<author>WebMechanic</author>
+		<authorEmail>joomla@webmechanic.biz</authorEmail>
+		<authorUrl>http://joomla.webmechanic.biz</authorUrl>
+		<copyright>Copyright (C)2011-2012 WebMechanic. All rights reserved.</copyright>
+		<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+		<version>2.0.0</version>
+		<help key="Kaskade_Features_Help" url="http://joomla.webmechanic.biz/docs/kaskade/features/" />
+	</metadata>>
 
 </form>

@@ -9,14 +9,16 @@
  */
 !defined('WMPATH_TEMPLATE') && define('WMPATH_TEMPLATE', dirname(dirname(__FILE__)));
 !defined('WMPATH_ELEMENTS') && define('WMPATH_ELEMENTS', WMPATH_TEMPLATE . '/elements');
+//#FIXME for the time being, them move feature + widget to ./addons
+!defined('WMPATH_ADDONS')   && define('WMPATH_ADDONS', WMPATH_ELEMENTS);
 
 /**
- * CustomTheme Base Class.
+ * ConstructTemplateTheme Base Class.
  */
-class CustomTheme
+class ConstructTemplateTheme
 {
 	/**
-	 * @var $theme CustomTheme instance of self
+	 * @var $theme ConstructTemplateTheme instance of self
 	 * @see getInstance()
 	 */
 	public static $theme;
@@ -88,7 +90,7 @@ class CustomTheme
 	 */
 	protected function __construct($theme = null)
 	{
-		/* spl_autoload_register(array('CustomTheme', 'autoload')); */
+		/* spl_autoload_register(array('ConstructTemplateTheme', 'autoload')); */
 
 		// theme filename only? 'foo.css', 'bar.styles' (Backend usage)
 		if (is_string($theme)) {
@@ -120,6 +122,8 @@ class CustomTheme
 		$jtmpl = basename(JPATH_THEMES);
 		$this->tmpl_url = JUri::root(true) ."/{$jtmpl}/". $theme->template;
 
+		$this->url = $this->tmpl_url . '/themes/'. $this->name;
+
 		// an optional .xml file with params for the backend
 		$this->form = WMPATH_TEMPLATE .'/themes/'. $this->name . '.xml';
 		if (!is_file($this->form)) {
@@ -134,7 +138,7 @@ class CustomTheme
 
 	/**
 	 * @param  string $theme  optional theme file, i.e 'foo.css', 'bar.styles'
-	 * @return CustomTheme
+	 * @return ConstructTemplateTheme
 	 */
 	public static function getInstance($theme = null)
 	{
@@ -145,15 +149,15 @@ class CustomTheme
 	}
 
 	/**
-	 * @return CustomTheme
+	 * @return ConstructTemplateTheme
 	 */
 	final public function build()
 	{
 		// does anyone know what $head['link'] is for? skipping...
 		$head = JFactory::getDocument()->getHeadData();
 
-// FB::log(self::$chunks, 'CustomTheme::build $chunks');
-// FB::log(array_keys(self::$features), 'CustomTheme::build $features');
+// FB::log(self::$chunks, 'ConstructTemplateTheme::build $chunks');
+// FB::log(array_keys(self::$features), 'ConstructTemplateTheme::build $features');
 
 		self::$chunks['meta']['renderer.head']    = ElementRendererAbstract::getInstance('renderer.head')->build($head);
 		self::$chunks['meta']['renderer.meta']    = ElementRendererAbstract::getInstance('renderer.meta')->build($head['metaTags']);
@@ -178,7 +182,7 @@ class CustomTheme
 	 * @param  string  $name     buffer name, usually a template position or a "chunk" of the theme
 	 * @param  string  $content  the content to store
 	 *
-	 * @return CustomTheme
+	 * @return ConstructTemplateTheme
 	 *
 	 * @todo implement caching
 	 */
@@ -276,7 +280,7 @@ class CustomTheme
 	 * @param  mixed   $data    Some data or FALSE to disable a feature at runtime
 	 * @return
 	 *
-	 * @uses CustomTheme::setFeature()
+	 * @uses ConstructTemplateTheme::setFeature()
 	 */
 	final public function setFeature($feature, $data)
 	{
@@ -429,10 +433,10 @@ class CustomTheme
 							$a[1] = implode('=', $a);
 							$a[0] = $k;
 						}
-						$output[$sec][$a[0]] = trim($a[1], "'\"`");
+						$config[$sec][$a[0]] = trim($a[1], "'\"`");
 					} else {
 						$sec = $a[0];
-						$output[$sec] = array();
+						$config[$sec] = array();
 					}
 				}
 			}
@@ -464,7 +468,7 @@ class CustomTheme
 	 *
 	 * @param  JForm $form
 	 *
-	 * @return CustomTheme
+	 * @return ConstructTemplateTheme
 	 */
 	final public function setForm(JForm $form)
 	{
@@ -480,7 +484,7 @@ class CustomTheme
 		if ($this->form) {
 			JFormHelper::addFormPath(WMPATH_TEMPLATE . '/themes');
 
-			$form->loadFile($this->form, false);
+			$form->loadFile($this->form);
 			JFactory::getLanguage()->load('theme_'.$this->name, WMPATH_TEMPLATE);
 		}
 
@@ -524,7 +528,7 @@ class CustomTheme
 		$parts[1] .= ($parts[1] == 'renderer') ? '' : 's';
 		// filename
 		$parts[2] = strtolower($parts[2]) . '.php';
-FB::warn($parts, "autoload($class)");
+
 		include_once implode('/', $parts);
 	}
 

@@ -111,7 +111,6 @@ class JFormFieldThemelist extends JFormFieldFileList
 	 */
 	public function prepareForm(JForm $form, JObject $data)
 	{
-		FB::log($data, $form->getName() .' @ '. __METHOD__);
 	}
 
 }

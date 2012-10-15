@@ -10,9 +10,9 @@
 !defined('WMPATH_TEMPLATE') && define('WMPATH_TEMPLATE', dirname(dirname(__FILE__)));
 
 JLoader::registerPrefix('Element', WMPATH_TEMPLATE . '/elements');
-// require_once WMPATH_TEMPLATE . '/elements/renderer/head.php';
+JFormHelper::addFieldPath(WMPATH_TEMPLATE . '/elements/fields');
 
-JLoader::register('CustomTheme', WMPATH_TEMPLATE . '/elements/theme.php');
+JLoader::register('ConstructTemplateTheme', WMPATH_TEMPLATE . '/elements/theme.php');
 
 /* SearchHelper knows about the (enhanced) stop words list in xx_XXLocalise
  * and is misused to clean the alias for use as a class name of list items */
@@ -56,7 +56,7 @@ class ConstructTemplateHelper
 	/** @var $config array */
 	protected $config = array('cdn'=>array('@default'=>''), 'subst'=>array());
 
-	/** @var $theme CustomTheme */
+	/** @var $theme ConstructTemplateTheme */
 	public $theme;
 
 	/** @var $head array */
@@ -89,7 +89,7 @@ class ConstructTemplateHelper
 
 	/**
 	 * @return ConstructTemplateHelper
-	 * @uses CustomTheme::getInstance()
+	 * @uses ConstructTemplateTheme::getInstance()
 	 */
 	public static function getInstance()
 	{
@@ -100,7 +100,7 @@ class ConstructTemplateHelper
 
 		if (null === self::$helper->theme)
 		{
-			self::$helper->theme = CustomTheme::getInstance(self::$helper->getTemplate());
+			self::$helper->theme = ConstructTemplateTheme::getInstance(self::$helper->getTemplate());
 			self::$helper->_applySubst('theme', self::$helper->theme->getName());
 		}
 
@@ -152,10 +152,26 @@ class ConstructTemplateHelper
 			$jmenu = $app->getMenu()->getDefault();
 		}
 
-		$css = $this->getCssAlias($jmenu, $parent);
+		// add "top level" category
+		$jmenu->parent_alias = $app->getMenu()->getItem( $jmenu->tree[0] )->alias;
+
+		$css = self::getCssAlias($jmenu, $parent);
 		$alias[$parent] = $css;
 
 		return $alias[$parent];
+	}
+
+	/**
+	 * Tells whether the .mod class from OOCSS should be applied.
+	 *
+	 * @param  string  $position
+	 * @return boolean
+	 *
+	 * @todo IMPLEMENT and honor $position conditions
+	 */
+	public function moduleStyle($position)
+	{
+		return (bool) $this->tmpl->params->get('modOocss', 0);
 	}
 
 	/**
@@ -171,7 +187,7 @@ class ConstructTemplateHelper
 	 *
 	 * @return string The alias
 	 */
-	public function getCssAlias($item, $parent = false)
+	public static function getCssAlias($item, $parent = false)
 	{
 		$C = array('');
 		// menu item?
@@ -226,12 +242,12 @@ class ConstructTemplateHelper
 			if (count($words) > 1) {
 				$ali = array_diff($words, JFactory::getLanguage()->getIgnoredSearchWords());
 				if (isset($item->language)) {
-					$alias = $this->_inflectAlias($ali, $item->language);
+					$alias = self::_inflectAlias($ali, $item->language);
 				} else {
-					$alias = $this->_inflectAlias($ali);
+					$alias = self::_inflectAlias($ali);
 				}
 			}
-			$A[$k] = $alias;
+			$A[$k] = is_array($alias) ? implode('-', $alias) : $alias;
 		}
 
 		if ($item instanceof JCategoryNode) {
@@ -250,21 +266,8 @@ class ConstructTemplateHelper
 		return trim($alias);
 	}
 
-	/**
-	 * Tells whether the .mod class from OOCSS should be applied.
-	 *
-	 * @param  string  $position
-	 * @return boolean
-	 *
-	 * @todo IMPLEMENT and honor $position conditions
-	 */
-	public function moduleStyle($position)
-	{
-		return (bool) $this->tmpl->params->get('modOocss', 0);
-	}
-
 	// @todo refactor to use JStringXXX if that comes available
-	protected function _inflectAlias(&$aliases, $language = null)
+	protected static function _inflectAlias(&$aliases, $language = null)
 	{
 		static $locale, $inflect = true;
 
@@ -480,18 +483,18 @@ class ConstructTemplateHelper
 	}
 
 	/**@#+
-	 * Proxy for CustomTheme::setFeature() enable/disable a feature.
+	 * Proxy for ConstructTemplateTheme::setFeature() enable/disable a feature.
 	 *
 	 * <b>NOTE</b>: This interface will cast $data to a boolen, enabling
 	 * the feature by default. Widgets and Features that requiren extra
-	 * data should be assigned via {@link CustomTheme::setFeature()}.
+	 * data should be assigned via {@link ConstructTemplateTheme::setFeature()}.
 	 */
 
 	/**
 	 * @param  string  $feature  A feature name
 	 * @param  boolean $enable   enable/disable said $feature.
 	 *
-	 * @uses CustomTheme::setFeature()
+	 * @uses ConstructTemplateTheme::setFeature()
 	 *
 	 * @return ConstructTemplateHelper for fluid interface
 	 */
@@ -504,7 +507,7 @@ class ConstructTemplateHelper
 	 * @param  string  $widget   A feature name
 	 * @param  boolean $enable   enable/disable said $feature.
 	 *
-	 * @uses CustomTheme::setFeature()
+	 * @uses ConstructTemplateTheme::setFeature()
 	 *
 	 * @return ConstructTemplateHelper for fluid interface
 	 */
@@ -568,20 +571,13 @@ class ConstructTemplateHelper
 			$modules[$i]        = $this->doc->countModules($pos);
 			$position->{$pos}   = $modules[$i];
 			$position->{$i}     = &$position->{$pos};
-			$position->total    += $position->{$pos};
+			$position->total    += $modules[$i];
 		}
-
-		if ($position->total == 0) {
-			return $position;
-		}
-
-		$position->total = $i;
 
 		// #FIXME special treatment for alpha/beta groups if $group='column'
 		if ($group =='column') {
-			$position->groups = array('alpha', 'beta');
-			$position->{'group-alpha'} = new PositionGroup('group-alpha', $modules[1] + $modules[2]);
-			$position->{'group-beta'}  = new PositionGroup('group-beta', $modules[3] + $modules[4]);
+			$position->{'group-alpha'}->total = $modules[1] + $modules[2];
+			$position->{'group-beta'} ->total = $modules[3] + $modules[4];
 		}
 
 		return self::$positions->{$group};
@@ -607,7 +603,7 @@ class ConstructTemplateHelper
 	 *
 	 * @return ConstructTemplateHelper for fluid interface
 	 *
-	 * @uses CustomTheme::setCapture()
+	 * @uses ConstructTemplateTheme::setCapture()
 	 *
 	 * @todo refactor into ElementRendererModule
 	 */
@@ -696,31 +692,38 @@ class ConstructTemplateHelper
 #	if (self::isEmpty($content)) {
 #		continue;
 #	}
-
-			if ( ($chunk = $this->theme->getChunk('module', array('before', $module->name))) )
-			{
-				$name = '-'. $module->name;
-				if ($position == $module->name) {
-					$name  = '';
-					$css[] = $position;
+			// check for "pseudo-modules" in preview mode, &tp=1
+			if (isset($module->name)) {
+				if ( ($chunk = $this->theme->getChunk('module', array('before', $module->name))) )
+				{
+					$name = '-'. $module->name;
+					if ($position == $module->name) {
+						$name  = '';
+						$css[] = $position;
+					}
+					$html[] = str_replace(
+								array('{position}', '{name}', '{class}'),
+								array($position, $name, implode(' ', $css)),
+								$chunk
+								);
 				}
-				$html[] = str_replace(
-							array('{position}', '{name}', '{class}'),
-							array($position, $name, implode(' ', $css)),
-							$chunk
-							);
+
+				$html[] = $content;
+
+				if ( ($chunk = $this->theme->getChunk('module', array('after', $module->name))) )
+				{
+					$html[] = $chunk;
+				}
+			}
+			else {
+				$html[] = $content;
 			}
 
-			$html[] = $content;
-
-			if ( ($chunk = $this->theme->getChunk('module', array('after', $module->name))) )
-			{
-				$html[] = $chunk;
-			}
 		}
 
 		if (isset($attribs['capture']))
 		{
+			// capture using $group instead of $position
 			if ($attribs['capture'] === true) {
 				$attribs['capture'] = $group;
 			}
@@ -733,12 +736,12 @@ class ConstructTemplateHelper
 	}
 
 	/**
-	 * Proxy for {@link CustomTheme::getCapture()}.
+	 * Proxy for {@link ConstructTemplateTheme::getCapture()}.
 	 *
 	 * @param  string  $name
 	 * @param  bool    $checkonly
 	 *
-	 * @uses CustomTheme::getCapture()
+	 * @uses ConstructTemplateTheme::getCapture()
 	 */
 	public function getCapture($name, $checkonly = false)
 	{
@@ -1010,10 +1013,11 @@ To allow parallel downloading, move the inline script before the external CSS fi
 
 	protected function loadConfig($name)
 	{
-		$default = array();
-
 		// fake ini file
-		$config  = CustomTheme::loadConfig($name);
+		$config  = ConstructTemplateTheme::loadConfig($name);
+
+		$default = array('subst'=>array());
+		$default = array_merge_recursive($default, $this->config);
 		$default = array_merge_recursive($default, $config);
 
 		foreach ($default['subst'] as $k => $v)
@@ -1038,7 +1042,7 @@ To allow parallel downloading, move the inline script before the external CSS fi
 	/**
 	 * Return the current theme instance.
 	 *
-	 * @return CustomTheme
+	 * @return ConstructTemplateTheme
 	 * @see $theme
 	 */
 	public function getTheme()
@@ -1095,6 +1099,8 @@ To allow parallel downloading, move the inline script before the external CSS fi
 					self::$states[$state] = (bool) $this->_printState($request);
 					break;
 				case 'modal':
+				case 'mail':
+				case 'media':
 					self::$states[$state] = (bool) $this->_modalState($request);
 					break;
 				case 'debug':
@@ -1123,7 +1129,8 @@ To allow parallel downloading, move the inline script before the external CSS fi
 	 */
 	protected function _printState(JInput $request)
 	{
-
+		// &print=1  &layout=XYZ  &page=[NN]
+		return $request->get('print') && ($request->get('tmpl') == 'component');
 	}
 	/**
 	 * @return bool true if the document/template is in "modal window mode"
@@ -1131,7 +1138,7 @@ To allow parallel downloading, move the inline script before the external CSS fi
 	 */
 	protected function _modalState(JInput $request)
 	{
-
+		return in_array($request->get('option'), array('com_media','com_mailto'));
 	}
 	/**
 	 * @return bool true if the document/template is in "debug mode"
@@ -1183,7 +1190,7 @@ To allow parallel downloading, move the inline script before the external CSS fi
 					continue;
 				}
 
-				// fails on "boolean" attribs w/ value ie defer async
+				//#FIXME fails on "boolean" attribs w/ value ie defer async
 				parse_str($m[1][$i], $arr);
 
 				$found = false;
@@ -1218,6 +1225,12 @@ class PositionGroup
 		$this->name  = $name;
 		$this->total = $total;
 		$this->{0}   = &$this->total;
+
+		if ($name =='column') {
+			$this->groups = array('alpha', 'beta');
+			$this->{'group-alpha'} = new PositionGroup('group-alpha');
+			$this->{'group-beta'}  = new PositionGroup('group-beta');
+		}
 	}
 
 	public function toArray()

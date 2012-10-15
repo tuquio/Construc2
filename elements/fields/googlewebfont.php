@@ -28,7 +28,7 @@ class JFormFieldGooglewebfont extends JFormFieldList
 	protected function getOptions()
 	{
 		if ( false ) { // check field "googleWebFontApi"
-			$options[]	= JHtml::_('select.option', '', JText::_('TPL_CONSTRUC2_GOOGLE_WEB_FONT_SELECT'));
+			$options[]	= JHtml::_('select.option', '', JText::_('Googlewebfont_Select'));
 		} else {
 			$options = self::_staticFontList();
 		}
@@ -39,7 +39,7 @@ class JFormFieldGooglewebfont extends JFormFieldList
 	protected static function _staticFontList()
 	{
 		$options    = array();
-		$options[]	= JHtml::_('select.option', '', JText::_('TPL_CONSTRUC2_GOOGLE_WEB_FONT_SELECT'));
+		$options[]	= JHtml::_('select.option', '', JText::_('Googlewebfont_Select'));
 		$options[]	= JHtml::_('select.option', 'Abel', 'Abel');
 		$options[]	= JHtml::_('select.option', 'Aclonica', 'Aclonica');
 		$options[]	= JHtml::_('select.option', 'Actor', 'Actor');

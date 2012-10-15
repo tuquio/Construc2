@@ -12,7 +12,7 @@
 class JDocumentRendererToe extends ElementRendererAbstract implements IElementRenderer
 {
 	protected $name = 'toe';
-	/** @var CustomTheme $theme */
+	/** @var ConstructTemplateTheme $theme */
 	protected $theme;
 
 	/**

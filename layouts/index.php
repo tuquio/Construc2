@@ -8,21 +8,22 @@
  * @copyright	Copyright (C) 2011 WebMechanic http://webmechanic.biz. All rights reserved.
  * @license		GNU/GPL v2 or later http://www.gnu.org/licenses/gpl-2.0.html
  *
- * @var JSite $app
  * @var ConstructTemplateHelper $templateHelper
+ * @var JSite  $app
  * @var string $cache_manifest
  * @var string $columnLayout
- * @var array $headerAboveCount
- * @var array $headerBelowCount
- * @var array $navBelowCount
- * @var array $contentAboveCount
- * @var array $contentBelowCount
- * @var int $columnGroupAlphaCount
- * @var int $columnGroupBetaCount
- * @var array $footerAboveCount
- * @var bool $enableSwitcher
+ * @var array  $headerAboveCount
+ * @var array  $headerBelowCount
+ * @var array  $navBelowCount
+ * @var array  $contentAboveCount
+ * @var array  $contentBelowCount
+ * @var int    $columnGroupAlphaCount
+ * @var int    $columnGroupBetaCount
+ * @var array  $footerAboveCount
+ * @var bool    $enableSwitcher
  */
 !defined('WMPATH_LAYOUTS') && define('WMPATH_LAYOUTS', dirname(__FILE__));
+
 ?>
 
 <html lang="<?php echo $this->language ?>" dir="<?php echo $this->direction ?>" <?php echo $cache_manifest ?>>
@@ -51,16 +52,16 @@
 
 <?php if ($this->countModules('breadcrumbs')) { $templateHelper->renderModules('breadcrumbs'); } ?>
 
-			<div class="line content-container">
+			<div class="line content-container"><b class="fx-cont"></b>
 <?php if ($navBelowCount[0]) { include WMPATH_LAYOUTS. '/mod_nav_below.php'; } ?>
 
-				<div id="content" class="line content-main">
+				<div id="content" class="line content-main"><b class="fx-main"></b>
 
 <?php if ($this->getBuffer('message')) { ?><jdoc:include type="message" /><?php } ?>
 
 <?php if ($contentAboveCount[0]) { include WMPATH_LAYOUTS. '/mod_content_above.php'; } ?>
 
-	<section class="line component">
+	<section class="line component"><b class="fx-comp"></b>
 	<jdoc:include type="component" />
 <?php if ($contentBelowCount[0]) { include WMPATH_LAYOUTS. '/mod_content_below.php'; } ?>
 

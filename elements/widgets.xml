@@ -3,29 +3,32 @@
 <!--
 Most Widgets would plug into the "widgets" parameter group (fieldset).
 Possible panel groups to plug into:
-	> widgets   : add or generate visual output
-	> javascript: add or mess with javascript files and scripts
-	> standards : provide SHims or other means of webstandards compatibility
+	> widgets    : add or generate visual output
+	> standards  : provide SHims or other means of webstandards compatibility
+	> javascripts: add or mess with javascript files and scripts
  -->
 
 	<fields name="params">
 		<fieldset name="widgets">
-			<field type="radio" name="widgetDate" default="0" label="TPL_CONSTRUC2_DATECONTAINER_LABEL" description="TPL_CONSTRUC2_DATECONTAINER_DESC">
+			<field type="radio" name="widgetDate" default="0" label="Widget_widgetDate" description="Widget_widgetDate_Desc">
 				<option value="1">JShow</option>
 				<option value="0">JHide</option>
 			</field>
-			<field type="list" name="widgetDateFormat" default="4" label="TPL_CONSTRUC2_DATEFORMAT_LABEL" description="TPL_CONSTRUC2_DATEFORMAT_DESC">
+
+            <field type="list" name="dateFormat" default="4" label="Widget_dateFormat" description="Widget_dateFormat_Desc">
 				<option value="" >DATE_FORMAT_LC</option>
 				<option value="1">DATE_FORMAT_LC1</option>
 				<option value="2">DATE_FORMAT_LC2</option>
 				<option value="3">DATE_FORMAT_LC3</option>
 				<option value="4">DATE_FORMAT_LC4</option>
 			</field>
-			<field fieldset="kaskade" type="radio" name="fontscaler" default="0" label="TPL_CONSTRUC2_FONTSCALER_LABEL" description="TPL_CONSTRUC2_FONTSCALER_DESC">
+
+			<field type="radio" name="fontscaler" default="0" label="Widget_Fontscaler" description="Widget_Fontscaler_Desc">
 				<option value="1">JShow</option>
 				<option value="0">JHide</option>
 			</field>
-			<field fieldset="kaskade" type="radio" name="styleswitch" default="0" label="TPL_CONSTRUC2_STYLESWITCH_LABEL" description="TPL_CONSTRUC2_STYLESWITCH_DESC">
+
+			<field type="radio" name="styleswitch" default="0" label="Widget_Styleswitcher" description="Widget_Styleswitcher_Desc">
 				<option value="1">JShow</option>
 				<option value="0">JHide</option>
 			</field>
@@ -34,7 +37,19 @@ Possible panel groups to plug into:
 
 	<!-- EXPERIMENTAL : type and location are in flux -->
 	<updateservers>
-		<server type="template">http://joomla.webmechanic.biz/tpl/kaskade/widgets.xml</server>
+		<server type="package">http://joomla.webmechanic.biz/tpl/kaskade/pkg_widgets.xml</server>
 	</updateservers>
+
+	<metadata>
+		<name>Kaskade Core Widgets</name>
+		<creationDate>2012 Aug.</creationDate>
+		<author>WebMechanic</author>
+		<authorEmail>joomla@webmechanic.biz</authorEmail>
+		<authorUrl>http://joomla.webmechanic.biz</authorUrl>
+		<copyright>Copyright (C)2011-2012 WebMechanic. All rights reserved.</copyright>
+		<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+		<version>2.0.0</version>
+		<help key="Kaskade_Widgets_Help" url="http://joomla.webmechanic.biz/docs/kaskade/widgets/" />
+	</metadata>>
 
 </form>

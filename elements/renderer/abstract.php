@@ -147,7 +147,9 @@ abstract class ElementRendererAbstract
 		}
 
 		if (preg_match('#{([a-z\.]+)}#', $url, $m)) {
-			$url = str_replace($m[0], $subst[$m[1]], $url);
+			if (isset($subst[$m[1]])) {
+				$url = str_replace($m[0], $subst[$m[1]], $url);
+			}
 		}
 
 		return $url;

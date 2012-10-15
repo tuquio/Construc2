@@ -31,6 +31,8 @@ $tmpl_url 	= $base_url. basename(JPATH_THEMES). '/'. $this->template;
 // some editor form requested, needs mo' styles, and less modules
 $editMode   = $templateHelper->hasState('edit');
 $printMode  = $templateHelper->hasState('print');
+$modalMode  = $templateHelper->hasState('modal');
+$pagedMode  = (!$editMode && !$modalMode);
 
 /**
  * For the time being, "features", "widgets" and "elements" need to be
@@ -124,21 +126,28 @@ $columnGroupBetaCount  = $columnGroupCount['group-beta']->total;  // $templateHe
 
 /* Build Column Layout class */
 $columnLayout = array('main-only');
-if (false == $editMode) {
-	# alpha-X-main-beta-Y
-	if ($columnGroupAlphaCount > 0) {
-		$columnLayout = array('alpha-main');
-		if ($columnGroupBetaCount > 0) {
-			$columnLayout = array('alpha-main-beta');
-		}
-	} elseif ($columnGroupBetaCount > 0) {
-		$columnLayout = array('main-beta');
-	}
-
+if ($pagedMode) {
 	if ($printMode) {
 		$columnLayout[] = 'print';
 	}
+	else {
+		# alpha-X-main-beta-Y
+		if ($columnGroupAlphaCount > 0) {
+			$columnLayout = array('alpha-main');
+			if ($columnGroupBetaCount > 0) {
+				$columnLayout = array('alpha-main-beta');
+			}
+		} elseif ($columnGroupBetaCount > 0) {
+			$columnLayout = array('main-beta');
+		}
+	}
+
+	$columnLayout[] = $app->getMenu()->getActive()->params->get('pageclass_sfx', '');
 }
+elseif ($modalMode || $printMode) {
+	$columnLayout[] = $app->input->get('option');
+}
+
 // merge $columnLayout into a string
 $columnLayout = array_unique($columnLayout);
 $columnLayout = trim(implode(' ', $columnLayout));
