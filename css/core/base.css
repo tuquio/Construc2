@@ -1,7 +1,7 @@
 /* äöü - UTF-8 required! */
 /*!
  * base.css "HTML5ish edition" featuring 'normalise.css'
- * @version 1.6.9 18.04.2012
+ * @version 1.7.0  28.08.2012 (18.04.2012)
  * personal likings + defaults mixed with inspirational input from
  * @credits E. Meyer, Yahoo!, N. Sullivan, D. Edwards, CSS-WG, W3C, H5BP, and the Interwebs.
  * @license WTFPL
@@ -12,10 +12,13 @@ body{font-size:100.1%;-webkit-text-size-adjust:100.1%; -ms-text-size-adjust:100.
 
 /* Gecko Hacks */
 @media screen,handheld,projection{html{margin-bottom:1px;min-height:100%}}
-/* iPhone 3=163 ppi (std. 112 x 1.455) */
-@media screen and (min-resolution: 160dpi){html{font-size:21px}}
-/* iPhone 4=326 ppi (std. 112 x 2,911) */
-@media screen and (min-resolution: 320dpi){html{font-size:38px}}
+
+/* hi-res screens i.e iPhone 3=163 ppi (std. 112 x 1.455), iPhone 4=326 ppi (std. 112 x 2,911)
+   resolution works on IE9/IE10Mob, but layout always happens w/ 96dpi and does not reflect the actual device*/
+@media only screen and (-webkit-min-device-pixel-ratio: 2),
+       only screen and (min-resolution: 192dpi) {
+	html{font-size:21px}
+}
 
 article,aside,details,figcaption,figure,footer,header,hgroup,nav,menu,section{display:block}
 audio,canvas,video{display:inline-block;*display:inline;*zoom:1}
