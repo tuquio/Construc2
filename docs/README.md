@@ -176,17 +176,19 @@ A great collection of _HTML5 Cross Browser Polyfills_ is available from
 # Ideas
 Mental notes for things that might come (in more or less the following order):
 
-- [WIP] add module position mapping to easy migration for sites using J's standard templates (Beez, Beez2, Beez5, Purity)
-- [WIP] "delegate" (more) parts of `login.php` into `ConstructTemplateHelper` to reduce variable clutter.
+- (WIP) add module position mapping to easy migration for sites using J's standard templates (Beez, Beez2, Beez5, Purity)
+- (WIP) "delegate" (more) parts of `logic.php` into `ConstructTemplateHelper` to reduce variable clutter.
 - improve WAI-ARIA support
 - allow to exclude module positions from using the `.mod` class
 - add support for rel="canonical" URLs to main layouts
-- add backend (only) plugin for custom theme confguration
+- (WIP) add backend (only) plugin for custom theme confguration
 - add API key support and caching of the Google WebFont list
 - make the jQuery version list "live" (cacheable) or easier configurable w/ hacking the code
 - add (a set of?) "previz" params to render dummy modules at various module positions during layout development
 - add 'apply to all' button to copy selected parameters from the edited template style to other
 - improve RTL support
+- improve "Widgets" support via Custom Modules, "@magic" module class modules and simple "{widgetname}" placeholders
 
-2012-04-03
+2012 Aug.
+
 .eof
