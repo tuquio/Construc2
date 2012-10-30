@@ -55,7 +55,7 @@ JHtml::_('behavior.formvalidation');
 	<!-- registration - address  -->
 	<fieldset class="registration address">
 	<legend><?php echo JText::_('COM_USERS_PROFILE_ADDRESS') ?></legend>
-<? /* @todo: address field ordering.
+<?php /* @todo: address field ordering.
 	For ultimate and accurate l10n the order of these fields should match the user's postal rules.
 	Needs a "super-smart template helper" to be asked then, and to take care of this US-centric crap.
 */ ?>

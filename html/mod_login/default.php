@@ -69,7 +69,7 @@
 	<?php } ?>
 	</menu>
 
-<?php if ( ($ptext = $params->get('posttext')) ) { ?><div class="line description post-text"><?php echo $ptext ?></div><? } ?>
+<?php if ( ($ptext = $params->get('posttext')) ) { ?><div class="line description post-text"><?php echo $ptext ?></div><?php } ?>
 
 	<input type="hidden" name="option" value="com_users" />
 	<input type="hidden" name="task" value="user.login" />

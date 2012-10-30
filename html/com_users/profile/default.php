@@ -66,7 +66,7 @@ $canEdit = (JFactory::getUser()->id == $this->data->id);
 
 	<fieldset class="profile address">
 	<legend><?php echo JText::_('COM_USERS_PROFILE_ADDRESS') ?></legend>
-<? /* @todo: address field ordering.
+<?php /* @todo: address field ordering.
 	For ultimate and accurate l10n the order of these fields should match the user's postal rules.
 	Needs a "super-smart template helper" to be asked then, and to take care of this US-centric crap.
 */ ?>
@@ -75,7 +75,7 @@ $canEdit = (JFactory::getUser()->id == $this->data->id);
 		<dd class="addr1"><?php echo $this->form->getValue('address1', 'profile') ?></dd>
 		<dt class="addr2"><?php echo JText::_('PLG_USER_PROFILE_FIELD_ADDRESS2_LABEL')  ?></dt>
 		<dd class="addr2"><?php echo $this->form->getValue('address2', 'profile') ?></dd>
-<? /*
+<?php /*
 		<dt class="pcode"><?php echo JText::_('PLG_USER_PROFILE_FIELD_POSTAL_CODE_LABEL') ?></dt>
 		<dd class="pcode"><?php echo $this->form->getValue('postal_code', 'profile') ?></dd>
 		<dt class="city"><?php echo JText::_('PLG_USER_PROFILE_FIELD_CITY_LABEL') ?></dt>
@@ -94,7 +94,7 @@ $canEdit = (JFactory::getUser()->id == $this->data->id);
 	<fieldset class="profile about-me">
 	<legend><?php echo JText::_('COM_USERS_PROFILE_ABOUT_ME') ?></legend>
 	<dl class="about-me">
-<? /* @todo: User Profilfelder
+<?php /* @todo: User Profilfelder
 	"Lieblingsbuch" ist erstmal weg.
 	Hier kommen dann ggf. weitere Profilfelder hinein, wenn geklärt ist
 	wie man diese "anlegt" und "welche" überhaupt Sinn ergeben ...
