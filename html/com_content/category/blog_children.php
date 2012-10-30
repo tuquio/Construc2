@@ -24,7 +24,7 @@ foreach($this->children[$this->category->id] as $id => $child)
 ?><li class="<?php echo $class ?>>">
 	<div class="category-desc">
 	<a  class="mi" href="<?php echo JRoute::_(ContentHelperRoute::getCategoryRoute($child->id))	?>">
-		<span class="mi item-title"><?php echo $this->escape($child->title) ?></span>
+		<span class="mi H4"><?php echo $this->escape($child->title) ?></span>
 	</a>
 <?php
 		if ($this->params->get('show_subcat_desc') == 1) {

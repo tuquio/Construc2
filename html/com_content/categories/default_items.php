@@ -30,7 +30,7 @@ foreach ($this->items[$this->parent->id] as $id => $item)
 
 	<li class="mi <?php echo ($descImage ? 'has-image ' : '') , ($item->childrennumitems ? 'parent ' : '') , ContentLayoutHelper::getCssAlias($item, false) ?>">
 	<a class="mi" href="<?php echo JRoute::_(ContentHelperRoute::getCategoryRoute($item->id)) ?>
-	"><span class="mi item-title"><?php echo $this->escape($item->title) ?></span></a>
+	"><span class="mi H4"><?php echo $this->escape($item->title) ?></span></a>
 
 <?php   if ($this->params->get('show_subcat_desc_cat') == 1) {
 			if ($descImage) {
